@@ -1,0 +1,25 @@
+name: RCCities
+version: 0.1
+description: This plugin allows to found and manage cities
+author: Strasse36
+website: www.raid-craft.de
+
+main: de.strasse36.rccities.bukkit.RCCitiesPlugin
+database: true
+depend: [RaidCraftCore]
+
+commands:
+  rccities:
+    description: Main command.
+    aliases: [rcc]
+    usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
+
+permissions:
+  rccities.user:
+    description: Gives access to users rccities skills
+    default: true
+    children:
+  rccities.mod:
+    description: Gives access to moderator rccities skills
+    default: op
+    children:
