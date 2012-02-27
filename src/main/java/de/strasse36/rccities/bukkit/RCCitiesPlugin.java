@@ -1,11 +1,11 @@
-package main.java.de.strasse36.rccities.bukkit;
+package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
 import com.silthus.raidcraft.util.RCLogger;
-import main.java.de.strasse36.rccities.commands.RCCitiesCommand;
-import main.java.de.strasse36.rccities.config.MainConfig;
-import main.java.de.strasse36.rccities.database.CitiesDatabase;
-import main.java.de.strasse36.rccities.listeners.PlayerListener;
+import de.strasse36.rccities.commands.RCCitiesCommand;
+import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.CitiesDatabase;
+import de.strasse36.rccities.listeners.PlayerListener;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;

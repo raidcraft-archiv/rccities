@@ -1,4 +1,4 @@
-package main.java.de.strasse36.rccities.listeners;
+package de.strasse36.rccities.listeners;
 
 import org.bukkit.event.Listener;
 

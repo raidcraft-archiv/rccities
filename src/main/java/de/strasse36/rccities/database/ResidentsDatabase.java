@@ -1,4 +1,4 @@
-package main.java.de.strasse36.rccities.database;
+package de.strasse36.rccities.database;
 
 import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotNull;

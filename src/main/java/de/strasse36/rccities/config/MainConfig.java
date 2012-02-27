@@ -1,4 +1,4 @@
-package main.java.de.strasse36.rccities.config;
+package de.strasse36.rccities.config;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
 import com.silthus.raidcraft.config.ConfigManager;

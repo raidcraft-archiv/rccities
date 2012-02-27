@@ -1,4 +1,4 @@
-package main.java.de.strasse36.rccities.commands;
+package de.strasse36.rccities.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

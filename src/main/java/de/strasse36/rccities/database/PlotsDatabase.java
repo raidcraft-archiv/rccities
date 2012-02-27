@@ -1,4 +1,4 @@
-package main.java.de.strasse36.rccities.database;
+package de.strasse36.rccities.database;
 
 import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotNull;
@@ -17,9 +17,9 @@ public class PlotsDatabase {
     @NotNull
     private int city;
     @NotNull
-    private int point_1;
+    private int chunk_x;
     @NotNull
-    private int point_2;
+    private int chunk_y;
 
     public int getId() {
         return id;
@@ -37,19 +37,19 @@ public class PlotsDatabase {
         this.city = city;
     }
 
-    public int getPoint_1() {
-        return point_1;
+    public int getChunk_x() {
+        return chunk_x;
     }
 
-    public void setPoint_1(int point_1) {
-        this.point_1 = point_1;
+    public void setChunk_x(int chunk_x) {
+        this.chunk_x = chunk_x;
     }
 
-    public int getPoint_2() {
-        return point_2;
+    public int getChunk_y() {
+        return chunk_y;
     }
 
-    public void setPoint_2(int point_2) {
-        this.point_2 = point_2;
+    public void setChunk_y(int chunk_y) {
+        this.chunk_y = chunk_y;
     }
 }
