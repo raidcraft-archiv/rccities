@@ -14,4 +14,12 @@ public class RCCitiesCommand implements CommandExecutor
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    //TODO command help
+    //shows command help in chat
+    public static void commandHelp(CommandSender sender)
+    {
+
+
+    }
 }

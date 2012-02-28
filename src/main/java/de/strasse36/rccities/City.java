@@ -1,36 +1,28 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities;
 
-import com.avaje.ebean.validation.Length;
-import com.avaje.ebean.validation.NotNull;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-
-@Entity()
-@Table(name = "rccities_cities")
-public class CitiesDatabase {
-
-    @Id
+/**
+ * Author: Philip Urban
+ * Date: 28.02.12 - 20:49
+ * Description:
+ */
+public class City {
     private int id;
-    @NotNull
-    @Length(max = 50)
     private String name;
-    @NotNull
-    private int size;
-    @NotNull
     private String description;
-    @NotNull
+    private long size;
     private double spawn_x;
-    @NotNull
     private double spawn_y;
-    @NotNull
     private double spawn_z;
-    @NotNull
     private double spawn_pitch;
-    @NotNull
     private double spawn_yaw;
+
+    public City(){};
+
+    public City(String name)
+    {
+        this.setName(name);
+        this.setDescription("Noch keine Beschreibung verfügbar");
+    }
 
     public int getId() {
         return id;
@@ -38,6 +30,30 @@ public class CitiesDatabase {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 
     public double getSpawn_x() {
@@ -78,29 +94,5 @@ public class CitiesDatabase {
 
     public void setSpawn_yaw(double spawn_yaw) {
         this.spawn_yaw = spawn_yaw;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }
