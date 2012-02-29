@@ -4,6 +4,9 @@ import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.util.TableNames;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +22,7 @@ import java.util.List;
 public class CityTable extends RCTable {
 
     public CityTable(Database database) {
-        super(database, "cities");
+        super(database, TableNames.getCityTable());
     }
 
     @Override
@@ -31,11 +34,12 @@ public class CityTable extends RCTable {
                         "`name` VARCHAR( 50 ) NULL ," +
                         "`size` BIGINT NULL ," +
                         "`description` TEXT NULL ," +
+                        "`spawn_world` VARCHAR( 50 ) NULL" +
                         "`spawn_x` DOUBLE NULL ," +
                         "`spawn_y` DOUBLE NULL ," +
                         "`spawn_z` DOUBLE NULL ," +
-                        "`spawn_pitch` DOUBLE NULL ," +
-                        "`spawn_yaw` DOUBLE NULL ," +
+                        "`spawn_pitch` FLOAT NULL ," +
+                        "`spawn_yaw` FLOAT NULL ," +
                         "PRIMARY KEY ( `id` )" +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
@@ -55,11 +59,46 @@ public class CityTable extends RCTable {
                 city.setName(resultSet.getString("name"));
                 city.setDescription(resultSet.getString("description"));
                 city.setSize(resultSet.getLong("size"));
-                city.setSpawn_x(resultSet.getDouble("spawn_x"));
-                city.setSpawn_y(resultSet.getDouble("spawn_y"));
-                city.setSpawn_z(resultSet.getDouble("spawn_z"));
-                city.setSpawn_pitch(resultSet.getDouble("spawn_pitch"));
-                city.setSpawn_yaw(resultSet.getDouble("spawn_yaw"));
+                Location spawn = new Location(
+                        Bukkit.getWorld(resultSet.getString("spawn_world")),
+                        resultSet.getDouble("spawn_x"),
+                        resultSet.getDouble("spawn_y"),
+                        resultSet.getDouble("spawn_z"),
+                        resultSet.getFloat("spawn_yaw"),
+                        resultSet.getFloat("spawn_pitch")
+                );
+                city.setSpawn(spawn);
+            }
+            return city;
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
+
+    public City getCity(String name)
+    {
+        Connection connection = getDatabase().getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        try {
+            City city = new City();
+            while (resultSet.next()) {
+                city = new City();
+                city.setName(resultSet.getString("name"));
+                city.setDescription(resultSet.getString("description"));
+                city.setSize(resultSet.getLong("size"));
+                Location spawn = new Location(
+                        Bukkit.getWorld(resultSet.getString("spawn_world")),
+                        resultSet.getDouble("spawn_x"),
+                        resultSet.getDouble("spawn_y"),
+                        resultSet.getDouble("spawn_z"),
+                        resultSet.getFloat("spawn_yaw"),
+                        resultSet.getFloat("spawn_pitch")
+                );
+                city.setSpawn(spawn);
             }
             return city;
         } catch (SQLException e) {
@@ -82,11 +121,15 @@ public class CityTable extends RCTable {
                 city.setName(resultSet.getString("name"));
                 city.setDescription(resultSet.getString("description"));
                 city.setSize(resultSet.getLong("size"));
-                city.setSpawn_x(resultSet.getDouble("spawn_x"));
-                city.setSpawn_y(resultSet.getDouble("spawn_y"));
-                city.setSpawn_z(resultSet.getDouble("spawn_z"));
-                city.setSpawn_pitch(resultSet.getDouble("spawn_pitch"));
-                city.setSpawn_yaw(resultSet.getDouble("spawn_yaw"));
+                Location spawn = new Location(
+                        Bukkit.getWorld(resultSet.getString("spawn_world")),
+                        resultSet.getDouble("spawn_x"),
+                        resultSet.getDouble("spawn_y"),
+                        resultSet.getDouble("spawn_z"),
+                        resultSet.getFloat("spawn_yaw"),
+                        resultSet.getFloat("spawn_pitch")
+                        );
+                city.setSpawn(spawn);
                 citylist.add(city);
             }
             return citylist;
@@ -105,11 +148,12 @@ public class CityTable extends RCTable {
                         city.getName() + "," +
                         city.getSize() + "," +
                         city.getDescription() + "," +
-                        city.getSpawn_x() + "," +
-                        city.getSpawn_y() + "," +
-                        city.getSpawn_z() + "," +
-                        city.getSpawn_pitch() + "," +
-                        city.getSpawn_yaw() + "," +
+                        city.getSpawn().getWorld() + "," +
+                        city.getSpawn().getX() + "," +
+                        city.getSpawn().getY() + "," +
+                        city.getSpawn().getZ() + "," +
+                        city.getSpawn().getPitch() + "," +
+                        city.getSpawn().getYaw() + "," +
                         ");"
         );
         connection.execute(statement);
@@ -123,11 +167,12 @@ public class CityTable extends RCTable {
                         "name = " + city.getName() + "," +
                         "size = " + city.getSize() + "," +
                         "description = " + city.getDescription() + "," +
-                        "spawn_x = " + city.getSpawn_x() + "," +
-                        "spawn_y = " + city.getSpawn_y() + "," +
-                        "spawn_z = " + city.getSpawn_z() + "," +
-                        "spawn_pitch = " + city.getSpawn_pitch() + "," +
-                        "spawn_yaw = " + city.getSpawn_yaw() + "," +
+                        "spawn_world = " + city.getSpawn().getWorld() + "," +
+                        "spawn_x = " + city.getSpawn().getX() + "," +
+                        "spawn_y = " + city.getSpawn().getY() + "," +
+                        "spawn_z = " + city.getSpawn().getZ() + "," +
+                        "spawn_pitch = " + city.getSpawn().getPitch() + "," +
+                        "spawn_yaw = " + city.getSpawn().getYaw() + "," +
                         ");"
         );
         connection.execute(statement);

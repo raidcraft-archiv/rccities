@@ -1,7 +1,7 @@
 package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
-import de.strasse36.rccities.commands.RCCitiesCommand;
+import de.strasse36.rccities.commands.CommandUtility;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.listeners.PlayerListener;
 
@@ -17,7 +17,7 @@ public class RCCitiesPlugin extends BukkitBasePlugin
     @Override
     public void registerEvents() {
         MainConfig.init(this);
-        registerCommand("rccities", new RCCitiesCommand());
+        registerCommand("rccities", new CommandUtility());
         _self = this;
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
     }

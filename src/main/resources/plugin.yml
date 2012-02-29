@@ -23,3 +23,6 @@ permissions:
     description: Gives access to moderator rccities skills
     default: op
     children:
+        rccities.cmd.create: true
+        rccities.cmd.mayor: true
+        rccities.cmd.spawnall: true

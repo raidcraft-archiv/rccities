@@ -5,6 +5,7 @@ import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import com.silthus.raidcraft.database.UnknownTableException;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.util.TableNames;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ResidentTable extends RCTable {
 
     public ResidentTable(Database database) {
-        super(database, "residents");
+        super(database, TableNames.getResidentTable());
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ResidentTable extends RCTable {
                 resident.setId(resultSet.getInt("id"));
                 resident.setName(resultSet.getString("name"));
                 try {
-                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable("rccities_cities")).getCity(resultSet.getInt("city")));
+                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
                 } catch (UnknownTableException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
@@ -80,7 +81,33 @@ public class ResidentTable extends RCTable {
                 resident.setId(resultSet.getInt("id"));
                 resident.setName(resultSet.getString("name"));
                 try {
-                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable("rccities_cities")).getCity(resultSet.getInt("city")));
+                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
+                } catch (UnknownTableException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                resident.setProfession(resultSet.getString("profession"));
+            }
+            return resident;
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
+
+    public Resident getResident(String name) {
+        Connection connection = getDatabase().getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        try {
+            Resident resident = new Resident();
+            while (resultSet.next()) {
+                resident = new Resident();
+                resident.setId(resultSet.getInt("id"));
+                resident.setName(resultSet.getString("name"));
+                try {
+                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
                 } catch (UnknownTableException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
