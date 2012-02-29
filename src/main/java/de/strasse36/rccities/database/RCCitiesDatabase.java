@@ -33,5 +33,7 @@ public class RCCitiesDatabase extends RCDatabase {
                 config.getPassword(),
                 config.getType(),
                 config.getPrefix());
+        addTable(new CityTable(this));
+        addTable(new ResidentTable(this));
     }
 }

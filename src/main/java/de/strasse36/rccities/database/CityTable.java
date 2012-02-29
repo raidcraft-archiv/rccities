@@ -34,7 +34,7 @@ public class CityTable extends RCTable {
                         "`name` VARCHAR( 50 ) NULL ," +
                         "`size` BIGINT NULL ," +
                         "`description` TEXT NULL ," +
-                        "`spawn_world` VARCHAR( 50 ) NULL" +
+                        "`spawn_world` VARCHAR( 50 ) NULL ," +
                         "`spawn_x` DOUBLE NULL ," +
                         "`spawn_y` DOUBLE NULL ," +
                         "`spawn_z` DOUBLE NULL ," +

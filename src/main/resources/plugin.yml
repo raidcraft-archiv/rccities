@@ -15,10 +15,6 @@ commands:
     usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
 
 permissions:
-  rccities.user:
-    description: Gives access to users rccities skills
-    default: true
-    children:
   rccities.mod:
     description: Gives access to moderator rccities skills
     default: op

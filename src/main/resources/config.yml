@@ -3,7 +3,7 @@ database:
     # valid types are:
     # MySQL
     # SQLite
-    type: 'SQLite'
+    type: 'MySQL'
     # the name of the database
     database: 'minecraft'
     # username of the database
