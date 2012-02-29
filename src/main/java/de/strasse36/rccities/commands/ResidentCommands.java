@@ -28,7 +28,7 @@ public class ResidentCommands implements CommandExecutor
             if(args.length > 1 && sender.hasPermission("rccities.cmd.spawnall"))
             {
                 try {
-                    city = ((CityTable)RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(args[1]);
+                    city = ((CityTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getResidentTable())).getCity(args[1]);
                 } catch (UnknownTableException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     CommandUtility.noCityFound(sender);
@@ -38,7 +38,7 @@ public class ResidentCommands implements CommandExecutor
             else
             {
                 try {
-                    city = ((ResidentTable)RCCitiesDatabase.get().getTable(TableNames.getResidentTable())).getResident(sender.getName()).getCity();
+                    city = ((ResidentTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getResidentTable())).getResident(sender.getName()).getCity();
                 } catch (UnknownTableException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     CommandUtility.noResident(sender);

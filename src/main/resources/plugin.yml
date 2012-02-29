@@ -11,7 +11,7 @@ depend: [RaidCraftCore]
 commands:
   rccities:
     description: Main command.
-    aliases: [rcc]
+    aliases: [rcc, town]
     usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
 
 permissions:

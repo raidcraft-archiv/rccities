@@ -63,7 +63,7 @@ public class ModeratorCommands implements CommandExecutor
                }
             }
             try {
-                City city = (City)RCCitiesDatabase.get().getTable(TableNames.getCityTable());
+                City city = (City)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getCityTable());
                 Profession.setMayor(player, city);
             } catch (UnknownTableException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

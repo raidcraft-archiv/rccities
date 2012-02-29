@@ -6,8 +6,8 @@ package de.strasse36.rccities.util;
  * Description:
  */
 public class TableNames {
-    private static String cityTable;
-    private static String residentTable;
+    private static String cityTable = "cities";
+    private static String residentTable = "residents";
 
     public static String getCityTable() {
         return cityTable;
