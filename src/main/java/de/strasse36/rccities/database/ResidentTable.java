@@ -72,13 +72,17 @@ public class ResidentTable extends RCTable {
         List<Resident> residentlist = new ArrayList<Resident>();
         try {
             Resident resident;
-            while (resultSet.next()) {
-                resident = new Resident();
-                resident.setId(resultSet.getInt("id"));
-                resident.setName(resultSet.getString("name"));
-                resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
-                resident.setProfession(resultSet.getString("profession"));
-                residentlist.add(resident);
+            if (resultSet.next()) {
+                do {
+                    resident = new Resident();
+                    resident.setId(resultSet.getInt("id"));
+                    resident.setName(resultSet.getString("name"));
+                    resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
+                    resident.setProfession(resultSet.getString("profession"));
+                    residentlist.add(resident);
+                } while (resultSet.next());
+            } else {
+                return null;
             }
             return residentlist;
         } catch (SQLException e) {
@@ -94,7 +98,7 @@ public class ResidentTable extends RCTable {
         );
         ResultSet resultSet = connection.execute(statement);
         try {
-            Resident resident = new Resident();
+            Resident resident;
             if (resultSet.next()) {
                 do {
                     resident = new Resident();
@@ -119,7 +123,7 @@ public class ResidentTable extends RCTable {
         );
         ResultSet resultSet = connection.execute(statement);
         try {
-            Resident resident = new Resident();
+            Resident resident;
             if (resultSet.next()) {
                 do {
                     resident = new Resident();
@@ -159,7 +163,7 @@ public class ResidentTable extends RCTable {
                             "name = '" + resident.getName() + "'," +
                             "city = '" + resident.getCity().getId() + "'," +
                             "profession = '" + resident.getProfession() + "'" +
-                            ";"
+                            " WHERE name = '" + resident.getName() + "'"
             );
         }
         connection.executeUpdate(statement);

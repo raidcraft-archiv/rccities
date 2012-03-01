@@ -13,6 +13,7 @@ public class CommandAllocater implements CommandExecutor
 {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
+        /////////////////////////////RESIDENTS//////////////////////////////////////////
         //show town info
         if(args.length == 0)
         {
@@ -20,17 +21,10 @@ public class CommandAllocater implements CommandExecutor
             return true;
         }
 
-        //create city and nominate mayor
-        if(args.length > 2 && args[0].equals("create"))
+        //leave town
+        if(args.length > 0 && args[0].equals("leave"))
         {
-            ModCommands.createCity(sender, args);
-            return true;
-        }
-
-        //promote player as mayor
-        if(args.length > 1 && args[0].equals("mayor"))
-        {
-            ModCommands.setMayor(sender, args);
+            ResidentCommands.leaveTown(sender);
             return true;
         }
 
@@ -41,10 +35,18 @@ public class CommandAllocater implements CommandExecutor
             return true;
         }
 
+        /////////////////////////////CITY-STAFF//////////////////////////////////////////
         //mayor set townspawn
         if(args.length > 1 && args[0].equals("set") && args[1].equals("spawn"))
         {
             CityStaffCommands.setTownSpawn(sender);
+            return true;
+        }
+
+        //promote residents
+        if(args.length > 2 && args[0].equals("promote"))
+        {
+            CityStaffCommands.promote(sender, args);
             return true;
         }
 
@@ -62,17 +64,56 @@ public class CommandAllocater implements CommandExecutor
             return true;
         }
 
+        //change city description
+        ///town set desc <description>
+        if(args.length > 2 && args[0].equals("set") && args[1].equals("desc"))
+        {
+            CityStaffCommands.setCityDescription(sender, args);
+            return true;
+        }
+
+        /////////////////////////////MODERATOR//////////////////////////////////////////
+        //create city and nominate mayor
+        if(args.length > 2 && args[0].equals("create"))
+        {
+            ModCommands.createCity(sender, args);
+            return true;
+        }
+
+        //promote player as mayor
+        if(args.length > 1 && args[0].equals("mayor"))
+        {
+            ModCommands.setMayor(sender, args);
+            return true;
+        }
+
+        //change city name
+        ///town set name <city> <name>
+        if(args.length > 3 && args[0].equals("set") && args[1].equals("name"))
+        {
+            ModCommands.setCityName(sender, args);
+            return true;
+        }
+
+        //demolish city
+        if(args.length > 1 && args[0].equals("demolish"))
+        {
+            ModCommands.demolishCity(sender, args);
+            return true;
+        }
+
+        //confirm demolish city
+        if(args.length > 1 && args[0].equals("demolish"))
+        {
+            ModCommands.confirmDemolish(sender, args);
+            return true;
+        }
+
+        /////////////////////////////NON-RESIDENTS//////////////////////////////////////////
         //mayor & assistants invite player
         if(args.length > 0 && args[0].equals("accept"))
         {
             NonResidentCommands.acceptTownInvite(sender);
-            return true;
-        }
-
-        //leave town
-        if(args.length > 0 && args[0].equals("leave"))
-        {
-            ResidentCommands.leaveTown(sender);
             return true;
         }
 

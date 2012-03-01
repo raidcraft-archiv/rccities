@@ -23,6 +23,12 @@ public class CommandUtility
         RCMessaging.warn(sender, "Die Stadt wurde nicht gefunden.");
     }
 
+    //no resident found
+    public static void selectNoResident(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der gewählte Spieler ist kein Einwohner!");
+    }
+
     //no resident
     public static void noResident(CommandSender sender)
     {

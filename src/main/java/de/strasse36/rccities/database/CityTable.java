@@ -188,7 +188,7 @@ public class CityTable extends RCTable {
                         "spawn_z = '" + city.getSpawn().getZ() + "'," +
                         "spawn_pitch = '" + city.getSpawn().getPitch() + "'," +
                         "spawn_yaw = '" + city.getSpawn().getYaw() + "'" +
-                        ";"
+                        " WHERE id = '" + city.getId() + "';"
         );
         connection.executeUpdate(statement);
     }

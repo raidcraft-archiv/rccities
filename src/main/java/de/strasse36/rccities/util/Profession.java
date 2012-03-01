@@ -3,6 +3,7 @@ package de.strasse36.rccities.util;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,5 +19,36 @@ public class Profession {
         TableHandler.get().getResidentTable().updateResident(resident);
         if(player.isOnline())
             RCMessaging.send(player, "Du bist nun der Bürgermeister von " + city.getName() + "!");
+    }
+    
+    public static void changeProfession(Resident resident, String profession) throws UnknownProfessionException
+    {
+        if( profession.equalsIgnoreCase("mayor") ||
+            profession.equalsIgnoreCase("vicemayor") ||
+            profession.equalsIgnoreCase("assistant") ||
+            profession.equalsIgnoreCase("gardener") ||
+            profession.equalsIgnoreCase("resident")
+        )
+        {
+            resident.setProfession(profession.toLowerCase());
+            TableHandler.get().getResidentTable().updateResident(resident);
+        }
+        else
+            throw new UnknownProfessionException("Die gewählte Berufsgruppe existiert nicht!");
+    }
+    
+    public static String translateProfession(String profession)
+    {
+        if(profession.equalsIgnoreCase("mayor"))
+            return "Bürgermeister";
+        if(profession.equalsIgnoreCase("vicemayor"))
+            return "Vize-Bürgermeister";
+        if(profession.equalsIgnoreCase("assistant"))
+            return "Stadtassistent";
+        if(profession.equalsIgnoreCase("gardener"))
+            return "Gärtner";
+        if(profession.equalsIgnoreCase("resident"))
+            return "Bürger";
+        return profession;
     }
 }

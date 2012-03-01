@@ -26,6 +26,6 @@ public class NonResidentCommands {
         TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);
         RCMessaging.send(sender, "Du bist nun Einwohner von " + city.getName() + "!");
-
+        CityStaffCommands.invites.remove(sender.getName());
     }
 }

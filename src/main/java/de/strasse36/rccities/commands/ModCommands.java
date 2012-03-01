@@ -9,12 +9,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 /**
  * Author: Philip Urban
  * Date: 01.03.12 - 14:29
  * Description:
  */
-public class ModCommands {
+public class ModCommands 
+{
+    private static Map<String, City> demolish = new HashMap<String, City>();
 
     public static void createCity(CommandSender sender, String[] args)
     {
@@ -83,5 +89,62 @@ public class ModCommands {
         }
         //set mayor
         Profession.setMayor(player, city);
+    }
+    
+    public static void setCityName(CommandSender sender, String[] args)
+    {
+        if(!sender.hasPermission("rccities.cmd.setname"))
+        {
+            RCMessaging.noPermission(sender);
+            return;
+        }
+        City city = TableHandler.get().getCityTable().getCity(args[2]);
+        if(city == null)
+        {
+            CommandUtility.noCityFound(sender);
+            return;
+        }
+        String oldName = city.getName();
+        city.setName(args[3]);
+        TableHandler.get().getCityTable().updateCity(city);
+        RCMessaging.broadcast(RCMessaging.blue("Der Name der Stadt " + oldName + " wurde in " + city.getName() + " geändert!"));
+    }
+
+    public static void demolishCity(CommandSender sender, String[] args)
+    {
+        if(!sender.hasPermission("rccities.cmd.demolish"))
+        {
+            RCMessaging.noPermission(sender);
+            return;
+        }
+        City city = TableHandler.get().getCityTable().getCity(args[1]);
+        if(city == null)
+        {
+            CommandUtility.noCityFound(sender);
+            return;
+        }
+        String captcha;
+
+        String allowedChars ="0123456789abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        int max = allowedChars.length();
+        StringBuffer buffer = new StringBuffer();
+        for (int i=0; i<7; i++) {
+            int value = random.nextInt(max);
+            buffer.append(allowedChars.charAt(value));
+        }
+        captcha = buffer.toString();
+
+        demolish.put(captcha, city);
+        RCMessaging.send(sender, RCMessaging.red("Um die Stadt " + city.getName() + " wirklich zu löschen, gebe folgendes ein:"));
+        RCMessaging.send(sender, RCMessaging.yellow("/town confirm " + captcha));
+        RCMessaging.send(sender, RCMessaging.red("Es werden dadurch alle Datenbankeinträge der Stadt gelöscht!"));
+        RCMessaging.send(sender, RCMessaging.red("Darunter auch alle Plots, Spielerzuordnungen usw."));
+        RCMessaging.send(sender, RCMessaging.red("Das löschen einer Stadt ist nicht umkehrbar!"));
+    }
+
+    public static void confirmDemolish(CommandSender sender, String[] args)
+    {
+
     }
 }

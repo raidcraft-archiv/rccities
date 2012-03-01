@@ -23,6 +23,13 @@ public class ResidentCommands {
 
     public static void teleportToTownspawn(CommandSender sender, String[] args)
     {
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            CommandUtility.noResident(sender);
+            return;
+        }
         City city;
         if(args.length > 1 && sender.hasPermission("rccities.cmd.spawnall"))
         {
