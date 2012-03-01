@@ -3,7 +3,7 @@ package de.strasse36.rccities.database;
 import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
-import com.silthus.raidcraft.database.UnknownTableException;
+import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TableNames;
@@ -52,13 +52,32 @@ public class ResidentTable extends RCTable {
                 resident = new Resident();
                 resident.setId(resultSet.getInt("id"));
                 resident.setName(resultSet.getString("name"));
-                try {
-                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
-                } catch (UnknownTableException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
                 resident.setProfession(resultSet.getString("profession"));
+                residentlist.add(resident);
+            }
+            return residentlist;
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
 
+    public List<Resident> getResidents(City city) {
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        List<Resident> residentlist = new ArrayList<Resident>();
+        try {
+            Resident resident;
+            while (resultSet.next()) {
+                resident = new Resident();
+                resident.setId(resultSet.getInt("id"));
+                resident.setName(resultSet.getString("name"));
+                resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
+                resident.setProfession(resultSet.getString("profession"));
                 residentlist.add(resident);
             }
             return residentlist;

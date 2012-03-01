@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class CityStaffCommands {
 
-    private static Map<Player, City> invites = new HashMap<Player, City>();
+    public static Map<String, City> invites = new HashMap<String, City>();
 
 
     public static void setTownSpawn(CommandSender sender)
@@ -53,7 +53,7 @@ public class CityStaffCommands {
             return;
         }
         //no stafff
-        if(!resident.isMayor() && !resident.isViceMayor() && !resident.isAssistant())
+        if(!resident.isStaff())
         {
             CommandUtility.onlyStaff(sender);
             return;
@@ -66,7 +66,9 @@ public class CityStaffCommands {
             return;
         }
 
-        invites.put(player, resident.getCity());
-        //TODO
+        invites.put(player.getName(), resident.getCity());
+        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + "eingeladen!");
+        RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + "eingeladen!"));
+        RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"));
     }
 }

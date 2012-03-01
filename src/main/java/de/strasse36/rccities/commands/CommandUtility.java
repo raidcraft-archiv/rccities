@@ -11,15 +11,6 @@ import org.bukkit.command.CommandSender;
  */
 public class CommandUtility
 {
-
-    //TODO command help
-    //shows command help in chat
-    public static void commandHelp(CommandSender sender)
-    {
-
-
-    }
-
     //shows no player found message
     public static void noPlayerFound(CommandSender sender)
     {

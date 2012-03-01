@@ -75,4 +75,9 @@ public class Resident {
     {
         return this.getProfession().equalsIgnoreCase("assistant");
     }
+
+    public boolean isStaff()
+    {
+        return (isMayor() || isViceMayor() || isAssistant());
+    }
 }

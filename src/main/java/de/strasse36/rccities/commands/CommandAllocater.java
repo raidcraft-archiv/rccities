@@ -13,10 +13,10 @@ public class CommandAllocater implements CommandExecutor
 {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
-        //show help
+        //show town info
         if(args.length == 0)
         {
-            CommandUtility.commandHelp(sender);
+            ResidentCommands.showTownInfo(sender);
             return true;
         }
 
@@ -52,6 +52,13 @@ public class CommandAllocater implements CommandExecutor
         if(args.length > 1 && args[0].equals("invite"))
         {
             CityStaffCommands.invitePlayer(sender, args);
+            return true;
+        }
+
+        //mayor & assistants invite player
+        if(args.length > 0 && args[0].equals("accept"))
+        {
+            NonResidentCommands.acceptTownInvite(sender);
             return true;
         }
 

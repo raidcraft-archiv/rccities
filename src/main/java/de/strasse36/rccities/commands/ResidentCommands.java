@@ -13,7 +13,12 @@ import org.bukkit.entity.Player;
  * Description:
  */
 public class ResidentCommands {
-    
+
+    public static void showTownInfo(CommandSender sender)
+    {
+        //TODO
+    }
+
     public static void teleportToTownspawn(CommandSender sender, String[] args)
     {
         City city;
