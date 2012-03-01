@@ -1,8 +1,10 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -19,8 +21,11 @@ public class NonResidentCommands {
             RCMessaging.warn(sender, "Du hast keine offenen Einladungen!");
             return;
         }
-        Resident resident = new Resident(sender.getName(), CityStaffCommands.invites.get(sender.getName()), "resident");
+        City city = CityStaffCommands.invites.get(sender.getName());
+        Resident resident = new Resident(sender.getName(), city, "resident");
+        TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);
-        RCMessaging.send(sender, "Du bist nun Einwohner von " + CityStaffCommands.invites.get(sender.getName()).getName() + "!");
+        RCMessaging.send(sender, "Du bist nun Einwohner von " + city.getName() + "!");
+
     }
 }

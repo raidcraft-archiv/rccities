@@ -48,6 +48,13 @@ public class CommandAllocater implements CommandExecutor
             return true;
         }
 
+        //kick player from town
+        if(args.length > 1 && args[0].equals("kick"))
+        {
+            CityStaffCommands.kickPlayer(sender, args);
+            return true;
+        }
+
         //mayor & assistants invite player
         if(args.length > 1 && args[0].equals("invite"))
         {
@@ -59,6 +66,13 @@ public class CommandAllocater implements CommandExecutor
         if(args.length > 0 && args[0].equals("accept"))
         {
             NonResidentCommands.acceptTownInvite(sender);
+            return true;
+        }
+
+        //leave town
+        if(args.length > 0 && args[0].equals("leave"))
+        {
+            ResidentCommands.leaveTown(sender);
             return true;
         }
 

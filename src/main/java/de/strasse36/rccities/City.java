@@ -14,7 +14,13 @@ public class City {
     private long size;
     private Location spawn;
 
-    public City(){};
+    public City()
+    {
+        this.setName("-");
+        this.setDescription("-");
+        this.setSize(1);
+        this.setSpawn(null);
+    };
 
     public City(String name, Location spawn)
     {

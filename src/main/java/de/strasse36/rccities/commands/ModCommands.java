@@ -46,9 +46,10 @@ public class ModCommands {
             CommandUtility.internalError(sender);
             return;
         }
+
+        RCMessaging.send(sender, "Die Stadt '" + args[1] + "' wurde erfolgreich gegründet.");
         //set mayor
         Profession.setMayor(player, city);
-        RCMessaging.send(sender, "Die Stadt '" + args[1] + "' wurde erfolgreich gegründet.");
     }
 
     public static void setMayor(CommandSender sender, String[] args)
@@ -73,7 +74,7 @@ public class ModCommands {
             }
         }
 
-        City city = TableHandler.get().getCityTable().getCity(args[2]);
+        City city = TableHandler.get().getCityTable().getCity(args[1]);
         //city not found
         if(city == null)
         {

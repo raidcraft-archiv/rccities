@@ -41,6 +41,12 @@ public class CommandUtility
         RCMessaging.warn(sender, "Nur Mitglieder der Stadtverwaltung dürfen das!");
     }
 
+    //self action
+    public static void selfAction(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Du kannst diese Aktion nicht mit dir selbst durchführen!");
+    }
+
     //internal error
     public static void internalError(CommandSender sender)
     {
