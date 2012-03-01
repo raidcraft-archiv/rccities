@@ -128,9 +128,9 @@ public class ResidentTable extends RCTable {
         {
             statement = connection.prepare(
                     "INSERT INTO "  + getName() + "(name, city, profession) VALUES (" + getName() +
-                            "name = " + resident.getName() + "," +
-                            "city = " + resident.getCity().getId() + "," +
-                            "profession = " + resident.getProfession() + "," +
+                            "name = '" + resident.getName() + "'," +
+                            "city = '" + resident.getCity().getId() + "'," +
+                            "profession = '" + resident.getProfession() + "'" +
                             ");"
             );
 
@@ -139,9 +139,9 @@ public class ResidentTable extends RCTable {
         {
             statement = connection.prepare(
                     "UPDATE " + getName() + " SET " +
-                            "name = " + resident.getName() + "," +
-                            "city = " + resident.getCity().getId() + "," +
-                            "profession = " + resident.getProfession() + "," +
+                            "name = '" + resident.getName() + "'," +
+                            "city = '" + resident.getCity().getId() + "'," +
+                            "profession = '" + resident.getProfession() + "'" +
                             ");"
             );
         }

@@ -66,4 +66,14 @@ public class Resident {
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
+    public boolean isMayor()
+    {
+        return this.getProfession().equalsIgnoreCase("mayor");
+    }
+
+    public boolean isAssistant()
+    {
+        return this.getProfession().equalsIgnoreCase("assistant");
+    }
 }

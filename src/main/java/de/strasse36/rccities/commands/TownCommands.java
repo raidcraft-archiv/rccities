@@ -3,10 +3,13 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.database.UnknownTableException;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.database.CityTable;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.database.ResidentTable;
+import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.Profession;
+import de.strasse36.rccities.util.TableGetter;
 import de.strasse36.rccities.util.TableNames;
 import de.strasse36.rccities.util.Teleport;
 import org.bukkit.Bukkit;
@@ -39,7 +42,7 @@ public class TownCommands implements CommandExecutor
                 RCMessaging.noPermission(sender);
                 return true;
             }
-            City newCity = new City(args[1]);
+            City newCity = new City(args[1], ((Player)sender).getLocation());
             Player player = Bukkit.getPlayerExact(args[2]);
             if(player == null)
             {
@@ -48,8 +51,13 @@ public class TownCommands implements CommandExecutor
             }
 
             try {
-                ((CityTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getCityTable())).newCity(newCity);
-                City city = ((CityTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getCityTable())).getCity(args[1]);
+                try {
+                    TableGetter.getCityTable().newCity(newCity);
+                } catch (AlreadyExistsException e) {
+                    RCMessaging.warn(sender, e.getMessage());
+                    return true;
+                }
+                City city = TableGetter.getCityTable().getCity(args[2]);
                 Profession.setMayor(player, city);
             } catch (UnknownTableException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -91,14 +99,14 @@ public class TownCommands implements CommandExecutor
             return true;
         }
 
-        //teleport player to town spawn
-        if(args.length > 1 && args[0].equals("spawn"))
+        //teleport player to townspawn
+        if(args.length > 0 && args[0].equals("spawn"))
         {
             City city;
             if(args.length > 1 && sender.hasPermission("rccities.cmd.spawnall"))
             {
                 try {
-                    city = ((CityTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getResidentTable())).getCity(args[1]);
+                    city = ((CityTable)RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getCityTable())).getCity(args[1]);
                 } catch (UnknownTableException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     CommandUtility.noCityFound(sender);
@@ -120,6 +128,35 @@ public class TownCommands implements CommandExecutor
             RCMessaging.send(sender, "Willkommen am Townspawn von " + city.getName());
             return true;
         }
+
+        //mayor set townspawn
+        if(args.length > 1 && args[0].equals("set") && args[1].equals("spawn"))
+        {
+            Resident resident;
+            try {
+                resident = TableGetter.getResidentTable().getResident(sender.getName());
+            } catch (UnknownTableException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                CommandUtility.internalError(sender);
+                return true;
+            }
+            if(!resident.isMayor())
+            {
+                CommandUtility.noMayor(sender);
+                return true;
+            }
+
+            resident.getCity().setSpawn(((Player)sender).getLocation());
+
+            try {
+                TableGetter.getCityTable().updateCity(resident.getCity());
+            } catch (UnknownTableException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                CommandUtility.internalError(sender);
+                return true;
+            }        
+        }
+
         return false;
     }
 

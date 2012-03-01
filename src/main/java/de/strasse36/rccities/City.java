@@ -16,10 +16,12 @@ public class City {
 
     public City(){};
 
-    public City(String name)
+    public City(String name, Location spawn)
     {
         this.setName(name);
         this.setDescription("Noch keine Beschreibung verfügbar");
+        this.setSize(1);
+        this.setSpawn(spawn);
     }
 
     public int getId() {

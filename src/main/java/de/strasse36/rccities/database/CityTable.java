@@ -4,6 +4,7 @@ import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,7 +31,7 @@ public class CityTable extends RCTable {
         Connection connection = getDatabase().getConnection();
         PreparedStatement prepare = connection.prepare(
                 "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
-                        "`id` INT NOT NULL ," +
+                        "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
                         "`name` VARCHAR( 50 ) NULL ," +
                         "`size` BIGINT NULL ," +
                         "`description` TEXT NULL ," +
@@ -39,8 +40,7 @@ public class CityTable extends RCTable {
                         "`spawn_y` DOUBLE NULL ," +
                         "`spawn_z` DOUBLE NULL ," +
                         "`spawn_pitch` FLOAT NULL ," +
-                        "`spawn_yaw` FLOAT NULL ," +
-                        "PRIMARY KEY ( `id` )" +
+                        "`spawn_yaw` FLOAT NULL" +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
@@ -107,7 +107,8 @@ public class CityTable extends RCTable {
         return null;
     }
 
-    public List<City> getCitys() {
+    public List<City> getCitys()
+    {
         Connection connection = getDatabase().getConnection();
         PreparedStatement statement = connection.prepare(
                 "SELECT * FROM " + getName() + ";"
@@ -139,40 +140,46 @@ public class CityTable extends RCTable {
         return null;
     }
 
-    public void newCity(City city)
+    public void newCity(City city) throws AlreadyExistsException
     {
-        Connection connection = getDatabase().getConnection();
+        if(this.getCity(city.getName()) != null && this.getCity(city.getName()).getName().equalsIgnoreCase(city.getName()))
+        {
+            throw new AlreadyExistsException("Eine Stadt mit diesem Namen existiert bereits!");
+        }
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
-                "INSERT INTO " + getName() + "(name, size, description, spawn_x, spawn_y, spawn_z, spawn_pitch, spawn_yaw) " +
+                "INSERT INTO " + getName() + " (name, size, description, spawn_world, spawn_x, spawn_y, spawn_z, spawn_pitch, spawn_yaw) " +
                         "VALUES (" +
-                        city.getName() + "," +
-                        city.getSize() + "," +
-                        city.getDescription() + "," +
-                        city.getSpawn().getWorld() + "," +
-                        city.getSpawn().getX() + "," +
-                        city.getSpawn().getY() + "," +
-                        city.getSpawn().getZ() + "," +
-                        city.getSpawn().getPitch() + "," +
-                        city.getSpawn().getYaw() + "," +
+                        "'" + city.getName() + "'" + "," +
+                        "'" + city.getSize() + "'" + "," +
+                        "'" + city.getDescription() + "'" + "," +
+                        "'" + city.getSpawn().getWorld().getName() + "'" + "," +
+                        "'" + city.getSpawn().getX() + "'" + "," +
+                        "'" + city.getSpawn().getY() + "'" + "," +
+                        "'" + city.getSpawn().getZ() + "'" + "," +
+                        "'" + city.getSpawn().getPitch() + "'" + "," +
+                        "'" + city.getSpawn().getYaw() + "'" +
                         ");"
         );
+
+        //PreparedStatement statement = connection.prepare("INSERT INTO rccities_cities (name) VALUES ('Test');");
         connection.execute(statement);
     }
 
     public void updateCity(City city)
     {
-        Connection connection = getDatabase().getConnection();
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
                 "UPDATE " + getName() + " SET " +
-                        "name = " + city.getName() + "," +
-                        "size = " + city.getSize() + "," +
-                        "description = " + city.getDescription() + "," +
-                        "spawn_world = " + city.getSpawn().getWorld() + "," +
-                        "spawn_x = " + city.getSpawn().getX() + "," +
-                        "spawn_y = " + city.getSpawn().getY() + "," +
-                        "spawn_z = " + city.getSpawn().getZ() + "," +
-                        "spawn_pitch = " + city.getSpawn().getPitch() + "," +
-                        "spawn_yaw = " + city.getSpawn().getYaw() + "," +
+                        "name = '" + city.getName() + "'," +
+                        "size = '" + city.getSize() + "'," +
+                        "description '= " + city.getDescription() + "'," +
+                        "spawn_world '= " + city.getSpawn().getWorld().getName() + "'," +
+                        "spawn_x '= " + city.getSpawn().getX() + "'," +
+                        "spawn_y '= " + city.getSpawn().getY() + "'," +
+                        "spawn_z '= " + city.getSpawn().getZ() + "'," +
+                        "spawn_pitch '= " + city.getSpawn().getPitch() + "'," +
+                        "spawn_yaw '= " + city.getSpawn().getYaw() + "'," +
                         ");"
         );
         connection.execute(statement);
