@@ -1,10 +1,11 @@
 package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
-import de.strasse36.rccities.commands.TownCommands;
+import de.strasse36.rccities.commands.CommandAllocater;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.listeners.PlayerListener;
+import de.strasse36.rccities.util.TableHandler;
 
 /**
  * Author: Philip Urban
@@ -20,8 +21,9 @@ public class RCCitiesPlugin extends BukkitBasePlugin
         MainConfig.init(this);
         _self = this;
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        registerCommand("rccities", new TownCommands());
+        registerCommand("rccities", new CommandAllocater());
         RCCitiesDatabase.init();
+        TableHandler.init();
     }
 
     public static RCCitiesPlugin get()

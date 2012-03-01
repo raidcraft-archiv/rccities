@@ -5,6 +5,7 @@ import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import com.silthus.raidcraft.database.UnknownTableException;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TableNames;
 
 import java.sql.PreparedStatement;
@@ -29,18 +30,17 @@ public class ResidentTable extends RCTable {
         Connection connection = getDatabase().getConnection();
         PreparedStatement prepare = connection.prepare(
                 "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (\n" +
-                    "`id` INT NOT NULL ," +
+                    "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
                     "`name` VARCHAR( 32 ) NULL ," +
                     "`city` INT NULL ," +
-                    "`profession` VARCHAR( 32 ) NULL ," +
-                    "PRIMARY KEY ( `id` )" +
+                    "`profession` VARCHAR( 32 ) NULL" +
                 ") ENGINE = InnoDB;"
         );
         connection.executeUpdate(prepare);
     }
 
     public List<Resident> getResidents() {
-        Connection connection = getDatabase().getConnection();
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
                 "SELECT * FROM " + getName() + ";"
         );
@@ -69,68 +69,66 @@ public class ResidentTable extends RCTable {
     }
 
     public Resident getResident(int id) {
-        Connection connection = getDatabase().getConnection();
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
                 "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
         );
         ResultSet resultSet = connection.execute(statement);
         try {
             Resident resident = new Resident();
-            while (resultSet.next()) {
-                resident = new Resident();
-                resident.setId(resultSet.getInt("id"));
-                resident.setName(resultSet.getString("name"));
-                try {
-                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
-                } catch (UnknownTableException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                resident.setProfession(resultSet.getString("profession"));
+            if (resultSet.next()) {
+                do {
+                    resident = new Resident();
+                    resident.setId(resultSet.getInt("id"));
+                    resident.setName(resultSet.getString("name"));
+                    resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
+                    resident.setProfession(resultSet.getString("profession"));
+                } while (resultSet.next());
+            } else {
+                return null;
             }
             return resident;
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return null;
         }
-        return null;
     }
 
     public Resident getResident(String name) {
-        Connection connection = getDatabase().getConnection();
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
                 "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
         );
         ResultSet resultSet = connection.execute(statement);
         try {
             Resident resident = new Resident();
-            while (resultSet.next()) {
-                resident = new Resident();
-                resident.setId(resultSet.getInt("id"));
-                resident.setName(resultSet.getString("name"));
-                try {
-                    resident.setCity(((CityTable) RCCitiesDatabase.get().getTable(TableNames.getCityTable())).getCity(resultSet.getInt("city")));
-                } catch (UnknownTableException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                resident.setProfession(resultSet.getString("profession"));
+            if (resultSet.next()) {
+                do {
+                    resident = new Resident();
+                    resident.setId(resultSet.getInt("id"));
+                    resident.setName(resultSet.getString("name"));
+                    resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
+                    resident.setProfession(resultSet.getString("profession"));
+                } while (resultSet.next());
+            } else {
+                return null;
             }
             return resident;
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return null;
         }
-        return null;
     }
 
     public void updateResident(Resident resident)
     {
-        Connection connection = getDatabase().getConnection();
+        Connection connection = getConnection();
         PreparedStatement statement;
-        if(getResident(resident.getId()) == null)
+        if(getResident(resident.getName()) == null)
         {
             statement = connection.prepare(
-                    "INSERT INTO "  + getName() + "(name, city, profession) VALUES (" + getName() +
-                            "name = '" + resident.getName() + "'," +
-                            "city = '" + resident.getCity().getId() + "'," +
-                            "profession = '" + resident.getProfession() + "'" +
+                    "INSERT INTO "  + getName() + "(name, city, profession) VALUES (" +
+                            "'" + resident.getName() + "'," +
+                            "'" + resident.getCity().getId() + "'," +
+                            "'" + resident.getProfession() + "'" +
                             ");"
             );
 
@@ -142,9 +140,9 @@ public class ResidentTable extends RCTable {
                             "name = '" + resident.getName() + "'," +
                             "city = '" + resident.getCity().getId() + "'," +
                             "profession = '" + resident.getProfession() + "'" +
-                            ");"
+                            ";"
             );
         }
-        connection.execute(statement);
+        connection.executeUpdate(statement);
     }
 }

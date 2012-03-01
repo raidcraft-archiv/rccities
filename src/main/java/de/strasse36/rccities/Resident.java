@@ -1,8 +1,6 @@
 package de.strasse36.rccities;
 
-import com.silthus.raidcraft.database.UnknownTableException;
-import de.strasse36.rccities.database.CityTable;
-import de.strasse36.rccities.database.RCCitiesDatabase;
+import de.strasse36.rccities.util.TableHandler;
 
 /**
  * Author: Philip Urban
@@ -20,11 +18,7 @@ public class Resident {
     public Resident(String name, int cityId, String profession)
     {
         this.setName(name);
-        try {
-            this.setCity(((CityTable)RCCitiesDatabase.get().getTable("rccities_cities")).getCity(id));
-        } catch (UnknownTableException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        this.setCity(TableHandler.get().getCityTable().getCity(id));
         this.setProfession(profession);
     }
 
@@ -70,6 +64,11 @@ public class Resident {
     public boolean isMayor()
     {
         return this.getProfession().equalsIgnoreCase("mayor");
+    }
+
+    public boolean isViceMayor()
+    {
+        return this.getProfession().equalsIgnoreCase("vicemayor");
     }
 
     public boolean isAssistant()

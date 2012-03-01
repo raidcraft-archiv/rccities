@@ -44,6 +44,12 @@ public class CommandUtility
         RCMessaging.warn(sender, "Du bist kein Bürgermeister!");
     }
 
+    //no permissions
+    public static void onlyStaff(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Nur Mitglieder der Stadtverwaltung dürfen das!");
+    }
+
     //internal error
     public static void internalError(CommandSender sender)
     {
