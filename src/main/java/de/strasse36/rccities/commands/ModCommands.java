@@ -145,6 +145,17 @@ public class ModCommands
 
     public static void confirmDemolish(CommandSender sender, String[] args)
     {
-
+        if(!sender.hasPermission("rccities.cmd.demolish"))
+        {
+            RCMessaging.noPermission(sender);
+            return;
+        }
+        if(!demolish.containsKey(args[1]))
+        {
+            RCMessaging.warn(sender, "Der eingegebene Captcha-Code ist falsch!");
+            return;
+        }
+        City city = demolish.get(args[1]);
+        //TODO demolish City, Residents, Plots, Plotassignments
     }
 }

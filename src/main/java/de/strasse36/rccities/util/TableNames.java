@@ -8,6 +8,7 @@ package de.strasse36.rccities.util;
 public class TableNames {
     private static String cityTable = "cities";
     private static String residentTable = "residents";
+    private static String plotTable = "plots";
 
     public static String getCityTable() {
         return cityTable;
@@ -15,5 +16,9 @@ public class TableNames {
 
     public static String getResidentTable() {
         return residentTable;
+    }
+
+    public static String getPlotTable() {
+        return plotTable;
     }
 }

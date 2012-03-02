@@ -5,6 +5,8 @@ import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.database.CityTable;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.database.ResidentTable;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Author: Philip Urban
@@ -28,13 +30,17 @@ public class TableHandler {
         try {
             this.cityTable = ((CityTable) RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getCityTable()));
         } catch (UnknownTableException e) {
-            RCLogger.warning("Citytable not found!");
+            RCLogger.warning("Citytable not found! -  Disabling RCCities...");
+            Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
+            Bukkit.getServer().getPluginManager().disablePlugin(rccities);
         }
 
         try {
             this.residentTable = ((ResidentTable) RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getResidentTable()));
         } catch (UnknownTableException e1) {
-            RCLogger.warning("Residenttable not found!");
+            RCLogger.warning("Residenttable not found! -  Disabling RCCities...");
+            Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
+            Bukkit.getServer().getPluginManager().disablePlugin(rccities);
         }
     }
 
