@@ -80,4 +80,9 @@ public class Resident {
     {
         return (isMayor() || isViceMayor() || isAssistant());
     }
+
+    public boolean isLeadership()
+    {
+        return (isMayor() || isViceMayor());
+    }
 }

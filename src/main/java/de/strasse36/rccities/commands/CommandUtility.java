@@ -41,6 +41,12 @@ public class CommandUtility
         RCMessaging.warn(sender, "Du bist kein Bürgermeister!");
     }
 
+    //no leadership
+    public static void noLeadership(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Du gehörst nicht zur Stadtführung!");
+    }
+
     //no permissions
     public static void onlyStaff(CommandSender sender)
     {

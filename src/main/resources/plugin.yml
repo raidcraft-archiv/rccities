@@ -13,6 +13,9 @@ commands:
     description: Main command.
     aliases: [rcc, town]
     usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
+  plot:
+    description: plot command.
+    usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
 
 permissions:
   rccities.mod:

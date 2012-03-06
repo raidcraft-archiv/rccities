@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
  * Date: 26.02.12 - 20:14
  * Description:
  */
-public class CommandAllocater implements CommandExecutor
+public class RCCitiesCommandAllocater implements CommandExecutor
 {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 

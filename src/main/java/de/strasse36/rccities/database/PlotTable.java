@@ -4,6 +4,7 @@ import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
 import org.bukkit.Bukkit;
@@ -33,14 +34,14 @@ public class PlotTable extends RCTable {
                 "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
                         "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
                         "`city` INT NULL ," +
-                        "`chunk_x` INT NULL ," +
-                        "`chunk_y` INT NULL ," +
-                        "`chunk_z` INT NULL ," +
+                        "`regionId` VARCHAR( 100 ) NULL ," +
+                        "`x` INT NULL ," +
+                        "`z` INT NULL " +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
     
-    public City getCity(int id)
+    public Plot getPlot(int id)
     {
         Connection connection = getDatabase().getConnection();
         PreparedStatement statement = connection.prepare(
@@ -48,69 +49,25 @@ public class PlotTable extends RCTable {
         );
         ResultSet resultSet = connection.execute(statement);
         try {
-            City city;
+            Plot plot = new Plot();
             if (resultSet.next()) {
                 do {
-                    city = new City();
-                    city.setId(resultSet.getInt("id"));
-                    city.setName(resultSet.getString("name"));
-                    city.setDescription(resultSet.getString("description"));
-                    city.setSize(resultSet.getLong("size"));
-                    Location spawn = new Location(
-                            Bukkit.getWorld(resultSet.getString("spawn_world")),
-                            resultSet.getDouble("spawn_x"),
-                            resultSet.getDouble("spawn_y"),
-                            resultSet.getDouble("spawn_z"),
-                            resultSet.getFloat("spawn_yaw"),
-                            resultSet.getFloat("spawn_pitch")
-                    );
-                    city.setSpawn(spawn);
+                    plot.setId(resultSet.getInt("id"));
+                    plot.setCity(resultSet.getInt("city"));
+                    plot.setRegionId(resultSet.getString("regionId"));
+                    plot.setX(resultSet.getInt("x"));
+                    plot.setX(resultSet.getInt("z"));
                 } while (resultSet.next());
             } else {
                 return null;
             }
-            return city;
+            return plot;
         } catch (SQLException e) {
             return null;
         }
 
     }
 
-    public City getCity(String name)
-    {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
-        );
-        ResultSet resultSet = connection.execute(statement);
-        try {
-            City city;
-            if (resultSet.next()) {
-                do {
-                    city = new City();
-                    city.setId(resultSet.getInt("id"));
-                    city.setName(resultSet.getString("name"));
-                    city.setDescription(resultSet.getString("description"));
-                    city.setSize(resultSet.getLong("size"));
-                    Location spawn = new Location(
-                            Bukkit.getWorld(resultSet.getString("spawn_world")),
-                            resultSet.getDouble("spawn_x"),
-                            resultSet.getDouble("spawn_y"),
-                            resultSet.getDouble("spawn_z"),
-                            resultSet.getFloat("spawn_yaw"),
-                            resultSet.getFloat("spawn_pitch")
-                    );
-                    city.setSpawn(spawn);
-                } while (resultSet.next());
-            } else {
-                return null;
-            }
-            return city;
-        } catch (SQLException e) {
-            return null;
-        }
-
-    }
 
     public List<City> getCitys()
     {
@@ -145,7 +102,8 @@ public class PlotTable extends RCTable {
         }
     }
 
-    public void newCity(City city) throws AlreadyExistsException
+    //TODO
+    public void newPlot(Plot plot) throws AlreadyExistsException
     {
         if(this.getCity(city.getName()) != null)
         {
