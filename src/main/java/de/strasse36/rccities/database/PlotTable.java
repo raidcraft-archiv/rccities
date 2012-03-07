@@ -68,35 +68,51 @@ public class PlotTable extends RCTable {
 
     }
 
-
-    public List<City> getCitys()
+    public List<Plot> getPlots()
     {
         Connection connection = getDatabase().getConnection();
         PreparedStatement statement = connection.prepare(
                 "SELECT * FROM " + getName() + ";"
         );
         ResultSet resultSet = connection.execute(statement);
-        List<City> citylist = new ArrayList<City>();
+        List<Plot> plotlist = new ArrayList<Plot>();
         try {
-            City city;
+            Plot plot;
             while (resultSet.next()) {
-                city = new City();
-                city.setId(resultSet.getInt("id"));
-                city.setName(resultSet.getString("name"));
-                city.setDescription(resultSet.getString("description"));
-                city.setSize(resultSet.getLong("size"));
-                Location spawn = new Location(
-                        Bukkit.getWorld(resultSet.getString("spawn_world")),
-                        resultSet.getDouble("spawn_x"),
-                        resultSet.getDouble("spawn_y"),
-                        resultSet.getDouble("spawn_z"),
-                        resultSet.getFloat("spawn_yaw"),
-                        resultSet.getFloat("spawn_pitch")
-                        );
-                city.setSpawn(spawn);
-                citylist.add(city);
+                plot = new Plot();
+                plot.setId(resultSet.getInt("id"));
+                plot.setCity(resultSet.getInt("city"));
+                plot.setRegionId(resultSet.getString("regionId"));
+                plot.setX(resultSet.getInt("x"));
+                plot.setX(resultSet.getInt("z"));
+                plotlist.add(plot);
             }
-            return citylist;
+            return plotlist;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<Plot> getPlots(City city)
+    {
+        Connection connection = getDatabase().getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        List<Plot> plotlist = new ArrayList<Plot>();
+        try {
+            Plot plot;
+            while (resultSet.next()) {
+                plot = new Plot();
+                plot.setId(resultSet.getInt("id"));
+                plot.setCity(resultSet.getInt("city"));
+                plot.setRegionId(resultSet.getString("regionId"));
+                plot.setX(resultSet.getInt("x"));
+                plot.setX(resultSet.getInt("z"));
+                plotlist.add(plot);
+            }
+            return plotlist;
         } catch (SQLException e) {
             return null;
         }

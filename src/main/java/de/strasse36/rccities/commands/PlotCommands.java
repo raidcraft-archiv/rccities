@@ -39,6 +39,8 @@ public class PlotCommands {
             CommandUtility.noLeadership(sender);
             return;
         }
+
+        WorldGuardManager.
         //TODO
         //keine andere region
         //genug plots übrig
