@@ -25,6 +25,7 @@ public class PlotCommandAllocater implements CommandExecutor
         if(args.length > 0 && args[0].equals("claim"))
         {
             PlotCommands.claim(sender);
+            return true;
         }
         return false;
     }

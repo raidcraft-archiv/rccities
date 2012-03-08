@@ -33,7 +33,7 @@ public class ModCommands
         Player player = Bukkit.getPlayerExact(args[2]);
         if(player == null)
         {
-            CommandUtility.noPlayerFound(sender);
+            RCCitiesCommandUtility.noPlayerFound(sender);
             return;
         }
 
@@ -49,7 +49,7 @@ public class ModCommands
         //city was not created
         if(city == null)
         {
-            CommandUtility.internalError(sender);
+            RCCitiesCommandUtility.internalError(sender);
             return;
         }
 
@@ -75,7 +75,7 @@ public class ModCommands
             player = Bukkit.getPlayer(args[2]);
             if(player == null)
             {
-                CommandUtility.noPlayerFound(sender);
+                RCCitiesCommandUtility.noPlayerFound(sender);
                 return;
             }
         }
@@ -84,7 +84,7 @@ public class ModCommands
         //city not found
         if(city == null)
         {
-            CommandUtility.noCityFound(sender);
+            RCCitiesCommandUtility.noCityFound(sender);
             return;
         }
         //set mayor
@@ -101,7 +101,7 @@ public class ModCommands
         City city = TableHandler.get().getCityTable().getCity(args[2]);
         if(city == null)
         {
-            CommandUtility.noCityFound(sender);
+            RCCitiesCommandUtility.noCityFound(sender);
             return;
         }
         String oldName = city.getName();
@@ -120,7 +120,7 @@ public class ModCommands
         City city = TableHandler.get().getCityTable().getCity(args[1]);
         if(city == null)
         {
-            CommandUtility.noCityFound(sender);
+            RCCitiesCommandUtility.noCityFound(sender);
             return;
         }
         String captcha;

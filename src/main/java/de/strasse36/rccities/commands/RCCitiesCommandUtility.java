@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
  * Date: 26.02.12 - 20:14
  * Description:
  */
-public class CommandUtility
+public class RCCitiesCommandUtility
 {
     //shows no player found message
     public static void noPlayerFound(CommandSender sender)

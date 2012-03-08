@@ -35,5 +35,6 @@ public class RCCitiesDatabase extends RCDatabase {
                 config.getPrefix());
         addTable(new CityTable(this));
         addTable(new ResidentTable(this));
+        addTable(new PlotTable(this));
     }
 }

@@ -3,6 +3,7 @@ package de.strasse36.rccities.util;
 import com.silthus.raidcraft.database.UnknownTableException;
 import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.database.CityTable;
+import de.strasse36.rccities.database.PlotTable;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.database.ResidentTable;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ public class TableHandler {
     private static TableHandler _self;
     private CityTable cityTable;
     private ResidentTable residentTable;
+    private PlotTable plotTable;
 
     public static void init()
     {
@@ -42,6 +44,14 @@ public class TableHandler {
             Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
             Bukkit.getServer().getPluginManager().disablePlugin(rccities);
         }
+
+        try {
+            this.plotTable = ((PlotTable) RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getPlotTable()));
+        } catch (UnknownTableException e1) {
+            RCLogger.warning("Plottable not found! -  Disabling RCCities...");
+            Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
+            Bukkit.getServer().getPluginManager().disablePlugin(rccities);
+        }
     }
 
     public static TableHandler get()
@@ -57,5 +67,9 @@ public class TableHandler {
     public ResidentTable getResidentTable()
     {
        return this.residentTable;
+    }
+
+    public PlotTable getPlotTable() {
+        return plotTable;
     }
 }

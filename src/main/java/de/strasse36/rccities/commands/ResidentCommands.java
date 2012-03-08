@@ -27,7 +27,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         City city;
@@ -42,7 +42,7 @@ public class ResidentCommands {
         //city not found
         if(city == null)
         {
-            CommandUtility.noCityFound(sender);
+            RCCitiesCommandUtility.noCityFound(sender);
             return;
         }
         Teleport.teleportPlayer((Player) sender, city);
@@ -55,7 +55,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //mayor

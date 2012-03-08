@@ -32,13 +32,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //no mayor
         if(!resident.isMayor())
         {
-            CommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noMayor(sender);
             return;
         }
 
@@ -54,13 +54,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //no mayor
         if(!resident.isMayor())
         {
-            CommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noMayor(sender);
             return;
         }
 
@@ -68,7 +68,7 @@ public class CityStaffCommands {
         {
             if(args[2].equalsIgnoreCase("mayor"))
             {
-            CommandUtility.selfAction(sender);
+            RCCitiesCommandUtility.selfAction(sender);
             return;
             }
             else
@@ -93,7 +93,7 @@ public class CityStaffCommands {
         Resident selectedResident = ResidentHelper.isResident(args[1], resident.getCity());
         if(selectedResident == null)
         {
-            CommandUtility.selectNoResident(sender);
+            RCCitiesCommandUtility.selectNoResident(sender);
             return;
         }
 
@@ -114,18 +114,18 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //no mayor
         if(!resident.isMayor())
         {
-            CommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noMayor(sender);
             return;
         }
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
-            CommandUtility.selfAction(sender);
+            RCCitiesCommandUtility.selfAction(sender);
             //TODO debug!
             //return;
         }
@@ -156,18 +156,18 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //no stafff
         if(!resident.isStaff())
         {
-            CommandUtility.onlyStaff(sender);
+            RCCitiesCommandUtility.onlyStaff(sender);
             return;
         }
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
-            CommandUtility.selfAction(sender);
+            RCCitiesCommandUtility.selfAction(sender);
             //TODO debug!
             //return;
         }
@@ -175,7 +175,7 @@ public class CityStaffCommands {
         Player player = Bukkit.getPlayerExact(args[1]);
         if(player == null)
         {
-            CommandUtility.noPlayerFound(sender);
+            RCCitiesCommandUtility.noPlayerFound(sender);
             return;
         }
 
@@ -191,13 +191,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            CommandUtility.noResident(sender);
+            RCCitiesCommandUtility.noResident(sender);
             return;
         }
         //no stafff
         if(!resident.isMayor())
         {
-            CommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noMayor(sender);
             return;
         }
         String newDesc = "";
