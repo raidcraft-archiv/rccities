@@ -7,8 +7,6 @@ import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +63,32 @@ public class PlotTable extends RCTable {
         } catch (SQLException e) {
             return null;
         }
+    }
 
+    public Plot getPlot(String regionId)
+    {
+        Connection connection = getDatabase().getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE regionId = '" + regionId + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        try {
+            Plot plot = new Plot();
+            if (resultSet.next()) {
+                do {
+                    plot.setId(resultSet.getInt("id"));
+                    plot.setCity(resultSet.getInt("city"));
+                    plot.setRegionId(resultSet.getString("regionId"));
+                    plot.setX(resultSet.getInt("x"));
+                    plot.setX(resultSet.getInt("z"));
+                } while (resultSet.next());
+            } else {
+                return null;
+            }
+            return plot;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     public List<Plot> getPlots()
@@ -118,46 +141,35 @@ public class PlotTable extends RCTable {
         }
     }
 
-    //TODO
     public void newPlot(Plot plot) throws AlreadyExistsException
     {
-        if(this.getCity(city.getName()) != null)
+        if(this.getPlot(plot.getRegionId()) != null)
         {
-            throw new AlreadyExistsException("Eine Stadt mit diesem Namen existiert bereits!");
+            throw new AlreadyExistsException("Es exisitert bereits ein Plot mit dieser Region ID!");
         }
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
-                "INSERT INTO " + getName() + " (name, size, description, spawn_world, spawn_x, spawn_y, spawn_z, spawn_pitch, spawn_yaw) " +
+                "INSERT INTO " + getName() + " (city, regionId, x, z) " +
                         "VALUES (" +
-                        "'" + city.getName() + "'" + "," +
-                        "'" + city.getSize() + "'" + "," +
-                        "'" + city.getDescription() + "'" + "," +
-                        "'" + city.getSpawn().getWorld().getName() + "'" + "," +
-                        "'" + city.getSpawn().getX() + "'" + "," +
-                        "'" + city.getSpawn().getY() + "'" + "," +
-                        "'" + city.getSpawn().getZ() + "'" + "," +
-                        "'" + city.getSpawn().getPitch() + "'" + "," +
-                        "'" + city.getSpawn().getYaw() + "'" +
+                        "'" + plot.getCity().getId() + "'" + "," +
+                        "'" + plot.getRegionId() + "'" + "," +
+                        "'" + plot.getX() + "'" + "," +
+                        "'" + plot.getZ() + "'" +
                         ");"
         );
         connection.executeUpdate(statement);
     }
 
-    public void updateCity(City city)
+    public void updatePlot(Plot plot)
     {
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
                 "UPDATE " + getName() + " SET " +
-                        "name = '" + city.getName() + "'," +
-                        "size = '" + city.getSize() + "'," +
-                        "description = '" + city.getDescription() + "'," +
-                        "spawn_world = '" + city.getSpawn().getWorld().getName() + "'," +
-                        "spawn_x = '" + city.getSpawn().getX() + "'," +
-                        "spawn_y = '" + city.getSpawn().getY() + "'," +
-                        "spawn_z = '" + city.getSpawn().getZ() + "'," +
-                        "spawn_pitch = '" + city.getSpawn().getPitch() + "'," +
-                        "spawn_yaw = '" + city.getSpawn().getYaw() + "'" +
-                        " WHERE id = '" + city.getId() + "';"
+                        "city = '" + plot.getCity().getId() + "'," +
+                        "regionId = '" + plot.getRegionId() + "'," +
+                        "x = '" + plot.getX() + "'," +
+                        "y = '" + plot.getZ() + "'" +
+                        " WHERE id = '" + plot.getId() + "';"
         );
         connection.executeUpdate(statement);
     }

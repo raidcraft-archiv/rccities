@@ -40,7 +40,7 @@ public class PlotCommands {
             return;
         }
 
-        WorldGuardManager.
+        WorldGuardManager.getWorldGuard()
         //TODO
         //keine andere region
         //genug plots übrig
