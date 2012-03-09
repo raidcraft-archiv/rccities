@@ -33,8 +33,8 @@ public class PlotTable extends RCTable {
                         "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
                         "`city` INT NULL ," +
                         "`regionId` VARCHAR( 100 ) NULL ," +
-                        "`x` INT NULL ," +
-                        "`z` INT NULL " +
+                        "`chunk_x` INT NULL ," +
+                        "`chunk_z` INT NULL " +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
@@ -53,8 +53,8 @@ public class PlotTable extends RCTable {
                     plot.setId(resultSet.getInt("id"));
                     plot.setCity(resultSet.getInt("city"));
                     plot.setRegionId(resultSet.getString("regionId"));
-                    plot.setX(resultSet.getInt("x"));
-                    plot.setX(resultSet.getInt("z"));
+                    plot.setX(resultSet.getInt("chunk_x"));
+                    plot.setZ(resultSet.getInt("chunk_z"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -79,8 +79,8 @@ public class PlotTable extends RCTable {
                     plot.setId(resultSet.getInt("id"));
                     plot.setCity(resultSet.getInt("city"));
                     plot.setRegionId(resultSet.getString("regionId"));
-                    plot.setX(resultSet.getInt("x"));
-                    plot.setX(resultSet.getInt("z"));
+                    plot.setX(resultSet.getInt("chunk_x"));
+                    plot.setZ(resultSet.getInt("chunk_z"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -106,8 +106,8 @@ public class PlotTable extends RCTable {
                 plot.setId(resultSet.getInt("id"));
                 plot.setCity(resultSet.getInt("city"));
                 plot.setRegionId(resultSet.getString("regionId"));
-                plot.setX(resultSet.getInt("x"));
-                plot.setX(resultSet.getInt("z"));
+                plot.setX(resultSet.getInt("chunk_x"));
+                plot.setZ(resultSet.getInt("chunk_z"));
                 plotlist.add(plot);
             }
             return plotlist;
@@ -131,8 +131,8 @@ public class PlotTable extends RCTable {
                 plot.setId(resultSet.getInt("id"));
                 plot.setCity(resultSet.getInt("city"));
                 plot.setRegionId(resultSet.getString("regionId"));
-                plot.setX(resultSet.getInt("x"));
-                plot.setX(resultSet.getInt("z"));
+                plot.setX(resultSet.getInt("chunk_x"));
+                plot.setZ(resultSet.getInt("chunk_z"));
                 plotlist.add(plot);
             }
             return plotlist;
@@ -149,7 +149,7 @@ public class PlotTable extends RCTable {
         }
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
-                "INSERT INTO " + getName() + " (city, regionId, x, z) " +
+                "INSERT INTO " + getName() + " (city, regionId, chunk_x, chunk_z) " +
                         "VALUES (" +
                         "'" + plot.getCity().getId() + "'" + "," +
                         "'" + plot.getRegionId() + "'" + "," +
@@ -167,9 +167,18 @@ public class PlotTable extends RCTable {
                 "UPDATE " + getName() + " SET " +
                         "city = '" + plot.getCity().getId() + "'," +
                         "regionId = '" + plot.getRegionId() + "'," +
-                        "x = '" + plot.getX() + "'," +
-                        "y = '" + plot.getZ() + "'" +
+                        "chunk_x = '" + plot.getX() + "'," +
+                        "chunk_y = '" + plot.getZ() + "'" +
                         " WHERE id = '" + plot.getId() + "';"
+        );
+        connection.executeUpdate(statement);
+    }
+    
+    public void deletePlot(String regionId)
+    {
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepare(
+                "DELETE FROM " + getName() + " WHERE regionId = '" + regionId + "';"
         );
         connection.executeUpdate(statement);
     }

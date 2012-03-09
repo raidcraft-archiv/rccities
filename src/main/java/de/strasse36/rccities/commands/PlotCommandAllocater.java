@@ -21,12 +21,26 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
+        //show region farewell & greetings
+        if(args.length > 0 && args[0].equals("greetings"))
+        {
+            //TODO
+            return true;
+        }
+
         /////////////////////////////CITY-STAFF//////////////////////////////////////////
         if(args.length > 0 && args[0].equals("claim"))
         {
             PlotCommands.claim(sender);
             return true;
         }
+
+        if(args.length > 0 && args[0].equals("unclaim"))
+        {
+            PlotCommands.unclaim(sender);
+            return true;
+        }
+
         return false;
     }
 

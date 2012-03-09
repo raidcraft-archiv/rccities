@@ -42,6 +42,12 @@ public class CityStaffCommands {
             return;
         }
 
+        if(((Player)sender).getWorld() != resident.getCity().getSpawn().getWorld())
+        {
+            RCCitiesCommandUtility.wrongWorld(sender);
+            return;
+        }
+
         resident.getCity().setSpawn(((Player)sender).getLocation());
         TableHandler.get().getCityTable().updateCity(resident.getCity());
         RCMessaging.send(sender, "Der Townspawn von " + resident.getCity().getName() + " wurde erfolgreich verlegt!");

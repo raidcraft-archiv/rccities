@@ -1,10 +1,10 @@
 package de.strasse36.rccities.util;
 
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import com.sk89q.worldedit.BlockVector;
 
 /**
  * Author: Philip Urban
@@ -17,15 +17,18 @@ public class ChunkUtil {
     {
         Chunk chunk = location.getChunk();
         BlockVector blockVector1 = new BlockVector(
-            chunk.getBlock(0, 0, 0).getX(),
-            chunk.getBlock(0, 0, 0).getY(),
-            chunk.getBlock(0, 0, 0).getZ()
+            chunk.getX()*16,
+            0,
+            chunk.getZ()*16
         );
         BlockVector blockVector2 = new BlockVector(
-                chunk.getBlock(16, location.getWorld().getMaxHeight(), 16).getX(),
-                chunk.getBlock(16, location.getWorld().getMaxHeight(), 16).getY(),
-                chunk.getBlock(16, location.getWorld().getMaxHeight(), 16).getZ()
+                (chunk.getX()*16)+16,
+                location.getWorld().getMaxHeight(),
+                (chunk.getZ()*16)+16
         );
+
+        //RCMessaging.broadcast("X: " + blockVector1.getX() + " | Y: " + blockVector1.getY() + " | Z: " + blockVector1.getZ());
+        //RCMessaging.broadcast("X: " + blockVector2.getX() + " | Y: " + blockVector2.getY() + " | Z: " + blockVector2.getZ());
         BlockVector[] blockVectors = {
                 blockVector1,
                 blockVector2

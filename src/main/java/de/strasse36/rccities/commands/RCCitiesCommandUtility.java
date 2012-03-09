@@ -65,4 +65,10 @@ public class RCCitiesCommandUtility
         RCMessaging.warn(sender, "Ein interner Fehler ist aufgetreten!");
         RCLogger.warning("RCCities: Fehler aufgetreten!");
     }
+
+    //wrong world
+    public static void wrongWorld(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Du befindest Dich auf der falschen Welt!");
+    }
 }

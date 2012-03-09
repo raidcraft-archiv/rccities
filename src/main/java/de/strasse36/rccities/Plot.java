@@ -14,6 +14,16 @@ public class Plot {
     private int x;
     private int z;
 
+    public Plot() {
+    }
+
+    public Plot(City city, String regionId, int x, int z) {
+        this.city = city;
+        this.regionId = regionId;
+        this.x = x;
+        this.z = z;
+    }
+
     public int getId() {
         return id;
     }

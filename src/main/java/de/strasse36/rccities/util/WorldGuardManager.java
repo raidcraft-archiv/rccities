@@ -79,6 +79,11 @@ public class WorldGuardManager {
         }
         return regionMap;
     }
+    
+    public static void setTownFlags(String regionId)
+    {
+        //TODO
+    }
 
     public static ApplicableRegionSet getLocalRegions(Location location) {
         return getWorldGuard().getRegionManager(location.getWorld()).getApplicableRegions(location);
