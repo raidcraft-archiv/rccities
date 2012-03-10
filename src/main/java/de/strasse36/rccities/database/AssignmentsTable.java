@@ -133,4 +133,13 @@ public class AssignmentsTable extends RCTable {
         );
         connection.executeUpdate(statement);
     }
+
+    public void deleteAssignment(Plot plot)
+    {
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepare(
+                "DELETE FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
+        );
+        connection.executeUpdate(statement);
+    }
 }

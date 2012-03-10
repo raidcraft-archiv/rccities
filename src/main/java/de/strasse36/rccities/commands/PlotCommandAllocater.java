@@ -41,6 +41,18 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
+        if(args.length > 1 && args[0].equals("give"))
+        {
+            PlotCommands.give(sender, args);
+            return true;
+        }
+
+        if(args.length > 1 && args[0].equals("take"))
+        {
+            PlotCommands.take(sender, args);
+            return true;
+        }
+
         return false;
     }
 

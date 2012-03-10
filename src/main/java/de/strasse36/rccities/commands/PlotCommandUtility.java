@@ -38,6 +38,17 @@ public class PlotCommandUtility {
 
     public static void noplot(CommandSender sender)
     {
-        RCMessaging.warn(sender, "Dieser Chunk kann nicht unclaimed werden!");
+        RCMessaging.warn(sender, "Ein Plot mit diesem Namen gibt es nicht!");
     }
+
+    public static void noCitychunk(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Dieser Chunk gehört nicht zu Deiner Stadt!");
+    }
+
+    public static void selectedNoRegionmember(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der gewählte Einwohner ist nicht Besitzer dieses Plots!");
+    }
+
 }

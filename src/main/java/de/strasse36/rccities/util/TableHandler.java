@@ -2,10 +2,7 @@ package de.strasse36.rccities.util;
 
 import com.silthus.raidcraft.database.UnknownTableException;
 import com.silthus.raidcraft.util.RCLogger;
-import de.strasse36.rccities.database.CityTable;
-import de.strasse36.rccities.database.PlotTable;
-import de.strasse36.rccities.database.RCCitiesDatabase;
-import de.strasse36.rccities.database.ResidentTable;
+import de.strasse36.rccities.database.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -19,6 +16,7 @@ public class TableHandler {
     private CityTable cityTable;
     private ResidentTable residentTable;
     private PlotTable plotTable;
+    private AssignmentsTable assignmentsTable;
 
     public static void init()
     {
@@ -52,6 +50,14 @@ public class TableHandler {
             Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
             Bukkit.getServer().getPluginManager().disablePlugin(rccities);
         }
+
+        try {
+            this.assignmentsTable = ((AssignmentsTable) RCCitiesDatabase.get().getTable(RCCitiesDatabase.get().getPrefix()+TableNames.getAssignmentsTable()));
+        } catch (UnknownTableException e1) {
+            RCLogger.warning("Assignmentstable not found! -  Disabling RCCities...");
+            Plugin rccities = Bukkit.getServer().getPluginManager().getPlugin("RCCities");
+            Bukkit.getServer().getPluginManager().disablePlugin(rccities);
+        }
     }
 
     public static TableHandler get()
@@ -71,5 +77,9 @@ public class TableHandler {
 
     public PlotTable getPlotTable() {
         return plotTable;
+    }
+
+    public AssignmentsTable getAssignmentsTable() {
+        return assignmentsTable;
     }
 }

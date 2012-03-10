@@ -84,6 +84,27 @@ public class WorldGuardManager {
     {
         //TODO
     }
+    
+    public static void addOwner(String regionId, String playerName)
+    {
+        getRegion(regionId).getOwners().addPlayer(playerName);
+    }
+
+    public static void addMember(String regionId, String playerName)
+    {
+        getRegion(regionId).getMembers().addPlayer(playerName);
+    }
+
+    public static void removeOwner(String regionId, String playerName)
+    {
+        getRegion(regionId).getOwners().removePlayer(playerName);
+    }
+
+    public static void removeMember(String regionId, String playerName)
+    {
+        getRegion(regionId).getMembers().removePlayer(playerName);
+    }
+
 
     public static ApplicableRegionSet getLocalRegions(Location location) {
         return getWorldGuard().getRegionManager(location.getWorld()).getApplicableRegions(location);

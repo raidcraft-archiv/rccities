@@ -1,12 +1,16 @@
 package de.strasse36.rccities.commands;
 
+import com.silthus.raidcraft.util.RCMessaging;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.WorldGuardManager;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,7 +38,7 @@ public class PlotCommands {
             RCCitiesCommandUtility.noResident(sender);
             return;
         }
-        //no mayor
+        //no leadership
         if(!resident.isLeadership())
         {
             RCCitiesCommandUtility.noLeadership(sender);
@@ -86,7 +90,8 @@ public class PlotCommands {
         WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).addRegion(region);
         WorldGuardManager.setTownFlags(regionId);
         WorldGuardManager.save();
-
+        //TODO add leadership as owner
+        
         //success message
         PlotCommandUtility.successfullyClaimed(sender);
     }
@@ -101,41 +106,194 @@ public class PlotCommands {
             RCCitiesCommandUtility.noResident(sender);
             return;
         }
-        //no mayor
+        //no leadership
         if(!resident.isLeadership())
         {
             RCCitiesCommandUtility.noLeadership(sender);
             return;
         }
 
-        String regionId = "";
-
         //plot exist?
         List<Plot> cityPlots = TableHandler.get().getPlotTable().getPlots(resident.getCity());
-        boolean exist = false;
+        Plot thisPlot = null;
         for(Plot plot : cityPlots)
         {
             if(plot.getX() == player.getLocation().getChunk().getX() && plot.getZ() == player.getLocation().getChunk().getZ())
             {
-                exist = true;
-                regionId = plot.getRegionId();
+                thisPlot = plot;
                 break;
             }
         }
-        if(!exist)
+        if(thisPlot == null)
         {
             PlotCommandUtility.noplot(sender);
             return;
         }
 
         //delete region
-        WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).removeRegion(regionId);
+        WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).removeRegion(thisPlot.getRegionId());
         WorldGuardManager.save();
 
         //delete database entry
-        TableHandler.get().getPlotTable().deletePlot(regionId);
+        TableHandler.get().getPlotTable().deletePlot(thisPlot.getRegionId());
+
+        //delete plot assignments
+        TableHandler.get().getAssignmentsTable().deleteAssignment(thisPlot);
 
         //success message
         PlotCommandUtility.successfullyUnclaimed(sender);
+    }
+    
+    public static void give(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+        //no leadership
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //check target player
+        Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
+        if(selectedResident == null)
+        {
+            RCCitiesCommandUtility.selectNoResident(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        if(args.length > 2)
+        {
+            selectedPlot = TableHandler.get().getPlotTable().getPlot(args[2]);
+            if(selectedPlot == null)
+            {
+                PlotCommandUtility.noplot(sender);
+                return;
+            }
+        }
+        else
+        {
+            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+            for(ProtectedRegion region : regionSet)
+            {
+                if(region.getId().contains(resident.getCity().getName()))
+                {
+                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+                }
+            }
+        }
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        //assign plot
+        try {
+            TableHandler.get().getAssignmentsTable().newAssignment(selectedPlot, selectedResident);
+        } catch (AlreadyExistsException e) {
+            RCMessaging.warn(sender, e.getMessage());
+            return;
+        }
+
+        //add selectedResident as region member
+        WorldGuardManager.addMember(selectedPlot.getRegionId(), selectedResident.getName());
+        WorldGuardManager.save();
+
+        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " ist nun Besitzer des Plot: '" + selectedPlot.getRegionId() + "'!"));
+        Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
+        if(player != null)
+            RCMessaging.send(selectedPlayer, RCMessaging.blue("Dir gehört nun der Plot: '" + selectedPlot.getRegionId() + "'!"));
+    }
+
+    public static void take(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+        //no leadership
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //check target player
+        Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
+        if(selectedResident == null)
+        {
+            RCCitiesCommandUtility.selectNoResident(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        if(args.length > 2)
+        {
+            selectedPlot = TableHandler.get().getPlotTable().getPlot(args[2]);
+            if(selectedPlot == null)
+            {
+                PlotCommandUtility.noplot(sender);
+                return;
+            }
+        }
+        else
+        {
+            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+            for(ProtectedRegion region : regionSet)
+            {
+                if(region.getId().contains(resident.getCity().getName()))
+                {
+                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+                }
+            }
+        }
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        //check if selectedResident is region member
+        boolean member = false;
+        List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(selectedResident);
+        for(Assignment assignment : assignmentList)
+        {
+            if(assignment.getPlot_id() == selectedPlot.getId())
+            {
+                member = true;
+            }
+        }
+        if(!member)
+        {
+            PlotCommandUtility.selectedNoRegionmember(sender);
+            return;
+        }
+
+        //remove assignment
+        TableHandler.get().getAssignmentsTable().deleteAssignment(selectedPlot, selectedResident);
+
+        //remove selectedResident as region member
+        WorldGuardManager.removeMember(selectedPlot.getRegionId(), selectedResident.getName());
+        WorldGuardManager.save();
+
+        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " wurde als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
+        Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
+        if(player != null)
+            RCMessaging.send(selectedPlayer, RCMessaging.blue("Du wurdest als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
     }
 }
