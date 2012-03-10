@@ -48,7 +48,7 @@ public class ResidentCommands {
             return;
         }
         Teleport.teleportPlayer((Player) sender, city);
-        RCMessaging.send(sender, "Willkommen am Townspawn von " + city.getName());
+        RCMessaging.send(sender, RCMessaging.blue("Willkommen am Townspawn von " + city.getName()));
     }
 
     public static void leaveTown(CommandSender sender)
@@ -72,7 +72,7 @@ public class ResidentCommands {
         resident.setProfession("");
         TableHandler.get().getResidentTable().updateResident(resident);
         TownMessaging.sendTownResidents(city, sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
-        RCMessaging.send(sender, "Du hast die Stadt " + city.getName() + " verlassen!");
+        RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"));
     }
     
     public static void deposit(CommandSender sender, String[] args)
@@ -83,7 +83,7 @@ public class ResidentCommands {
         {
             RCCitiesCommandUtility.noResident(sender);
             return;
-        }
+    }
 
         //wrong input
         double amount = Toolbox.isDouble(args[1]);
@@ -104,9 +104,11 @@ public class ResidentCommands {
         RCCitiesPlugin.get().getEconomy().remove(sender.getName(), amount);
 
         //increase town account
-        RCCitiesPlugin.get().getEconomy().add("rccities_" + resident.getCity().getName().toLowerCase(), amount);
+        RCCitiesPlugin.get().getEconomy().add(resident.getCity().getBankAccount(), amount);
 
         //town message
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c in die Stadtkasse eingezahlt!"));
     }
+
+
 }

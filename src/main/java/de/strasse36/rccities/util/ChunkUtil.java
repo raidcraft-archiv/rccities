@@ -80,7 +80,7 @@ public class ChunkUtil {
             if(city.isGreetings())
             {
                 member = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
-                if(member == null)
+                if(member.length() == 0)
                 {
                     member = "~keine Besitzer~";
                 }
@@ -90,6 +90,7 @@ public class ChunkUtil {
                 greetingMessage = null;
 
             WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.GREET_MESSAGE, greetingMessage);
+            WorldGuardManager.save();
         }
     }
 }

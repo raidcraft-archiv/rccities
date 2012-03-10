@@ -79,4 +79,15 @@ public class City {
     public void setGreetings(boolean greetings) {
         this.greetings = greetings;
     }
+    
+    public int getGreetings() {
+        if(isGreetings())
+            return 1;
+        else
+            return 0;
+    }
+
+    public String getBankAccount() {
+        return "rccities_" + getName().toLowerCase();
+    }
 }

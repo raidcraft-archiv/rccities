@@ -9,9 +9,7 @@ import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.ChunkUtil;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.WorldGuardManager;
+import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -68,7 +66,7 @@ public class PlotCommands {
         }
 
         //check money
-        if(!RCCitiesPlugin.get().getEconomy().has("rccities_" + resident.getCity().getName().toLowerCase(), MainConfig.getClaimPrice()))
+        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), MainConfig.getClaimPrice()))
         {
             PlotCommandUtility.notEnoughMoney(sender);
             return;
@@ -101,7 +99,7 @@ public class PlotCommands {
         WorldGuardManager.save();
 
         //withdraw city account
-        RCCitiesPlugin.get().getEconomy().remove("rccities_" + resident.getCity().getName().toLowerCase(), MainConfig.getClaimPrice());
+        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getClaimPrice());
         
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());
@@ -318,5 +316,49 @@ public class PlotCommands {
 
         //update plot messages
         ChunkUtil.updateChunkMessages(resident.getCity());
+    }
+
+    public static void buy(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+        //no leadership
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //wrong input
+        int amount = Toolbox.isInteger(args[1]);
+        if(amount == -1)
+        {
+            RCCitiesCommandUtility.wrongAmount(sender);
+            return;
+        }
+
+        double chunkPrice = amount*MainConfig.getChunkPrice();
+        //not enough money
+        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), chunkPrice))
+        {
+            RCMessaging.warn(sender, "Es sind nicht genügend Coins in der Stadtkasse!");
+            RCMessaging.warn(sender, chunkPrice + "c werden benötigt.");
+            return;
+        }
+
+        //decrease town account
+        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), chunkPrice);
+
+        //increase town size
+        resident.getCity().setSize(resident.getCity().getSize()+amount);
+        TableHandler.get().getCityTable().updateCity(resident.getCity());
+
+        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue("Die max. Stadtgrösse hat sich um " + amount + " Chunks erhöht!"));
     }
 }

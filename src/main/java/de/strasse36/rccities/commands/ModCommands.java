@@ -143,11 +143,11 @@ public class ModCommands
         captcha = buffer.toString();
 
         demolish.put(captcha, city);
-        RCMessaging.send(sender, RCMessaging.red("Um die Stadt " + city.getName() + " wirklich zu löschen, gebe folgendes ein:"));
-        RCMessaging.send(sender, RCMessaging.yellow("/town confirm " + captcha));
-        RCMessaging.send(sender, RCMessaging.red("Es werden dadurch alle Datenbankeinträge der Stadt gelöscht!"));
-        RCMessaging.send(sender, RCMessaging.red("Darunter auch alle Plots, Spielerzuordnungen usw."));
-        RCMessaging.send(sender, RCMessaging.red("Das löschen einer Stadt ist nicht umkehrbar!"));
+        RCMessaging.warn(sender, "Um die Stadt " + city.getName() + " zu löschen, gebe folgendes ein:");
+        RCMessaging.warn(sender, "/town confirm " + captcha);
+        RCMessaging.warn(sender, "Es werden dadurch alle Daten der Stadt gelöscht!");
+        RCMessaging.warn(sender, "Darunter auch alle Plots, Spielerzuordnungen usw.");
+        RCMessaging.warn(sender, "Das löschen einer Stadt ist nicht umkehrbar!");
     }
 
     public static void confirmDemolish(CommandSender sender, String[] args)
@@ -176,6 +176,9 @@ public class ModCommands
         
         //remove city in database
         TableHandler.get().getCityTable().deleteCity(city.getId());
+
+        //remove economy account
+        RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), RCCitiesPlugin.get().getEconomy().getBalance(city.getBankAccount()));
 
         RCMessaging.broadcast(RCMessaging.blue("Die Stadt " + city.getName() + " wurde gelöscht!"));
     }

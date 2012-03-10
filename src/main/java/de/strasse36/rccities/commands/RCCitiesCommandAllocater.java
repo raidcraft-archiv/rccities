@@ -36,10 +36,17 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
-        //deposit inro townbank
+        //deposit into townbank
         if(args.length > 1 && args[0].equals("deposit"))
         {
             ResidentCommands.deposit(sender, args);
+            return true;
+        }
+
+        //withdraw from townbank
+        if(args.length > 1 && args[0].equals("withdraw"))
+        {
+            CityStaffCommands.withdraw(sender, args);
             return true;
         }
 

@@ -23,4 +23,22 @@ public class Toolbox {
         else
             return -1;
     }
+
+    public static int isInteger(String input)
+    {
+        int result;
+        try
+        {
+            result = Integer.parseInt(input);
+        }
+        catch( Exception e)
+        {
+            return -1;
+        }
+
+        if(result>0)
+            return result;
+        else
+            return -1;
+    }
 }
