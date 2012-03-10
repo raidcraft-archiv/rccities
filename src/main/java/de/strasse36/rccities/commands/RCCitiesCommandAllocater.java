@@ -36,6 +36,13 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
+        //deposit inro townbank
+        if(args.length > 1 && args[0].equals("deposit"))
+        {
+            ResidentCommands.deposit(sender, args);
+            return true;
+        }
+
         /////////////////////////////CITY-STAFF//////////////////////////////////////////
         //mayor set townspawn
         if(args.length > 1 && args[0].equals("set") && args[1].equals("spawn"))
@@ -111,7 +118,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
         }
 
         //confirm demolish city
-        if(args.length > 1 && args[0].equals("demolish"))
+        if(args.length > 1 && args[0].equals("confirm"))
         {
             ModCommands.confirmDemolish(sender, args);
             return true;

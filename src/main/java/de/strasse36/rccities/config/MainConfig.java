@@ -43,9 +43,18 @@ public class MainConfig {
     
     public static int getChunksPerPlayer()
     {
-        return getConfig().getInt("chunkperplayer");
+        return getConfig().getConfigurationSection("rccities").getInt("chunksPerPlayer", 4);
     }
 
+    public static double getChunkPrice()
+    {
+        return getConfig().getConfigurationSection("rccities").getDouble("chunkPrice", 0);
+    }
+
+    public static double getClaimPrice()
+    {
+        return getConfig().getConfigurationSection("rccities").getDouble("claimPrice", 0);
+    }
 
     public static class DatabaseConfig {
 

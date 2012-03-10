@@ -2,14 +2,18 @@ package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.Plot;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.Profession;
 import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -56,6 +60,9 @@ public class ModCommands
         RCMessaging.send(sender, RCMessaging.blue("Die Stadt '" + args[1] + "' wurde erfolgreich gegründet."));
         //set mayor
         Profession.setMayor(player, city);
+
+        //create economy account
+        RCCitiesPlugin.get().getEconomy().add("rccities_" + city.getName().toLowerCase(), 0);
     }
 
     public static void setMayor(CommandSender sender, String[] args)
@@ -156,6 +163,20 @@ public class ModCommands
             return;
         }
         City city = demolish.get(args[1]);
-        //TODO demolish City, Residents, Plots, Plotassignments
+        
+        //remove all plot assignments, plot entries and regions
+        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
+        for(Plot plot : plotList)
+        {
+            WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(city.getSpawn().getWorld()).removeRegion(plot.getRegionId());
+            TableHandler.get().getAssignmentsTable().deleteAssignment(plot);
+            TableHandler.get().getPlotTable().deletePlot(plot.getRegionId());
+        }
+        WorldGuardManager.save();
+        
+        //remove city in database
+        TableHandler.get().getCityTable().deleteCity(city.getId());
+
+        RCMessaging.broadcast(RCMessaging.blue("Die Stadt " + city.getName() + " wurde gelöscht!"));
     }
 }

@@ -6,6 +6,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.TableHandler;
@@ -65,6 +67,13 @@ public class PlotCommands {
             return;
         }
 
+        //check money
+        if(!RCCitiesPlugin.get().getEconomy().has("rccities_" + resident.getCity().getName().toLowerCase(), MainConfig.getClaimPrice()))
+        {
+            PlotCommandUtility.notEnoughMoney(sender);
+            return;
+        }
+
         //generate serial id
         List<Plot> plots = TableHandler.get().getPlotTable().getPlots();
         int serialId = 0;
@@ -91,6 +100,9 @@ public class PlotCommands {
         WorldGuardManager.setTownFlags(regionId);
         WorldGuardManager.save();
 
+        //withdraw city account
+        RCCitiesPlugin.get().getEconomy().remove("rccities_" + resident.getCity().getName().toLowerCase(), MainConfig.getClaimPrice());
+        
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());
         

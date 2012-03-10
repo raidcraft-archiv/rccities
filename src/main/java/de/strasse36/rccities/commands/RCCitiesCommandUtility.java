@@ -56,7 +56,7 @@ public class RCCitiesCommandUtility
     //self action
     public static void selfAction(CommandSender sender)
     {
-        RCMessaging.warn(sender, "Du kannst diese Aktion nicht mit dir selbst durchführen!");
+        RCMessaging.warn(sender, "Du kannst diese Aktion nicht auf dich selbst anwenden!");
     }
 
     //internal error
@@ -70,5 +70,11 @@ public class RCCitiesCommandUtility
     public static void wrongWorld(CommandSender sender)
     {
         RCMessaging.warn(sender, "Du befindest Dich auf der falschen Welt!");
+    }
+
+    //wrong amount
+    public static void wrongAmount(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der eingegebene Betrag war keine positive Zahl!");
     }
 }

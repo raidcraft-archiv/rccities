@@ -196,4 +196,13 @@ public class CityTable extends RCTable {
         );
         connection.executeUpdate(statement);
     }
+
+    public void deleteCity(int cityId)
+    {
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepare(
+                "DELETE FROM " + getName() + " WHERE id = '" + cityId + "';"
+        );
+        connection.executeUpdate(statement);
+    }
 }

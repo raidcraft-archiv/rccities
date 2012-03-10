@@ -28,7 +28,7 @@ public class City {
     {
         this.setName(name);
         this.setDescription("Noch keine Beschreibung verfügbar");
-        this.setSize(1);
+        this.setSize(MainConfig.getChunksPerPlayer());
         this.setSpawn(spawn);
     }
 

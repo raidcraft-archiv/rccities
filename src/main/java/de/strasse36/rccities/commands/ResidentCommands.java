@@ -3,8 +3,10 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.Teleport;
+import de.strasse36.rccities.util.Toolbox;
 import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -71,5 +73,40 @@ public class ResidentCommands {
         TableHandler.get().getResidentTable().updateResident(resident);
         TownMessaging.sendTownResidents(city, sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
         RCMessaging.send(sender, "Du hast die Stadt " + city.getName() + " verlassen!");
+    }
+    
+    public static void deposit(CommandSender sender, String[] args)
+    {
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //wrong input
+        double amount = Toolbox.isDouble(args[1]);
+        if(amount == -1)
+        {
+            RCCitiesCommandUtility.wrongAmount(sender);
+            return;
+        }
+
+        //not enough money
+        if(!RCCitiesPlugin.get().getEconomy().has(resident.getName(), amount))
+        {
+            RCMessaging.warn(sender, "Du hast nicht genügend Coins auf dem Konto!");
+            return;
+        }
+
+        //decrease player account
+        RCCitiesPlugin.get().getEconomy().remove(sender.getName(), amount);
+
+        //increase town account
+        RCCitiesPlugin.get().getEconomy().add("rccities_" + resident.getCity().getName().toLowerCase(), amount);
+
+        //town message
+        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c in die Stadtkasse eingezahlt!"));
     }
 }

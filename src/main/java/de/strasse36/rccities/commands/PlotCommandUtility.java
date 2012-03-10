@@ -1,6 +1,7 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import de.strasse36.rccities.config.MainConfig;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -51,4 +52,9 @@ public class PlotCommandUtility {
         RCMessaging.warn(sender, "Der gewählte Einwohner ist nicht Besitzer dieses Plots!");
     }
 
+    public static void notEnoughMoney(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Das claimen eines Chunks kostet " + MainConfig.getClaimPrice() + "c!");
+        RCMessaging.warn(sender, "Überweise mit '/town deposit <Betrag>' Geld an die Stadt.");
+    }
 }
