@@ -9,6 +9,7 @@ public class TableNames {
     private static String cityTable = "cities";
     private static String residentTable = "residents";
     private static String plotTable = "plots";
+    private static String assignmentsTable = "assignments";
 
     public static String getCityTable() {
         return cityTable;
@@ -20,5 +21,9 @@ public class TableNames {
 
     public static String getPlotTable() {
         return plotTable;
+    }
+
+    public static String getAssignmentsTable() {
+        return assignmentsTable;
     }
 }
