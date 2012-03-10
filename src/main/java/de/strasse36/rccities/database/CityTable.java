@@ -40,7 +40,8 @@ public class CityTable extends RCTable {
                         "`spawn_y` DOUBLE NULL ," +
                         "`spawn_z` DOUBLE NULL ," +
                         "`spawn_pitch` FLOAT NULL ," +
-                        "`spawn_yaw` FLOAT NULL" +
+                        "`spawn_yaw` FLOAT NULL ," +
+                        "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 " +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
@@ -70,6 +71,7 @@ public class CityTable extends RCTable {
                             resultSet.getFloat("spawn_pitch")
                     );
                     city.setSpawn(spawn);
+                    city.setGreetings(resultSet.getBoolean("greetings"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -106,6 +108,7 @@ public class CityTable extends RCTable {
                             resultSet.getFloat("spawn_pitch")
                     );
                     city.setSpawn(spawn);
+                    city.setGreetings(resultSet.getBoolean("greetings"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -142,6 +145,7 @@ public class CityTable extends RCTable {
                         resultSet.getFloat("spawn_pitch")
                         );
                 city.setSpawn(spawn);
+                city.setGreetings(resultSet.getBoolean("greetings"));
                 citylist.add(city);
             }
             return citylist;

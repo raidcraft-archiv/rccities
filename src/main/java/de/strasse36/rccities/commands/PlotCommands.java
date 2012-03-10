@@ -74,7 +74,7 @@ public class PlotCommands {
                 serialId = plot.getId();
         }
         serialId++;
-        String regionId = resident.getCity().getName()+"_"+serialId;
+        String regionId = resident.getCity().getName().toLowerCase()+"_"+serialId;
 
         //insert new plot in database
         Plot newPlot = new Plot(resident.getCity(), regionId, player.getLocation().getChunk().getX(), player.getLocation().getChunk().getZ());
@@ -90,10 +90,15 @@ public class PlotCommands {
         WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).addRegion(region);
         WorldGuardManager.setTownFlags(regionId);
         WorldGuardManager.save();
-        //TODO add leadership as owner
+
+        //update region owners
+        ChunkUtil.updatePlotOwner(resident.getCity());
         
         //success message
         PlotCommandUtility.successfullyClaimed(sender);
+
+        //update plot messages
+        ChunkUtil.updateChunkMessages(resident.getCity());
     }
 
     public static void unclaim(CommandSender sender)
@@ -163,7 +168,7 @@ public class PlotCommands {
 
         //check target player
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
-        if(selectedResident == null)
+        if(selectedResident == null || selectedResident.getCity().getId() != resident.getCity().getId())
         {
             RCCitiesCommandUtility.selectNoResident(sender);
             return;
@@ -185,7 +190,7 @@ public class PlotCommands {
             ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
             for(ProtectedRegion region : regionSet)
             {
-                if(region.getId().contains(resident.getCity().getName()))
+                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
                 {
                     selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
                 }
@@ -211,8 +216,11 @@ public class PlotCommands {
 
         RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " ist nun Besitzer des Plot: '" + selectedPlot.getRegionId() + "'!"));
         Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
-        if(player != null)
+        if(selectedPlayer != null && selectedPlayer.isOnline())
             RCMessaging.send(selectedPlayer, RCMessaging.blue("Dir gehört nun der Plot: '" + selectedPlot.getRegionId() + "'!"));
+
+        //update plot messages
+        ChunkUtil.updateChunkMessages(resident.getCity());
     }
 
     public static void take(CommandSender sender, String[] args)
@@ -256,7 +264,7 @@ public class PlotCommands {
             ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
             for(ProtectedRegion region : regionSet)
             {
-                if(region.getId().contains(resident.getCity().getName()))
+                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
                 {
                     selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
                 }
@@ -293,7 +301,10 @@ public class PlotCommands {
 
         RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " wurde als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
         Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
-        if(player != null)
+        if(selectedPlayer != null && selectedPlayer.isOnline())
             RCMessaging.send(selectedPlayer, RCMessaging.blue("Du wurdest als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
+
+        //update plot messages
+        ChunkUtil.updateChunkMessages(resident.getCity());
     }
 }

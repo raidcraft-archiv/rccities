@@ -1,10 +1,17 @@
 package de.strasse36.rccities.util;
 
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.strasse36.rccities.City;
+import de.strasse36.rccities.Plot;
+import de.strasse36.rccities.Resident;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * Author: Philip Urban
@@ -41,5 +48,48 @@ public class ChunkUtil {
         BlockVector[] blockVectors = ChunkUtil.getBlockVectors(location);
         ProtectedRegion region = new ProtectedCuboidRegion(id, blockVectors[0], blockVectors[1]);
         return region;
+    }
+    
+    public static void updatePlotOwner(City city)
+    {
+        DefaultDomain leaders = new DefaultDomain();
+        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
+        for(Resident resident : residentList)
+        {
+            if(resident.isLeadership())
+            {
+                leaders.addPlayer(resident.getName());
+            }
+        }
+        
+        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
+        for(Plot plot : plotList)
+        {
+            WorldGuardManager.getRegion(plot.getRegionId()).setOwners(leaders);
+        }
+        WorldGuardManager.save();
+    }
+
+    public static void updateChunkMessages(City city)
+    {
+        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
+        String greetingMessage;
+        String member;
+        for(Plot plot : plotList)
+        {
+            if(city.isGreetings())
+            {
+                member = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
+                if(member == null)
+                {
+                    member = "~keine Besitzer~";
+                }
+                greetingMessage = plot.getRegionId() + ": " + member;
+            }
+            else
+                greetingMessage = null;
+
+            WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.GREET_MESSAGE, greetingMessage);
+        }
     }
 }

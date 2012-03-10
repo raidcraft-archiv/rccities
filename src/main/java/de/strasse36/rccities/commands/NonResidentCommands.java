@@ -3,6 +3,7 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
@@ -22,10 +23,18 @@ public class NonResidentCommands {
             return;
         }
         City city = CityStaffCommands.invites.get(sender.getName());
+
+        //create resident and update database
         Resident resident = new Resident(sender.getName(), city, "resident");
         TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);
         RCMessaging.send(sender, "Du bist nun Einwohner von " + city.getName() + "!");
+
+        //update city-size
+        city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());
+        TableHandler.get().getCityTable().updateCity(city);
+
+        //remove from map
         CityStaffCommands.invites.remove(sender.getName());
     }
 }

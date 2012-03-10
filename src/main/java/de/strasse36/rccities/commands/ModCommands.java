@@ -53,7 +53,7 @@ public class ModCommands
             return;
         }
 
-        RCMessaging.send(sender, "Die Stadt '" + args[1] + "' wurde erfolgreich gegründet.");
+        RCMessaging.send(sender, RCMessaging.blue("Die Stadt '" + args[1] + "' wurde erfolgreich gegründet."));
         //set mayor
         Profession.setMayor(player, city);
     }

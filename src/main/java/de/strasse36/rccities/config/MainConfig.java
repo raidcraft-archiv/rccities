@@ -40,6 +40,11 @@ public class MainConfig {
     public static DatabaseConfig getDatabase() {
         return new DatabaseConfig();
     }
+    
+    public static int getChunksPerPlayer()
+    {
+        return getConfig().getInt("chunkperplayer");
+    }
 
 
     public static class DatabaseConfig {

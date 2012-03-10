@@ -4,10 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
-import de.strasse36.rccities.util.Profession;
-import de.strasse36.rccities.util.ResidentHelper;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.TownMessaging;
+import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,7 +47,7 @@ public class CityStaffCommands {
 
         resident.getCity().setSpawn(((Player)sender).getLocation());
         TableHandler.get().getCityTable().updateCity(resident.getCity());
-        RCMessaging.send(sender, "Der Townspawn von " + resident.getCity().getName() + " wurde erfolgreich verlegt!");
+        RCMessaging.send(sender, RCMessaging.blue("Der Townspawn von " + resident.getCity().getName() + " wurde erfolgreich verlegt!"));
         return;
     }
 
@@ -112,6 +109,9 @@ public class CityStaffCommands {
             RCMessaging.warn(sender, "Folgende Berufsgruppen gibt es:");
             RCMessaging.warn(sender, "mayor, vicemayor, assistant, gardener, resident");
         }
+
+        //update region owners
+        ChunkUtil.updatePlotOwner(resident.getCity());
     }
     
     public static void kickPlayer(CommandSender sender, String[] args)
@@ -132,8 +132,7 @@ public class CityStaffCommands {
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
             RCCitiesCommandUtility.selfAction(sender);
-            //TODO debug!
-            //return;
+            return;
         }
 
         //focused player no resident
@@ -152,7 +151,10 @@ public class CityStaffCommands {
         Player kickPlayer = Bukkit.getPlayerExact(kickResident.getName());
         if(kickPlayer != null)
             RCMessaging.send(kickPlayer, RCMessaging.red("Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!") );
-        TownMessaging.sendTownResidents(resident.getCity(), resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + "geworfen!");
+        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + "geworfen!"));
+
+        //update region owners
+        ChunkUtil.updatePlotOwner(resident.getCity());
     }
     
     public static void invitePlayer(CommandSender sender, String[] args)
@@ -174,8 +176,7 @@ public class CityStaffCommands {
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
             RCCitiesCommandUtility.selfAction(sender);
-            //TODO debug!
-            //return;
+            return;
         }
 
         Player player = Bukkit.getPlayerExact(args[1]);
@@ -217,5 +218,45 @@ public class CityStaffCommands {
         city.setDescription(newDesc);
         TableHandler.get().getCityTable().updateCity(city);
         RCMessaging.send(sender, "Die Beschreibung der Stadt wurde geändert!");
+    }
+    
+    public static void greetings(CommandSender sender, String[] args)
+    {
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+        //no stafff
+        if(!resident.isMayor())
+        {
+            RCCitiesCommandUtility.noMayor(sender);
+            return;
+        }
+
+
+        if(args[1].equalsIgnoreCase("on"))
+        {
+            //enable plot greetings & farewell messages
+            resident.getCity().setGreetings(true);
+            TableHandler.get().getCityTable().updateCity(resident.getCity());
+            ChunkUtil.updateChunkMessages(resident.getCity());
+            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten eingeschaltet!"));
+        }
+        else if(args[1].equalsIgnoreCase("off"))
+        {
+            //disable plot greetings & farwell messages
+            resident.getCity().setGreetings(false);
+            TableHandler.get().getCityTable().updateCity(resident.getCity());
+            ChunkUtil.updateChunkMessages(resident.getCity());
+            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten ausgeschaltet!"));
+        }
+        else
+        {
+            RCMessaging.warn(sender, "'/town greeting on' schaltet Plotnachrichten ein.");
+            RCMessaging.warn(sender, "'/town greeting off' schaltet Plotnachrichten aus.");
+        }
     }
 }

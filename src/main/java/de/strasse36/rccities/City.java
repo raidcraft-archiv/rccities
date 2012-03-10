@@ -1,5 +1,6 @@
 package de.strasse36.rccities;
 
+import de.strasse36.rccities.config.MainConfig;
 import org.bukkit.Location;
 
 /**
@@ -13,12 +14,13 @@ public class City {
     private String description;
     private long size;
     private Location spawn;
+    private boolean greetings;
 
     public City()
     {
         this.setName("-");
         this.setDescription("-");
-        this.setSize(1);
+        this.setSize(MainConfig.getChunksPerPlayer());
         this.setSpawn(null);
     };
 
@@ -68,5 +70,13 @@ public class City {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public boolean isGreetings() {
+        return greetings;
+    }
+
+    public void setGreetings(boolean greetings) {
+        this.greetings = greetings;
     }
 }

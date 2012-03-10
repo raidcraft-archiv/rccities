@@ -1,5 +1,6 @@
 package de.strasse36.rccities.commands;
 
+import com.silthus.raidcraft.util.RCMessaging;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -72,6 +73,13 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
+        //show region farewell & greetings
+        if(args.length > 1 && args[0].equals("greetings"))
+        {
+            CityStaffCommands.greetings(sender, args);
+            return true;
+        }
+
         /////////////////////////////MODERATOR//////////////////////////////////////////
         //create city and nominate mayor
         if(args.length > 2 && args[0].equals("create"))
@@ -117,7 +125,11 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
-        return false;
+        RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
+        RCMessaging.warn(sender, "Falsche Anzahl an Parameter?");
+        RCMessaging.warn(sender, "Befehlt falsch geschrieben?");
+        RCMessaging.warn(sender, "'/town help' zeigt alle verfügbaren Befehle!");
+        return true;
     }
 
 }
