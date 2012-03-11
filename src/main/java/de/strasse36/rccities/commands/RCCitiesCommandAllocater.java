@@ -154,7 +154,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
         }
 
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
-        RCMessaging.warn(sender, "'/town help' zeigt alle verfügbaren Befehle!");
+        RCMessaging.warn(sender, "'/town help' zeigt alle verfügbaren Befehle an!");
         return true;
     }
 

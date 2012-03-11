@@ -78,7 +78,7 @@ public class PlotCommandAllocater implements CommandExecutor
 
 
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
-        RCMessaging.warn(sender, "'/plot help' zeigt alle verfügbaren Befehle!");
+        RCMessaging.warn(sender, "'/plot help' zeigt alle verfügbaren Befehle an!");
         return true;
     }
 
