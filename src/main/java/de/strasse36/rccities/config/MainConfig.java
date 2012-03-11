@@ -56,6 +56,11 @@ public class MainConfig {
         return getConfig().getConfigurationSection("rccities").getDouble("claimPrice", 0);
     }
 
+    public static double getShowPrice()
+    {
+        return getConfig().getConfigurationSection("rccities").getDouble("showPrice", 0);
+    }
+
     public static class DatabaseConfig {
 
         private ConfigurationSection section;

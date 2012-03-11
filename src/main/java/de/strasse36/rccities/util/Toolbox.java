@@ -47,9 +47,13 @@ public class Toolbox {
     
     public static boolean checkForTorch(Block block)
     {
-        if(block.isLiquid() || block.getType().equals(Material.LEAVES) || block.getType().equals(Material.ICE))
-            return false;
-        else
-            return true;
+        return  !(
+                block.isLiquid() ||
+                block.getType() == Material.LEAVES ||
+                block.getType() == Material.ICE ||
+                block.getType() == Material.WATER_LILY ||
+                block.getType() == Material.GLOWSTONE ||
+                block.getType() == Material.SUGAR_CANE
+        );
     }
 }

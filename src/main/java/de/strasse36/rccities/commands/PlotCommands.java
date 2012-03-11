@@ -680,7 +680,18 @@ public class PlotCommands {
             PlotCommandUtility.noCitychunk(sender);
             return;
         }
-        
+
+        //check money
+        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), MainConfig.getShowPrice()))
+        {
+            RCMessaging.warn(sender, "Das setzen des Fackelrahmens kostet " + MainConfig.getShowPrice() + "c!");
+            return;
+        }
+
+        //decrease money
+        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getShowPrice());
+
+        //set torches
         Chunk chunk = player.getLocation().getChunk();
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
         int i;
@@ -712,7 +723,7 @@ public class PlotCommands {
             if(Toolbox.checkForTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
-        //TODO
+        RCMessaging.send(sender, RCMessaging.blue("Der Plot wurde mit einem Fackelrahmen markiert!"), false);
     }
 
 }
