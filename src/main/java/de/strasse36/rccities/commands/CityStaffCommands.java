@@ -1,7 +1,10 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
@@ -301,6 +304,52 @@ public class CityStaffCommands {
 
         //town message
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
+    }
+
+    public static void pvp(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+        
+        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(resident.getCity());
+        
+        if(args[1].equalsIgnoreCase("on"))
+        {
+            for(Plot plot : plotList)
+            {
+                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+            }
+            WorldGuardManager.save();
+            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der ganzen Stadt erlaubt!");
+            return;
+        }
+
+        if(args[1].equalsIgnoreCase("off"))
+        {
+            for(Plot plot : plotList)
+            {
+                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+            }
+            WorldGuardManager.save();
+            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der ganzen Stadt verboten!");
+            return;
+        }
+
+        RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
+        RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
 
 }

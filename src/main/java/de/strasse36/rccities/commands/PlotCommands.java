@@ -475,26 +475,15 @@ public class PlotCommands {
 
         //get plot
         Plot selectedPlot = null;
-        if(args.length > 1)
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+        for(ProtectedRegion region : regionSet)
         {
-            selectedPlot = TableHandler.get().getPlotTable().getPlot(args[1]);
-            if(selectedPlot == null)
+            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
             {
-                PlotCommandUtility.noplot(sender);
-                return;
+                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
             }
         }
-        else
-        {
-            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-            for(ProtectedRegion region : regionSet)
-            {
-                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-                {
-                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-                }
-            }
-        }
+
         if(selectedPlot == null)
         {
             PlotCommandUtility.noCitychunk(sender);
@@ -504,11 +493,20 @@ public class PlotCommands {
         if(args[1].equalsIgnoreCase("on"))
         {
             WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+            WorldGuardManager.save();
+            RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"));
+            return;
         }
 
         if(args[1].equalsIgnoreCase("off"))
         {
-            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+            WorldGuardManager.save();
+            RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"));
+            return;
         }
+
+        RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
+        RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
 }
