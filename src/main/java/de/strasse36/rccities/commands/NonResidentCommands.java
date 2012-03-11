@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
@@ -33,6 +34,9 @@ public class NonResidentCommands {
         //update city-size
         city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());
         TableHandler.get().getCityTable().updateCity(city);
+
+        //update public plots
+        ChunkUtil.setPublic(city);
 
         //remove from map
         CityStaffCommands.invites.remove(sender.getName());

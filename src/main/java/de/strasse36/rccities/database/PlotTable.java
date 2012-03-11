@@ -34,7 +34,9 @@ public class PlotTable extends RCTable {
                         "`city` INT NULL ," +
                         "`regionId` VARCHAR( 100 ) NULL ," +
                         "`chunk_x` INT NULL ," +
-                        "`chunk_z` INT NULL " +
+                        "`chunk_z` INT NULL ," +
+                        "`public` TINYINT ( 1 ) NOT NULL DEFAULT 0 ," +
+                        "`pvp` TINYINT ( 1 ) NOT NULL DEFAULT 0 " +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
@@ -55,6 +57,8 @@ public class PlotTable extends RCTable {
                     plot.setRegionId(resultSet.getString("regionId"));
                     plot.setX(resultSet.getInt("chunk_x"));
                     plot.setZ(resultSet.getInt("chunk_z"));
+                    plot.setOpen(resultSet.getBoolean("public"));
+                    plot.setPvp(resultSet.getBoolean("pvp"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -81,6 +85,8 @@ public class PlotTable extends RCTable {
                     plot.setRegionId(resultSet.getString("regionId"));
                     plot.setX(resultSet.getInt("chunk_x"));
                     plot.setZ(resultSet.getInt("chunk_z"));
+                    plot.setOpen(resultSet.getBoolean("public"));
+                    plot.setPvp(resultSet.getBoolean("pvp"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -108,6 +114,8 @@ public class PlotTable extends RCTable {
                 plot.setRegionId(resultSet.getString("regionId"));
                 plot.setX(resultSet.getInt("chunk_x"));
                 plot.setZ(resultSet.getInt("chunk_z"));
+                plot.setOpen(resultSet.getBoolean("public"));
+                plot.setPvp(resultSet.getBoolean("pvp"));
                 plotlist.add(plot);
             }
             return plotlist;
@@ -133,6 +141,35 @@ public class PlotTable extends RCTable {
                 plot.setRegionId(resultSet.getString("regionId"));
                 plot.setX(resultSet.getInt("chunk_x"));
                 plot.setZ(resultSet.getInt("chunk_z"));
+                plot.setOpen(resultSet.getBoolean("public"));
+                plot.setPvp(resultSet.getBoolean("pvp"));
+                plotlist.add(plot);
+            }
+            return plotlist;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<Plot> getPlots(int open)
+    {
+        Connection connection = getDatabase().getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SELECT * FROM " + getName() + " WHERE public = '" + open + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        List<Plot> plotlist = new ArrayList<Plot>();
+        try {
+            Plot plot;
+            while (resultSet.next()) {
+                plot = new Plot();
+                plot.setId(resultSet.getInt("id"));
+                plot.setCity(resultSet.getInt("city"));
+                plot.setRegionId(resultSet.getString("regionId"));
+                plot.setX(resultSet.getInt("chunk_x"));
+                plot.setZ(resultSet.getInt("chunk_z"));
+                plot.setOpen(resultSet.getBoolean("public"));
+                plot.setPvp(resultSet.getBoolean("pvp"));
                 plotlist.add(plot);
             }
             return plotlist;
@@ -154,7 +191,9 @@ public class PlotTable extends RCTable {
                         "'" + plot.getCity().getId() + "'" + "," +
                         "'" + plot.getRegionId() + "'" + "," +
                         "'" + plot.getX() + "'" + "," +
-                        "'" + plot.getZ() + "'" +
+                        "'" + plot.getZ() + "'" + "," +
+                        "'" + plot.getOpen() + "'," +
+                        "'" + plot.getPvp() + "'" +
                         ");"
         );
         connection.executeUpdate(statement);
@@ -168,7 +207,9 @@ public class PlotTable extends RCTable {
                         "city = '" + plot.getCity().getId() + "'," +
                         "regionId = '" + plot.getRegionId() + "'," +
                         "chunk_x = '" + plot.getX() + "'," +
-                        "chunk_y = '" + plot.getZ() + "'" +
+                        "chunk_y = '" + plot.getZ() + "'," +
+                        "public = '" + plot.getOpen() + "'," +
+                        "pvp = '" + plot.getPvp() + "'" +
                         " WHERE id = '" + plot.getId() + "';"
         );
         connection.executeUpdate(statement);

@@ -101,6 +101,9 @@ public class ModCommands
         //update region owners
         ChunkUtil.updatePlotOwner(city);
 
+        //update public plots
+        ChunkUtil.setPublic(city);
+
         RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " zum Bürgermeister von " + city.getName() + " ernannt!"));
     }
     

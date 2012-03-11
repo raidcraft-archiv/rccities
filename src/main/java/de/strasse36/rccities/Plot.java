@@ -13,6 +13,8 @@ public class Plot {
     private String regionId;
     private int x;
     private int z;
+    private boolean open;
+    private boolean pvp;
 
     public Plot() {
     }
@@ -66,5 +68,37 @@ public class Plot {
 
     public void setZ(int z) {
         this.z = z;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+    
+    public int getOpen()
+    {
+        if(isOpen())
+            return 1;
+        else
+            return 0;
+    }
+
+    public boolean isPvp() {
+        return pvp;
+    }
+
+    public void setPvp(boolean pvp) {
+        this.pvp = pvp;
+    }
+
+    public int getPvp()
+    {
+        if(isPvp())
+            return 1;
+        else
+            return 0;
     }
 }

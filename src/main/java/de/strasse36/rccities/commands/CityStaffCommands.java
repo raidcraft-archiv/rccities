@@ -159,6 +159,9 @@ public class CityStaffCommands {
 
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());
+
+        //update public plots
+        ChunkUtil.setPublic(resident.getCity());
     }
     
     public static void invitePlayer(CommandSender sender, String[] args)
@@ -333,7 +336,7 @@ public class CityStaffCommands {
                 WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
             }
             WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der ganzen Stadt erlaubt!");
+            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in der Stadt erlaubt!");
             return;
         }
 
@@ -341,10 +344,11 @@ public class CityStaffCommands {
         {
             for(Plot plot : plotList)
             {
-                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+                if(!plot.isPvp())
+                    WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
             }
             WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der ganzen Stadt verboten!");
+            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der Stadt verboten!");
             return;
         }
 

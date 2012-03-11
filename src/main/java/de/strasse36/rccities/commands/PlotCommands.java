@@ -494,6 +494,8 @@ public class PlotCommands {
         {
             WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
             WorldGuardManager.save();
+            selectedPlot.setPvp(true);
+            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
             RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"));
             return;
         }
@@ -502,11 +504,54 @@ public class PlotCommands {
         {
             WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
             WorldGuardManager.save();
+            selectedPlot.setPvp(false);
+            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
             RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"));
             return;
         }
 
         RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
+    }
+
+    public static void publicPlot(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+        for(ProtectedRegion region : regionSet)
+        {
+            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
+            {
+                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+            }
+        }
+
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        selectedPlot.setOpen(true);
+        TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+        ChunkUtil.setPublic(resident.getCity());
+        RCMessaging.send(sender, RCMessaging.blue("Der Plot kann nun von allen Einwohnern bebaut werden!"));
     }
 }

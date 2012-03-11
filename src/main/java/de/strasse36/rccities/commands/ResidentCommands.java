@@ -4,10 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.Teleport;
-import de.strasse36.rccities.util.Toolbox;
-import de.strasse36.rccities.util.TownMessaging;
+import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -130,6 +127,12 @@ public class ResidentCommands {
         TableHandler.get().getResidentTable().updateResident(resident);
         TownMessaging.sendTownResidents(city, sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
         RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"));
+
+        //update region owners
+        ChunkUtil.updatePlotOwner(resident.getCity());
+
+        //update public plots
+        ChunkUtil.setPublic(resident.getCity());
     }
     
     public static void deposit(CommandSender sender, String[] args)
@@ -166,6 +169,4 @@ public class ResidentCommands {
         //town message
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c in die Stadtkasse eingezahlt!"));
     }
-
-
 }
