@@ -27,7 +27,7 @@ public class CityStaffCommands {
     public static Map<String, City> invites = new HashMap<String, City>();
 
 
-    public static void setTownSpawn(CommandSender sender)
+    public static void setspawn(CommandSender sender)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
         //no resident
@@ -68,6 +68,14 @@ public class CityStaffCommands {
         if(!resident.isMayor())
         {
             RCCitiesCommandUtility.noMayor(sender);
+            return;
+        }
+
+        //wrong parameter length
+        if(args.length < 3)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town promote <Spielername> <Beruf>' Weist einem Spieler ein Beruf zu.");
             return;
         }
 
@@ -118,7 +126,7 @@ public class CityStaffCommands {
         ChunkUtil.updatePlotOwner(resident.getCity());
     }
     
-    public static void kickPlayer(CommandSender sender, String[] args)
+    public static void kick(CommandSender sender, String[] args)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
         //no resident
@@ -133,6 +141,15 @@ public class CityStaffCommands {
             RCCitiesCommandUtility.noMayor(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town kick <Spielername>' Kickt einen Spieler aus der Stadt.");
+            return;
+        }
+
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
             RCCitiesCommandUtility.selfAction(sender);
@@ -164,7 +181,7 @@ public class CityStaffCommands {
         ChunkUtil.setPublic(resident.getCity());
     }
     
-    public static void invitePlayer(CommandSender sender, String[] args)
+    public static void invite(CommandSender sender, String[] args)
     {
 
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
@@ -180,6 +197,15 @@ public class CityStaffCommands {
             RCCitiesCommandUtility.onlyStaff(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town invite <Spielername>' Läd einen Spieler in die Stadt ein.");
+            return;
+        }
+
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
             RCCitiesCommandUtility.selfAction(sender);
@@ -199,7 +225,7 @@ public class CityStaffCommands {
         RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"), false);
     }
 
-    public static void setCityDescription(CommandSender sender, String[] args)
+    public static void setdesc(CommandSender sender, String[] args)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
         //no resident
@@ -215,16 +241,24 @@ public class CityStaffCommands {
             return;
         }
         String newDesc = "";
-        
-       for(int i = 1; i<args.length; i++)
-       {
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town setdesc <Beschreibung>' Ändert die Beschreibung der Stadt.");
+            return;
+        }
+
+        for(int i = 1; i<args.length; i++)
+        {
            newDesc += args[i]+" ";
-       }
-        
-        City city = resident.getCity();
-        city.setDescription(newDesc);
-        TableHandler.get().getCityTable().updateCity(city);
-        RCMessaging.send(sender, RCMessaging.blue("Die Beschreibung der Stadt wurde geändert!"), false);
+        }
+
+         City city = resident.getCity();
+         city.setDescription(newDesc);
+         TableHandler.get().getCityTable().updateCity(city);
+         RCMessaging.send(sender, RCMessaging.blue("Die Beschreibung der Stadt wurde geändert!"), false);
     }
     
     public static void greetings(CommandSender sender, String[] args)
@@ -243,6 +277,13 @@ public class CityStaffCommands {
             return;
         }
 
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town greetings <on / off>' Schaltet Plotnachrichten an oder aus.");
+            return;
+        }
 
         if(args[1].equalsIgnoreCase("on"))
         {
@@ -282,6 +323,14 @@ public class CityStaffCommands {
         if(!resident.isMayor())
         {
             RCCitiesCommandUtility.noMayor(sender);
+            return;
+        }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town withdraw <Betrag>' Hebt Coins aus der Stadtkasse ab.");
             return;
         }
 
@@ -327,6 +376,14 @@ public class CityStaffCommands {
             RCCitiesCommandUtility.noLeadership(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town pvp <on / off>' Schaltet PVP in der Stadt an oder aus.");
+            return;
+        }
         
         List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(resident.getCity());
         
@@ -338,6 +395,8 @@ public class CityStaffCommands {
             }
             WorldGuardManager.save();
             TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in der Stadt erlaubt!");
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
             return;
         }
 
@@ -350,6 +409,8 @@ public class CityStaffCommands {
             }
             WorldGuardManager.save();
             TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der Stadt verboten!");
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
             return;
         }
 

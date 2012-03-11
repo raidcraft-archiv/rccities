@@ -71,7 +71,11 @@ public class PlotCommands {
         else
             open = "Nein";
         RCMessaging.send(sender, RCMessaging.green("Öffentlich: ") + open, false);
-        String member = WorldGuardManager.getRegion(thisPlot.getRegionId()).getMembers().toUserFriendlyString();
+        String member;
+        if(thisPlot.isOpen())
+            member = "~alle Einwohner~";
+        else
+            member = WorldGuardManager.getRegion(thisPlot.getRegionId()).getMembers().toUserFriendlyString();
         if(member.length() == 0)
             member = "~keine~";
         RCMessaging.send(sender, RCMessaging.green("Besitzer: ") + member, false);
@@ -269,6 +273,13 @@ public class PlotCommands {
             return;
         }
 
+        //check if plot public
+        if(selectedPlot.isOpen())
+        {
+            PlotCommandUtility.publicplot(sender);
+            return;
+        }
+
         //assign plot
         try {
             TableHandler.get().getAssignmentsTable().newAssignment(selectedPlot, selectedResident);
@@ -348,6 +359,13 @@ public class PlotCommands {
         if(selectedPlot == null)
         {
             PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        //check if plot public
+        if(selectedPlot.isOpen())
+        {
+            PlotCommandUtility.publicplot(sender);
             return;
         }
 
@@ -537,6 +555,8 @@ public class PlotCommands {
                 selectedPlot.setPvp(true);
                 TableHandler.get().getPlotTable().updatePlot(selectedPlot);
                 RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"), false);
+                //update chunk messages
+                ChunkUtil.updateChunkMessages(resident.getCity());
                 return;
             }
 
@@ -547,6 +567,8 @@ public class PlotCommands {
                 selectedPlot.setPvp(false);
                 TableHandler.get().getPlotTable().updatePlot(selectedPlot);
                 RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"), false);
+                //update chunk messages
+                ChunkUtil.updateChunkMessages(resident.getCity());
                 return;
             }
         }
@@ -599,6 +621,8 @@ public class PlotCommands {
                 TableHandler.get().getPlotTable().updatePlot(selectedPlot);
                 ChunkUtil.setPublic(resident.getCity());
                 RCMessaging.send(sender, RCMessaging.blue("Der Plot kann nun von allen Einwohnern bebaut werden!"), false);
+                //update chunk messages
+                ChunkUtil.updateChunkMessages(resident.getCity());
                 return;
             }
 

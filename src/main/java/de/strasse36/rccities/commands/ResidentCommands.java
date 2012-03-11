@@ -143,7 +143,15 @@ public class ResidentCommands {
         {
             RCCitiesCommandUtility.noResident(sender);
             return;
-    }
+        }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town deposit <Betrag>' Überweist Coins in die Stadtkasse.");
+            return;
+        }
 
         //wrong input
         double amount = Toolbox.isDouble(args[1]);

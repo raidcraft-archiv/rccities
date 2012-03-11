@@ -1,5 +1,6 @@
 package de.strasse36.rccities.util;
 
+import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -79,10 +80,18 @@ public class ChunkUtil {
         {
             if(city.isGreetings())
             {
-                greetingMessage = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
-                if(greetingMessage.length() == 0)
+                member = RCMessaging.green(WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString());
+                greetingMessage = "";
+                if(plot.isPvp())
+                    greetingMessage = RCMessaging.red("~PVP~ ");
+                if(plot.isOpen())
+                    greetingMessage += RCMessaging.green("~öffentlich~");
+                else
+                    greetingMessage += member;
+
+                if(WorldGuardManager.getRegion(plot.getRegionId()).getMembers().size() == 0)
                 {
-                    greetingMessage = "~kein Besitzer~";
+                    greetingMessage += RCMessaging.green("~kein Besitzer~");
                 }
             }
             else

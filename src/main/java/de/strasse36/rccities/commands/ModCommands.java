@@ -34,6 +34,15 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 3)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town create <Stadtname> <Spielername>' Gründet eine Stadt und ernennt den Bürgermeister.");
+            return;
+        }
+
         City newCity = new City(args[1], ((Player)sender).getLocation());
         Player player = Bukkit.getPlayerExact(args[2]);
         if(player == null)
@@ -73,6 +82,15 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town mayor <Stadtname> [<Spielername>]' Ernennt den Bürgermeister einer Stadt.");
+            return;
+        }
+
         Player player;
         if(args.length < 3)
         {
@@ -114,6 +132,15 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 3)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town setname <Stadtname> <Neuer Name>' Ändert den Name einer Stadt.");
+            return;
+        }
+
         City city = TableHandler.get().getCityTable().getCity(args[1]);
         if(city == null)
         {
@@ -133,6 +160,15 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town demolish <Stadtname>' Bereitet die Löschung einer Stadt vor.");
+            return;
+        }
+
         City city = TableHandler.get().getCityTable().getCity(args[1]);
         if(city == null)
         {
@@ -166,6 +202,15 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town confirm <Captcha>' bestätigt die Löschung einer Stadt.");
+            return;
+        }
+
         if(!demolish.containsKey(args[1]))
         {
             RCMessaging.warn(sender, "Der eingegebene Captcha-Code ist falsch!");

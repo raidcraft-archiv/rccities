@@ -57,4 +57,9 @@ public class PlotCommandUtility {
         RCMessaging.warn(sender, "Das claimen eines Chunks kostet " + MainConfig.getClaimPrice() + "c!");
         RCMessaging.warn(sender, "Überweise mit '/town deposit <Betrag>' Geld an die Stadt.");
     }
+
+    public static void publicplot(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Dieser Plot kann nicht bearbeitet werden da er öffentlich ist!");
+    }
 }
