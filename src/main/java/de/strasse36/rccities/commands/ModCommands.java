@@ -139,12 +139,12 @@ public class ModCommands
         String allowedChars ="0123456789abcdefghijklmnopqrstuvwxyz";
         Random random = new Random();
         int max = allowedChars.length();
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         for (int i=0; i<7; i++) {
             int value = random.nextInt(max);
-            buffer.append(allowedChars.charAt(value));
+            builder.append(allowedChars.charAt(value));
         }
-        captcha = buffer.toString();
+        captcha = builder.toString();
 
         demolish.put(captcha, city);
         RCMessaging.warn(sender, "Um die Stadt " + city.getName() + " zu löschen, gebe folgendes ein:");
