@@ -20,7 +20,6 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -226,6 +225,14 @@ public class PlotCommands {
             return;
         }
 
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/plot give <Spielername> [<Plotname>]' trägt den Spieler als Plotbesitzer ein.");
+            return;
+        }
+
         //check target player
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
         if(selectedResident == null || selectedResident.getCity().getId() != resident.getCity().getId())
@@ -274,10 +281,10 @@ public class PlotCommands {
         WorldGuardManager.addMember(selectedPlot.getRegionId(), selectedResident.getName());
         WorldGuardManager.save();
 
-        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " ist nun Besitzer des Plot: '" + selectedPlot.getRegionId() + "'!"));
+        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " ist nun Besitzer des Plot: '" + selectedPlot.getRegionId() + "'!"), false);
         Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
         if(selectedPlayer != null && selectedPlayer.isOnline())
-            RCMessaging.send(selectedPlayer, RCMessaging.blue("Dir gehört nun der Plot: '" + selectedPlot.getRegionId() + "'!"));
+            RCMessaging.send(selectedPlayer, RCMessaging.blue("Dir gehört nun der Plot: '" + selectedPlot.getRegionId() + "'!"), false);
 
         //update plot messages
         ChunkUtil.updateChunkMessages(resident.getCity());
@@ -297,6 +304,14 @@ public class PlotCommands {
         if(!resident.isLeadership())
         {
             RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/plot take <Spielername> [<Plotname>]' trägt den Spieler als Plotbesitzer aus.");
             return;
         }
 
@@ -359,10 +374,10 @@ public class PlotCommands {
         WorldGuardManager.removeMember(selectedPlot.getRegionId(), selectedResident.getName());
         WorldGuardManager.save();
 
-        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " wurde als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
+        RCMessaging.send(sender, RCMessaging.blue(selectedResident.getName() + " wurde als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"), false);
         Player selectedPlayer = Bukkit.getPlayer(selectedResident.getName());
         if(selectedPlayer != null && selectedPlayer.isOnline())
-            RCMessaging.send(selectedPlayer, RCMessaging.blue("Du wurdest als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"));
+            RCMessaging.send(selectedPlayer, RCMessaging.blue("Du wurdest als Besitzer des Plot '" + selectedPlot.getRegionId() + "' entfernt!"), false);
 
         //update plot messages
         ChunkUtil.updateChunkMessages(resident.getCity());
@@ -381,6 +396,14 @@ public class PlotCommands {
         if(!resident.isLeadership())
         {
             RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/plot buy <Anzahl>' kauft Chunks zur Stadt hinzu.");
             return;
         }
 
@@ -467,7 +490,7 @@ public class PlotCommands {
         //update plot messages
         ChunkUtil.updateChunkMessages(resident.getCity());
 
-        RCMessaging.send(sender, RCMessaging.blue("Alle Besitzer des Plot '" + selectedPlot.getRegionId() + "' wurden entfernt!"));
+        RCMessaging.send(sender, RCMessaging.blue("Alle Besitzer des Plot '" + selectedPlot.getRegionId() + "' wurden entfernt!"), false);
     }
 
     public static void pvp(CommandSender sender, String[] args)
@@ -505,31 +528,35 @@ public class PlotCommands {
             return;
         }
 
-        if(args[1].equalsIgnoreCase("on"))
+        if(args.length > 1)
         {
-            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
-            WorldGuardManager.save();
-            selectedPlot.setPvp(true);
-            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
-            RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"));
-            return;
+            if(args[1].equalsIgnoreCase("on"))
+            {
+                WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+                WorldGuardManager.save();
+                selectedPlot.setPvp(true);
+                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+                RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"), false);
+                return;
+            }
+
+            if(args[1].equalsIgnoreCase("off"))
+            {
+                WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+                WorldGuardManager.save();
+                selectedPlot.setPvp(false);
+                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+                RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"), false);
+                return;
+            }
         }
 
-        if(args[1].equalsIgnoreCase("off"))
-        {
-            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-            WorldGuardManager.save();
-            selectedPlot.setPvp(false);
-            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
-            RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"));
-            return;
-        }
-
+        RCMessaging.warn(sender, "Eingabe fehlerhaft!");
         RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
 
-    public static void publicPlot(CommandSender sender)
+    public static void publicPlot(CommandSender sender, String[] args)
     {
         Player player = (Player)sender;
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
@@ -564,10 +591,34 @@ public class PlotCommands {
             return;
         }
 
-        selectedPlot.setOpen(true);
-        TableHandler.get().getPlotTable().updatePlot(selectedPlot);
-        ChunkUtil.setPublic(resident.getCity());
-        RCMessaging.send(sender, RCMessaging.blue("Der Plot kann nun von allen Einwohnern bebaut werden!"));
+        if(args.length > 1)
+        {
+            if(args[1].equalsIgnoreCase("on"))
+            {
+                selectedPlot.setOpen(true);
+                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+                ChunkUtil.setPublic(resident.getCity());
+                RCMessaging.send(sender, RCMessaging.blue("Der Plot kann nun von allen Einwohnern bebaut werden!"), false);
+                return;
+            }
+
+            if(args[1].equalsIgnoreCase("off"))
+            {
+                selectedPlot.setOpen(false);
+                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+                //clear region members
+                WorldGuardManager.getRegion(selectedPlot.getRegionId()).setMembers(new DefaultDomain());
+                WorldGuardManager.save();
+                RCMessaging.send(sender, RCMessaging.blue("Der Plot ist nun nicht mehr Öffentlich!"), false);
+                //update chunk messages
+                ChunkUtil.updateChunkMessages(resident.getCity());
+                return;
+            }
+        }
+
+        RCMessaging.warn(sender, "Eingabe fehlerhaft!");
+        RCMessaging.warn(sender, "'/plot public on' Macht den Plot öffentlich bebaubar.");
+        RCMessaging.warn(sender, "'/plot public off' Macht den Plot wieder Privat.");
     }
 
     public static void highlight(CommandSender sender)
@@ -607,11 +658,9 @@ public class PlotCommands {
         
         Chunk chunk = player.getLocation().getChunk();
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
-        List<Material> materialBackup = new ArrayList<Material>();
         for(int i = 0; i<16; i++)
         {
-            materialBackup.add(chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0).getType());
-            chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0).setType(Material.GLOWSTONE); 
+            chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)+1, 0).setType(Material.TORCH);
         }
         //TODO
     }

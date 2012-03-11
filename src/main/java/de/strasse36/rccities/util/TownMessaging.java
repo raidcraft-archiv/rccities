@@ -25,7 +25,7 @@ public class TownMessaging {
             {
                 Player player = Bukkit.getPlayer(iterator.next().getName());
                 if(player != null)
-                    RCMessaging.send(player, RCMessaging.blue(msg));
+                    RCMessaging.send(player, RCMessaging.blue(msg), false);
             }
         }
     }
@@ -37,7 +37,7 @@ public class TownMessaging {
         while (iterator.hasNext()) {
                 Player player = Bukkit.getPlayer(iterator.next().getName());
                 if(player != null)
-                    RCMessaging.send(player, RCMessaging.blue(msg));
+                    RCMessaging.send(player, RCMessaging.blue(msg), false);
         }
     }
 }

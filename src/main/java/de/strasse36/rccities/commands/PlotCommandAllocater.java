@@ -34,19 +34,19 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
-        if(args.length > 1 && args[0].equals("give"))
+        if(args.length > 0 && args[0].equals("give"))
         {
             PlotCommands.give(sender, args);
             return true;
         }
 
-        if(args.length > 1 && args[0].equals("take"))
+        if(args.length > 0 && args[0].equals("take"))
         {
             PlotCommands.take(sender, args);
             return true;
         }
 
-        if(args.length > 1 && args[0].equals("buy"))
+        if(args.length > 0 && args[0].equals("buy"))
         {
             PlotCommands.buy(sender, args);
             return true;
@@ -58,7 +58,7 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
-        if(args.length > 1 && args[0].equals("pvp"))
+        if(args.length > 0 && args[0].equals("pvp"))
         {
             PlotCommands.pvp(sender, args);
             return true;
@@ -66,7 +66,7 @@ public class PlotCommandAllocater implements CommandExecutor
 
         if(args.length > 0 && args[0].equals("public"))
         {
-            PlotCommands.publicPlot(sender);
+            PlotCommands.publicPlot(sender, args);
             return true;
         }
 
@@ -78,8 +78,6 @@ public class PlotCommandAllocater implements CommandExecutor
 
 
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
-        RCMessaging.warn(sender, "Falsche Anzahl an Parameter?");
-        RCMessaging.warn(sender, "Befehlt falsch geschrieben?");
         RCMessaging.warn(sender, "'/plot help' zeigt alle verfügbaren Befehle!");
         return true;
     }

@@ -13,12 +13,12 @@ public class PlotCommandUtility {
 
     public static void successfullyClaimed(CommandSender sender)
     {
-        RCMessaging.send(sender, RCMessaging.blue("Der Chunk wurde erfolgreich claimed!"));
+        RCMessaging.send(sender, RCMessaging.blue("Der Chunk wurde erfolgreich claimed!"), false);
     }
 
     public static void successfullyUnclaimed(CommandSender sender)
     {
-        RCMessaging.send(sender, RCMessaging.blue("Der Chunk wurde erfolgreich unclaimed!"));
+        RCMessaging.send(sender, RCMessaging.blue("Der Chunk wurde erfolgreich unclaimed!"), false);
     }
 
     public static void alreadyExist(CommandSender sender)

@@ -102,7 +102,7 @@ public class ResidentCommands {
             return;
         }
         Teleport.teleportPlayer((Player) sender, city);
-        RCMessaging.send(sender, RCMessaging.blue("Willkommen am Townspawn von " + city.getName()));
+        RCMessaging.send(sender, RCMessaging.blue("Willkommen am Townspawn von " + city.getName()), false);
     }
 
     public static void leaveTown(CommandSender sender)
@@ -118,7 +118,7 @@ public class ResidentCommands {
         if(resident.isMayor())
         {
             RCMessaging.warn(sender, "Du kannst als Bürgermeister nicht die Stadt verlassen!");
-            RCMessaging.warn(sender, "Dekradiere Dich mit '/town promote " + sender.getName() +" resident' zum einfachen Bürger und versuche es nocheinmal.");
+            RCMessaging.warn(sender, "Dekradiere Dich mit '/town promote " + sender.getName() +" resident' zum Bürger und versuche es nocheinmal.");
             return;
         }
         City city = resident.getCity();
@@ -126,7 +126,7 @@ public class ResidentCommands {
         resident.setProfession("");
         TableHandler.get().getResidentTable().updateResident(resident);
         TownMessaging.sendTownResidents(city, sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
-        RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"));
+        RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"), false);
 
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());

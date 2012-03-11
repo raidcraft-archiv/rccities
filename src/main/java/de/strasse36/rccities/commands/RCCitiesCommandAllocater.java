@@ -146,9 +146,14 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
+        //list all towns
+        if(args.length > 0 && args[0].equals("list"))
+        {
+            NonResidentCommands.listTowns(sender);
+            return true;
+        }
+
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
-        RCMessaging.warn(sender, "Falsche Anzahl an Parameter?");
-        RCMessaging.warn(sender, "Befehlt falsch geschrieben?");
         RCMessaging.warn(sender, "'/town help' zeigt alle verfügbaren Befehle!");
         return true;
     }

@@ -58,7 +58,7 @@ public class ModCommands
             return;
         }
 
-        RCMessaging.send(sender, RCMessaging.blue("Die Stadt '" + args[1] + "' wurde erfolgreich gegründet."));
+        RCMessaging.send(sender, RCMessaging.blue("Die Stadt '" + args[1] + "' wurde erfolgreich gegründet."), false);
         //set mayor
         Profession.setMayor(player, city);
 
@@ -104,7 +104,7 @@ public class ModCommands
         //update public plots
         ChunkUtil.setPublic(city);
 
-        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " zum Bürgermeister von " + city.getName() + " ernannt!"));
+        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " zum Bürgermeister von " + city.getName() + " ernannt!"), false);
     }
     
     public static void setCityName(CommandSender sender, String[] args)
@@ -153,7 +153,7 @@ public class ModCommands
 
         demolish.put(captcha, city);
         RCMessaging.warn(sender, "Um die Stadt " + city.getName() + " zu löschen, gebe folgendes ein:");
-        RCMessaging.warn(sender, "/town confirm " + captcha);
+        RCMessaging.send(sender, RCMessaging.yellow("/town confirm " + captcha), false);
         RCMessaging.warn(sender, "Es werden dadurch alle Daten der Stadt gelöscht!");
         RCMessaging.warn(sender, "Darunter auch alle Plots, Spielerzuordnungen usw.");
         RCMessaging.warn(sender, "Das löschen einer Stadt ist nicht umkehrbar!");

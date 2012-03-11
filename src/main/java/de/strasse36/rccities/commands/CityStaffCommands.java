@@ -51,7 +51,7 @@ public class CityStaffCommands {
 
         resident.getCity().setSpawn(((Player)sender).getLocation());
         TableHandler.get().getCityTable().updateCity(resident.getCity());
-        RCMessaging.send(sender, RCMessaging.blue("Der Townspawn von " + resident.getCity().getName() + " wurde erfolgreich verlegt!"));
+        RCMessaging.send(sender, RCMessaging.blue("Der Townspawn von " + resident.getCity().getName() + " wurde erfolgreich verlegt!"), false);
         return;
     }
 
@@ -154,8 +154,8 @@ public class CityStaffCommands {
         
         Player kickPlayer = Bukkit.getPlayerExact(kickResident.getName());
         if(kickPlayer != null)
-            RCMessaging.send(kickPlayer, RCMessaging.red("Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!") );
-        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + "geworfen!"));
+            RCMessaging.warn(kickPlayer, "Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!");
+        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + " geworfen!"));
 
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());
@@ -194,9 +194,9 @@ public class CityStaffCommands {
         }
 
         invites.put(player.getName(), resident.getCity());
-        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!");
-        RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + " eingeladen!"));
-        RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"));
+        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!", false);
+        RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + " eingeladen!"), false);
+        RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"), false);
     }
 
     public static void setCityDescription(CommandSender sender, String[] args)
@@ -224,7 +224,7 @@ public class CityStaffCommands {
         City city = resident.getCity();
         city.setDescription(newDesc);
         TableHandler.get().getCityTable().updateCity(city);
-        RCMessaging.send(sender, RCMessaging.blue("Die Beschreibung der Stadt wurde geändert!"));
+        RCMessaging.send(sender, RCMessaging.blue("Die Beschreibung der Stadt wurde geändert!"), false);
     }
     
     public static void greetings(CommandSender sender, String[] args)
@@ -250,7 +250,7 @@ public class CityStaffCommands {
             resident.getCity().setGreetings(true);
             TableHandler.get().getCityTable().updateCity(resident.getCity());
             ChunkUtil.updateChunkMessages(resident.getCity());
-            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten eingeschaltet!"));
+            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten eingeschaltet!"), false);
         }
         else if(args[1].equalsIgnoreCase("off"))
         {
@@ -258,10 +258,11 @@ public class CityStaffCommands {
             resident.getCity().setGreetings(false);
             TableHandler.get().getCityTable().updateCity(resident.getCity());
             ChunkUtil.updateChunkMessages(resident.getCity());
-            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten ausgeschaltet!"));
+            RCMessaging.send(sender, RCMessaging.blue("Plotnachrichten ausgeschaltet!"), false);
         }
         else
         {
+            RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
             RCMessaging.warn(sender, "'/town greeting on' schaltet Plotnachrichten ein.");
             RCMessaging.warn(sender, "'/town greeting off' schaltet Plotnachrichten aus.");
         }
@@ -352,6 +353,7 @@ public class CityStaffCommands {
             return;
         }
 
+        RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
         RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }

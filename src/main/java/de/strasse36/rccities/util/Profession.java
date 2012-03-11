@@ -18,7 +18,7 @@ public class Profession {
         Resident resident = new Resident(player.getName(), city, "mayor");
         TableHandler.get().getResidentTable().updateResident(resident);
         if(player.isOnline())
-            RCMessaging.send(player, RCMessaging.blue("Du bist nun der Bürgermeister von " + city.getName() + "!"));
+            RCMessaging.send(player, RCMessaging.blue("Du bist nun der Bürgermeister von " + city.getName() + "!"), false);
     }
     
     public static void changeProfession(Resident resident, String profession) throws UnknownProfessionException
