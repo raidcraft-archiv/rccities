@@ -186,7 +186,7 @@ public class PlotTable extends RCTable {
         }
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepare(
-                "INSERT INTO " + getName() + " (city, regionId, chunk_x, chunk_z) " +
+                "INSERT INTO " + getName() + " (city, regionId, chunk_x, chunk_z, public, pvp) " +
                         "VALUES (" +
                         "'" + plot.getCity().getId() + "'" + "," +
                         "'" + plot.getRegionId() + "'" + "," +
