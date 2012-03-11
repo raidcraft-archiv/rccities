@@ -29,9 +29,9 @@ public class ChunkUtil {
             chunk.getZ()*16
         );
         BlockVector blockVector2 = new BlockVector(
-                (chunk.getX()*16)+16,
+                (chunk.getX()*16)+15,
                 location.getWorld().getMaxHeight(),
-                (chunk.getZ()*16)+16
+                (chunk.getZ()*16)+15
         );
 
         //RCMessaging.broadcast("X: " + blockVector1.getX() + " | Y: " + blockVector1.getY() + " | Z: " + blockVector1.getZ());
