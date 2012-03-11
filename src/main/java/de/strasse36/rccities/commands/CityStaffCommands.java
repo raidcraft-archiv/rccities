@@ -188,7 +188,7 @@ public class CityStaffCommands {
         }
 
         invites.put(player.getName(), resident.getCity());
-        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + "eingeladen!");
+        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!");
         RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + " eingeladen!"));
         RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"));
     }
@@ -210,7 +210,7 @@ public class CityStaffCommands {
         }
         String newDesc = "";
         
-       for(int i = 2; i<args.length; i++)
+       for(int i = 1; i<args.length; i++)
        {
            newDesc += args[i]+" ";
        }

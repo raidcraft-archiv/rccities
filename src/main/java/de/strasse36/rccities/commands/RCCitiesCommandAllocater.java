@@ -52,7 +52,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
 
         /////////////////////////////CITY-STAFF//////////////////////////////////////////
         //mayor set townspawn
-        if(args.length > 1 && args[0].equals("set") && args[1].equals("spawn"))
+        if(args.length > 0 && args[0].equals("setspawn"))
         {
             CityStaffCommands.setTownSpawn(sender);
             return true;
@@ -81,7 +81,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
 
         //change city description
         ///town set desc <description>
-        if(args.length > 2 && args[0].equals("set") && args[1].equals("desc"))
+        if(args.length > 1 && args[0].equals("setdesc"))
         {
             CityStaffCommands.setCityDescription(sender, args);
             return true;
@@ -111,7 +111,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
 
         //change city name
         ///town set name <city> <name>
-        if(args.length > 3 && args[0].equals("set") && args[1].equals("name"))
+        if(args.length > 2 && args[0].equals("setname"))
         {
             ModCommands.setCityName(sender, args);
             return true;

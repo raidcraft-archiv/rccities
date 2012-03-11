@@ -100,6 +100,8 @@ public class ModCommands
 
         //update region owners
         ChunkUtil.updatePlotOwner(city);
+
+        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " zum Bürgermeister von " + city.getName() + " ernannt!"));
     }
     
     public static void setCityName(CommandSender sender, String[] args)
@@ -109,7 +111,7 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
-        City city = TableHandler.get().getCityTable().getCity(args[2]);
+        City city = TableHandler.get().getCityTable().getCity(args[1]);
         if(city == null)
         {
             RCCitiesCommandUtility.noCityFound(sender);

@@ -28,7 +28,7 @@ public class NonResidentCommands {
         Resident resident = new Resident(sender.getName(), city, "resident");
         TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);
-        RCMessaging.send(sender, "Du bist nun Einwohner von " + city.getName() + "!");
+        RCMessaging.send(sender, RCMessaging.blue("Du bist nun Einwohner von " + city.getName() + "!"));
 
         //update city-size
         city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());

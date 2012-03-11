@@ -3,6 +3,8 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
@@ -451,5 +453,62 @@ public class PlotCommands {
         ChunkUtil.updateChunkMessages(resident.getCity());
 
         RCMessaging.send(sender, RCMessaging.blue("Alle Besitzer des Plot '" + selectedPlot.getRegionId() + "' wurden entfernt!"));
+    }
+
+    public static void pvp(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        if(args.length > 1)
+        {
+            selectedPlot = TableHandler.get().getPlotTable().getPlot(args[1]);
+            if(selectedPlot == null)
+            {
+                PlotCommandUtility.noplot(sender);
+                return;
+            }
+        }
+        else
+        {
+            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+            for(ProtectedRegion region : regionSet)
+            {
+                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
+                {
+                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+                }
+            }
+        }
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        if(args[1].equalsIgnoreCase("on"))
+        {
+            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+        }
+
+        if(args[1].equalsIgnoreCase("off"))
+        {
+            WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+        }
     }
 }

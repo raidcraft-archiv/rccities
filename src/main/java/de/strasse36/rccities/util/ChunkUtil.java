@@ -79,12 +79,11 @@ public class ChunkUtil {
         {
             if(city.isGreetings())
             {
-                member = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
-                if(member.length() == 0)
+                greetingMessage = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
+                if(greetingMessage.length() == 0)
                 {
-                    member = "~kein Besitzer~";
+                    greetingMessage = "~kein Besitzer~";
                 }
-                greetingMessage = plot.getRegionId() + ": " + member;
             }
             else
                 greetingMessage = null;

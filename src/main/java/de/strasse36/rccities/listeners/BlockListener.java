@@ -34,7 +34,7 @@ public class BlockListener implements Listener {
             return;
 
         event.setCancelled(true);
-        RCMessaging.noPermission(player);
+        RCMessaging.warn(player, "Du hast hier keine Baurechte!");
     }
 
     @EventHandler
@@ -55,6 +55,6 @@ public class BlockListener implements Listener {
             return;
 
         event.setCancelled(true);
-        RCMessaging.noPermission(player);
+        RCMessaging.warn(player, "Du hast hier keine Baurechte!");
     }
 }
