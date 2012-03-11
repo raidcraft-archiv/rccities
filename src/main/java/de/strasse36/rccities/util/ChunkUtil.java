@@ -56,7 +56,7 @@ public class ChunkUtil {
         List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
         for(Resident resident : residentList)
         {
-            if(resident.isLeadership())
+            if(resident.isStaff())
             {
                 leaders.addPlayer(resident.getName());
             }
@@ -105,8 +105,11 @@ public class ChunkUtil {
         List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(1);
         for(Plot plot : plotList)
         {
-            WorldGuardManager.getRegion(plot.getRegionId()).setOwners(residents);
+            WorldGuardManager.getRegion(plot.getRegionId()).setMembers(residents);
         }
         WorldGuardManager.save();
+
+        //update chunk messages
+        updateChunkMessages(city);
     }
 }

@@ -54,8 +54,20 @@ public class PlotCommands {
             return;
         }
 
-        RCMessaging.send(sender, RCMessaging.green("--- Raid-Craft Cities ---"), false);
-        RCMessaging.send(sender, RCMessaging.green("Plotinformation für: ") + thisPlot.getRegionId(), false);
+        RCMessaging.send(sender, RCMessaging.green("--- RCCities Plotinfo ---"), false);
+        RCMessaging.send(sender, RCMessaging.green("Plotname: ") + thisPlot.getRegionId(), false);
+        String pvp;
+        if(thisPlot.isPvp())
+            pvp = "Erlaubt";
+        else
+            pvp = "Verboten";
+        RCMessaging.send(sender, RCMessaging.green("PVP: ") + pvp, false);
+        String open;
+        if(thisPlot.isOpen())
+            open = "Ja";
+        else
+            open = "Nein";
+        RCMessaging.send(sender, RCMessaging.green("Öffentlich: ") + open, false);
         String member = WorldGuardManager.getRegion(thisPlot.getRegionId()).getMembers().toUserFriendlyString();
         if(member.length() == 0)
             member = "~keine~";
@@ -354,7 +366,6 @@ public class PlotCommands {
 
     public static void buy(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
         //no resident
         if(resident == null || resident.getCity() == null)
@@ -514,7 +525,7 @@ public class PlotCommands {
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
 
-    public static void publicPlot(CommandSender sender, String[] args)
+    public static void publicPlot(CommandSender sender)
     {
         Player player = (Player)sender;
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());

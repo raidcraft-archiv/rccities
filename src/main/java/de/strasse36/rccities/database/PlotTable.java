@@ -207,7 +207,7 @@ public class PlotTable extends RCTable {
                         "city = '" + plot.getCity().getId() + "'," +
                         "regionId = '" + plot.getRegionId() + "'," +
                         "chunk_x = '" + plot.getX() + "'," +
-                        "chunk_y = '" + plot.getZ() + "'," +
+                        "chunk_z = '" + plot.getZ() + "'," +
                         "public = '" + plot.getOpen() + "'," +
                         "pvp = '" + plot.getPvp() + "'" +
                         " WHERE id = '" + plot.getId() + "';"

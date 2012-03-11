@@ -63,7 +63,7 @@ public class ResidentCommands {
             }
         }
 
-        RCMessaging.send(sender, RCMessaging.green("--- Raid-Craft Cities ---"), false);
+        RCMessaging.send(sender, RCMessaging.green("--- RCCities Stadtinfo ---"), false);
         RCMessaging.send(sender, RCMessaging.green("Stadtinformationen für: ") + resident.getCity().getName(), false);
         RCMessaging.send(sender, RCMessaging.green("Beschreibung: ") + resident.getCity().getDescription(), false);
         RCMessaging.send(sender, RCMessaging.green("Stadtkasse: ") + RCCitiesPlugin.get().getEconomy().getBalance(resident.getCity().getBankAccount()) + "c", false);
