@@ -70,9 +70,9 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
-        if(args.length > 0 && args[0].equals("highlight"))
+        if(args.length > 0 && args[0].equals("show"))
         {
-            PlotCommands.highlight(sender);
+            PlotCommands.show(sender);
             return true;
         }
 

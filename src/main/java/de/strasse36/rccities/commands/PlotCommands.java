@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -645,7 +646,7 @@ public class PlotCommands {
         RCMessaging.warn(sender, "'/plot public off' Macht den Plot wieder Privat.");
     }
 
-    public static void highlight(CommandSender sender)
+    public static void show(CommandSender sender)
     {
         Player player = (Player)sender;
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
@@ -682,10 +683,36 @@ public class PlotCommands {
         
         Chunk chunk = player.getLocation().getChunk();
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
-        for(int i = 0; i<16; i++)
+        int i;
+        for(i = 0; i<16; i++)
         {
-            chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)+1, 0).setType(Material.TORCH);
+            Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
+            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)-1, 0);
+            if(Toolbox.checkForTorch(blockBelow))
+                block.setType(Material.TORCH);
+        }
+        for(i = 0; i<16; i++)
+        {
+            Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
+            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15)-1, 15);
+            if(Toolbox.checkForTorch(blockBelow))
+                block.setType(Material.TORCH);
+        }
+        for(i = 0; i<16; i++)
+        {
+            Block block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
+            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(0, i)-1, i);
+            if(Toolbox.checkForTorch(blockBelow))
+                block.setType(Material.TORCH);
+        }
+        for(i = 0; i<16; i++)
+        {
+            Block block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
+            Block blockBelow = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i)-1, i);
+            if(Toolbox.checkForTorch(blockBelow))
+                block.setType(Material.TORCH);
         }
         //TODO
     }
+
 }

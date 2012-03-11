@@ -26,7 +26,7 @@ public class BlockListener implements Listener {
             return;
 
         //check if location is region
-        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(event.getBlockPlaced().getLocation());
         if(regionSet.size() != 0)
             return;
 
@@ -47,7 +47,7 @@ public class BlockListener implements Listener {
             return;
 
         //check if location is region
-        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(event.getBlock().getLocation());
         if(regionSet.size() != 0)
             return;
 
