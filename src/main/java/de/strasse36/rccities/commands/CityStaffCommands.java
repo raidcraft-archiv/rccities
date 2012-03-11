@@ -111,7 +111,7 @@ public class CityStaffCommands {
         } catch (UnknownProfessionException e) {
             RCMessaging.warn(sender, e.getMessage());
             RCMessaging.warn(sender, "Folgende Berufsgruppen gibt es:");
-            RCMessaging.warn(sender, "mayor, vicemayor, assistant, gardener, resident");
+            RCMessaging.warn(sender, "mayor, vicemayor, assistant, resident");
         }
 
         //update region owners

@@ -26,7 +26,6 @@ public class Profession {
         if( profession.equalsIgnoreCase("mayor") ||
             profession.equalsIgnoreCase("vicemayor") ||
             profession.equalsIgnoreCase("assistant") ||
-            profession.equalsIgnoreCase("gardener") ||
             profession.equalsIgnoreCase("resident")
         )
         {
@@ -45,8 +44,6 @@ public class Profession {
             return "Vize-Bürgermeister";
         if(profession.equalsIgnoreCase("assistant"))
             return "Stadtassistent";
-        if(profession.equalsIgnoreCase("gardener"))
-            return "Gärtner";
         if(profession.equalsIgnoreCase("resident"))
             return "Bürger";
         return profession;
