@@ -44,7 +44,7 @@ public class RCCitiesCommandUtility
     //no leadership
     public static void noLeadership(CommandSender sender)
     {
-        RCMessaging.warn(sender, "Du gehörst nicht zur Stadtführung!");
+        RCMessaging.warn(sender, "Du gehörst nicht zur Stadtleitung!");
     }
 
     //no permissions

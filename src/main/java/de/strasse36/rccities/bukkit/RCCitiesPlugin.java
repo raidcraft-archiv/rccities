@@ -5,6 +5,7 @@ import de.strasse36.rccities.commands.PlotCommandAllocater;
 import de.strasse36.rccities.commands.RCCitiesCommandAllocater;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.RCCitiesDatabase;
+import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
 import de.strasse36.rccities.util.TableHandler;
 
@@ -22,6 +23,7 @@ public class RCCitiesPlugin extends BukkitBasePlugin
         MainConfig.init(this);
         _self = this;
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
         registerCommand("rccities", new RCCitiesCommandAllocater());
         registerCommand("plot", new PlotCommandAllocater());
         RCCitiesDatabase.init();

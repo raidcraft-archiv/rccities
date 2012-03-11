@@ -25,5 +25,12 @@ permissions:
         rccities.cmd.create: true
         rccities.cmd.mayor: true
         rccities.cmd.spawnall: true
+        rccities.build.place: true
+        rccities.build.destroy: true
+
+  rccities.admin:
+    description: Gives access to all rccities skills
+    default: op
+    children:
         rccities.cmd.setname: true
         rccities.cmd.demolish: true

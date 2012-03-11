@@ -5,6 +5,7 @@ import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
+import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.Profession;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.WorldGuardManager;
@@ -96,6 +97,9 @@ public class ModCommands
         }
         //set mayor
         Profession.setMayor(player, city);
+
+        //update region owners
+        ChunkUtil.updatePlotOwner(city);
     }
     
     public static void setCityName(CommandSender sender, String[] args)
