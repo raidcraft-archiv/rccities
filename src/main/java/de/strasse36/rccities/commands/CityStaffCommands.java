@@ -355,5 +355,4 @@ public class CityStaffCommands {
         RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
-
 }

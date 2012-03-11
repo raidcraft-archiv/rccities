@@ -14,9 +14,13 @@ import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -564,5 +568,51 @@ public class PlotCommands {
         TableHandler.get().getPlotTable().updatePlot(selectedPlot);
         ChunkUtil.setPublic(resident.getCity());
         RCMessaging.send(sender, RCMessaging.blue("Der Plot kann nun von allen Einwohnern bebaut werden!"));
+    }
+
+    public static void highlight(CommandSender sender)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+        for(ProtectedRegion region : regionSet)
+        {
+            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
+            {
+                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+            }
+        }
+
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+        
+        Chunk chunk = player.getLocation().getChunk();
+        ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
+        List<Material> materialBackup = new ArrayList<Material>();
+        for(int i = 0; i<16; i++)
+        {
+            materialBackup.add(chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0).getType());
+            chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0).setType(Material.GLOWSTONE); 
+        }
+        //TODO
     }
 }

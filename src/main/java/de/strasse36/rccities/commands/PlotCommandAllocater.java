@@ -66,9 +66,16 @@ public class PlotCommandAllocater implements CommandExecutor
 
         if(args.length > 0 && args[0].equals("public"))
         {
-            PlotCommands.publicPlot(sender, args);
+            PlotCommands.publicPlot(sender);
             return true;
         }
+
+        if(args.length > 0 && args[0].equals("highlight"))
+        {
+            PlotCommands.highlight(sender);
+            return true;
+        }
+
 
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
         RCMessaging.warn(sender, "Falsche Anzahl an Parameter?");
