@@ -4,6 +4,8 @@ import com.silthus.raidcraft.util.RCLogger;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
@@ -82,7 +84,18 @@ public class WorldGuardManager {
     
     public static void setTownFlags(String regionId)
     {
-        //TODO
+        getRegion(regionId).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.MOB_DAMAGE, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.CREEPER_EXPLOSION, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.GHAST_FIREBALL, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.ENDER_BUILD, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.FIRE_SPREAD, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.LIGHTNING, StateFlag.State.DENY);
+        getRegion(regionId).setFlag(DefaultFlag.CHEST_ACCESS, StateFlag.State.ALLOW);
+        getRegion(regionId).setFlag(DefaultFlag.PLACE_VEHICLE, StateFlag.State.ALLOW);
+        getRegion(regionId).setFlag(DefaultFlag.DESTROY_VEHICLE, StateFlag.State.ALLOW);
     }
     
     public static void addOwner(String regionId, String playerName)

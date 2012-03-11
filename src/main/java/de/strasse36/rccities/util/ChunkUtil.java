@@ -82,7 +82,7 @@ public class ChunkUtil {
                 member = WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString();
                 if(member.length() == 0)
                 {
-                    member = "~keine Besitzer~";
+                    member = "~kein Besitzer~";
                 }
                 greetingMessage = plot.getRegionId() + ": " + member;
             }

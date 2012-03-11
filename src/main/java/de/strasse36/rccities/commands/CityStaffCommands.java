@@ -218,7 +218,7 @@ public class CityStaffCommands {
         City city = resident.getCity();
         city.setDescription(newDesc);
         TableHandler.get().getCityTable().updateCity(city);
-        RCMessaging.send(sender, "Die Beschreibung der Stadt wurde geändert!");
+        RCMessaging.send(sender, RCMessaging.blue("Die Beschreibung der Stadt wurde geändert!"));
     }
     
     public static void greetings(CommandSender sender, String[] args)
@@ -302,4 +302,5 @@ public class CityStaffCommands {
         //town message
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
     }
+
 }

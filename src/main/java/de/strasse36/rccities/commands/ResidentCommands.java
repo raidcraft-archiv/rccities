@@ -11,6 +11,8 @@ import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /**
  * Author: Philip Urban
  * Date: 01.03.12 - 14:27
@@ -20,7 +22,62 @@ public class ResidentCommands {
 
     public static void showTownInfo(CommandSender sender)
     {
-        //TODO
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        String mayors = "", vicemayors = "", assistants = "", residents = "";
+        int n_mayors = 0, n_vicemayors = 0, n_assistants = 0, n_residents = 0;
+
+        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(resident.getCity());
+        for(Resident res : residentList)
+        {
+            if(res.isMayor())
+            {
+                if(mayors.length()>0)
+                    mayors += ", ";
+                mayors += res.getName();
+                n_mayors++;
+            }
+            else if(res.isViceMayor())
+            {
+                if(vicemayors.length()>0)
+                    vicemayors += ", ";
+                vicemayors += res.getName();
+                n_vicemayors++;
+            }
+            else if(res.isAssistant())
+            {
+                if(assistants.length()>0)
+                    assistants += ", ";
+                assistants += res.getName();
+                n_assistants++;
+            }
+            else
+            {
+                if(residents.length()>0)
+                    residents += ", ";
+                residents += res.getName();
+                n_residents++;
+            }
+        }
+
+        RCMessaging.send(sender, RCMessaging.green("--- Raid-Craft Cities ---"), false);
+        RCMessaging.send(sender, RCMessaging.green("Stadtinformationen für: ") + resident.getCity().getName(), false);
+        RCMessaging.send(sender, RCMessaging.green("Beschreibung: ") + resident.getCity().getDescription(), false);
+        RCMessaging.send(sender, RCMessaging.green("Stadtkasse: ") + RCCitiesPlugin.get().getEconomy().getBalance(resident.getCity().getBankAccount()) + "c", false);
+        RCMessaging.send(sender, RCMessaging.green("Chunks: ") + TableHandler.get().getPlotTable().getPlots(resident.getCity()).size() + "/" + resident.getCity().getSize() + " claimed", false);
+        RCMessaging.send(sender, RCMessaging.green("Bürgermeister (" + n_mayors + "): ") + mayors, false);
+        if(n_vicemayors > 0)
+            RCMessaging.send(sender, RCMessaging.green("Vize-Bürgermeister (" + n_vicemayors + "): ") + vicemayors, false);
+        if(n_assistants > 0)
+            RCMessaging.send(sender, RCMessaging.green("Assistenten (" + n_assistants + "): ") + assistants, false);
+        if(n_residents > 0)
+            RCMessaging.send(sender, RCMessaging.green("Einwohner (" + n_residents + "): ") + residents, false);
     }
 
     public static void teleportToTownspawn(CommandSender sender, String[] args)

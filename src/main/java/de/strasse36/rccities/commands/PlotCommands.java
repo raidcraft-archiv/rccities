@@ -1,6 +1,7 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.Assignment;
@@ -25,7 +26,38 @@ public class PlotCommands {
 
     public static void showPlotInfo(CommandSender sender)
     {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
 
+        //plot exist?
+        List<Plot> cityPlots = TableHandler.get().getPlotTable().getPlots(resident.getCity());
+        Plot thisPlot = null;
+        for(Plot plot : cityPlots)
+        {
+            if(plot.getX() == player.getLocation().getChunk().getX() && plot.getZ() == player.getLocation().getChunk().getZ())
+            {
+                thisPlot = plot;
+                break;
+            }
+        }
+        if(thisPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        RCMessaging.send(sender, RCMessaging.green("--- Raid-Craft Cities ---"), false);
+        RCMessaging.send(sender, RCMessaging.green("Plotinformation für: ") + thisPlot.getRegionId(), false);
+        String member = WorldGuardManager.getRegion(thisPlot.getRegionId()).getMembers().toUserFriendlyString();
+        if(member.length() == 0)
+            member = "~keine~";
+        RCMessaging.send(sender, RCMessaging.green("Besitzer: ") + member, false);
     }
 
     public static void claim(CommandSender sender)
@@ -141,7 +173,7 @@ public class PlotCommands {
         }
         if(thisPlot == null)
         {
-            PlotCommandUtility.noplot(sender);
+            PlotCommandUtility.noCitychunk(sender);
             return;
         }
 
@@ -360,5 +392,64 @@ public class PlotCommands {
         TableHandler.get().getCityTable().updateCity(resident.getCity());
 
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue("Die max. Stadtgrösse hat sich um " + amount + " Chunks erhöht!"));
+    }
+
+    public static void clear(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            RCCitiesCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            RCCitiesCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //get plot
+        Plot selectedPlot = null;
+        if(args.length > 1)
+        {
+            selectedPlot = TableHandler.get().getPlotTable().getPlot(args[1]);
+            if(selectedPlot == null)
+            {
+                PlotCommandUtility.noplot(sender);
+                return;
+            }
+        }
+        else
+        {
+            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
+            for(ProtectedRegion region : regionSet)
+            {
+                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
+                {
+                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+                }
+            }
+        }
+        if(selectedPlot == null)
+        {
+            PlotCommandUtility.noCitychunk(sender);
+            return;
+        }
+
+        //clear assignments
+        TableHandler.get().getAssignmentsTable().deleteAssignment(selectedPlot);
+
+        //clear region members
+        WorldGuardManager.getRegion(selectedPlot.getRegionId()).setMembers(new DefaultDomain());
+        WorldGuardManager.save();
+
+        //update plot messages
+        ChunkUtil.updateChunkMessages(resident.getCity());
+
+        RCMessaging.send(sender, RCMessaging.blue("Alle Besitzer des Plot '" + selectedPlot.getRegionId() + "' wurden entfernt!"));
     }
 }
