@@ -94,6 +94,13 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             return true;
         }
 
+        //pvp
+        if(args.length > 1 && args[0].equals("pvp"))
+        {
+            CityStaffCommands.pvp(sender, args);
+            return true;
+        }
+
         /////////////////////////////MODERATOR//////////////////////////////////////////
         //create city and nominate mayor
         if(args.length > 2 && args[0].equals("create"))

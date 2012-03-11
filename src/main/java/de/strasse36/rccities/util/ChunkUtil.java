@@ -92,4 +92,20 @@ public class ChunkUtil {
             WorldGuardManager.save();
         }
     }
+    
+    public static void setPublic(Plot plot)
+    {
+        City city = TableHandler.get().getCityTable().getCity(plot.getId());
+        if(city == null)
+            return;
+
+        DefaultDomain residents = new DefaultDomain();
+        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
+        for(Resident resident : residentList)
+        {
+            residents.addPlayer(resident.getName());
+        }
+        WorldGuardManager.getRegion(plot.getRegionId()).setOwners(residents);
+        WorldGuardManager.save();
+    }
 }
