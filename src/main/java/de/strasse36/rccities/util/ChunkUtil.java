@@ -1,13 +1,14 @@
 package de.strasse36.rccities.util;
 
-import com.silthus.raidcraft.util.RCLogger;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.silthus.raidcraft.util.Task;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
@@ -80,9 +81,7 @@ public class ChunkUtil {
                     ProtectedRegion protectedRegion = WorldGuardManager.getRegion(plot.getRegionId());
                     if(protectedRegion == null)
                     {
-                        RCLogger.warning("[RCCities] Die in der Datenbank aufgezeichneten Plots fuer Stadt '" + city.getName() + "' stimmen nicht mit den Worldguard Regionen ueberein!");
-                        RCLogger.warning("[RCCities] Region '" + plot.getRegionId() + "' wurde nicht gefunden! Plot-Synchronistation empfohlen!");
-                        return;
+                        protectedRegion = restoreCityPlot(plot);
                     }
                     protectedRegion.setOwners(leaders);
                 }
@@ -113,9 +112,7 @@ public class ChunkUtil {
                         ProtectedRegion protectedRegion = WorldGuardManager.getRegion(plot.getRegionId());
                         if(protectedRegion == null)
                         {
-                            RCLogger.warning("[RCCities] Die in der Datenbank aufgezeichneten Plots für Stadt '" + city.getName() + "' stimmen nicht mit den Worldguard Regionen überein!");
-                            RCLogger.warning("[RCCities] Region '" + plot.getRegionId() + "' wurde nicht gefunden! Plot-Synchronistation empfohlen!");
-                            return;
+                            protectedRegion = restoreCityPlot(plot);
                         }
                         member = RCMessaging.green(protectedRegion.getMembers().toUserFriendlyString());
                         greetingMessage = "";
@@ -176,5 +173,50 @@ public class ChunkUtil {
             }
         };
         task.startDelayed(7*20);
+    }
+
+    public static ProtectedRegion restoreCityPlot(Plot plot)
+    {
+        //check if plot already exist
+        ProtectedRegion region = WorldGuardManager.getRegion(plot.getRegionId());
+        if(region != null)
+            return region;
+        
+        //claim plot chunk
+        Location chunkLocation = new Location(plot.getCity().getSpawn().getWorld(), plot.getX()*16, 0, plot.getZ()*16);
+        ProtectedRegion newRegion = getProtectedCuboidRegion(plot.getRegionId(), chunkLocation);
+        WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(plot.getCity().getSpawn().getWorld()).addRegion(newRegion);
+        WorldGuardManager.setTownFlags(plot.getRegionId());
+
+        DefaultDomain members = new DefaultDomain();
+        //set public
+        if(plot.isOpen())
+        {
+
+            List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(plot.getCity());
+            for(Resident resident : residentList)
+            {
+                members.addPlayer(resident.getName());
+            }
+        }
+        //set member
+        else
+        {
+            List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(plot);
+            for(Assignment assignment : assignmentList)
+            {
+                members.addPlayer(TableHandler.get().getResidentTable().getResident(assignment.getResident_id()).getName());
+            }
+        }
+        WorldGuardManager.getRegion(plot.getRegionId()).setMembers(members);
+
+        //set pvp
+        if(plot.isPvp())
+            WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+
+        //set owner
+        updatePlotOwner(plot.getCity());
+
+        return newRegion;
     }
 }

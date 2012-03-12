@@ -86,7 +86,7 @@ public class AssignmentsTable extends RCTable {
     {
         Connection connection = getDatabase().getConnection();
         PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + " WHERE resident_id = '" + plot.getId() + "';"
+                "SELECT * FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
         );
         ResultSet resultSet = connection.execute(statement);
         List<Assignment> assignmentList = new ArrayList<Assignment>();

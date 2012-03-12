@@ -76,7 +76,15 @@ public class PlotCommands {
         if(thisPlot.isOpen())
             member = "~alle Einwohner~";
         else
-            member = WorldGuardManager.getRegion(thisPlot.getRegionId()).getMembers().toUserFriendlyString();
+        {
+            ProtectedRegion protectedRegion = WorldGuardManager.getRegion(thisPlot.getRegionId());
+            if(protectedRegion == null)
+            {
+                protectedRegion = ChunkUtil.restoreCityPlot(thisPlot);
+                ChunkUtil.saveWorldGuardDelayed();
+            }
+            member = protectedRegion.getMembers().toUserFriendlyString();
+        }
         if(member.length() == 0)
             member = "~keine~";
         RCMessaging.send(sender, RCMessaging.green("Besitzer: ") + member, false);
