@@ -159,7 +159,6 @@ public class ChunkUtil {
         updateChunkMessages(city);
     }
 
-
     public static void saveWorldGuardDelayed()
     {
         Task task = new Task(RCCitiesPlugin.get())
