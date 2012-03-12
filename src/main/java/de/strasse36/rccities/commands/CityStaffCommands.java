@@ -135,10 +135,10 @@ public class CityStaffCommands {
             RCCitiesCommandUtility.noResident(sender);
             return;
         }
-        //no mayor
-        if(!resident.isMayor())
+        //no leadership
+        if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -270,10 +270,10 @@ public class CityStaffCommands {
             RCCitiesCommandUtility.noResident(sender);
             return;
         }
-        //no mayor
-        if(!resident.isMayor())
+        //no leadership
+        if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            RCCitiesCommandUtility.noLeadership(sender);
             return;
         }
 

@@ -646,7 +646,7 @@ public class PlotCommands {
         RCMessaging.warn(sender, "'/plot public off' Macht den Plot wieder Privat.");
     }
 
-    public static void show(CommandSender sender)
+    public static void mark(CommandSender sender)
     {
         Player player = (Player)sender;
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());

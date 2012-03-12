@@ -16,7 +16,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
 
 
         /////////////////////////////RESIDENTS//////////////////////////////////////////
-        //show town info
+        //mark town info
         if(args.length == 0)
         {
             ResidentCommands.showTownInfo(sender);
@@ -83,7 +83,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
                 return true;
             }
 
-            //show region farewell & greetings
+            //mark region farewell & greetings
             if(args[0].equals("greetings"))
             {
                 CityStaffCommands.greetings(sender, args);

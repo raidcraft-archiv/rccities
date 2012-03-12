@@ -15,7 +15,7 @@ public class PlotCommandAllocater implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
         /////////////////////////////RESIDENTS//////////////////////////////////////////
-        //show plot info
+        //mark plot info
         if(args.length == 0)
         {
             PlotCommands.showPlotInfo(sender);
@@ -70,9 +70,9 @@ public class PlotCommandAllocater implements CommandExecutor
             return true;
         }
 
-        if(args.length > 0 && args[0].equals("show"))
+        if(args.length > 0 && args[0].equals("mark"))
         {
-            PlotCommands.show(sender);
+            PlotCommands.mark(sender);
             return true;
         }
 
