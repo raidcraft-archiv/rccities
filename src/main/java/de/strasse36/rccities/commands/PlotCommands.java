@@ -126,6 +126,7 @@ public class PlotCommands {
             return;
         }
 
+        //TODO PERFORMANCE!!!
         //generate serial id
         List<Plot> plots = TableHandler.get().getPlotTable().getPlots();
         int serialId = 0;
@@ -694,32 +695,41 @@ public class PlotCommands {
         //set torches
         Chunk chunk = player.getLocation().getChunk();
         ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
+        Block block, blockBelow;
         int i;
+
+        //EAST
         for(i = 0; i<16; i++)
         {
-            Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
-            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)-1, 0);
+            block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
+            blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)-1, 0);
             if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
+
+        //WEST
         for(i = 0; i<16; i++)
         {
-            Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
-            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15)-1, 15);
+            block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
+            blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15)-1, 15);
             if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
+
+        //NORTH
         for(i = 0; i<16; i++)
         {
-            Block block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
-            Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(0, i)-1, i);
+            block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
+            blockBelow = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i)-1, i);
             if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
+
+        //SOUTH
         for(i = 0; i<16; i++)
         {
-            Block block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
-            Block blockBelow = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i)-1, i);
+            block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
+            blockBelow = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i)-1, i);
             if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }

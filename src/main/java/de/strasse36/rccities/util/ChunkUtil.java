@@ -1,6 +1,8 @@
 package de.strasse36.rccities.util;
 
+import com.silthus.raidcraft.util.RCLogger;
 import com.silthus.raidcraft.util.RCMessaging;
+import com.silthus.raidcraft.util.Task;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -9,6 +11,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
@@ -53,53 +56,92 @@ public class ChunkUtil {
     
     public static void updatePlotOwner(City city)
     {
-        DefaultDomain leaders = new DefaultDomain();
-        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
-        for(Resident resident : residentList)
+        Task task = new Task(RCCitiesPlugin.get(), city)
         {
-            if(resident.isStaff())
+            @Override
+            public void run()
             {
-                leaders.addPlayer(resident.getName());
+                final City city = (City)getArg(0);
+                DefaultDomain leaders = new DefaultDomain();
+                List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
+                for(Resident resident : residentList)
+                {
+                    if(resident.isStaff())
+                    {
+                        leaders.addPlayer(resident.getName());
+                    }
+                }
+
+                List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
+                if(plotList == null)
+                    return;
+                for(Plot plot : plotList)
+                {
+                    ProtectedRegion protectedRegion = WorldGuardManager.getRegion(plot.getRegionId());
+                    if(protectedRegion == null)
+                    {
+                        RCLogger.warning("[RCCities] Die in der Datenbank aufgezeichneten Plots fuer Stadt '" + city.getName() + "' stimmen nicht mit den Worldguard Regionen ueberein!");
+                        RCLogger.warning("[RCCities] Region '" + plot.getRegionId() + "' wurde nicht gefunden! Plot-Synchronistation empfohlen!");
+                        return;
+                    }
+                    protectedRegion.setOwners(leaders);
+                }
             }
-        }
-        
-        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
-        for(Plot plot : plotList)
-        {
-            WorldGuardManager.getRegion(plot.getRegionId()).setOwners(leaders);
-        }
-        WorldGuardManager.save();
+        };
+        task.start(true);
+
+        //save worldguard yaml after few seconds
+        saveWorldGuardDelayed();
     }
 
     public static void updateChunkMessages(City city)
     {
-        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
-        String greetingMessage;
-        String member;
-        for(Plot plot : plotList)
+        //update messages in async task
+        Task task = new Task(RCCitiesPlugin.get(), city)
         {
-            if(city.isGreetings())
+            @Override
+            public void run()
             {
-                member = RCMessaging.green(WorldGuardManager.getRegion(plot.getRegionId()).getMembers().toUserFriendlyString());
-                greetingMessage = "";
-                if(plot.isPvp())
-                    greetingMessage = RCMessaging.red("~PVP~ ");
-                if(plot.isOpen())
-                    greetingMessage += RCMessaging.green("~öffentlich~");
-                else
-                    greetingMessage += member;
-
-                if(WorldGuardManager.getRegion(plot.getRegionId()).getMembers().size() == 0)
+                final City city = (City)getArg(0);
+                List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
+                String greetingMessage;
+                String member;
+                for(Plot plot : plotList)
                 {
-                    greetingMessage += RCMessaging.green("~kein Besitzer~");
+                    if(city.isGreetings())
+                    {
+                        ProtectedRegion protectedRegion = WorldGuardManager.getRegion(plot.getRegionId());
+                        if(protectedRegion == null)
+                        {
+                            RCLogger.warning("[RCCities] Die in der Datenbank aufgezeichneten Plots für Stadt '" + city.getName() + "' stimmen nicht mit den Worldguard Regionen überein!");
+                            RCLogger.warning("[RCCities] Region '" + plot.getRegionId() + "' wurde nicht gefunden! Plot-Synchronistation empfohlen!");
+                            return;
+                        }
+                        member = RCMessaging.green(protectedRegion.getMembers().toUserFriendlyString());
+                        greetingMessage = "";
+                        if(plot.isPvp())
+                            greetingMessage = RCMessaging.red("~PVP~ ");
+                        if(plot.isOpen())
+                            greetingMessage += RCMessaging.green("~öffentlich~");
+                        else
+                            greetingMessage += member;
+
+                        if(WorldGuardManager.getRegion(plot.getRegionId()).getMembers().size() == 0)
+                        {
+                            greetingMessage += RCMessaging.green("~kein Besitzer~");
+                        }
+                    }
+                    else
+                        greetingMessage = null;
+
+                    WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.GREET_MESSAGE, greetingMessage);
                 }
             }
-            else
-                greetingMessage = null;
+        };
+        task.start(true);
 
-            WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.GREET_MESSAGE, greetingMessage);
-            WorldGuardManager.save();
-        }
+        //save worldguard yaml after few seconds
+        saveWorldGuardDelayed();
     }
     
     public static void setPublic(City city)
@@ -120,5 +162,19 @@ public class ChunkUtil {
 
         //update chunk messages
         updateChunkMessages(city);
+    }
+
+
+    public static void saveWorldGuardDelayed()
+    {
+        Task task = new Task(RCCitiesPlugin.get())
+        {
+            @Override
+            public void run()
+            {
+                WorldGuardManager.save();
+            }
+        };
+        task.startDelayed(7*20);
     }
 }
