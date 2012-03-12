@@ -682,14 +682,14 @@ public class PlotCommands {
         }
 
         //check money
-        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), MainConfig.getShowPrice()))
+        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), MainConfig.getMarkPrice()))
         {
-            RCMessaging.warn(sender, "Das setzen des Fackelrahmens kostet " + MainConfig.getShowPrice() + "c!");
+            RCMessaging.warn(sender, "Das setzen des Fackelrahmens kostet " + MainConfig.getMarkPrice() + "c!");
             return;
         }
 
         //decrease money
-        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getShowPrice());
+        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getMarkPrice());
 
         //set torches
         Chunk chunk = player.getLocation().getChunk();
@@ -699,28 +699,28 @@ public class PlotCommands {
         {
             Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
             Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0)-1, 0);
-            if(Toolbox.checkForTorch(blockBelow))
+            if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
         for(i = 0; i<16; i++)
         {
             Block block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
             Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15)-1, 15);
-            if(Toolbox.checkForTorch(blockBelow))
+            if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
         for(i = 0; i<16; i++)
         {
             Block block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
             Block blockBelow = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(0, i)-1, i);
-            if(Toolbox.checkForTorch(blockBelow))
+            if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
         for(i = 0; i<16; i++)
         {
             Block block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
             Block blockBelow = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i)-1, i);
-            if(Toolbox.checkForTorch(blockBelow))
+            if(Toolbox.canBuildTorch(blockBelow))
                 block.setType(Material.TORCH);
         }
         RCMessaging.send(sender, RCMessaging.blue("Der Plot wurde mit einem Fackelrahmen markiert!"), false);

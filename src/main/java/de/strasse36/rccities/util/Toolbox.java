@@ -45,7 +45,7 @@ public class Toolbox {
             return -1;
     }
     
-    public static boolean checkForTorch(Block block)
+    public static boolean canBuildTorch(Block block)
     {
         return  !(
                 block.isLiquid() ||
