@@ -41,18 +41,16 @@ public class ChunkUtil {
 
         //RCMessaging.broadcast("X: " + blockVector1.getX() + " | Y: " + blockVector1.getY() + " | Z: " + blockVector1.getZ());
         //RCMessaging.broadcast("X: " + blockVector2.getX() + " | Y: " + blockVector2.getY() + " | Z: " + blockVector2.getZ());
-        BlockVector[] blockVectors = {
+        return new BlockVector[]{
                 blockVector1,
                 blockVector2
         };
-        return blockVectors;
     }
     
     public static ProtectedRegion getProtectedCuboidRegion(String id, Location location)
     {
         BlockVector[] blockVectors = ChunkUtil.getBlockVectors(location);
-        ProtectedRegion region = new ProtectedCuboidRegion(id, blockVectors[0], blockVectors[1]);
-        return region;
+        return new ProtectedCuboidRegion(id, blockVectors[0], blockVectors[1]);
     }
     
     public static void updatePlotOwner(City city)
