@@ -41,6 +41,26 @@ public class PlotTable extends RCTable {
         connection.executeUpdate(prepare);
     }
     
+    public int getNextIndex()
+    {
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepare(
+                "SHOW TABLE STATUS LIKE '" + getName() + "';"
+        );
+        ResultSet resultSet = connection.execute(statement);
+        try {
+            if (resultSet.next()) {
+                do {
+                    return resultSet.getInt("Auto_increment");
+                } while (resultSet.next());
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+    
     public Plot getPlot(int id)
     {
         Connection connection = getDatabase().getConnection();

@@ -141,19 +141,27 @@ public class ChunkUtil {
     
     public static void setPublic(City city)
     {
-        DefaultDomain residents = new DefaultDomain();
-        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
-        for(Resident resident : residentList)
+        Task task = new Task(RCCitiesPlugin.get(), city)
         {
-            residents.addPlayer(resident.getName());
-        }
+            @Override
+            public void run()
+            {
+                final City city = (City)getArg(0);
+                DefaultDomain residents = new DefaultDomain();
+                List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
+                for(Resident resident : residentList)
+                {
+                    residents.addPlayer(resident.getName());
+                }
 
-        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(1);
-        for(Plot plot : plotList)
-        {
-            WorldGuardManager.getRegion(plot.getRegionId()).setMembers(residents);
-        }
-        WorldGuardManager.save();
+                List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(1);
+                for(Plot plot : plotList)
+                {
+                    WorldGuardManager.getRegion(plot.getRegionId()).setMembers(residents);
+                }
+            }
+        };
+        task.start(true);
 
         //update chunk messages
         updateChunkMessages(city);

@@ -134,16 +134,8 @@ public class PlotCommands {
             return;
         }
 
-        //TODO PERFORMANCE!!!
         //generate serial id
-        List<Plot> plots = TableHandler.get().getPlotTable().getPlots();
-        int serialId = 0;
-        for(Plot plot : plots)
-        {
-            if(plot.getId()>serialId)
-                serialId = plot.getId();
-        }
-        serialId++;
+        int serialId = TableHandler.get().getPlotTable().getNextIndex();
         String regionId = resident.getCity().getName().toLowerCase()+"_"+serialId;
 
         //insert new plot in database
