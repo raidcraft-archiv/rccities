@@ -7,6 +7,7 @@ import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
@@ -174,6 +175,8 @@ public class CityStaffCommands {
             RCMessaging.warn(kickPlayer, "Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!");
         TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + " geworfen!"));
 
+        resident.getCity().setSize(resident.getCity().getSize()- MainConfig.getChunksPerPlayer());
+        TableHandler.get().getCityTable().updateCity(resident.getCity());
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());
 
@@ -220,7 +223,7 @@ public class CityStaffCommands {
         }
 
         invites.put(player.getName(), resident.getCity());
-        RCMessaging.send(sender, "Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!", false);
+        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!"), false);
         RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + " eingeladen!"), false);
         RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"), false);
     }
