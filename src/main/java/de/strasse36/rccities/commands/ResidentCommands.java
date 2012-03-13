@@ -1,9 +1,11 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import com.silthus.raidcraft.util.Task;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,7 +79,7 @@ public class ResidentCommands {
             RCMessaging.send(sender, RCMessaging.green("Einwohner (" + n_residents + "): ") + residents, false);
     }
 
-    public static void teleportToTownspawn(CommandSender sender, String[] args)
+    public static void townspawn(CommandSender sender, String[] args)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
         //no resident
@@ -95,14 +97,32 @@ public class ResidentCommands {
         {
             city = TableHandler.get().getResidentTable().getResident(sender.getName()).getCity();
         }
+        
         //city not found
         if(city == null)
         {
             RCCitiesCommandUtility.noCityFound(sender);
             return;
         }
-        Teleport.teleportPlayer((Player) sender, city);
-        RCMessaging.send(sender, RCMessaging.blue("Willkommen am Townspawn von " + city.getName()), false);
+        
+        //warmup
+        int warmup = 0;
+        if(!sender.hasPermission("rccities.cmd.spawnall"))
+            warmup = MainConfig.getTownspawnWarmup();
+        RCMessaging.send(sender, RCMessaging.blue("Warten auf Teleport..."), false);
+        Task task = new Task(RCCitiesPlugin.get(), (Player)sender, city)
+        {
+            @Override
+            public void run()
+            {
+                final Player player = (Player)getArg(0);
+                final City city = (City)getArg(1);
+                Teleport.teleportPlayer(player, city);
+                RCMessaging.send(player, RCMessaging.blue("Willkommen am Townspawn von '" + city.getName() + "'"), false);
+            }
+        };
+        task.startDelayed(warmup*20);
+        
     }
 
     public static void leaveTown(CommandSender sender)

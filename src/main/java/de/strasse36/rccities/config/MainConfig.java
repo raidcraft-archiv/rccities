@@ -61,6 +61,11 @@ public class MainConfig {
         return getConfig().getConfigurationSection("rccities").getDouble("markPrice", 0);
     }
 
+    public static int getTownspawnWarmup()
+    {
+        return getConfig().getConfigurationSection("rccities").getInt("townspawnWarmup", 0);
+    }
+
     public static class DatabaseConfig {
 
         private ConfigurationSection section;

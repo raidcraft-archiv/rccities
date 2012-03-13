@@ -25,3 +25,5 @@ rccities:
     chunkPrice: 5000.0
     # coins per /plot show
     markPrice: 60.0
+    # town spawn warmup in seconds
+    townspawnWarmup: 2

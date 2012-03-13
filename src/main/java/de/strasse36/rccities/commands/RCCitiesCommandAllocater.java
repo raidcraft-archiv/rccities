@@ -35,7 +35,7 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             //teleport player to townspawn
             if(args[0].equals("spawn"))
             {
-                ResidentCommands.teleportToTownspawn(sender, args);
+                ResidentCommands.townspawn(sender, args);
                 return true;
             }
 
