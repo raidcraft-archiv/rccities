@@ -9,8 +9,19 @@ import org.bukkit.command.CommandSender;
  * Date: 26.02.12 - 20:14
  * Description:
  */
-public class RCCitiesCommandUtility
+public class TownCommandUtility
 {
+    public static void help(CommandSender sender)
+    {
+        RCMessaging.send(sender, RCMessaging.green("-----------------------------------------------------"), false);
+        RCMessaging.send(sender, RCMessaging.green("RCCities: Verfügbare '/town' Hauptparameter:"), false);
+        RCMessaging.send(sender, RCMessaging.yellow("list, spawn, setspawn, promote, kick, invite, setdesc, greetings, withdraw, pvp, create, demolish, setname"), false);
+        RCMessaging.send(sender, RCMessaging.green("Die Beschreibung der einzelnen Parameter findest Du unter:"), false);
+        //TODO update wiki link
+        RCMessaging.send(sender, "http://strasse36.raid-craft.de/rccities/wiki.php", false);
+        RCMessaging.send(sender, RCMessaging.green("-----------------------------------------------------"), false);
+    }
+
     //shows no player found message
     public static void noPlayerFound(CommandSender sender)
     {

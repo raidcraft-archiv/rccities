@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
  * Date: 26.02.12 - 20:14
  * Description:
  */
-public class RCCitiesCommandAllocater implements CommandExecutor
+public class TownCommandAllocater implements CommandExecutor
 {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
@@ -153,6 +153,14 @@ public class RCCitiesCommandAllocater implements CommandExecutor
             if(args[0].equals("list"))
             {
                 NonResidentCommands.listTowns(sender);
+                return true;
+            }
+
+            /////////////////////////////OTHERS//////////////////////////////////////////
+            //help
+            if(args[0].equals("help"))
+            {
+                TownCommandUtility.help(sender);
                 return true;
             }
         }

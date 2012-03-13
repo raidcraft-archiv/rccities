@@ -33,19 +33,19 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no mayor
         if(!resident.isMayor())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            TownCommandUtility.noMayor(sender);
             return;
         }
 
         if(((Player)sender).getWorld() != resident.getCity().getSpawn().getWorld())
         {
-            RCCitiesCommandUtility.wrongWorld(sender);
+            TownCommandUtility.wrongWorld(sender);
             return;
         }
 
@@ -61,13 +61,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no mayor
         if(!resident.isMayor())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            TownCommandUtility.noMayor(sender);
             return;
         }
 
@@ -83,7 +83,7 @@ public class CityStaffCommands {
         {
             if(args[2].equalsIgnoreCase("mayor"))
             {
-            RCCitiesCommandUtility.selfAction(sender);
+            TownCommandUtility.selfAction(sender);
             return;
             }
             else
@@ -108,7 +108,7 @@ public class CityStaffCommands {
         Resident selectedResident = ResidentHelper.isResident(args[1], resident.getCity());
         if(selectedResident == null)
         {
-            RCCitiesCommandUtility.selectNoResident(sender);
+            TownCommandUtility.selectNoResident(sender);
             return;
         }
 
@@ -132,13 +132,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -152,7 +152,7 @@ public class CityStaffCommands {
 
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
-            RCCitiesCommandUtility.selfAction(sender);
+            TownCommandUtility.selfAction(sender);
             return;
         }
 
@@ -188,13 +188,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no stafff
         if(!resident.isStaff())
         {
-            RCCitiesCommandUtility.onlyStaff(sender);
+            TownCommandUtility.onlyStaff(sender);
             return;
         }
 
@@ -208,14 +208,14 @@ public class CityStaffCommands {
 
         if(sender.getName().equalsIgnoreCase(args[1]))
         {
-            RCCitiesCommandUtility.selfAction(sender);
+            TownCommandUtility.selfAction(sender);
             return;
         }
 
         Player player = Bukkit.getPlayerExact(args[1]);
         if(player == null)
         {
-            RCCitiesCommandUtility.noPlayerFound(sender);
+            TownCommandUtility.noPlayerFound(sender);
             return;
         }
 
@@ -231,13 +231,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no stafff
         if(!resident.isMayor())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            TownCommandUtility.noMayor(sender);
             return;
         }
         String newDesc = "";
@@ -267,13 +267,13 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -315,14 +315,14 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no mayor
         if(!resident.isMayor())
         {
-            RCCitiesCommandUtility.noMayor(sender);
+            TownCommandUtility.noMayor(sender);
             return;
         }
 
@@ -338,7 +338,7 @@ public class CityStaffCommands {
         double amount = Toolbox.isDouble(args[1]);
         if(amount == -1)
         {
-            RCCitiesCommandUtility.wrongAmount(sender);
+            TownCommandUtility.wrongAmount(sender);
             return;
         }
 
@@ -366,14 +366,14 @@ public class CityStaffCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no leader
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 

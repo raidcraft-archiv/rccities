@@ -37,7 +37,7 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
@@ -97,13 +97,13 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -173,13 +173,13 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -221,13 +221,13 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -243,7 +243,7 @@ public class PlotCommands {
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
         if(selectedResident == null || selectedResident.getCity().getId() != resident.getCity().getId())
         {
-            RCCitiesCommandUtility.selectNoResident(sender);
+            TownCommandUtility.selectNoResident(sender);
             return;
         }
 
@@ -310,13 +310,13 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -332,7 +332,7 @@ public class PlotCommands {
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
         if(selectedResident == null)
         {
-            RCCitiesCommandUtility.selectNoResident(sender);
+            TownCommandUtility.selectNoResident(sender);
             return;
         }
 
@@ -409,13 +409,13 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //no leadership
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -431,7 +431,7 @@ public class PlotCommands {
         int amount = Toolbox.isInteger(args[1]);
         if(amount == -1)
         {
-            RCCitiesCommandUtility.wrongAmount(sender);
+            TownCommandUtility.wrongAmount(sender);
             return;
         }
 
@@ -461,14 +461,14 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no leader
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -520,14 +520,14 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no leader
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -587,14 +587,14 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no leader
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 
@@ -654,14 +654,14 @@ public class PlotCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
         //no leader
         if(!resident.isLeadership())
         {
-            RCCitiesCommandUtility.noLeadership(sender);
+            TownCommandUtility.noLeadership(sender);
             return;
         }
 

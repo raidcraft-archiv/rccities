@@ -25,7 +25,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
@@ -85,7 +85,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         City city;
@@ -101,7 +101,7 @@ public class ResidentCommands {
         //city not found
         if(city == null)
         {
-            RCCitiesCommandUtility.noCityFound(sender);
+            TownCommandUtility.noCityFound(sender);
             return;
         }
         
@@ -131,7 +131,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
         //mayor
@@ -161,7 +161,7 @@ public class ResidentCommands {
         //no resident
         if(resident == null || resident.getCity() == null)
         {
-            RCCitiesCommandUtility.noResident(sender);
+            TownCommandUtility.noResident(sender);
             return;
         }
 
@@ -177,7 +177,7 @@ public class ResidentCommands {
         double amount = Toolbox.isDouble(args[1]);
         if(amount == -1)
         {
-            RCCitiesCommandUtility.wrongAmount(sender);
+            TownCommandUtility.wrongAmount(sender);
             return;
         }
 
