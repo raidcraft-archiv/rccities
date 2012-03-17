@@ -73,6 +73,7 @@ public class Taxes {
     private void penalty(City city)
     {
         city.setSize(city.getSize()- MainConfig.getPlotsPerPenalty());
+        city.setLastPenalty(System.currentTimeMillis()/1000);
         TableHandler.get().getCityTable().updateCity(city);
     }
 }
