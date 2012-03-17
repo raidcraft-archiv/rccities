@@ -15,6 +15,7 @@ public class City {
     private long size;
     private Location spawn;
     private boolean greetings;
+    private long lastPenalty;
 
     public City()
     {
@@ -89,5 +90,13 @@ public class City {
 
     public String getBankAccount() {
         return "rccities_" + getName().toLowerCase();
+    }
+
+    public long getLastPenalty() {
+        return lastPenalty;
+    }
+
+    public void setLastPenalty(long lastPenalty) {
+        this.lastPenalty = lastPenalty;
     }
 }

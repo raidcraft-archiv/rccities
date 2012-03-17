@@ -8,6 +8,7 @@ import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
 import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.util.Taxes;
 
 /**
  * Author: Philip Urban
@@ -28,6 +29,7 @@ public class RCCitiesPlugin extends BukkitBasePlugin
         registerCommand("plot", new PlotCommandAllocater());
         RCCitiesDatabase.init();
         TableHandler.init();
+        Taxes.init();
     }
 
     public static RCCitiesPlugin get()

@@ -76,10 +76,10 @@ public class TableHandler {
     }
 
     public PlotTable getPlotTable() {
-        return plotTable;
+        return this.plotTable;
     }
 
     public AssignmentsTable getAssignmentsTable() {
-        return assignmentsTable;
+        return this.assignmentsTable;
     }
 }

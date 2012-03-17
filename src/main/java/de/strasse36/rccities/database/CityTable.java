@@ -41,7 +41,8 @@ public class CityTable extends RCTable {
                         "`spawn_z` DOUBLE NULL ," +
                         "`spawn_pitch` FLOAT NULL ," +
                         "`spawn_yaw` FLOAT NULL ," +
-                        "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 " +
+                        "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 ," +
+                        "`last_penalty` BIGINT NULL" +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
     }
@@ -72,6 +73,7 @@ public class CityTable extends RCTable {
                     );
                     city.setSpawn(spawn);
                     city.setGreetings(resultSet.getBoolean("greetings"));
+                    city.setLastPenalty(resultSet.getLong("last_penalty"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -109,6 +111,7 @@ public class CityTable extends RCTable {
                     );
                     city.setSpawn(spawn);
                     city.setGreetings(resultSet.getBoolean("greetings"));
+                    city.setLastPenalty(resultSet.getLong("last_penalty"));
                 } while (resultSet.next());
             } else {
                 return null;
@@ -146,6 +149,7 @@ public class CityTable extends RCTable {
                         );
                 city.setSpawn(spawn);
                 city.setGreetings(resultSet.getBoolean("greetings"));
+                city.setLastPenalty(resultSet.getLong("last_penalty"));
                 citylist.add(city);
             }
             return citylist;
@@ -192,7 +196,8 @@ public class CityTable extends RCTable {
                         "spawn_z = '" + city.getSpawn().getZ() + "'," +
                         "spawn_pitch = '" + city.getSpawn().getPitch() + "'," +
                         "spawn_yaw = '" + city.getSpawn().getYaw() + "'," +
-                        "greetings = '" + city.getGreetings() + "'" +
+                        "greetings = '" + city.getGreetings() + "'," +
+                        "last_penalty = '" + city.getLastPenalty() + "'" +
                         " WHERE id = '" + city.getId() + "';"
         );
         connection.executeUpdate(statement);
