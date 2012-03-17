@@ -71,6 +71,21 @@ public class MainConfig {
         return getConfig().getConfigurationSection("rccities").getString("cityWorld", "world");
     }
 
+    public static int getLevyInterval()
+    {
+        return getConfig().getConfigurationSection("rccities").getInt("levyInterval", 24);
+    }
+
+    public static double getTaxAmount()
+    {
+        return getConfig().getConfigurationSection("rccities").getInt("taxAmount", 50);
+    }
+
+    public static int getPlotsPerPenalty()
+    {
+        return getConfig().getConfigurationSection("rccities").getInt("plotsPerPenalty", 1);
+    }
+
     public static class DatabaseConfig {
 
         private ConfigurationSection section;

@@ -42,6 +42,7 @@ public class CityTable extends RCTable {
                         "`spawn_pitch` FLOAT NULL ," +
                         "`spawn_yaw` FLOAT NULL ," +
                         "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 ," +
+                        "`last_tax_payment` BIGINT NULL ," +
                         "`last_penalty` BIGINT NULL" +
                         ") ENGINE = InnoDB;");
         connection.executeUpdate(prepare);
@@ -73,6 +74,7 @@ public class CityTable extends RCTable {
                     );
                     city.setSpawn(spawn);
                     city.setGreetings(resultSet.getBoolean("greetings"));
+                    city.setLastTaxPayment(resultSet.getLong("last_tax_payment"));
                     city.setLastPenalty(resultSet.getLong("last_penalty"));
                 } while (resultSet.next());
             } else {
@@ -111,6 +113,7 @@ public class CityTable extends RCTable {
                     );
                     city.setSpawn(spawn);
                     city.setGreetings(resultSet.getBoolean("greetings"));
+                    city.setLastTaxPayment(resultSet.getLong("last_tax_payment"));
                     city.setLastPenalty(resultSet.getLong("last_penalty"));
                 } while (resultSet.next());
             } else {
@@ -149,6 +152,7 @@ public class CityTable extends RCTable {
                         );
                 city.setSpawn(spawn);
                 city.setGreetings(resultSet.getBoolean("greetings"));
+                city.setLastTaxPayment(resultSet.getLong("last_tax_payment"));
                 city.setLastPenalty(resultSet.getLong("last_penalty"));
                 citylist.add(city);
             }
@@ -197,6 +201,7 @@ public class CityTable extends RCTable {
                         "spawn_pitch = '" + city.getSpawn().getPitch() + "'," +
                         "spawn_yaw = '" + city.getSpawn().getYaw() + "'," +
                         "greetings = '" + city.getGreetings() + "'," +
+                        "last_tax_payment = '" + city.getLastTaxPayment() + "'," +
                         "last_penalty = '" + city.getLastPenalty() + "'" +
                         " WHERE id = '" + city.getId() + "';"
         );
