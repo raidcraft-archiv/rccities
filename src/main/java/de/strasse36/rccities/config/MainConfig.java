@@ -66,6 +66,11 @@ public class MainConfig {
         return getConfig().getConfigurationSection("rccities").getInt("townspawnWarmup", 0);
     }
 
+    public static String getCityWorld()
+    {
+        return getConfig().getConfigurationSection("rccities").getString("cityWorld", "world");
+    }
+
     public static class DatabaseConfig {
 
         private ConfigurationSection section;

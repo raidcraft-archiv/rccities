@@ -27,3 +27,5 @@ rccities:
     markPrice: 60.0
     # town spawn warmup in seconds
     townspawnWarmup: 2
+    # city-world
+    cityWorld: 'world'

@@ -90,6 +90,46 @@ public class PlotCommands {
         RCMessaging.send(sender, RCMessaging.green("Besitzer: ") + member, false);
     }
 
+    public static void list(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            TownCommandUtility.noResident(sender);
+            return;
+        }
+        Resident selectedResident;
+        if(args.length > 1)
+        {
+            selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
+            if(selectedResident == null)
+            {
+                TownCommandUtility.selectNoResident(sender);
+                return;
+            }
+        }
+        else
+            selectedResident = resident;
+        
+        List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(resident);
+        RCMessaging.send(sender, RCMessaging.green("--- RCCities: Plotliste von " + selectedResident.getName() + " ---"), false);
+        if(assignmentList.size() == 0)
+        {
+            RCMessaging.send(sender, RCMessaging.green("Der Spieler besitzt derzeit keine Plots!"), false);
+            return;
+        }
+        String plotNames = "";
+        for(Assignment assignment : assignmentList)
+        {
+            if(plotNames.length() > 0)
+                plotNames += ", ";
+            plotNames += TableHandler.get().getPlotTable().getPlot(assignment.getPlot_id()).getRegionId();
+        }
+        RCMessaging.send(sender, RCMessaging.green(plotNames), false);
+    }
+
     public static void claim(CommandSender sender)
     {
         Player player = (Player)sender;

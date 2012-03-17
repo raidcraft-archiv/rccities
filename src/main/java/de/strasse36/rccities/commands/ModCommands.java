@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.Profession;
@@ -48,6 +49,13 @@ public class ModCommands
         if(player == null)
         {
             TownCommandUtility.noPlayerFound(sender);
+            return;
+        }
+
+        //check city world
+        if(!MainConfig.getCityWorld().equalsIgnoreCase(newCity.getSpawn().getWorld().getName()))
+        {
+            TownCommandUtility.wrongWorld(sender);
             return;
         }
 

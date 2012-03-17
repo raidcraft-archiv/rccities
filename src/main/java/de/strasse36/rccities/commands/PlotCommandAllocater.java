@@ -79,6 +79,13 @@ public class PlotCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            /////////////////////////////RESIDENTS///////////////////////////////////////
+            if(args[0].equals("list"))
+            {
+                PlotCommands.list(sender, args);
+                return true;
+            }
+
             /////////////////////////////OTHERS//////////////////////////////////////////
             //help
             if(args[0].equals("help"))
