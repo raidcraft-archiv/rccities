@@ -3,6 +3,7 @@ package de.strasse36.rccities.database;
 import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
+import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.util.TableHandler;
@@ -27,24 +28,22 @@ public class ResidentTable extends RCTable {
 
     @Override
     public void createTable() {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement prepare = connection.prepare(
-                "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (\n" +
-                    "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
-                    "`name` VARCHAR( 32 ) NULL ," +
-                    "`city` INT NULL ," +
-                    "`profession` VARCHAR( 32 ) NULL" +
-                ") ENGINE = InnoDB;"
+        PreparedStatement prepare = getDatabase().prepare(
+		        "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (\n" +
+				        "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
+				        "`name` VARCHAR( 32 ) NULL ," +
+				        "`city` INT NULL ," +
+				        "`profession` VARCHAR( 32 ) NULL" +
+				        ") ENGINE = InnoDB;"
         );
-        connection.executeUpdate(prepare);
+        getDatabase().executeUpdate(prepare);
     }
 
     public List<Resident> getResidents() {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + ";"
+        PreparedStatement statement = getDatabase().prepare(
+		        "SELECT * FROM " + getName() + ";"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Resident> residentlist = new ArrayList<Resident>();
         try {
             Resident resident;
@@ -58,17 +57,16 @@ public class ResidentTable extends RCTable {
             }
             return residentlist;
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	        RCLogger.warning(e.getMessage());
         }
         return null;
     }
 
     public List<Resident> getResidents(City city) {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Resident> residentlist = new ArrayList<Resident>();
         try {
             Resident resident;
@@ -86,17 +84,16 @@ public class ResidentTable extends RCTable {
             }
             return residentlist;
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+           RCLogger.warning(e.getMessage());
         }
         return null;
     }
 
     public Resident getResident(int id) {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
             Resident resident;
             if (resultSet.next()) {
@@ -117,11 +114,10 @@ public class ResidentTable extends RCTable {
     }
 
     public Resident getResident(String name) {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
             Resident resident;
             if (resultSet.next()) {
@@ -143,11 +139,10 @@ public class ResidentTable extends RCTable {
 
     public void updateResident(Resident resident)
     {
-        Connection connection = getConnection();
         PreparedStatement statement;
         if(getResident(resident.getName()) == null)
         {
-            statement = connection.prepare(
+            statement = getDatabase().prepare(
                     "INSERT INTO "  + getName() + "(name, city, profession) VALUES (" +
                             "'" + resident.getName() + "'," +
                             "'" + resident.getCity().getId() + "'," +
@@ -158,7 +153,7 @@ public class ResidentTable extends RCTable {
         }
         else
         {
-            statement = connection.prepare(
+            statement = getDatabase().prepare(
                     "UPDATE " + getName() + " SET " +
                             "name = '" + resident.getName() + "'," +
                             "city = '" + resident.getCity().getId() + "'," +
@@ -166,6 +161,6 @@ public class ResidentTable extends RCTable {
                             " WHERE name = '" + resident.getName() + "'"
             );
         }
-        connection.executeUpdate(statement);
+        getDatabase().executeUpdate(statement);
     }
 }

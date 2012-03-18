@@ -2,7 +2,9 @@ package de.strasse36.rccities.database;
 
 import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
+import com.silthus.raidcraft.database.MissingDataException;
 import com.silthus.raidcraft.database.RCTable;
+import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
@@ -20,41 +22,38 @@ import java.util.List;
  * Date: 28.02.12 - 21:22
  * Description:
  */
-public class CityTable extends RCTable {
+public class CityTable extends RCTable<CityTable> {
 
     public CityTable(Database database) {
-        super(database, TableNames.getCityTable());
+        super(CityTable.class, database, TableNames.getCityTable());
     }
 
     @Override
     public void createTable() {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement prepare = connection.prepare(
-                "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
-                        "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
-                        "`name` VARCHAR( 50 ) NULL ," +
-                        "`size` BIGINT NULL ," +
-                        "`description` TEXT NULL ," +
-                        "`spawn_world` VARCHAR( 50 ) NULL ," +
-                        "`spawn_x` DOUBLE NULL ," +
-                        "`spawn_y` DOUBLE NULL ," +
-                        "`spawn_z` DOUBLE NULL ," +
-                        "`spawn_pitch` FLOAT NULL ," +
-                        "`spawn_yaw` FLOAT NULL ," +
-                        "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 ," +
-                        "`last_tax_payment` BIGINT NULL ," +
-                        "`last_penalty` BIGINT NULL" +
-                        ") ENGINE = InnoDB;");
-        connection.executeUpdate(prepare);
+	    getDatabase().executeUpdate(
+			    "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
+					    "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
+					    "`name` VARCHAR( 50 ) NULL ," +
+					    "`size` BIGINT NULL ," +
+					    "`description` TEXT NULL ," +
+					    "`spawn_world` VARCHAR( 50 ) NULL ," +
+					    "`spawn_x` DOUBLE NULL ," +
+					    "`spawn_y` DOUBLE NULL ," +
+					    "`spawn_z` DOUBLE NULL ," +
+					    "`spawn_pitch` FLOAT NULL ," +
+					    "`spawn_yaw` FLOAT NULL ," +
+					    "`greetings` TINYINT ( 1 ) NOT NULL DEFAULT 1 ," +
+					    "`last_tax_payment` BIGINT NULL ," +
+					    "`last_penalty` BIGINT NULL" +
+					    ") ENGINE = InnoDB;");
     }
     
     public City getCity(int id)
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
             City city;
             if (resultSet.next()) {
@@ -89,11 +88,10 @@ public class CityTable extends RCTable {
 
     public City getCity(String name)
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
             City city;
             if (resultSet.next()) {
@@ -128,11 +126,10 @@ public class CityTable extends RCTable {
 
     public List<City> getCitys()
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "SELECT * FROM " + getName() + ";"
         );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getDatabase().executeQuery(statement);
         List<City> citylist = new ArrayList<City>();
         try {
             City city;
@@ -168,8 +165,7 @@ public class CityTable extends RCTable {
         {
             throw new AlreadyExistsException("Eine Stadt mit diesem Namen existiert bereits!");
         }
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "INSERT INTO " + getName() + " (name, size, description, spawn_world, spawn_x, spawn_y, spawn_z, spawn_pitch, spawn_yaw) " +
                         "VALUES (" +
                         "'" + city.getName() + "'" + "," +
@@ -183,13 +179,12 @@ public class CityTable extends RCTable {
                         "'" + city.getSpawn().getYaw() + "'" +
                         ");"
         );
-        connection.executeUpdate(statement);
+        getDatabase().executeUpdate(statement);
     }
 
     public void updateCity(City city)
     {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "UPDATE " + getName() + " SET " +
                         "name = '" + city.getName() + "'," +
                         "size = '" + city.getSize() + "'," +
@@ -205,15 +200,14 @@ public class CityTable extends RCTable {
                         "last_penalty = '" + city.getLastPenalty() + "'" +
                         " WHERE id = '" + city.getId() + "';"
         );
-        connection.executeUpdate(statement);
+        getDatabase().executeUpdate(statement);
     }
 
     public void deleteCity(int cityId)
     {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
+        PreparedStatement statement = getDatabase().prepare(
                 "DELETE FROM " + getName() + " WHERE id = '" + cityId + "';"
         );
-        connection.executeUpdate(statement);
+        getDatabase().executeUpdate(statement);
     }
 }

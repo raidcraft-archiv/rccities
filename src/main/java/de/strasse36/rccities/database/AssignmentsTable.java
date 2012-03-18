@@ -1,14 +1,16 @@
 package de.strasse36.rccities.database;
 
-import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
+import com.silthus.raidcraft.database.MissingDataException;
 import com.silthus.raidcraft.database.RCTable;
+import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,31 +22,25 @@ import java.util.List;
  * Date: 10.03.12 - 15:00
  * Description:
  */
-public class AssignmentsTable extends RCTable {
+public class AssignmentsTable extends RCTable<AssignmentsTable> {
 
     public AssignmentsTable(Database database) {
-        super(database, TableNames.getAssignmentsTable());
+        super(AssignmentsTable.class, database, TableNames.getAssignmentsTable());
     }
 
     @Override
     public void createTable() {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement prepare = connection.prepare(
-                "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
-                        "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
-                        "`plot_id` INT NULL ," +
-                        "`resident_id` INT NULL" +
-                        ") ENGINE = InnoDB;");
-        connection.executeUpdate(prepare);
+	    getDatabase().executeUpdate(
+			    "CREATE TABLE  `" + getDatabase().getName() + "`.`" + getName() + "` (" +
+					    "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ," +
+					    "`plot_id` INT NULL ," +
+					    "`resident_id` INT NULL" +
+					    ") ENGINE = InnoDB;");
     }
 
     public List<Assignment> getAssignments()
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + ";"
-        );
-        ResultSet resultSet = connection.execute(statement);
+        ResultSet resultSet = getAllData();
         List<Assignment> assignmentList = new ArrayList<Assignment>();
         try {
             Assignment assignment;
@@ -62,14 +58,12 @@ public class AssignmentsTable extends RCTable {
 
     public List<Assignment> getAssignments(Resident resident)
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + " WHERE resident_id = '" + resident.getId() + "';"
-        );
-        ResultSet resultSet = connection.execute(statement);
-        List<Assignment> assignmentList = new ArrayList<Assignment>();
         try {
-            Assignment assignment;
+	        ResultSet resultSet = getDatabase().executeQuery(
+			        "SELECT * FROM " + getName() + " WHERE resident_id = '" + resident.getId() + "';"
+	        );
+	        List<Assignment> assignmentList = new ArrayList<Assignment>();
+	        Assignment assignment;
             while (resultSet.next()) {
                 assignment = new Assignment();
                 assignment.setPlot_id(resultSet.getInt("plot_id"));
@@ -84,14 +78,13 @@ public class AssignmentsTable extends RCTable {
 
     public List<Assignment> getAssignments(Plot plot)
     {
-        Connection connection = getDatabase().getConnection();
-        PreparedStatement statement = connection.prepare(
-                "SELECT * FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
-        );
-        ResultSet resultSet = connection.execute(statement);
-        List<Assignment> assignmentList = new ArrayList<Assignment>();
         try {
-            Assignment assignment;
+	        PreparedStatement statement = getDatabase().prepare(
+			        "SELECT * FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
+	        );
+	        ResultSet resultSet = getDatabase().executeQuery(statement);
+	        List<Assignment> assignmentList = new ArrayList<Assignment>();
+	        Assignment assignment;
             while (resultSet.next()) {
                 assignment = new Assignment();
                 assignment.setPlot_id(resultSet.getInt("plot_id"));
@@ -114,32 +107,29 @@ public class AssignmentsTable extends RCTable {
                 throw new AlreadyExistsException("Dieser Plot ist dem Spieler bereits zugewiesen!");
         }
         
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
-                "INSERT INTO " + getName() + " (plot_id, resident_id) " +
-                        "VALUES (" +
-                        "'" + plot.getId() + "'" + "," +
-                        "'" + resident.getId() + "'" +
-                        ");"
+        PreparedStatement statement = getDatabase().prepare(
+		        "INSERT INTO " + getName() + " (plot_id, resident_id) " +
+				        "VALUES (" +
+				        "'" + plot.getId() + "'" + "," +
+				        "'" + resident.getId() + "'" +
+				        ");"
         );
-        connection.executeUpdate(statement);
+	    getDatabase().executeQuery(statement);
     }
     
     public void deleteAssignment(Plot plot, Resident resident)
     {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
-                "DELETE FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "' AND resident_id = '" + resident.getId() + "';"
+        PreparedStatement statement = getDatabase().prepare(
+		        "DELETE FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "' AND resident_id = '" + resident.getId() + "';"
         );
-        connection.executeUpdate(statement);
+	    getDatabase().executeUpdate(statement);
     }
 
     public void deleteAssignment(Plot plot)
     {
-        Connection connection = getConnection();
-        PreparedStatement statement = connection.prepare(
-                "DELETE FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
+        PreparedStatement statement = getDatabase().prepare(
+		        "DELETE FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
         );
-        connection.executeUpdate(statement);
+	    getDatabase().executeUpdate(statement);
     }
 }
