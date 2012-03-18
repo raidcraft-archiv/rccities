@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCLogger;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.databases.ProtectionDatabaseException;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -151,8 +152,8 @@ public class WorldGuardManager {
         for (World world : Bukkit.getServer().getWorlds()) {
             try {
                 getWorldGuard().getRegionManager(world).save();
-            } catch (IOException e) {
-                RCLogger.warning(e.getMessage());
+            } catch (ProtectionDatabaseException e) {
+				RCLogger.warning(e.getMessage());
             }
         }
     }
