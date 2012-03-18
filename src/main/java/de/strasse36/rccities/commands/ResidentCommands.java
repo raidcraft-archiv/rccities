@@ -19,20 +19,33 @@ import java.util.List;
  */
 public class ResidentCommands {
 
-    public static void showTownInfo(CommandSender sender)
+    public static void showTownInfo(CommandSender sender, String[] args)
     {
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
+        City selectedCity;
+        if(args.length == 0)
         {
-            TownCommandUtility.noResident(sender);
-            return;
+            Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+            selectedCity = resident.getCity();
+            //no resident
+            if(resident == null || resident.getCity() == null)
+            {
+                TownCommandUtility.noResident(sender);
+                return;
+            }
+        }
+        else
+        {
+            selectedCity = TableHandler.get().getCityTable().getCity(args[1]);
+            if(selectedCity == null)
+            {
+                TownCommandUtility.noCityFound(sender);
+            }
         }
 
         String mayors = "", vicemayors = "", assistants = "", residents = "";
         int n_mayors = 0, n_vicemayors = 0, n_assistants = 0, n_residents = 0;
 
-        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(resident.getCity());
+        List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(selectedCity);
         for(Resident res : residentList)
         {
             if(res.isMayor())
@@ -66,11 +79,11 @@ public class ResidentCommands {
         }
 
         RCMessaging.send(sender, RCMessaging.green("--- RCCities Stadtinfo ---"), false);
-        RCMessaging.send(sender, RCMessaging.green("Stadtinformationen für: ") + resident.getCity().getName(), false);
-        RCMessaging.send(sender, RCMessaging.green("Beschreibung: ") + resident.getCity().getDescription(), false);
-        RCMessaging.send(sender, RCMessaging.green("Stadtkasse: ") + RCCitiesPlugin.get().getEconomy().getBalance(resident.getCity().getBankAccount()) + "c", false);
-        RCMessaging.send(sender, RCMessaging.green("Steuerabgaben: ") + TableHandler.get().getPlotTable().getPlots(resident.getCity()).size()*MainConfig.getTaxAmount() + "c", false);
-        RCMessaging.send(sender, RCMessaging.green("Chunks: ") + TableHandler.get().getPlotTable().getPlots(resident.getCity()).size() + "/" + resident.getCity().getSize() + " claimed", false);
+        RCMessaging.send(sender, RCMessaging.green("Stadtinformationen für: ") + selectedCity.getName(), false);
+        RCMessaging.send(sender, RCMessaging.green("Beschreibung: ") + selectedCity.getDescription(), false);
+        RCMessaging.send(sender, RCMessaging.green("Stadtkasse: ") + RCCitiesPlugin.get().getEconomy().getBalance(selectedCity.getBankAccount()) + "c", false);
+        RCMessaging.send(sender, RCMessaging.green("Steuerabgaben: ") + TableHandler.get().getPlotTable().getPlots(selectedCity).size()*MainConfig.getTaxAmount() + "c", false);
+        RCMessaging.send(sender, RCMessaging.green("Chunks: ") + TableHandler.get().getPlotTable().getPlots(selectedCity).size() + "/" + selectedCity.getSize() + " claimed", false);
         RCMessaging.send(sender, RCMessaging.green("Bürgermeister (" + n_mayors + "): ") + mayors, false);
         if(n_vicemayors > 0)
             RCMessaging.send(sender, RCMessaging.green("Vize-Bürgermeister (" + n_vicemayors + "): ") + vicemayors, false);
