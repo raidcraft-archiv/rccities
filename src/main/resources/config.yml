@@ -33,7 +33,7 @@ rccities:
     # tax configuration
     # levy interval (in minutes, min. 60 -> 1day = 1440)
     levyInterval: 1440
-    # tax amount per claimed chunk(in coins)
-    taxAmount: 50.0
+    # tax amount per resident(in coins)
+    taxAmount: 20.0
     # number of taken plots per penalty (min. 1)
     plotsPerPenalty: 1

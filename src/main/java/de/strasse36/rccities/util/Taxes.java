@@ -55,16 +55,16 @@ public class Taxes {
     //this method is called by the tax schedule
     private void levy(City city)
     {
-        int citySize = TableHandler.get().getPlotTable().getPlots(city).size();
-        if(RCCitiesPlugin.get().getEconomy().has(city.getBankAccount(), citySize*MainConfig.getTaxAmount()))
+        int cityPopulation = TableHandler.get().getResidentTable().getResidents(city).size();
+        if(RCCitiesPlugin.get().getEconomy().has(city.getBankAccount(), cityPopulation*MainConfig.getTaxAmount()))
         {
-            RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), citySize*MainConfig.getTaxAmount());
-            TownMessaging.sendTownResidents(city, "Der Stadtkasse wurden Steuern in Höhe von " + citySize*MainConfig.getTaxAmount() + "c abgezogen!");
+            RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), cityPopulation*MainConfig.getTaxAmount());
+            TownMessaging.sendTownResidents(city, "Der Stadtkasse wurden Steuern in Höhe von " + cityPopulation*MainConfig.getTaxAmount() + "c abgezogen!");
         }
         else
         {
             penalty(city);
-            TownMessaging.sendTownResidents(city, "Die Stadt konnte die Steuern in Höhe von " + citySize*MainConfig.getTaxAmount() + "c nicht bezahlen!");
+            TownMessaging.sendTownResidents(city, "Die Stadt konnte die Steuern in Höhe von " + cityPopulation*MainConfig.getTaxAmount() + "c nicht bezahlen!");
             TownMessaging.sendTownResidents(city, "Aus Strafe wurde die max. Stadtgrösse verringert!");
         }
     }

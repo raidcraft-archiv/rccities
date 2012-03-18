@@ -82,7 +82,7 @@ public class ResidentCommands {
         RCMessaging.send(sender, RCMessaging.green("Stadtinformationen für: ") + selectedCity.getName(), false);
         RCMessaging.send(sender, RCMessaging.green("Beschreibung: ") + selectedCity.getDescription(), false);
         RCMessaging.send(sender, RCMessaging.green("Stadtkasse: ") + RCCitiesPlugin.get().getEconomy().getBalance(selectedCity.getBankAccount()) + "c", false);
-        RCMessaging.send(sender, RCMessaging.green("Steuerabgaben: ") + TableHandler.get().getPlotTable().getPlots(selectedCity).size()*MainConfig.getTaxAmount() + "c", false);
+        RCMessaging.send(sender, RCMessaging.green("Steuerabgaben: ") + TableHandler.get().getResidentTable().getResidents(selectedCity).size()*MainConfig.getTaxAmount() + "c", false);
         RCMessaging.send(sender, RCMessaging.green("Chunks: ") + TableHandler.get().getPlotTable().getPlots(selectedCity).size() + "/" + selectedCity.getSize() + " claimed", false);
         RCMessaging.send(sender, RCMessaging.green("Bürgermeister (" + n_mayors + "): ") + mayors, false);
         if(n_vicemayors > 0)
