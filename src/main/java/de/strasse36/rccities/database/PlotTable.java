@@ -1,10 +1,7 @@
 package de.strasse36.rccities.database;
 
-import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
-import com.silthus.raidcraft.database.MissingDataException;
 import com.silthus.raidcraft.database.RCTable;
-import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
@@ -21,10 +18,10 @@ import java.util.List;
  * Date: 28.02.12 - 21:22
  * Description:
  */
-public class PlotTable extends RCTable {
+public class PlotTable extends RCTable<PlotTable> {
 
     public PlotTable(Database database) {
-        super(database, TableNames.getPlotTable());
+        super(PlotTable.class, database, TableNames.plotTable);
     }
 
     @Override
@@ -88,7 +85,7 @@ public class PlotTable extends RCTable {
     public Plot getPlot(String regionId)
     {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE regionId = '" + regionId + "';"
+		        "SELECT * FROM " + getName() + " WHERE regionId = '" + regionId + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
@@ -115,7 +112,7 @@ public class PlotTable extends RCTable {
     public List<Plot> getPlots()
     {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + ";"
+		        "SELECT * FROM " + getName() + ";"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Plot> plotlist = new ArrayList<Plot>();
@@ -141,7 +138,7 @@ public class PlotTable extends RCTable {
     public List<Plot> getPlots(City city)
     {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
+		        "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Plot> plotlist = new ArrayList<Plot>();
@@ -167,7 +164,7 @@ public class PlotTable extends RCTable {
     public List<Plot> getPlots(int open)
     {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE public = '" + open + "';"
+		        "SELECT * FROM " + getName() + " WHERE public = '" + open + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Plot> plotlist = new ArrayList<Plot>();
@@ -197,15 +194,15 @@ public class PlotTable extends RCTable {
             throw new AlreadyExistsException("Es exisitert bereits ein Plot mit dieser Region ID!");
         }
         PreparedStatement statement = getDatabase().prepare(
-                "INSERT INTO " + getName() + " (city, regionId, chunk_x, chunk_z, public, pvp) " +
-                        "VALUES (" +
-                        "'" + plot.getCity().getId() + "'" + "," +
-                        "'" + plot.getRegionId() + "'" + "," +
-                        "'" + plot.getX() + "'" + "," +
-                        "'" + plot.getZ() + "'" + "," +
-                        "'" + plot.getOpen() + "'," +
-                        "'" + plot.getPvp() + "'" +
-                        ");"
+		        "INSERT INTO " + getName() + " (city, regionId, chunk_x, chunk_z, public, pvp) " +
+				        "VALUES (" +
+				        "'" + plot.getCity().getId() + "'" + "," +
+				        "'" + plot.getRegionId() + "'" + "," +
+				        "'" + plot.getX() + "'" + "," +
+				        "'" + plot.getZ() + "'" + "," +
+				        "'" + plot.getOpen() + "'," +
+				        "'" + plot.getPvp() + "'" +
+				        ");"
         );
         getDatabase().executeUpdate(statement);
     }
@@ -213,14 +210,14 @@ public class PlotTable extends RCTable {
     public void updatePlot(Plot plot)
     {
         PreparedStatement statement = getDatabase().prepare(
-                "UPDATE " + getName() + " SET " +
-                        "city = '" + plot.getCity().getId() + "'," +
-                        "regionId = '" + plot.getRegionId() + "'," +
-                        "chunk_x = '" + plot.getX() + "'," +
-                        "chunk_z = '" + plot.getZ() + "'," +
-                        "public = '" + plot.getOpen() + "'," +
-                        "pvp = '" + plot.getPvp() + "'" +
-                        " WHERE id = '" + plot.getId() + "';"
+		        "UPDATE " + getName() + " SET " +
+				        "city = '" + plot.getCity().getId() + "'," +
+				        "regionId = '" + plot.getRegionId() + "'," +
+				        "chunk_x = '" + plot.getX() + "'," +
+				        "chunk_z = '" + plot.getZ() + "'," +
+				        "public = '" + plot.getOpen() + "'," +
+				        "pvp = '" + plot.getPvp() + "'" +
+				        " WHERE id = '" + plot.getId() + "';"
         );
         getDatabase().executeUpdate(statement);
     }
@@ -228,7 +225,7 @@ public class PlotTable extends RCTable {
     public void deletePlot(String regionId)
     {
         PreparedStatement statement = getDatabase().prepare(
-                "DELETE FROM " + getName() + " WHERE regionId = '" + regionId + "';"
+		        "DELETE FROM " + getName() + " WHERE regionId = '" + regionId + "';"
         );
         getDatabase().executeUpdate(statement);
     }

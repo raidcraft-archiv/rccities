@@ -6,10 +6,10 @@ package de.strasse36.rccities.util;
  * Description:
  */
 public class TableNames {
-    private static String cityTable = "cities";
-    private static String residentTable = "residents";
-    private static String plotTable = "plots";
-    private static String assignmentsTable = "assignments";
+    public static final String cityTable = "cities";
+    public static final String residentTable = "residents";
+    public static final String plotTable = "plots";
+    public static final String assignmentsTable = "assignments";
 
     public static String getCityTable() {
         return cityTable;

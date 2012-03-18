@@ -1,10 +1,7 @@
 package de.strasse36.rccities.database;
 
-import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
-import com.silthus.raidcraft.database.MissingDataException;
 import com.silthus.raidcraft.database.RCTable;
-import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
@@ -25,7 +22,7 @@ import java.util.List;
 public class CityTable extends RCTable<CityTable> {
 
     public CityTable(Database database) {
-        super(CityTable.class, database, TableNames.getCityTable());
+        super(CityTable.class, database, TableNames.cityTable);
     }
 
     @Override

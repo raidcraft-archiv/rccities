@@ -1,6 +1,5 @@
 package de.strasse36.rccities.database;
 
-import com.silthus.raidcraft.database.Connection;
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import com.silthus.raidcraft.util.RCLogger;
@@ -20,10 +19,10 @@ import java.util.List;
  * Date: 28.02.12 - 21:22
  * Description:
  */
-public class ResidentTable extends RCTable {
+public class ResidentTable extends RCTable<ResidentTable> {
 
     public ResidentTable(Database database) {
-        super(database, TableNames.getResidentTable());
+        super(ResidentTable.class, database, TableNames.residentTable);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class ResidentTable extends RCTable {
 
     public List<Resident> getResidents(City city) {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
+		        "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Resident> residentlist = new ArrayList<Resident>();
@@ -91,7 +90,7 @@ public class ResidentTable extends RCTable {
 
     public Resident getResident(int id) {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
+		        "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
@@ -115,7 +114,7 @@ public class ResidentTable extends RCTable {
 
     public Resident getResident(String name) {
         PreparedStatement statement = getDatabase().prepare(
-                "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
+		        "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         try {
@@ -143,22 +142,22 @@ public class ResidentTable extends RCTable {
         if(getResident(resident.getName()) == null)
         {
             statement = getDatabase().prepare(
-                    "INSERT INTO "  + getName() + "(name, city, profession) VALUES (" +
-                            "'" + resident.getName() + "'," +
-                            "'" + resident.getCity().getId() + "'," +
-                            "'" + resident.getProfession() + "'" +
-                            ");"
+		            "INSERT INTO " + getName() + "(name, city, profession) VALUES (" +
+				            "'" + resident.getName() + "'," +
+				            "'" + resident.getCity().getId() + "'," +
+				            "'" + resident.getProfession() + "'" +
+				            ");"
             );
 
         }
         else
         {
             statement = getDatabase().prepare(
-                    "UPDATE " + getName() + " SET " +
-                            "name = '" + resident.getName() + "'," +
-                            "city = '" + resident.getCity().getId() + "'," +
-                            "profession = '" + resident.getProfession() + "'" +
-                            " WHERE name = '" + resident.getName() + "'"
+		            "UPDATE " + getName() + " SET " +
+				            "name = '" + resident.getName() + "'," +
+				            "city = '" + resident.getCity().getId() + "'," +
+				            "profession = '" + resident.getProfession() + "'" +
+				            " WHERE name = '" + resident.getName() + "'"
             );
         }
         getDatabase().executeUpdate(statement);
