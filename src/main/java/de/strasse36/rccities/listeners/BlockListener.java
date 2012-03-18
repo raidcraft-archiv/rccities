@@ -2,6 +2,7 @@ package de.strasse36.rccities.listeners;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +26,10 @@ public class BlockListener implements Listener {
         if(event.isCancelled())
             return;
 
+        //check world
+        if(!event.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase(MainConfig.getCityWorld()))
+            return;
+
         //check if location is region
         ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(event.getBlockPlaced().getLocation());
         if(regionSet.size() != 0)
@@ -44,6 +49,10 @@ public class BlockListener implements Listener {
 
         //check if cancelled
         if(event.isCancelled())
+            return;
+
+        //check world
+        if(!event.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase(MainConfig.getCityWorld()))
             return;
 
         //check if location is region

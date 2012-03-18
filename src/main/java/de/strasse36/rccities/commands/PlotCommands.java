@@ -113,7 +113,7 @@ public class PlotCommands {
         else
             selectedResident = resident;
         
-        List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(resident);
+        List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(selectedResident);
         RCMessaging.send(sender, RCMessaging.green("--- RCCities: Plotliste von " + selectedResident.getName() + " ---"), false);
         if(assignmentList.size() == 0)
         {
