@@ -112,6 +112,11 @@ public class ModCommands
                 TownCommandUtility.noPlayerFound(sender);
                 return;
             }
+            if(!player.hasPermission("rccities.skill.mayor") && !player.getName().equalsIgnoreCase(sender.getName()))
+            {
+                TownCommandUtility.noMayorSkill(sender);
+                return;
+            }
         }
 
         City city = TableHandler.get().getCityTable().getCity(args[1]);

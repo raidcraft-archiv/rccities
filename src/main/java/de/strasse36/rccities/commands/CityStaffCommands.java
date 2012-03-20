@@ -113,6 +113,21 @@ public class CityStaffCommands {
             return;
         }
 
+        if(args[2].equalsIgnoreCase("mayor"))
+        {
+            Player player = Bukkit.getPlayer(selectedResident.getName());
+            if(player == null)
+            {
+                TownCommandUtility.futureMayorNotOnline(sender);
+                return;
+            }
+            else if(!player.hasPermission("rccities.skill.mayor"))
+            {
+                TownCommandUtility.noMayorSkill(sender);
+                return;
+            }
+        }
+
         try {
             Profession.changeProfession(selectedResident, args[2]);
             selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);

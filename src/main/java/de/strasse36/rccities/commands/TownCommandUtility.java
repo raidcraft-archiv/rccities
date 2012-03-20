@@ -88,4 +88,15 @@ public class TownCommandUtility
     {
         RCMessaging.warn(sender, "Der eingegebene Betrag war keine positive Zahl!");
     }
+
+    public static void noMayorSkill(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der Gewählte Spieler hat keinen Bürgermeister Skill!");
+    }
+
+    public static void futureMayorNotOnline(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der zukünftigte Bürgermeister muss bei seiener Erennung Online sein!");
+    }
+
 }

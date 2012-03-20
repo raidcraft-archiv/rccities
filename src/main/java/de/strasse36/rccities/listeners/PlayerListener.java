@@ -2,12 +2,15 @@ package de.strasse36.rccities.listeners;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Author: Philip Urban
@@ -41,5 +44,18 @@ public class PlayerListener implements Listener
 
         event.setCancelled(true);
         RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");
+    }
+    
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event)
+    {
+        Resident resident = TableHandler.get().getResidentTable().getResident(event.getPlayer().getName());
+        if(resident != null && resident.isMayor() && !event.getPlayer().hasPermission("rccities.skill.mayor"))
+        {
+            resident.setProfession("vicemayor");
+            TableHandler.get().getResidentTable().updateResident(resident);
+            RCMessaging.send(event.getPlayer(), RCMessaging.blue("Du bist Bürgermeister ohne den passenden Skill!"));
+            RCMessaging.send(event.getPlayer(), RCMessaging.blue("Deshalb wurdest du nun zum Vize-Bürgermeister dekradiert!"));
+        }
     }
 }
