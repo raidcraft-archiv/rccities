@@ -34,7 +34,6 @@ permissions:
     children:
         rccities.cmd.setname: true
         rccities.cmd.demolish: true
-
-  rccities.skill.mayor: false
-  description: Mayor Skill
-  default: false
+  rccities.skill.mayor:
+    description: Mayor Skill
+    default: false
