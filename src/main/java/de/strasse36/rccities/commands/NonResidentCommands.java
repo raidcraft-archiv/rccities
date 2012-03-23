@@ -60,4 +60,15 @@ public class NonResidentCommands {
         RCMessaging.send(sender, RCMessaging.green("Auf dem Server gibt es derzeit folgende Städte (" + citycount + "):"), false);
         RCMessaging.send(sender, cities, false);
     }
+
+    public static void resident(CommandSender sender, String[] args)
+    {
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Es wurden nicht genügend Parameter eingegeben!");
+            RCMessaging.warn(sender, "/town resident <Spielername> zeigt Einwohner-Infos über einen Spieler");
+            return;
+        }
+        //TODO
+    }
 }

@@ -9,6 +9,7 @@ import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.Taxes;
+import org.bukkit.Bukkit;
 
 /**
  * Author: Philip Urban
@@ -23,7 +24,7 @@ public class RCCitiesPlugin extends BukkitBasePlugin
     public void registerEvents() {
         MainConfig.init(this);
         _self = this;
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         registerCommand("rccities", new TownCommandAllocater());
         registerCommand("plot", new PlotCommandAllocater());

@@ -156,6 +156,13 @@ public class TownCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            //resident info
+            if(args[0].equals("resident"))
+            {
+                NonResidentCommands.resident(sender, args);
+                return true;
+            }
+
             /////////////////////////////OTHERS//////////////////////////////////////////
             //help
             if(args[0].equals("help"))
