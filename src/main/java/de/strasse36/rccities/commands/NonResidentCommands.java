@@ -69,6 +69,14 @@ public class NonResidentCommands {
             RCMessaging.warn(sender, "/town resident <Spielername> zeigt Einwohner-Infos über einen Spieler");
             return;
         }
-        //TODO
+        Resident resident = TableHandler.get().getResidentTable().getResident(args[1]);
+        
+        if(resident == null)
+        {
+            TownCommandUtility.noPlayerFound(sender);
+            return;
+        }
+
+        //TODO print infos
     }
 }

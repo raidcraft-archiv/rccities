@@ -22,13 +22,13 @@ public class TownCommandUtility
         RCMessaging.send(sender, RCMessaging.green("-----------------------------------------------------"), false);
     }
 
-    //shows no player found message
+    //no player found message
     public static void noPlayerFound(CommandSender sender)
     {
         RCMessaging.warn(sender, "Der Spieler wurde nicht gefunden.");
     }
 
-    //shows no city found message
+    //no city found message
     public static void noCityFound(CommandSender sender)
     {
         RCMessaging.warn(sender, "Die Stadt wurde nicht gefunden.");
