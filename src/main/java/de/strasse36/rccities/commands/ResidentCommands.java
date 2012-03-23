@@ -25,14 +25,13 @@ public class ResidentCommands {
         if(args.length == 0)
         {
             Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-	        // TODO: why u do npe here? ^^
-	        // selectedCity = resident.getCity();
             //no resident
-            if(resident == null || resident.getCity() == null)
-            {
-                TownCommandUtility.noResident(sender);
-                return;
-            }
+	        if (resident == null || resident.getCity() == null) {
+		        TownCommandUtility.noResident(sender);
+		        return;
+	        } else {
+		        selectedCity = resident.getCity();
+	        }
         }
         else
         {
