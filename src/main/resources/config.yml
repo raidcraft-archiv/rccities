@@ -37,3 +37,6 @@ rccities:
     taxAmount: 20.0
     # number of taken plots per penalty (min. 1)
     plotsPerPenalty: 1
+
+    #show dynmap overlay
+    dynmapSupport: true

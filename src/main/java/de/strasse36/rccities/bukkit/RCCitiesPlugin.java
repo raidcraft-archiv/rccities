@@ -7,6 +7,7 @@ import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
+import de.strasse36.rccities.util.Dynmap;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.Taxes;
 import org.bukkit.Bukkit;
@@ -31,6 +32,8 @@ public class RCCitiesPlugin extends BukkitBasePlugin
         RCCitiesDatabase.init();
         TableHandler.init();
         Taxes.init();
+        if(MainConfig.isDynmapEnabled())
+            Dynmap.init();
     }
 
     public static RCCitiesPlugin get()

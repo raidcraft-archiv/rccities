@@ -50,6 +50,15 @@
             <version>5.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- LOCAL DYNMAP -->
+        <dependency>
+            <groupId>dynmap-api</groupId>
+            <artifactId>dynmap-api</artifactId>
+            <version>1</version>
+            <scope>system</scope>
+            <systemPath>G:\Persoenliches\Dropbox\Programmierung\Minecraft\Bukkit\plugins\rccities\lib\dynmap-api.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

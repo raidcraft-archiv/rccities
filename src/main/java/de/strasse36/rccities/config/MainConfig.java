@@ -86,6 +86,11 @@ public class MainConfig {
         return getConfig().getConfigurationSection("rccities").getInt("plotsPerPenalty", 1);
     }
 
+    public static boolean isDynmapEnabled()
+    {
+        return getConfig().getConfigurationSection("rccities").getBoolean("dynmapSupport", false);
+    }
+
     public static class DatabaseConfig {
 
         private ConfigurationSection section;
