@@ -59,13 +59,17 @@ public class AssignmentsTable extends RCTable<AssignmentsTable> {
 	        ResultSet resultSet = getDatabase().executeQuery(
 			        "SELECT * FROM " + getName() + " WHERE resident_id = '" + resident.getId() + "';"
 	        );
-	        List<Assignment> assignmentList = new ArrayList<Assignment>();
-	        Assignment assignment;
-            while (resultSet.next()) {
-                assignment = new Assignment();
-                assignment.setPlot_id(resultSet.getInt("plot_id"));
-                assignment.setResident_id(resultSet.getInt("resident_id"));
-                assignmentList.add(assignment);
+            List<Assignment> assignmentList = new ArrayList<Assignment>();
+            Assignment assignment;
+            if (resultSet.next()) {
+                do {
+                    assignment = new Assignment();
+                    assignment.setPlot_id(resultSet.getInt("plot_id"));
+                    assignment.setResident_id(resultSet.getInt("resident_id"));
+                    assignmentList.add(assignment);
+                } while (resultSet.next());
+            } else {
+                return null;
             }
             return assignmentList;
         } catch (SQLException e) {
@@ -80,13 +84,17 @@ public class AssignmentsTable extends RCTable<AssignmentsTable> {
 			        "SELECT * FROM " + getName() + " WHERE plot_id = '" + plot.getId() + "';"
 	        );
 	        ResultSet resultSet = getDatabase().executeQuery(statement);
-	        List<Assignment> assignmentList = new ArrayList<Assignment>();
-	        Assignment assignment;
-            while (resultSet.next()) {
-                assignment = new Assignment();
-                assignment.setPlot_id(resultSet.getInt("plot_id"));
-                assignment.setResident_id(resultSet.getInt("resident_id"));
-                assignmentList.add(assignment);
+            List<Assignment> assignmentList = new ArrayList<Assignment>();
+            Assignment assignment;
+            if (resultSet.next()) {
+                do {
+                    assignment = new Assignment();
+                    assignment.setPlot_id(resultSet.getInt("plot_id"));
+                    assignment.setResident_id(resultSet.getInt("resident_id"));
+                    assignmentList.add(assignment);
+                } while (resultSet.next());
+            } else {
+                return null;
             }
             return assignmentList;
         } catch (SQLException e) {
