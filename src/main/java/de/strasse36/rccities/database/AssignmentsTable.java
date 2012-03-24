@@ -106,10 +106,13 @@ public class AssignmentsTable extends RCTable<AssignmentsTable> {
     public void newAssignment(Plot plot, Resident resident) throws AlreadyExistsException
     {
         List<Assignment> assignmentList = this.getAssignments(resident);
-        for(Assignment assignment : assignmentList)
+        if(assignmentList != null)
         {
-            if(assignment.getPlot_id() == plot.getId())
-                throw new AlreadyExistsException("Dieser Plot ist dem Spieler bereits zugewiesen!");
+            for(Assignment assignment : assignmentList)
+            {
+                if(assignment.getPlot_id() == plot.getId())
+                    throw new AlreadyExistsException("Dieser Plot ist dem Spieler bereits zugewiesen!");
+            }
         }
         
         PreparedStatement statement = getDatabase().prepare(
