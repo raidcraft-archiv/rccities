@@ -2,7 +2,6 @@ package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -300,14 +299,7 @@ public class PlotCommands {
         }
         else
         {
-            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-            for(ProtectedRegion region : regionSet)
-            {
-                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-                {
-                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-                }
-            }
+            selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
         }
         if(selectedPlot == null)
         {
@@ -389,14 +381,7 @@ public class PlotCommands {
         }
         else
         {
-            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-            for(ProtectedRegion region : regionSet)
-            {
-                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-                {
-                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-                }
-            }
+            selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
         }
         if(selectedPlot == null)
         {
@@ -525,14 +510,7 @@ public class PlotCommands {
         }
         else
         {
-            ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-            for(ProtectedRegion region : regionSet)
-            {
-                if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-                {
-                    selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-                }
-            }
+            selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
         }
         if(selectedPlot == null)
         {
@@ -572,18 +550,7 @@ public class PlotCommands {
         }
 
         //get plot
-        Plot selectedPlot = null;
-        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-        for(ProtectedRegion region : regionSet)
-        {
-            Plot plot = TableHandler.get().getPlotTable().getPlot(region.getId());
-            if(plot == null)
-                continue;
-            if(plot.getCity().getId() == resident.getCity().getId())
-            {
-                selectedPlot = plot;
-            }
-        }
+        Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
 
         if(selectedPlot == null)
         {
@@ -642,15 +609,7 @@ public class PlotCommands {
         }
 
         //get plot
-        Plot selectedPlot = null;
-        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-        for(ProtectedRegion region : regionSet)
-        {
-            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-            {
-                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-            }
-        }
+        Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
 
         if(selectedPlot == null)
         {
@@ -709,15 +668,7 @@ public class PlotCommands {
         }
 
         //get plot
-        Plot selectedPlot = null;
-        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
-        for(ProtectedRegion region : regionSet)
-        {
-            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
-            {
-                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
-            }
-        }
+        Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
 
         if(selectedPlot == null)
         {

@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import com.silthus.raidcraft.util.Task;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -223,5 +224,21 @@ public class ChunkUtil {
         updatePlotOwner(plot.getCity());
 
         return newRegion;
+    }
+    
+    public static Plot getLocalCityPlot(Location location, Resident resident)
+    {
+        ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(location);
+        for(ProtectedRegion region : regionSet)
+        {
+            Plot plot = TableHandler.get().getPlotTable().getPlot(region.getId());
+            if(plot == null)
+                continue;
+            if(plot.getCity().getId() == resident.getCity().getId())
+            {
+                return plot;
+            }
+        }
+        return null;
     }
 }
