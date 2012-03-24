@@ -79,7 +79,6 @@ public class NonResidentCommands {
             return;
         }
 
-        //TODO print infos
         String plots = "";
         List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(selectedResident);
         if(assignmentList == null)
@@ -90,11 +89,10 @@ public class NonResidentCommands {
             {
                 if(plots.equals(""))
                     plots += ", ";
-                plots += TableHandler.get().getPlotTable().getPlot(assignment.getPlot_id());
+                plots += TableHandler.get().getPlotTable().getPlot(assignment.getPlot_id()).getRegionId();
             }
         }
 
-        
         RCMessaging.send(sender, RCMessaging.green("--- RCCities Einwohner-Info für " + selectedResident.getName() + " ---"), false);
         RCMessaging.send(sender, RCMessaging.green("Stadt: " + selectedResident.getCity().getName()), false);
         RCMessaging.send(sender, RCMessaging.green("Beruf: " + Profession.translateProfession(selectedResident.getProfession())), false);
