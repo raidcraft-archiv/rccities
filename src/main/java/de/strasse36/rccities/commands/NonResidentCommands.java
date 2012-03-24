@@ -87,7 +87,7 @@ public class NonResidentCommands {
         {
             for(Assignment assignment : assignmentList)
             {
-                if(plots.equals(""))
+                if(!plots.equals(""))
                     plots += ", ";
                 plots += TableHandler.get().getPlotTable().getPlot(assignment.getPlot_id()).getRegionId();
             }

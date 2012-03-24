@@ -576,9 +576,12 @@ public class PlotCommands {
         ApplicableRegionSet regionSet = WorldGuardManager.getLocalRegions(player.getLocation());
         for(ProtectedRegion region : regionSet)
         {
-            if(TableHandler.get().getPlotTable().getPlot(region.getId()).getCity().getId() == resident.getCity().getId())
+            Plot plot = TableHandler.get().getPlotTable().getPlot(region.getId());
+            if(plot == null)
+                continue;
+            if(plot.getCity().getId() == resident.getCity().getId())
             {
-                selectedPlot = TableHandler.get().getPlotTable().getPlot(region.getId());
+                selectedPlot = plot;
             }
         }
 
