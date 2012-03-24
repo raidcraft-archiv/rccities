@@ -118,6 +118,12 @@ public class ResidentCommands {
             TownCommandUtility.noCityFound(sender);
             return;
         }
+
+        if(!((Player)sender).getLocation().getWorld().getName().equalsIgnoreCase(MainConfig.getCityWorld()))
+        {
+            TownCommandUtility.wrongWorld(sender);
+            return;
+        }
         
         //warmup
         int warmup = 0;

@@ -1,10 +1,12 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.util.ChunkUtil;
+import de.strasse36.rccities.util.Profession;
 import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
@@ -69,14 +71,34 @@ public class NonResidentCommands {
             RCMessaging.warn(sender, "/town resident <Spielername> zeigt Einwohner-Infos über einen Spieler");
             return;
         }
-        Resident resident = TableHandler.get().getResidentTable().getResident(args[1]);
+        Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
         
-        if(resident == null)
+        if(selectedResident == null)
         {
-            TownCommandUtility.noPlayerFound(sender);
+            TownCommandUtility.selectNoResident(sender);
             return;
         }
 
         //TODO print infos
+        String plots = "";
+        List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(selectedResident);
+        if(assignmentList == null)
+            plots = "~keine~";
+        else
+        {
+            for(Assignment assignment : assignmentList)
+            {
+                if(plots.equals(""))
+                    plots += ", ";
+                plots += TableHandler.get().getPlotTable().getPlot(assignment.getPlot_id());
+            }
+        }
+
+        
+        RCMessaging.send(sender, RCMessaging.green("--- RCCities Einwohner-Info für " + selectedResident.getName() + " ---"), false);
+        RCMessaging.send(sender, RCMessaging.green("Stadt: " + selectedResident.getCity().getName()), false);
+        RCMessaging.send(sender, RCMessaging.green("Beruf: " + Profession.translateProfession(selectedResident.getProfession())), false);
+        RCMessaging.send(sender, RCMessaging.green("Grundstücke: " + plots), false);
+
     }
 }
