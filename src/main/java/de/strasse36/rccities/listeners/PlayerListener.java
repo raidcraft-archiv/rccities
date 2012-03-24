@@ -38,8 +38,7 @@ public class PlayerListener implements Listener
         if (event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
-
-        if (event.getItem().getType() != Material.WATER_BUCKET && event.getItem().getType() != Material.LAVA_BUCKET)
+        if (event.getItem() != null && event.getItem().getType() != Material.WATER_BUCKET && event.getItem().getType() != Material.LAVA_BUCKET)
             return;
 
         event.setCancelled(true);

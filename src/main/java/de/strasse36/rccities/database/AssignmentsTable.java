@@ -1,16 +1,13 @@
 package de.strasse36.rccities.database;
 
 import com.silthus.raidcraft.database.Database;
-import com.silthus.raidcraft.database.MissingDataException;
 import com.silthus.raidcraft.database.RCTable;
-import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
 import de.strasse36.rccities.util.TableNames;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -114,7 +111,7 @@ public class AssignmentsTable extends RCTable<AssignmentsTable> {
 				        "'" + resident.getId() + "'" +
 				        ");"
         );
-	    getDatabase().executeQuery(statement);
+	    getDatabase().executeUpdate(statement);
     }
     
     public void deleteAssignment(Plot plot, Resident resident)
