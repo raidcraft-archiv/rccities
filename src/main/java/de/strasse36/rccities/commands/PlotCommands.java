@@ -114,7 +114,7 @@ public class PlotCommands {
         
         List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(selectedResident);
         RCMessaging.send(sender, RCMessaging.green("--- RCCities: Plotliste von " + selectedResident.getName() + " ---"), false);
-        if(assignmentList.size() == 0)
+        if(assignmentList == null)
         {
             RCMessaging.send(sender, RCMessaging.green("Der Spieler besitzt derzeit keine Plots!"), false);
             return;

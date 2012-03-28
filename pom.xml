@@ -57,7 +57,7 @@
             <artifactId>dynmap-api</artifactId>
             <version>1</version>
             <scope>system</scope>
-            <systemPath>G:\Persoenliches\Dropbox\Programmierung\Minecraft\Bukkit\plugins\rccities\lib\dynmap-api.jar</systemPath>
+            <systemPath>${project.basedir}/lib/dynmap-api.jar</systemPath>
         </dependency>
     </dependencies>
 
