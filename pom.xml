@@ -52,13 +52,13 @@
         </dependency>
 
         <!-- LOCAL DYNMAP -->
-        <dependency>
-            <groupId>dynmap-api</groupId>
-            <artifactId>dynmap-api</artifactId>
-            <version>1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/dynmap-api.jar</systemPath>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>dynmap-api</groupId>-->
+            <!--<artifactId>dynmap-api</artifactId>-->
+            <!--<version>1</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/lib/dynmap-api.jar</systemPath>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
