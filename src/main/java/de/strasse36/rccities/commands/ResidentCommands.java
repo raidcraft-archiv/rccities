@@ -201,6 +201,12 @@ public class ResidentCommands {
             return;
         }
 
+        if(amount < 0.01)
+        {
+            TownCommandUtility.lessAmount(sender);
+            return;
+        }
+
         //not enough money
         if(!RCCitiesPlugin.get().getEconomy().has(resident.getName(), amount))
         {

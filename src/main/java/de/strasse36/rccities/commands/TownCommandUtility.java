@@ -89,6 +89,11 @@ public class TownCommandUtility
         RCMessaging.warn(sender, "Der eingegebene Betrag war keine positive Zahl!");
     }
 
+    public static void lessAmount(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der Betrag muss mindestens 0.01c betragen!");
+    }
+
     public static void noMayorSkill(CommandSender sender)
     {
         RCMessaging.warn(sender, "Der Gewählte Spieler hat keinen Bürgermeister Skill!");
