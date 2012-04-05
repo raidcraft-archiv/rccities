@@ -13,7 +13,7 @@ public class ResidentHelper {
     public static Resident isResident(String name, City city)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(name);
-        if(resident != null && resident.getCity().getName().equalsIgnoreCase(resident.getCity().getName()))
+        if(resident != null && resident.getCity().getName().equalsIgnoreCase(city.getName()))
         {
             return resident;
         }
