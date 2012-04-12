@@ -15,7 +15,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -97,6 +96,7 @@ public class WorldGuardManager {
         getRegion(regionId).setFlag(DefaultFlag.CHEST_ACCESS, StateFlag.State.ALLOW);
         getRegion(regionId).setFlag(DefaultFlag.PLACE_VEHICLE, StateFlag.State.ALLOW);
         getRegion(regionId).setFlag(DefaultFlag.DESTROY_VEHICLE, StateFlag.State.ALLOW);
+        getRegion(regionId).setFlag(DefaultFlag.POTION_SPLASH, StateFlag.State.DENY);
     }
     
     public static void addOwner(String regionId, String playerName)
