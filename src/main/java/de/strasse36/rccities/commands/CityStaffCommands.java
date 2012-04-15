@@ -246,7 +246,7 @@ public class CityStaffCommands {
 
         if(ResidentHelper.isResident(player.getName(), resident.getCity()) != null)
         {
-
+            TownCommandUtility.selectedAlreadyResident(sender);
             return;
         }
 
