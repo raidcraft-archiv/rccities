@@ -179,6 +179,13 @@ public class CityStaffCommands {
             RCMessaging.warn(sender, "Der Spieler '" + args[1] + "' ist kein Bürger von " + resident.getCity().getName());
             return;
         }
+
+        if(kickResident.isMayor())
+        {
+            RCMessaging.warn(sender, "Du kannst keinen Bürgermeister aus der Stadt werfen!");
+            return;
+        }
+
         //set city id = 0 & profession = 0
         kickResident.getCity().setId(0);
         kickResident.setProfession("");
@@ -234,6 +241,12 @@ public class CityStaffCommands {
         if(player == null)
         {
             TownCommandUtility.noPlayerFound(sender);
+            return;
+        }
+
+        if(ResidentHelper.isResident(player.getName(), resident.getCity()) != null)
+        {
+
             return;
         }
 

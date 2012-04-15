@@ -104,4 +104,9 @@ public class TownCommandUtility
         RCMessaging.warn(sender, "Der zukünftigte Bürgermeister muss bei seiener Erennung Online sein!");
     }
 
+    public static void selectedAlreadyResident(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der Gewählte Spieler ist bereits Einwohner in dieser Stadt!");
+    }
+
 }
