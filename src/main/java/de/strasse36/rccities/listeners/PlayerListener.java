@@ -9,6 +9,7 @@ import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -38,8 +39,9 @@ public class PlayerListener implements Listener
         if (event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
-        if (event.getItem() != null && event.getItem().getType() != Material.WATER_BUCKET && event.getItem().getType() != Material.LAVA_BUCKET)
-            return;
+        if(event.getAction() == Action.PHYSICAL || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+            if(event.getItem().getType() != Material.WATER_BUCKET && event.getItem().getType() != Material.LAVA_BUCKET)
+                return;
 
         event.setCancelled(true);
         RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");

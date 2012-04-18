@@ -209,10 +209,11 @@ public class ChunkUtil {
         else
         {
             List<Assignment> assignmentList = TableHandler.get().getAssignmentsTable().getAssignments(plot);
-            for(Assignment assignment : assignmentList)
-            {
-                members.addPlayer(TableHandler.get().getResidentTable().getResident(assignment.getResident_id()).getName());
-            }
+            if(assignmentList != null)
+                for(Assignment assignment : assignmentList)
+                {
+                    members.addPlayer(TableHandler.get().getResidentTable().getResident(assignment.getResident_id()).getName());
+                }
         }
         WorldGuardManager.getRegion(plot.getRegionId()).setMembers(members);
 
