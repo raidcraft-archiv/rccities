@@ -39,12 +39,12 @@ public class PlayerListener implements Listener
         if (event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
-        if(event.getAction() == Action.PHYSICAL || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK)
-            if(event.getItem().getType() != Material.WATER_BUCKET && event.getItem().getType() != Material.LAVA_BUCKET)
-                return;
-
-        event.setCancelled(true);
-        RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");
+        //prevent lava and water placement
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+            if(event.getItem() != null && (event.getItem().getType() == Material.WATER_BUCKET || event.getItem().getType() == Material.LAVA_BUCKET)) {
+                event.setCancelled(true);
+                RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");
+            }
     }
     
     @EventHandler
