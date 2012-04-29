@@ -134,7 +134,7 @@ public class ResidentCommands {
             int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
             if(elapsed < MainConfig.getTownspawnCooldown()) {
                 int remaining = MainConfig.getTownspawnCooldown() - elapsed;
-                RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten");
+                RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten!");
                 return;
             }
         }
