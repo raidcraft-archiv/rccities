@@ -130,15 +130,17 @@ public class ResidentCommands {
         
         //check cooldown
         Player player = (Player)sender;
-        if(cooldown.containsKey(player)) {
-            int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
-            if(elapsed < MainConfig.getTownspawnCooldown()) {
-                int remaining = MainConfig.getTownspawnCooldown() - elapsed;
-                RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten!");
-                return;
+        if(!sender.hasPermission("rccities.cmd.spawnall")) {
+            if(cooldown.containsKey(player)) {
+                int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
+                if(elapsed < MainConfig.getTownspawnCooldown()) {
+                    int remaining = MainConfig.getTownspawnCooldown() - elapsed;
+                    RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten!");
+                    return;
+                }
             }
+            cooldown.put(player, Toolbox.getTimestamp());
         }
-        cooldown.put(player, Toolbox.getTimestamp());
         
         //warmup
         int warmup = 0;
