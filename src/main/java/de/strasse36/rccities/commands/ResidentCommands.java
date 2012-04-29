@@ -10,7 +10,9 @@ import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: Philip Urban
@@ -18,6 +20,7 @@ import java.util.List;
  * Description:
  */
 public class ResidentCommands {
+    private static Map<Player, Long> cooldown = new HashMap<Player, Long>();
 
     public static void showTownInfo(CommandSender sender, String[] args)
     {
@@ -124,6 +127,18 @@ public class ResidentCommands {
             TownCommandUtility.wrongWorld(sender);
             return;
         }
+        
+        //check cooldown
+        Player player = (Player)sender;
+        if(cooldown.containsKey(player)) {
+            int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
+            if(elapsed < MainConfig.getTownspawnCooldown()) {
+                int remaining = MainConfig.getTownspawnCooldown() - elapsed;
+                RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten");
+                return;
+            }
+        }
+        cooldown.put(player, Toolbox.getTimestamp());
         
         //warmup
         int warmup = 0;

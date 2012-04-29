@@ -62,4 +62,9 @@ public class Toolbox {
             return true;
         }
     }
+
+    public static long getTimestamp()
+    {
+        return System.currentTimeMillis() / 1000;
+    }
 }
