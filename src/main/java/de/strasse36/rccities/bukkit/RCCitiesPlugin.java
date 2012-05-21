@@ -3,7 +3,6 @@ package de.strasse36.rccities.bukkit;
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
 import de.strasse36.rccities.commands.PlotCommandAllocater;
 import de.strasse36.rccities.commands.TownCommandAllocater;
-import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
@@ -22,7 +21,6 @@ public class RCCitiesPlugin extends BukkitBasePlugin
 
     @Override
     public void registerEvents() {
-        MainConfig.init(this);
         _self = this;
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
