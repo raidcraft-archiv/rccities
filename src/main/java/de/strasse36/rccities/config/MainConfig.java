@@ -1,7 +1,8 @@
 package de.strasse36.rccities.config;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
-import com.silthus.raidcraft.config.ConfigManager;
+import com.silthus.raidcraft.config.RCConfig;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -9,91 +10,83 @@ import org.bukkit.configuration.ConfigurationSection;
  * 17.12.11 - 11:27
  * @author Silthus
  */
-public class MainConfig {
+public class MainConfig extends RCConfig {
 
     private static final String FILENAME = "config.yml";
-    private static BukkitBasePlugin plugin;
+    private static MainConfig self;
 
-    public static void init(BukkitBasePlugin plugin) {
-        MainConfig.plugin = plugin;
-        load();
+    public MainConfig(BukkitBasePlugin plugin) {
+        super(plugin, FILENAME);
     }
 
-    public static void save() {
-        ConfigManager.save(FILENAME, plugin);
+    public static MainConfig get() {
+        if (self == null) {
+            self = new MainConfig(RCCitiesPlugin.get());
+        }
+        return self;
     }
-
-    public static void reload() {
-        ConfigManager.reload(FILENAME, plugin);
-    }
-
-    public static void load() {
-        ConfigManager.loadConfig(FILENAME, plugin);
-}
-
-    public static ConfigurationSection getConfig() {
-        return ConfigManager.getConfig(FILENAME, plugin);
-    }
-
-
 
     public static DatabaseConfig getDatabase() {
         return new DatabaseConfig();
     }
     
+    public static ConfigurationSection getRCCitiesSection() {
+        return get().getConfig().getConfigurationSection("rccities");
+    }
+    
     public static int getChunksPerPlayer()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("chunksPerPlayer", 4);
+        return getRCCitiesSection().getInt("chunksPerPlayer", 4);
     }
 
     public static double getChunkPrice()
     {
-        return getConfig().getConfigurationSection("rccities").getDouble("chunkPrice", 0);
+        return getRCCitiesSection().getDouble("chunkPrice", 0);
     }
 
     public static double getClaimPrice()
     {
-        return getConfig().getConfigurationSection("rccities").getDouble("claimPrice", 0);
+        return getRCCitiesSection().getDouble("claimPrice", 0);
     }
 
     public static double getMarkPrice()
     {
-        return getConfig().getConfigurationSection("rccities").getDouble("markPrice", 0);
+        return getRCCitiesSection().getDouble("markPrice", 0);
     }
 
     public static int getTownspawnWarmup()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("townspawnWarmup", 0);
+        return getRCCitiesSection().getInt("townspawnWarmup", 0);
     }
 
     public static int getTownspawnCooldown()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("townspawnCooldown", 0);
+        return getRCCitiesSection().getInt("townspawnCooldown", 0);
     }
 
     public static String getCityWorld()
     {
-        return getConfig().getConfigurationSection("rccities").getString("cityWorld", "world");
+        return getRCCitiesSection().getString("cityWorld", "world");
     }
 
     public static int getLevyInterval()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("levyInterval", 24);
+        return getRCCitiesSection().getInt("levyInterval", 24);
     }
 
     public static double getTaxAmount()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("taxAmount", 50);
+        return getRCCitiesSection().getInt("taxAmount", 50);
     }
 
     public static int getPlotsPerPenalty()
     {
-        return getConfig().getConfigurationSection("rccities").getInt("plotsPerPenalty", 1);
+        return getRCCitiesSection().getInt("plotsPerPenalty", 1);
     }
 
     public static boolean isDynmapEnabled()
     {
-        return getConfig().getConfigurationSection("rccities").getBoolean("dynmapSupport", false);
+        return getRCCitiesSection().getBoolean("dynmapSupport", false);
     }
 
     public static class DatabaseConfig {
@@ -101,7 +94,7 @@ public class MainConfig {
         private ConfigurationSection section;
 
         public DatabaseConfig() {
-            this.section = getConfig().getConfigurationSection("database");
+            this.section = get().getConfig().getConfigurationSection("database");
         }
 
         public String getType() {
