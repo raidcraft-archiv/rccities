@@ -2,6 +2,7 @@ package de.strasse36.rccities.config;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
 import com.silthus.raidcraft.config.RCConfig;
+import com.silthus.raidcraft.database.AbstractDatabaseConfig;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -85,36 +86,10 @@ public class MainConfig extends RCConfig {
         return getRCCitiesSection().getBoolean("dynmapSupport", false);
     }
 
-    public static class DatabaseConfig {
+    public class DatabaseConfig extends AbstractDatabaseConfig {
 
-        private ConfigurationSection section;
-
-        public DatabaseConfig() {
-            this.section = get().getConfig().getConfigurationSection("database");
-        }
-
-        public String getType() {
-            return section.getString("type");
-        }
-
-        public String getName() {
-            return section.getString("database");
-        }
-
-        public String getUsername() {
-            return section.getString("username");
-        }
-
-        public String getPassword() {
-            return section.getString("password");
-        }
-
-        public String getUrl() {
-            return section.getString("url");
-        }
-
-        public String getPrefix() {
-            return section.getString("prefix");
-        }
+	    public DatabaseConfig(ConfigurationSection section) {
+		    super(section);
+	    }
     }
 }

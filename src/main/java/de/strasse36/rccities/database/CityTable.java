@@ -60,7 +60,7 @@ public class CityTable extends RCTable<CityTable> {
                     city.setName(resultSet.getString("name"));
                     city.setDescription(resultSet.getString("description"));
                     city.setSize(resultSet.getLong("size"));
-                    Location spawn = new Location(
+                    Location spawn = new Location (
                             Bukkit.getWorld(resultSet.getString("spawn_world")),
                             resultSet.getDouble("spawn_x"),
                             resultSet.getDouble("spawn_y"),

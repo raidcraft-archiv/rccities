@@ -10,10 +10,8 @@ import de.strasse36.rccities.config.MainConfig;
 public class RCCitiesDatabase extends RCDatabase {
 
     private static RCCitiesDatabase _self;
-    private static MainConfig.DatabaseConfig config;
 
     public static void init() {
-        config = MainConfig.getDatabase();
         get();
     }
 
@@ -26,13 +24,7 @@ public class RCCitiesDatabase extends RCDatabase {
     }
 
     private RCCitiesDatabase() {
-        super(RCCitiesPlugin.get(),
-                config.getName(),
-                config.getUrl(),
-                config.getUsername(),
-                config.getPassword(),
-                config.getType(),
-                config.getPrefix());
+        super(RCCitiesPlugin.get(), MainConfig.get().getDatabase());
         addTable(new CityTable(this));
         addTable(new ResidentTable(this));
         addTable(new PlotTable(this));
