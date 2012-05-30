@@ -18,7 +18,7 @@ public class PlotCommandUtility {
         RCMessaging.send(sender, RCMessaging.yellow("claim, unclaim, mark, give, take, buy, clear, pvp, public, list"), false);
         RCMessaging.send(sender, RCMessaging.green("Die Beschreibung der einzelnen Parameter findest Du unter:"), false);
         //TODO update wiki link
-        RCMessaging.send(sender, "http://strasse36.raid-craft.de/rccities/wiki.php", false);
+        RCMessaging.send(sender, "http://raid-craft.de/commands", false);
         RCMessaging.send(sender, RCMessaging.green("-----------------------------------------------------"), false);
     }
 

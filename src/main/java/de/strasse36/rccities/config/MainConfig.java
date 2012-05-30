@@ -25,10 +25,6 @@ public class MainConfig extends RCConfig {
         }
         return self;
     }
-
-    public static DatabaseConfig getDatabase() {
-        return new DatabaseConfig();
-    }
     
     public static ConfigurationSection getRCCitiesSection() {
         return get().getConfig().getConfigurationSection("rccities");
