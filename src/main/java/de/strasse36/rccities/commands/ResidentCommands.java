@@ -42,6 +42,7 @@ public class ResidentCommands {
             if(selectedCity == null)
             {
                 TownCommandUtility.noCityFound(sender);
+                return;
             }
         }
 
