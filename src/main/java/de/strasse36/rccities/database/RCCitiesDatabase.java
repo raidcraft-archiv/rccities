@@ -9,11 +9,8 @@ import de.strasse36.rccities.config.MainConfig;
  */
 public class RCCitiesDatabase extends RCDatabase {
 
+	private static final String PREFIX = "rccities";
     private static RCCitiesDatabase _self;
-
-    public static void init() {
-        get();
-    }
 
     public static RCCitiesDatabase get() {
         if (_self == null) {
@@ -24,7 +21,7 @@ public class RCCitiesDatabase extends RCDatabase {
     }
 
     private RCCitiesDatabase() {
-        super(RCCitiesPlugin.get(), MainConfig.get().getDatabase());
+        super(RCCitiesPlugin.get(), PREFIX);
         addTable(new CityTable(this));
         addTable(new ResidentTable(this));
         addTable(new PlotTable(this));

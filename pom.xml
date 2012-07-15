@@ -33,14 +33,14 @@
         <dependency>
             <groupId>de.raidcraft</groupId>
             <artifactId>RaidCraftCore</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- Bukkit API -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2.5-R1.2-SNAPSHOT</version>
+            <version>1.2.5-R4.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- WorldGuard -->

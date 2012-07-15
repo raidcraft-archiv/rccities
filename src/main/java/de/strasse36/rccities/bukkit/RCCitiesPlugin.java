@@ -28,11 +28,8 @@ public class RCCitiesPlugin extends BukkitBasePlugin
         registerCommand("rccities", new TownCommandAllocater());
         registerCommand("plot", new PlotCommandAllocater());
         new MainConfig(this);
-        RCCitiesDatabase.init();
         TableHandler.init();
         Taxes.init();
-//        if(MainConfig.isDynmapEnabled())
-//            Dynmap.init();
     }
 
     public static RCCitiesPlugin get()
