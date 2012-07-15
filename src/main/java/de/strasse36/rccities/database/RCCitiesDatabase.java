@@ -9,7 +9,7 @@ import de.strasse36.rccities.config.MainConfig;
  */
 public class RCCitiesDatabase extends RCDatabase {
 
-	private static final String PREFIX = "rccities";
+	private static final String PREFIX = "rccities_";
     private static RCCitiesDatabase _self;
 
     public static RCCitiesDatabase get() {
