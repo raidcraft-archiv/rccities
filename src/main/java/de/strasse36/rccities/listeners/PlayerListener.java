@@ -51,7 +51,7 @@ public class PlayerListener implements Listener
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(event.getPlayer().getName());
-        if(resident != null && resident.isMayor() && !event.getPlayer().hasPermission("rccities.skill.mayor"))
+        if(resident != null && resident.getCity() != null && resident.isMayor() && !event.getPlayer().hasPermission("rccities.skill.mayor"))
         {
             resident.setProfession("vicemayor");
             TableHandler.get().getResidentTable().updateResident(resident);

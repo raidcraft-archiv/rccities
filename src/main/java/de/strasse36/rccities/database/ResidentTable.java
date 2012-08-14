@@ -78,8 +78,6 @@ public class ResidentTable extends RCTable<ResidentTable> {
                     resident.setProfession(resultSet.getString("profession"));
                     residentlist.add(resident);
                 } while (resultSet.next());
-            } else {
-                return null;
             }
             return residentlist;
         } catch (SQLException e) {
