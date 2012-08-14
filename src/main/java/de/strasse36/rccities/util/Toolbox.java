@@ -63,6 +63,16 @@ public class Toolbox {
         }
     }
 
+    public static void setTorch(Block block) {
+        Block blockBelow = block.getRelative(0, -1, 0);
+        Block blockAbove = block.getRelative(0, 1, 0);
+        if(Toolbox.canBuildTorch(blockBelow) && blockAbove.getType() == Material.AIR && block.getType() == Material.AIR) {
+            if(!ChunkUtil.markBackup.contains(block))
+                ChunkUtil.markBackup.add(block);
+            block.setType(Material.TORCH);
+        }
+    }
+
     public static long getTimestamp()
     {
         return System.currentTimeMillis() / 1000;

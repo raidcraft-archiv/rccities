@@ -17,7 +17,7 @@ public class TownCommandAllocater implements CommandExecutor
 
         /////////////////////////////RESIDENTS//////////////////////////////////////////
         //mark town info
-        if(args.length == 0 || (args.length > 0 && args[0].equals("info")))
+        if(args.length == 0 || (args.length > 1 && args[0].equals("info")))
         {
             ResidentCommands.showTownInfo(sender, args);
             return true;

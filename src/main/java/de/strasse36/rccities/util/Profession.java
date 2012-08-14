@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -12,22 +13,27 @@ import org.bukkit.entity.Player;
  * Description:
  */
 public class Profession {
-    
-    public static void setMayor(Player player, City city)
-    {
-        Resident resident = new Resident(player.getName(), city, "mayor");
-        TableHandler.get().getResidentTable().updateResident(resident);
-        if(player.isOnline())
-            RCMessaging.send(player, RCMessaging.blue("Du bist nun der Bürgermeister von " + city.getName() + "!"), false);
+
+    public static void setMayor(Player player, City city) {
+        setMayor(player.getName(), city);
     }
-    
+
+    public static void setMayor(String player, City city)
+    {
+        Resident resident = new Resident(player, city, "mayor");
+        TableHandler.get().getResidentTable().updateResident(resident);
+        Player bukkitPlayer = Bukkit.getPlayer(player);
+        if(bukkitPlayer != null && bukkitPlayer.isOnline())
+            RCMessaging.send(bukkitPlayer, RCMessaging.blue("Du bist nun der Bürgermeister von " + city.getName() + "!"), false);
+    }
+
     public static void changeProfession(Resident resident, String profession) throws UnknownProfessionException
     {
         if( profession.equalsIgnoreCase("mayor") ||
-            profession.equalsIgnoreCase("vicemayor") ||
-            profession.equalsIgnoreCase("assistant") ||
-            profession.equalsIgnoreCase("resident")
-        )
+                profession.equalsIgnoreCase("vicemayor") ||
+                profession.equalsIgnoreCase("assistant") ||
+                profession.equalsIgnoreCase("resident")
+                )
         {
             resident.setProfession(profession.toLowerCase());
             TableHandler.get().getResidentTable().updateResident(resident);
@@ -35,7 +41,7 @@ public class Profession {
         else
             throw new UnknownProfessionException("Die gewählte Berufsgruppe existiert nicht!");
     }
-    
+
     public static String translateProfession(String profession)
     {
         if(profession.equalsIgnoreCase("mayor"))

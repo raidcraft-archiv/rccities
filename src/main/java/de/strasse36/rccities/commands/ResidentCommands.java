@@ -183,8 +183,8 @@ public class ResidentCommands {
         resident.getCity().setId(0);
         resident.setProfession("");
         TableHandler.get().getResidentTable().updateResident(resident);
-        TownMessaging.sendTownResidents(city, sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
-        RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"), false);
+        TownMessaging.broadcast(sender.getName() + " hat die Stadt " + city.getName() + " verlassen!");
+        //RCMessaging.send(sender, RCMessaging.blue("Du hast die Stadt " + city.getName() + " verlassen!"), false);
 
         //update region owners
         ChunkUtil.updatePlotOwner(resident.getCity());

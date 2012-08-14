@@ -3,13 +3,11 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
+import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.ChunkUtil;
-import de.strasse36.rccities.util.Profession;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.WorldGuardManager;
+import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +22,7 @@ import java.util.Random;
  * Date: 01.03.12 - 14:29
  * Description:
  */
-public class ModCommands 
+public class ModCommands
 {
     private static Map<String, City> demolish = new HashMap<String, City>();
 
@@ -76,6 +74,7 @@ public class ModCommands
         }
 
         RCMessaging.send(sender, RCMessaging.blue("Die Stadt '" + args[1] + "' wurde erfolgreich gegründet."), false);
+        TownMessaging.broadcast("Es wurde die Stadt " + args[1] + " gegründet! ");
         //set mayor
         Profession.setMayor(player, city);
 
@@ -99,24 +98,14 @@ public class ModCommands
             return;
         }
 
-        Player player;
+        String player;
         if(args.length < 3)
         {
-            player = (Player)sender;
+            player = sender.getName();
         }
         else
         {
-            player = Bukkit.getPlayer(args[2]);
-            if(player == null)
-            {
-                TownCommandUtility.noPlayerFound(sender);
-                return;
-            }
-            if(!player.hasPermission("rccities.skill.mayor") && !player.getName().equalsIgnoreCase(sender.getName()))
-            {
-                TownCommandUtility.noMayorSkill(sender);
-                return;
-            }
+            player = args[2];
         }
 
         City city = TableHandler.get().getCityTable().getCity(args[1]);
@@ -126,8 +115,14 @@ public class ModCommands
             TownCommandUtility.noCityFound(sender);
             return;
         }
+        //get resident
+        Resident resident = TableHandler.get().getResidentTable().getResident(player);
+        if(resident == null) {
+            TownCommandUtility.selectNoResident(sender);
+            return;
+        }
         //set mayor
-        Profession.setMayor(player, city);
+        Profession.setMayor(resident.getName(), city);
 
         //update region owners
         ChunkUtil.updatePlotOwner(city);
@@ -135,9 +130,9 @@ public class ModCommands
         //update public plots
         ChunkUtil.setPublic(city);
 
-        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " zum Bürgermeister von " + city.getName() + " ernannt!"), false);
+        RCMessaging.send(sender, RCMessaging.blue("Du hast " + player + " zum Bürgermeister von " + city.getName() + " ernannt!"), false);
     }
-    
+
     public static void setCityName(CommandSender sender, String[] args)
     {
         if(!sender.hasPermission("rccities.cmd.setname"))
@@ -230,7 +225,7 @@ public class ModCommands
             return;
         }
         City city = demolish.get(args[1]);
-        
+
         //remove all plot assignments, plot entries and regions
         List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city);
         for(Plot plot : plotList)
@@ -240,13 +235,13 @@ public class ModCommands
             TableHandler.get().getPlotTable().deletePlot(plot.getRegionId());
         }
         WorldGuardManager.save();
-        
+
         //remove city in database
         TableHandler.get().getCityTable().deleteCity(city.getId());
 
         //remove economy account
         RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), RCCitiesPlugin.get().getEconomy().getBalance(city.getBankAccount()));
 
-        RCMessaging.broadcast(RCMessaging.blue("Die Stadt " + city.getName() + " wurde gelöscht!"));
+        TownMessaging.broadcast(sender.getName() + " hat die Stadt " + city.getName() + " gelöscht!");
     }
 }

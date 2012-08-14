@@ -31,9 +31,10 @@ public class NonResidentCommands {
 
         //create resident and update database
         Resident resident = new Resident(sender.getName(), city, "resident");
-        TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
+        //TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
+        TownMessaging.broadcast(sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);
-        RCMessaging.send(sender, RCMessaging.blue("Du bist nun Einwohner von " + city.getName() + "!"), false);
+        //RCMessaging.send(sender, RCMessaging.blue("Du bist nun Einwohner von " + city.getName() + "!"), false);
 
         //update city-size
         city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());

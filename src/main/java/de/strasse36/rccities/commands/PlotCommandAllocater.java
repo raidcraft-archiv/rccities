@@ -79,6 +79,12 @@ public class PlotCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            if(args[0].equals("unmark"))
+            {
+                PlotCommands.unmark(sender);
+                return true;
+            }
+
             /////////////////////////////RESIDENTS///////////////////////////////////////
             if(args[0].equals("list"))
             {

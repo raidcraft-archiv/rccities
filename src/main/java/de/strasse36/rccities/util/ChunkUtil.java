@@ -15,8 +15,12 @@ import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +29,8 @@ import java.util.List;
  * Description:
  */
 public class ChunkUtil {
+
+    public static List<Block> markBackup = new ArrayList<Block>();
 
     public static BlockVector[] getBlockVectors(Location location)
     {
@@ -241,5 +247,53 @@ public class ChunkUtil {
             }
         }
         return null;
+    }
+
+    public static void markChunk(Chunk chunk) {
+        //set torches
+        ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
+        Block block;
+        int i;
+
+        //EAST
+        for(i = 0; i<16; i++)
+        {
+            block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
+            Toolbox.setTorch(block);
+        }
+
+        //WEST
+        for(i = 0; i<16; i++)
+        {
+            block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
+            Toolbox.setTorch(block);
+        }
+
+        //NORTH
+        for(i = 0; i<16; i++)
+        {
+            block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
+            Toolbox.setTorch(block);
+        }
+
+        //SOUTH
+        for(i = 0; i<16; i++)
+        {
+            block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
+            Toolbox.setTorch(block);
+        }
+    }
+
+    public static boolean unmarkChunk(Chunk chunk) {
+        boolean success = false;
+        List<Block> blocks = new ArrayList<Block>(markBackup);
+        for(Block block : blocks) {
+            if(block.getChunk() == chunk && block.getType() == Material.TORCH) {
+                block.setType(Material.AIR);
+                markBackup.remove(block);
+                success = true;
+            }
+        }
+        return success;
     }
 }

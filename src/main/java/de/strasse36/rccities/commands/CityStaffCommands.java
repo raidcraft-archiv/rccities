@@ -195,7 +195,7 @@ public class CityStaffCommands {
         Player kickPlayer = Bukkit.getPlayerExact(kickResident.getName());
         if(kickPlayer != null)
             RCMessaging.warn(kickPlayer, "Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!");
-        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + " geworfen!"));
+        TownMessaging.broadcast(RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + " geworfen!"));
 
         resident.getCity().setSize(resident.getCity().getSize()- MainConfig.getChunksPerPlayer());
         TableHandler.get().getCityTable().updateCity(resident.getCity());

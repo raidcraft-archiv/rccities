@@ -40,4 +40,8 @@ public class TownMessaging {
                     RCMessaging.send(player, RCMessaging.blue(msg), false);
         }
     }
+    
+    public static void broadcast(String msg) {
+        RCMessaging.broadcast(RCMessaging.blue(msg), false);
+    }
 }
