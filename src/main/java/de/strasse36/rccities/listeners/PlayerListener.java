@@ -76,6 +76,6 @@ public class PlayerListener implements Listener
         }
 
         ResidentCommands.cancelWarmup(event.getPlayer());
-        RCMessaging.send(event.getPlayer(), RCMessaging.blue("Teleport Warmup abgebrochen..."));
+        RCMessaging.send(event.getPlayer(), RCMessaging.blue("Town Spawn Teleport abgebrochen!"), false);
     }
 }
