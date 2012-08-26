@@ -486,8 +486,6 @@ public class CityStaffCommands {
             }
             WorldGuardManager.save();
             TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in der Stadt erlaubt!");
-            //update chunk messages
-            ChunkUtil.updateChunkMessages(resident.getCity());
             return;
         }
 
@@ -495,13 +493,10 @@ public class CityStaffCommands {
         {
             for(Plot plot : plotList)
             {
-                if(!plot.isPvp())
-                    WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
+                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
             }
             WorldGuardManager.save();
             TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in in der Stadt verboten!");
-            //update chunk messages
-            ChunkUtil.updateChunkMessages(resident.getCity());
             return;
         }
 
