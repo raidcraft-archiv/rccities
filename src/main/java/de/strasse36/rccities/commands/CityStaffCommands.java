@@ -2,9 +2,7 @@ package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.strasse36.rccities.City;
-import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
@@ -392,21 +390,10 @@ public class CityStaffCommands {
 
     public static void pvp(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //wrong parameter length
         if(args.length < 2)
@@ -415,35 +402,10 @@ public class CityStaffCommands {
             RCMessaging.warn(sender, "'/town pvp <on / off>' Schaltet PVP in der Stadt an oder aus.");
             return;
         }
-        
-        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(resident.getCity());
-        
-        if(args[1].equalsIgnoreCase("on"))
-        {
-            for(Plot plot : plotList)
-            {
-                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
-            }
-            WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in der Stadt erlaubt!");
-            //update chunk messages
-            ChunkUtil.updateChunkMessages(resident.getCity());
-            return;
-        }
 
-        if(args[1].equalsIgnoreCase("off"))
-        {
-            for(Plot plot : plotList)
-            {
-                if(!plot.isPvp())
-                    WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-            }
-            WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "PVP ist nun in in der Stadt verboten!");
-            //update chunk messages
-            ChunkUtil.updateChunkMessages(resident.getCity());
+        if(CommandUtility.toggleCityFlag(resident.getCity(), DefaultFlag.PVP, args[1])
+                && CommandUtility.toggleCityFlag(resident.getCity(), DefaultFlag.POTION_SPLASH, args[1]))
             return;
-        }
 
         RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
         RCMessaging.warn(sender, "'/town pvp on' schaltet PVP in der Stadt ein.");
@@ -452,21 +414,10 @@ public class CityStaffCommands {
 
     public static void tnt(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //wrong parameter length
         if(args.length < 2)
@@ -476,32 +427,36 @@ public class CityStaffCommands {
             return;
         }
 
-        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(resident.getCity());
-
-        if(args[1].equalsIgnoreCase("on"))
-        {
-            for(Plot plot : plotList)
-            {
-                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.ALLOW);
-            }
-            WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in der Stadt erlaubt!");
+        if(CommandUtility.toggleCityFlag(resident.getCity(), DefaultFlag.TNT, args[1]))
             return;
-        }
-
-        if(args[1].equalsIgnoreCase("off"))
-        {
-            for(Plot plot : plotList)
-            {
-                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
-            }
-            WorldGuardManager.save();
-            TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in in der Stadt verboten!");
-            return;
-        }
 
         RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
         RCMessaging.warn(sender, "'/town tnt on' schaltet die TNT-Nutzung in der Stadt ein.");
         RCMessaging.warn(sender, "'/town tnt off' schaltet die TNT-Nutzung in der Stadt aus.");
     }
+
+    public static void mobspawn(CommandSender sender, String[] args)
+    {
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
+            return;
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town mobspawn <on / off>' Schaltet das Spawnen von Mobs in der Stadt an oder aus.");
+            return;
+        }
+        
+        if(CommandUtility.toggleCityFlag(resident.getCity(), DefaultFlag.MOB_SPAWNING, args[1]))
+            return;
+
+        RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
+        RCMessaging.warn(sender, "'/town mobspawn on' schaltet das Spawnen von Mobs in der Stadt ein.");
+        RCMessaging.warn(sender, "'/town mobspawn off' schaltet das Spawnen von Mobs in der Stadt aus.");
+    }
+    
+
 }

@@ -15,6 +15,7 @@ public class Plot {
     private int z;
     private boolean open;
     private boolean pvp;
+    private boolean mobs;
 
     public Plot() {
     }
@@ -24,6 +25,9 @@ public class Plot {
         this.regionId = regionId;
         this.x = x;
         this.z = z;
+        pvp = false;
+        mobs = false;
+        open = false;
     }
 
     public int getId() {
@@ -100,5 +104,13 @@ public class Plot {
             return 1;
         else
             return 0;
+    }
+
+    public boolean isMobs() {
+        return mobs;
+    }
+
+    public void setMobs(boolean mobs) {
+        this.mobs = mobs;
     }
 }

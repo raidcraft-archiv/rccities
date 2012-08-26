@@ -3,7 +3,6 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
@@ -129,19 +128,10 @@ public class PlotCommands {
     public static void claim(CommandSender sender)
     {
         Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
             return;
-        }
-        //no leadership
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
-            return;
-        }
 
         if(player.getWorld() != resident.getCity().getSpawn().getWorld())
         {
@@ -205,19 +195,10 @@ public class PlotCommands {
     public static void unclaim(CommandSender sender)
     {
         Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
             return;
-        }
-        //no leadership
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
-            return;
-        }
 
         //plot exist?
         List<Plot> cityPlots = TableHandler.get().getPlotTable().getPlots(resident.getCity());
@@ -252,20 +233,10 @@ public class PlotCommands {
     
     public static void give(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
             return;
-        }
-        //no leadership
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
-            return;
-        }
 
         //wrong parameter length
         if(args.length < 2)
@@ -334,20 +305,10 @@ public class PlotCommands {
 
     public static void take(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
             return;
-        }
-        //no leadership
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
-            return;
-        }
 
         //wrong parameter length
         if(args.length < 2)
@@ -427,19 +388,10 @@ public class PlotCommands {
 
     public static void buy(CommandSender sender, String[] args)
     {
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
             return;
-        }
-        //no leadership
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
-            return;
-        }
 
         //wrong parameter length
         if(args.length < 2)
@@ -478,21 +430,10 @@ public class PlotCommands {
 
     public static void clear(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //get plot
         Plot selectedPlot = null;
@@ -530,21 +471,10 @@ public class PlotCommands {
 
     public static void pvp(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //get plot
         Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
@@ -555,31 +485,17 @@ public class PlotCommands {
             return;
         }
 
-        if(args.length > 1)
-        {
+        if(args.length > 1
+                && CommandUtility.togglePlotFlag(resident, selectedPlot, DefaultFlag.PVP, args[1])
+                && CommandUtility.togglePlotFlag(resident, selectedPlot, DefaultFlag.POTION_SPLASH, args[1])) {
             if(args[1].equalsIgnoreCase("on"))
-            {
-                WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
-                WorldGuardManager.save();
                 selectedPlot.setPvp(true);
-                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
-                RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk erlaubt!"), false);
-                //update chunk messages
-                ChunkUtil.updateChunkMessages(resident.getCity());
-                return;
-            }
-
-            if(args[1].equalsIgnoreCase("off"))
-            {
-                WorldGuardManager.getRegion(selectedPlot.getRegionId()).setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-                WorldGuardManager.save();
+            else
                 selectedPlot.setPvp(false);
-                TableHandler.get().getPlotTable().updatePlot(selectedPlot);
-                RCMessaging.send(sender, RCMessaging.blue("PVP ist nun in diesem Chunk verboten!"), false);
-                //update chunk messages
-                ChunkUtil.updateChunkMessages(resident.getCity());
-                return;
-            }
+            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
+            return;
         }
 
         RCMessaging.warn(sender, "Eingabe fehlerhaft!");
@@ -587,23 +503,44 @@ public class PlotCommands {
         RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
     }
 
-    public static void publicPlot(CommandSender sender, String[] args)
+    public static void mobs(CommandSender sender, String[] args)
     {
-        Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
+            return;
+
+        //get plot
+        Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
+
+        if(selectedPlot == null)
         {
-            TownCommandUtility.noResident(sender);
+            PlotCommandUtility.noCitychunk(sender);
             return;
         }
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(args.length > 1 && CommandUtility.togglePlotFlag(resident, selectedPlot, DefaultFlag.MOB_SPAWNING, args[1])) {
+            if(args[1].equalsIgnoreCase("on"))
+                selectedPlot.setMobs(true);
+            else
+                selectedPlot.setMobs(false);
+            TableHandler.get().getPlotTable().updatePlot(selectedPlot);
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
             return;
         }
+
+        RCMessaging.warn(sender, "Eingabe fehlerhaft!");
+        RCMessaging.warn(sender, "'/plot mobs on' schaltet das spawnen von Mobs in diesem Chunk ein.");
+        RCMessaging.warn(sender, "'/plot mobs off' schaltet das spawnen von Mobs in diesem Chunk aus.");
+    }
+
+    public static void publicPlot(CommandSender sender, String[] args)
+    {
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
+            return;
 
         //get plot
         Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
@@ -649,20 +586,10 @@ public class PlotCommands {
     public static void mark(CommandSender sender)
     {
         Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //get plot
         Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);
@@ -692,20 +619,10 @@ public class PlotCommands {
     public static void unmark(CommandSender sender)
     {
         Player player = (Player)sender;
-        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
 
-        //no leader
-        if(!resident.isLeadership())
-        {
-            TownCommandUtility.noLeadership(sender);
+        if(resident == null)
             return;
-        }
 
         //get plot
         Plot selectedPlot = ChunkUtil.getLocalCityPlot(((Player) sender).getLocation(), resident);

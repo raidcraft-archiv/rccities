@@ -67,6 +67,12 @@ public class PlotCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            if(args[0].equals("mobs"))
+            {
+                PlotCommands.mobs(sender, args);
+                return true;
+            }
+
             if(args[0].equals("public"))
             {
                 PlotCommands.publicPlot(sender, args);

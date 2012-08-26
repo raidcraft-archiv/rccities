@@ -161,10 +161,16 @@ public class PlotTable extends RCTable<PlotTable> {
         }
     }
 
-    public List<Plot> getPlots(int open)
+    public List<Plot> getPlots(City city, boolean isPublic)
     {
+        int open;
+        if(isPublic)
+            open = 1;
+        else
+            open = 0;
+
         PreparedStatement statement = getDatabase().prepare(
-		        "SELECT * FROM " + getName() + " WHERE public = '" + open + "';"
+		        "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "' AND public = '" + open + "';"
         );
         ResultSet resultSet = getDatabase().executeQuery(statement);
         List<Plot> plotlist = new ArrayList<Plot>();

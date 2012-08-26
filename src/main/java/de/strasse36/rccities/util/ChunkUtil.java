@@ -122,7 +122,10 @@ public class ChunkUtil {
                         member = RCMessaging.green(protectedRegion.getMembers().toUserFriendlyString());
                         greetingMessage = "";
                         if(plot.isPvp())
-                            greetingMessage = RCMessaging.red("~PVP~ ");
+                            greetingMessage += RCMessaging.red("~PVP~ ");
+                        if(protectedRegion.getFlag(DefaultFlag.MOB_SPAWNING) == StateFlag.State.ALLOW)
+                            greetingMessage += RCMessaging.red("~MOBS~ ");
+
                         if(plot.isOpen())
                             greetingMessage += RCMessaging.green("~öffentlich~");
                         else
@@ -161,7 +164,7 @@ public class ChunkUtil {
                     residents.addPlayer(resident.getName());
                 }
 
-                List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(1);
+                List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(city, true);
                 for(Plot plot : plotList)
                 {
                     WorldGuardManager.getRegion(plot.getRegionId()).setMembers(residents);

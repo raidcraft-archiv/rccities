@@ -104,6 +104,13 @@ public class TownCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            //tnt
+            if(args[0].equals("mobs"))
+            {
+                CityStaffCommands.mobspawn(sender, args);
+                return true;
+            }
+
             //withdraw from townbank
             if(args[0].equals("withdraw"))
             {
