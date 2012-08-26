@@ -97,6 +97,13 @@ public class TownCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            //tnt
+            if(args[0].equals("tnt"))
+            {
+                CityStaffCommands.tnt(sender, args);
+                return true;
+            }
+
             //withdraw from townbank
             if(args[0].equals("withdraw"))
             {

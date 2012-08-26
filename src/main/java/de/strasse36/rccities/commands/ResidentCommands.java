@@ -10,6 +10,7 @@ import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,26 @@ import java.util.Map;
  */
 public class ResidentCommands {
     private static Map<Player, Long> cooldown = new HashMap<Player, Long>();
+    private static List<Player> warmup = new ArrayList<Player>();
 
+    public static boolean isWarmup(Player player) {
+        if(warmup.contains(player)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public static void setWarmup(Player player) {
+        if(!isWarmup(player))
+            warmup.add(player);
+    }
+    
+    public static void cancelWarmup(Player player) {
+        warmup.remove(player);
+    }
+    
     public static void showTownInfo(CommandSender sender, String[] args)
     {
         City selectedCity;
@@ -147,6 +167,7 @@ public class ResidentCommands {
         int warmup = 0;
         if(!sender.hasPermission("rccities.cmd.spawnall"))
             warmup = MainConfig.getTownspawnWarmup();
+        setWarmup(player);
         RCMessaging.send(sender, RCMessaging.blue("Warten auf Teleport..."), false);
         Task task = new Task(RCCitiesPlugin.get(), (Player)sender, city)
         {
@@ -155,6 +176,10 @@ public class ResidentCommands {
             {
                 final Player player = (Player)getArg(0);
                 final City city = (City)getArg(1);
+                if(!isWarmup(player)) {
+                    return;
+                }
+                cancelWarmup(player);
                 Teleport.teleportPlayer(player, city);
                 RCMessaging.send(player, RCMessaging.blue("Willkommen am Townspawn von '" + city.getName() + "'"), false);
             }

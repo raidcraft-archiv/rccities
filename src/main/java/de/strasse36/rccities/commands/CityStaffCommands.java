@@ -446,7 +446,67 @@ public class CityStaffCommands {
         }
 
         RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
-        RCMessaging.warn(sender, "'/plot pvp on' schaltet PVP in diesem Chunk ein.");
-        RCMessaging.warn(sender, "'/plot pvp off' schaltet PVP in diesem Chunk aus.");
+        RCMessaging.warn(sender, "'/town pvp on' schaltet PVP in der Stadt ein.");
+        RCMessaging.warn(sender, "'/town pvp off' schaltet PVP in der Stadt aus.");
+    }
+
+    public static void tnt(CommandSender sender, String[] args)
+    {
+        Player player = (Player)sender;
+        Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
+        //no resident
+        if(resident == null || resident.getCity() == null)
+        {
+            TownCommandUtility.noResident(sender);
+            return;
+        }
+
+        //no leader
+        if(!resident.isLeadership())
+        {
+            TownCommandUtility.noLeadership(sender);
+            return;
+        }
+
+        //wrong parameter length
+        if(args.length < 2)
+        {
+            RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+            RCMessaging.warn(sender, "'/town tnt <on / off>' Schaltet die TNT-Nutzung in der Stadt an oder aus.");
+            return;
+        }
+
+        List<Plot> plotList = TableHandler.get().getPlotTable().getPlots(resident.getCity());
+
+        if(args[1].equalsIgnoreCase("on"))
+        {
+            for(Plot plot : plotList)
+            {
+                WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.ALLOW);
+            }
+            WorldGuardManager.save();
+            TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in der Stadt erlaubt!");
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
+            return;
+        }
+
+        if(args[1].equalsIgnoreCase("off"))
+        {
+            for(Plot plot : plotList)
+            {
+                if(!plot.isPvp())
+                    WorldGuardManager.getRegion(plot.getRegionId()).setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
+            }
+            WorldGuardManager.save();
+            TownMessaging.sendTownResidents(resident.getCity(), "TNT ist nun in in der Stadt verboten!");
+            //update chunk messages
+            ChunkUtil.updateChunkMessages(resident.getCity());
+            return;
+        }
+
+        RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
+        RCMessaging.warn(sender, "'/town tnt on' schaltet die TNT-Nutzung in der Stadt ein.");
+        RCMessaging.warn(sender, "'/town tnt off' schaltet die TNT-Nutzung in der Stadt aus.");
     }
 }
