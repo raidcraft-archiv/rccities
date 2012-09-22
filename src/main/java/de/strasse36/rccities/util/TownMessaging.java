@@ -3,6 +3,7 @@ package de.strasse36.rccities.util;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.database.TableHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class TownMessaging {
         List<Resident> residentlist = TableHandler.get().getResidentTable().getResidents(city);
         Iterator<Resident> iterator = residentlist.iterator();
         while (iterator.hasNext()) {
-            if(iterator.next().isStaff())
+            if(iterator.next().isStaff(city))
             {
                 Player player = Bukkit.getPlayer(iterator.next().getName());
                 if(player != null)

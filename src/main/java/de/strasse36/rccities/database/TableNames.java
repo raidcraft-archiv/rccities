@@ -1,4 +1,4 @@
-package de.strasse36.rccities.util;
+package de.strasse36.rccities.database;
 
 /**
  * Author: Philip Urban

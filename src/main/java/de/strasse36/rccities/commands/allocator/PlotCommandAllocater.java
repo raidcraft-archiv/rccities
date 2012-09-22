@@ -1,6 +1,8 @@
-package de.strasse36.rccities.commands;
+package de.strasse36.rccities.commands.allocator;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import de.strasse36.rccities.commands.PlotCommands;
+import de.strasse36.rccities.commands.util.PlotCommandUtility;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

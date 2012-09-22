@@ -4,10 +4,11 @@ import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.commands.util.TownCommandUtility;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.util.ChunkUtil;
 import de.strasse36.rccities.util.Profession;
-import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TownMessaging;
 import org.bukkit.command.CommandSender;
 

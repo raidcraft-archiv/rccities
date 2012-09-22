@@ -1,10 +1,10 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities.database.tables;
 
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.database.TableNames;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.TableNames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

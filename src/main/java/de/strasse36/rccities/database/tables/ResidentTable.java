@@ -1,12 +1,12 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities.database.tables;
 
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.TableNames;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.database.TableNames;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,29 +38,6 @@ public class ResidentTable extends RCTable<ResidentTable> {
         getDatabase().executeUpdate(prepare);
     }
 
-    public List<Resident> getResidents() {
-        PreparedStatement statement = getDatabase().prepare(
-		        "SELECT * FROM " + getName() + ";"
-        );
-        ResultSet resultSet = getDatabase().executeQuery(statement);
-        List<Resident> residentlist = new ArrayList<Resident>();
-        try {
-            Resident resident;
-            while (resultSet.next()) {
-                resident = new Resident();
-                resident.setId(resultSet.getInt("id"));
-                resident.setName(resultSet.getString("name"));
-                resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
-                resident.setProfession(resultSet.getString("profession"));
-                residentlist.add(resident);
-            }
-            return residentlist;
-        } catch (SQLException e) {
-	        RCLogger.warning(e.getMessage());
-        }
-        return null;
-    }
-
     public List<Resident> getResidents(City city) {
         PreparedStatement statement = getDatabase().prepare(
 		        "SELECT * FROM " + getName() + " WHERE city = '" + city.getId() + "';"
@@ -84,54 +61,6 @@ public class ResidentTable extends RCTable<ResidentTable> {
            RCLogger.warning(e.getMessage());
         }
         return null;
-    }
-
-    public Resident getResident(int id) {
-        PreparedStatement statement = getDatabase().prepare(
-		        "SELECT * FROM " + getName() + " WHERE id = '" + id + "';"
-        );
-        ResultSet resultSet = getDatabase().executeQuery(statement);
-        try {
-            Resident resident;
-            if (resultSet.next()) {
-                do {
-                    resident = new Resident();
-                    resident.setId(resultSet.getInt("id"));
-                    resident.setName(resultSet.getString("name"));
-                    resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
-                    resident.setProfession(resultSet.getString("profession"));
-                } while (resultSet.next());
-            } else {
-                return null;
-            }
-            return resident;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    public Resident getResident(String name) {
-        PreparedStatement statement = getDatabase().prepare(
-		        "SELECT * FROM " + getName() + " WHERE name = '" + name + "';"
-        );
-        ResultSet resultSet = getDatabase().executeQuery(statement);
-        try {
-            Resident resident;
-            if (resultSet.next()) {
-                do {
-                    resident = new Resident();
-                    resident.setId(resultSet.getInt("id"));
-                    resident.setName(resultSet.getString("name"));
-                    resident.setCity(TableHandler.get().getCityTable().getCity(resultSet.getInt("city")));
-                    resident.setProfession(resultSet.getString("profession"));
-                } while (resultSet.next());
-            } else {
-                return null;
-            }
-            return resident;
-        } catch (SQLException e) {
-            return null;
-        }
     }
 
     public void updateResident(Resident resident)
@@ -159,5 +88,14 @@ public class ResidentTable extends RCTable<ResidentTable> {
             );
         }
         getDatabase().executeUpdate(statement);
+    }
+    
+    public List<Resident.CityProperties> getCitiesProperties(String player) {
+        List<Resident.CityProperties> cities = new ArrayList<Resident.CityProperties>();
+
+        //TODO implement
+
+
+        return cities;
     }
 }

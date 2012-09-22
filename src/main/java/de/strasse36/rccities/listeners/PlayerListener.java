@@ -5,7 +5,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.commands.ResidentCommands;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

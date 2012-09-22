@@ -1,6 +1,11 @@
-package de.strasse36.rccities.commands;
+package de.strasse36.rccities.commands.allocator;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import de.strasse36.rccities.commands.CityStaffCommands;
+import de.strasse36.rccities.commands.ModCommands;
+import de.strasse36.rccities.commands.NonResidentCommands;
+import de.strasse36.rccities.commands.ResidentCommands;
+import de.strasse36.rccities.commands.util.TownCommandUtility;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

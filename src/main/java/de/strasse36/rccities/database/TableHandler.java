@@ -1,6 +1,9 @@
-package de.strasse36.rccities.util;
+package de.strasse36.rccities.database;
 
-import de.strasse36.rccities.database.*;
+import de.strasse36.rccities.database.tables.AssignmentsTable;
+import de.strasse36.rccities.database.tables.CityTable;
+import de.strasse36.rccities.database.tables.PlotTable;
+import de.strasse36.rccities.database.tables.ResidentTable;
 
 /**
  * Author: Philip Urban

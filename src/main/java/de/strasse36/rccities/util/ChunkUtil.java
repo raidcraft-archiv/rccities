@@ -14,6 +14,7 @@ import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
+import de.strasse36.rccities.database.TableHandler;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
@@ -72,7 +73,7 @@ public class ChunkUtil {
                 List<Resident> residentList = TableHandler.get().getResidentTable().getResidents(city);
                 for(Resident resident : residentList)
                 {
-                    if(resident.isStaff())
+                    if(resident.isStaff(city))
                     {
                         leaders.addPlayer(resident.getName());
                     }
@@ -221,7 +222,7 @@ public class ChunkUtil {
             if(assignmentList != null)
                 for(Assignment assignment : assignmentList)
                 {
-                    members.addPlayer(TableHandler.get().getResidentTable().getResident(assignment.getResident_id()).getName());
+                    members.addPlayer(assignment.getPlayer());
                 }
         }
         WorldGuardManager.getRegion(plot.getRegionId()).setMembers(members);

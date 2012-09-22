@@ -1,6 +1,10 @@
 package de.strasse36.rccities;
 
-import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.util.Profession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Philip Urban
@@ -8,81 +12,140 @@ import de.strasse36.rccities.util.TableHandler;
  * Description:
  */
 public class Resident {
-    private int id;
     private String name;
-    private City city;
-    private String profession;
+    private List<CityProperties> citiesProperties = new ArrayList<CityProperties>();
 
     public Resident() {};
 
-    public Resident(String name, int cityId, String profession)
+    public Resident(String player)
     {
-        this.setName(name);
-        this.setCity(TableHandler.get().getCityTable().getCity(id));
-        this.setProfession(profession);
-    }
-
-    public Resident(String name, City city, String profession)
-    {
-        this.setName(name);
-        this.setCity(city);
-        this.setProfession(profession);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.name = player;
+        citiesProperties = TableHandler.get().getResidentTable().getCitiesProperties(player);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<City> getCities() {
+        List<City> cities = new ArrayList<City>();
+        for(CityProperties cityProperties : citiesProperties) {
+            cities.add(cityProperties.getCity());
+        }
+        return cities;
+    }
+    
+    public CityProperties getCityProperty(City city) {
+        for(CityProperties cityProperties : citiesProperties) {
+            if(cityProperties.getCity().getId() == city.getId()) {
+                return cityProperties;
+            }
+        }
+        return null;
     }
 
-    public City getCity() {
-        return city;
+    public void addCity(City city, String profession) {
+        for(CityProperties cityProperties : citiesProperties) {
+            if(cityProperties.getCity().getId() == city.getId()) {
+                return;
+            }
+        }
+        citiesProperties.add(new CityProperties(city, profession));
+    }
+    
+    public void removeCity(City city) {
+        for(CityProperties cityProperties : citiesProperties) {
+            if(cityProperties.getCity().getId() == city.getId()) {
+                citiesProperties.remove(cityProperties);
+                return;
+            }
+        }
+    }
+    
+    public boolean isResident(City city) {
+        if(getCityProperty(city) != null) {
+            return true;
+        }
+        return false;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public String getProfession(City city) {
+        CityProperties cityProperties = getCityProperty(city);
+        if(cityProperties != null) {
+            return cityProperties.getProfession();
+        }
+        return "";
     }
 
-    public String getProfession() {
-        return profession;
+    public void setProfession(City city, String profession) {
+        for(CityProperties cityProperties : citiesProperties) {
+            if(cityProperties.getCity().getId() == city.getId()) {
+                cityProperties.setProfession(profession);
+                return;
+            }
+        }
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public boolean isMayor()
+    public boolean isMayor(City city)
     {
-        return this.getProfession().equalsIgnoreCase("mayor");
+        CityProperties cityProperties = getCityProperty(city);
+        if(cityProperties == null) {
+            return false;
+        }
+        return cityProperties.getProfession().equalsIgnoreCase(Profession.Professions.MAYOR.getDbName());
     }
 
-    public boolean isViceMayor()
+    public boolean isViceMayor(City city)
     {
-        return this.getProfession().equalsIgnoreCase("vicemayor");
+        CityProperties cityProperties = getCityProperty(city);
+        if(cityProperties == null) {
+            return false;
+        }
+        return cityProperties.getProfession().equalsIgnoreCase(Profession.Professions.VICEMAYOR.getDbName());
     }
 
-    public boolean isAssistant()
+    public boolean isAssistant(City city)
     {
-        return this.getProfession().equalsIgnoreCase("assistant");
+        CityProperties cityProperties = getCityProperty(city);
+        if(cityProperties == null) {
+            return false;
+        }
+        return cityProperties.getProfession().equalsIgnoreCase(Profession.Professions.ASSISTANT.getDbName());
     }
 
-    public boolean isStaff()
+    public boolean isStaff(City city)
     {
-        return (isMayor() || isViceMayor() || isAssistant());
+        return (isMayor(city) || isViceMayor(city) || isAssistant(city));
     }
 
-    public boolean isLeadership()
+    public boolean isLeadership(City city)
     {
-        return (isMayor() || isViceMayor());
+        return (isMayor(city) || isViceMayor(city));
+    }
+
+    public class CityProperties {
+        private City city;
+        private String profession;
+
+        public CityProperties(City city, String profession) {
+            this.city = city;
+            this.profession = profession;
+        }
+
+        public City getCity() {
+            return city;
+        }
+
+        public void setCity(City city) {
+            this.city = city;
+        }
+
+        public String getProfession() {
+            return profession;
+        }
+
+        public void setProfession(String profession) {
+            this.profession = profession;
+        }
     }
 }

@@ -6,15 +6,12 @@ package de.strasse36.rccities;
  * Description:
  */
 public class Assignment {
-    private int resident_id;
     private int plot_id;
+    private String player;
 
-    public int getResident_id() {
-        return resident_id;
-    }
-
-    public void setResident_id(int resident_id) {
-        this.resident_id = resident_id;
+    public Assignment(int plot_id, String player) {
+        this.plot_id = plot_id;
+        this.player = player;
     }
 
     public int getPlot_id() {
@@ -23,5 +20,13 @@ public class Assignment {
 
     public void setPlot_id(int plot_id) {
         this.plot_id = plot_id;
+    }
+
+    public String getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(String player) {
+        this.player = player;
     }
 }

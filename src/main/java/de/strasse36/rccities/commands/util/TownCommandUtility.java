@@ -1,4 +1,4 @@
-package de.strasse36.rccities.commands;
+package de.strasse36.rccities.commands.util;
 
 import com.silthus.raidcraft.util.RCLogger;
 import com.silthus.raidcraft.util.RCMessaging;

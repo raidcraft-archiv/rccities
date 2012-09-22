@@ -1,4 +1,4 @@
-package de.strasse36.rccities.commands;
+package de.strasse36.rccities.commands.util;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -7,8 +7,9 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.commands.util.TownCommandUtility;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.util.ChunkUtil;
-import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.TownMessaging;
 import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Bukkit;

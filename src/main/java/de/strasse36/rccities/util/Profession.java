@@ -3,6 +3,7 @@ package de.strasse36.rccities.util;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,6 +14,30 @@ import org.bukkit.entity.Player;
  * Description:
  */
 public class Profession {
+    
+    public enum Professions {
+        
+        RESIDENT("resident", "Bürger"),
+        ASSISTANT("assistant", "Stadtassistent"),
+        VICEMAYOR("vicemayor", "Vize-Bürgermeister"),
+        MAYOR("mayor", "Bürgermeister");
+        
+        private String dBname;
+        private String name;
+        
+        Professions(String dBname, String name) {
+            this.dBname = dBname;
+            this.name = name;
+        }
+        
+        public String getDbName() {
+            return dBname;
+        }
+        
+        public String getName() {
+            return name;
+        }
+    } 
 
     public static void setMayor(Player player, City city) {
         setMayor(player.getName(), city);
@@ -20,38 +45,11 @@ public class Profession {
 
     public static void setMayor(String player, City city)
     {
-        Resident resident = new Resident(player, city, "mayor");
+        Resident resident = new Resident(player);
+        resident.setProfession(city, player);
         TableHandler.get().getResidentTable().updateResident(resident);
         Player bukkitPlayer = Bukkit.getPlayer(player);
         if(bukkitPlayer != null && bukkitPlayer.isOnline())
             RCMessaging.send(bukkitPlayer, RCMessaging.blue("Du bist nun der Bürgermeister von " + city.getName() + "!"), false);
-    }
-
-    public static void changeProfession(Resident resident, String profession) throws UnknownProfessionException
-    {
-        if( profession.equalsIgnoreCase("mayor") ||
-                profession.equalsIgnoreCase("vicemayor") ||
-                profession.equalsIgnoreCase("assistant") ||
-                profession.equalsIgnoreCase("resident")
-                )
-        {
-            resident.setProfession(profession.toLowerCase());
-            TableHandler.get().getResidentTable().updateResident(resident);
-        }
-        else
-            throw new UnknownProfessionException("Die gewählte Berufsgruppe existiert nicht!");
-    }
-
-    public static String translateProfession(String profession)
-    {
-        if(profession.equalsIgnoreCase("mayor"))
-            return "Bürgermeister";
-        if(profession.equalsIgnoreCase("vicemayor"))
-            return "Vize-Bürgermeister";
-        if(profession.equalsIgnoreCase("assistant"))
-            return "Stadtassistent";
-        if(profession.equalsIgnoreCase("resident"))
-            return "Bürger";
-        return profession;
     }
 }

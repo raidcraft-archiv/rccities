@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.Task;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.TableHandler;
 
 import java.util.List;
 

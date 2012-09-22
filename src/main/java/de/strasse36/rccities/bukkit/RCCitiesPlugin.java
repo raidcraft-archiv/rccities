@@ -1,13 +1,12 @@
 package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
-import de.strasse36.rccities.commands.PlotCommandAllocater;
-import de.strasse36.rccities.commands.TownCommandAllocater;
+import de.strasse36.rccities.commands.allocator.PlotCommandAllocater;
+import de.strasse36.rccities.commands.allocator.TownCommandAllocater;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.database.RCCitiesDatabase;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
-import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.Taxes;
 import org.bukkit.Bukkit;
 
