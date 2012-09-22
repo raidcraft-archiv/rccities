@@ -159,7 +159,7 @@ public class ResidentCommands {
         }
         
         //check cooldown
-        if(!sender.hasPermission("rccities.cmd.spawnall")) {
+        if(!sender.hasPermission("rccities.cmd.nocooldown")) {
             if(cooldown.containsKey(player)) {
                 int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
                 if(elapsed < MainConfig.getTownspawnCooldown()) {
@@ -172,7 +172,7 @@ public class ResidentCommands {
         
         //warmup
         int warmup = 0;
-        if(!sender.hasPermission("rccities.cmd.spawnall"))
+        if(!sender.hasPermission("rccities.cmd.nowarmup"))
             warmup = MainConfig.getTownspawnWarmup();
 
         RCMessaging.send(sender, RCMessaging.blue("Warten auf Teleport..."), false);
