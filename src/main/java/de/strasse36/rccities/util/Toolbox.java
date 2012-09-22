@@ -3,6 +3,8 @@ package de.strasse36.rccities.util;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import java.math.BigDecimal;
+
 /**
  * Author: Philip Urban
  * Date: 10.03.12 - 23:22
@@ -77,4 +79,16 @@ public class Toolbox {
     {
         return System.currentTimeMillis() / 1000;
     }
+
+    public static int[] splitToComponentTimes(int seconds)
+    {
+        int hours = seconds / 3600;
+        int remainder = seconds - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+
+        return new int[]{hours, mins, secs};
+    }
+
 }

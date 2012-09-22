@@ -29,6 +29,8 @@ rccities:
     townspawnWarmup: 2
     # town spawn cooldown in seconds
     townspawnCooldown: 60
+    # town spawn cooldown for foreigners
+    townspawnCooldownForeign: 900
     # city-world
     cityWorld: 'world'
 

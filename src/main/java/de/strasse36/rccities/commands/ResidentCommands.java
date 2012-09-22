@@ -162,9 +162,24 @@ public class ResidentCommands {
         if(!sender.hasPermission("rccities.cmd.nocooldown")) {
             if(cooldown.containsKey(player)) {
                 int elapsed = (int)(Toolbox.getTimestamp() - cooldown.get(player));
-                if(elapsed < MainConfig.getTownspawnCooldown()) {
-                    int remaining = MainConfig.getTownspawnCooldown() - elapsed;
-                    RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remaining + " Sek. warten!");
+                int cooldown = MainConfig.getTownspawnCooldown();
+                if(resident.getCity().getId() != city.getId()) {
+                    cooldown = MainConfig.getTownspawnCooldownForeign();
+                }
+                if(elapsed < cooldown) {
+                    int remaining = cooldown - elapsed;
+                    String remainingText = "";
+                    int[] splittedRemaining = Toolbox.splitToComponentTimes(remaining);
+                    if(splittedRemaining[0] > 0) {
+                        remainingText += splittedRemaining[0] + " Stunde ";
+                    }
+                    if(splittedRemaining[1] > 0) {
+                        remainingText += splittedRemaining[1] + " Minuten ";
+                    }
+                    if(splittedRemaining[2] > 0) {
+                        remainingText += splittedRemaining[2] + " Sekunden ";
+                    }
+                    RCMessaging.warn(sender, "TownSpawn Cooldown: Du musst noch " + remainingText + "warten!");
                     return;
                 }
             }

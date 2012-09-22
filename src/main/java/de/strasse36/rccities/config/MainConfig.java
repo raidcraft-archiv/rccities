@@ -61,6 +61,11 @@ public class MainConfig extends RCConfig {
         return getRCCitiesSection().getInt("townspawnCooldown", 0);
     }
 
+    public static int getTownspawnCooldownForeign()
+    {
+        return getRCCitiesSection().getInt("townspawnCooldownForeign", 0);
+    }
+
     public static String getCityWorld()
     {
         return getRCCitiesSection().getString("cityWorld", "world");
