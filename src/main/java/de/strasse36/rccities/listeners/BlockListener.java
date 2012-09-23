@@ -17,13 +17,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
  */
 public class BlockListener implements Listener {
 
-    @EventHandler
+    @EventHandler( ignoreCancelled = true )
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        Player player = event.getPlayer();
-
-        //check if cancelled
-        if(event.isCancelled())
+        if(event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
         //check world
@@ -35,20 +32,14 @@ public class BlockListener implements Listener {
         if(regionSet.size() != 0)
             return;
 
-        if(player.hasPermission("rccities.build.place"))
-            return;
-
         event.setCancelled(true);
-        RCMessaging.warn(player, "Du hast hier keine Baurechte!");
+        RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");
     }
 
-    @EventHandler
+    @EventHandler( ignoreCancelled = true )
     public void onBlockBreak(BlockBreakEvent event)
     {
-        Player player = event.getPlayer();
-
-        //check if cancelled
-        if(event.isCancelled())
+        if(event.getPlayer().hasPermission("rccities.build.destroy"))
             return;
 
         //check world
@@ -60,10 +51,7 @@ public class BlockListener implements Listener {
         if(regionSet.size() != 0)
             return;
 
-        if(player.hasPermission("rccities.build.destroy"))
-            return;
-
         event.setCancelled(true);
-        RCMessaging.warn(player, "Du hast hier keine Baurechte!");
+        RCMessaging.warn(event.getPlayer(), "Du hast hier keine Baurechte!");
     }
 }

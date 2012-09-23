@@ -62,16 +62,16 @@ public class PlayerListener implements Listener
         }
     }
 
-    @EventHandler
+    @EventHandler( ignoreCancelled = true )
     public void onMove(PlayerMoveEvent event) {
-        if(!ResidentCommands.isWarmup(event.getPlayer())) {
-            return;
-        }
-
         //track only large moves
         if(event.getFrom().getBlockX() == event.getTo().getBlockX()
                 && event.getFrom().getBlockY() == event.getTo().getBlockY()
                 && event.getFrom().getBlockZ() == event.getTo().getBlockZ()) {
+            return;
+        }
+
+        if(!ResidentCommands.isWarmup(event.getPlayer())) {
             return;
         }
 
