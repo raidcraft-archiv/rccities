@@ -248,9 +248,9 @@ public class PlotCommands {
 
         //check target player
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
-        if(selectedResident == null || selectedResident.getCity().getId() != resident.getCity().getId())
+        if(selectedResident == null)
         {
-            TownCommandUtility.selectNoResident(sender);
+            TownCommandUtility.selectNoResidentAny(sender);
             return;
         }
 
@@ -322,7 +322,7 @@ public class PlotCommands {
         Resident selectedResident = TableHandler.get().getResidentTable().getResident(args[1]);
         if(selectedResident == null)
         {
-            TownCommandUtility.selectNoResident(sender);
+            TownCommandUtility.selectNoResidentAny(sender);
             return;
         }
 

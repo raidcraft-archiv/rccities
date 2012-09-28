@@ -40,6 +40,12 @@ public class TownCommandUtility
         RCMessaging.warn(sender, "Der gewählte Spieler ist kein Einwohner!");
     }
 
+    //player is no resident in any town
+    public static void selectNoResidentAny(CommandSender sender)
+    {
+        RCMessaging.warn(sender, "Der gewählte Spieler muss zumindest in einer Stadt Einwohner sein!");
+    }
+
     //no resident
     public static void noResident(CommandSender sender)
     {
