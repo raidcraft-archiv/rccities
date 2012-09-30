@@ -5,10 +5,7 @@ import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.util.ChunkUtil;
-import de.strasse36.rccities.util.Profession;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.TownMessaging;
+import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -31,6 +28,7 @@ public class NonResidentCommands {
 
         //create resident and update database
         Resident resident = new Resident(sender.getName(), city, "resident");
+        PermissionsManager.addGroup(resident.getName(), city.getName());
         //TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TownMessaging.broadcast(sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TableHandler.get().getResidentTable().updateResident(resident);

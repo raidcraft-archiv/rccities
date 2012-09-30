@@ -16,8 +16,7 @@ import org.bukkit.Bukkit;
  * Date: 26.02.12 - 20:10
  * Description:
  */
-public class RCCitiesPlugin extends BukkitBasePlugin
-{
+public class RCCitiesPlugin extends BukkitBasePlugin {
     private static RCCitiesPlugin _self;
 
     @Override

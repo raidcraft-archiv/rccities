@@ -121,6 +121,7 @@ public class ModCommands
             TownCommandUtility.selectNoResident(sender);
             return;
         }
+        PermissionsManager.removeGroup(resident.getName(), resident.getCity().getName());
         //set mayor
         Profession.setMayor(resident.getName(), city);
 

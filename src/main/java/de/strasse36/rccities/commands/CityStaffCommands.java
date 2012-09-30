@@ -184,6 +184,7 @@ public class CityStaffCommands {
             return;
         }
 
+        PermissionsManager.removeGroup(kickResident.getName(), kickResident.getCity().getName());
         //set city id = 0 & profession = 0
         kickResident.getCity().setId(0);
         kickResident.setProfession("");

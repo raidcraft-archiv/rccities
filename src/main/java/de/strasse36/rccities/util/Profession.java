@@ -21,6 +21,7 @@ public class Profession {
     public static void setMayor(String player, City city)
     {
         Resident resident = new Resident(player, city, "mayor");
+        PermissionsManager.addGroup(resident.getName(), city.getName());
         TableHandler.get().getResidentTable().updateResident(resident);
         Player bukkitPlayer = Bukkit.getPlayer(player);
         if(bukkitPlayer != null && bukkitPlayer.isOnline())

@@ -228,6 +228,7 @@ public class ResidentCommands {
             return;
         }
         City city = resident.getCity();
+        PermissionsManager.removeGroup(resident.getName(), city.getName());
         resident.getCity().setId(0);
         resident.setProfession("");
         TableHandler.get().getResidentTable().updateResident(resident);
