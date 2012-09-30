@@ -75,7 +75,7 @@ public class Toolbox {
         }
     }
 
-    public static long getTimestamp()
+    public static synchronized long getTimestamp()
     {
         return System.currentTimeMillis() / 1000;
     }
