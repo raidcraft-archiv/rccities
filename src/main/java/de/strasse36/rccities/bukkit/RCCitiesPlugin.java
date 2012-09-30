@@ -33,6 +33,9 @@ public class RCCitiesPlugin extends BukkitBasePlugin {
         Taxes.init();
         
         for(Resident resident : TableHandler.get().getResidentTable().getResidents()) {
+            if(resident.getCity() == null) {
+                continue;
+            }
             PermissionsManager.addGroup(resident.getName(), resident.getCity().getName());
         }
     }
