@@ -1,5 +1,6 @@
 package de.strasse36.rccities.util;
 
+import com.sk89q.worldedit.bukkit.entity.BukkitItem;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -29,6 +30,7 @@ public final class PermissionsManager {
      * @param group to add to player
      */
     public static void addGroup(String player, String group) {
+        group = group.toLowerCase();
         for (World world : Bukkit.getWorlds()) {
             if (hasGroup(world.getName(), player, group)) continue;
             getPermission().playerAddGroup(world, player, group);
