@@ -86,15 +86,17 @@ public class MainConfig extends RCConfig {
         return getRCCitiesSection().getInt("plotsPerPenalty", 1);
     }
 
-    public static boolean isDynmapEnabled()
+    public static String getRCCitiesSignTag()
     {
-        return getRCCitiesSection().getBoolean("dynmapSupport", false);
+        return getRCCitiesSection().getString("rccitiesSignTag", "[Town]");
     }
 
-    public class DatabaseConfig extends AbstractDatabaseConfig {
+    public static ConfigurationSection getSignTopicSection() {
+        return get().getConfig().getConfigurationSection("signTopics");
+    }
 
-	    public DatabaseConfig(ConfigurationSection section) {
-		    super(section);
-	    }
+    public static String getSignTopicJoinTown()
+    {
+        return getRCCitiesSection().getString("joinTown", "Beitreten");
     }
 }

@@ -5,6 +5,8 @@ import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.RCCitiesDatabase;
+import de.strasse36.rccities.database.ResidentTable;
 import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 
@@ -19,15 +21,29 @@ public class NonResidentCommands {
 
     public static void acceptTownInvite(CommandSender sender)
     {
-        if(!CityStaffCommands.invites.containsKey(sender.getName()))
+        if(!ResidentUtil.invites.containsKey(sender.getName()))
         {
             RCMessaging.warn(sender, "Du hast keine offenen Einladungen!");
             return;
         }
-        City city = CityStaffCommands.invites.get(sender.getName());
+        //get from map
+        City city = ResidentUtil.invites.get(sender.getName());
+        //remove from map
+        ResidentUtil.invites.remove(sender.getName());
+
+        Resident resident = RCCitiesDatabase.get().getTable(ResidentTable.class).getResident(sender.getName());
+
+        if(resident != null && resident.getCity() != null) {
+            if(resident.getCity().getName().equalsIgnoreCase(city.getName())) {
+                RCMessaging.warn(sender, "Du bist bereits Einwohner von " + city.getName() + "!");
+                return;
+            }
+            resident.getCity().setSize(resident.getCity().getSize() - MainConfig.getChunksPerPlayer());
+            TableHandler.get().getCityTable().updateCity(resident.getCity());
+        }
 
         //create resident and update database
-        Resident resident = new Resident(sender.getName(), city, "resident");
+        resident = new Resident(sender.getName(), city, "resident");
         PermissionsManager.addGroup(resident.getName(), city.getName());
         //TownMessaging.sendTownResidents(city, sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
         TownMessaging.broadcast(sender.getName() + " ist nun Einwohner von " + city.getName() + "!");
@@ -40,9 +56,6 @@ public class NonResidentCommands {
 
         //update public plots
         ChunkUtil.setPublic(city);
-
-        //remove from map
-        CityStaffCommands.invites.remove(sender.getName());
     }
     
     public static void listTowns(CommandSender sender)

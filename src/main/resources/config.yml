@@ -41,6 +41,11 @@ rccities:
     taxAmount: 20.0
     # number of taken plots per penalty (min. 1)
     plotsPerPenalty: 1
+    # sign tag
+    rccitiesSignTag: '[Town]'
 
-    #show dynmap overlay
-    dynmapSupport: true
+signTopics:
+    # join town sign
+    joinTown: 'Beitreten'
+    # deosit sign (% means amount)
+    deposit: 'Spenden: %c'

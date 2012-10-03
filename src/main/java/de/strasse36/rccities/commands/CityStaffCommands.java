@@ -23,9 +23,6 @@ import java.util.Map;
  */
 public class CityStaffCommands {
 
-    public static Map<String, City> invites = new HashMap<String, City>();
-
-
     public static void setspawn(CommandSender sender)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
@@ -104,7 +101,7 @@ public class CityStaffCommands {
                 }
             }
         }
-        Resident selectedResident = ResidentHelper.isResident(args[1], resident.getCity());
+        Resident selectedResident = ResidentUtil.isResident(args[1], resident.getCity());
         if(selectedResident == null)
         {
             TownCommandUtility.selectNoResident(sender);
@@ -171,7 +168,7 @@ public class CityStaffCommands {
         }
 
         //focused player no resident
-        Resident kickResident = ResidentHelper.isResident(args[1], resident.getCity());
+        Resident kickResident = ResidentUtil.isResident(args[1], resident.getCity());
         if(kickResident == null)
         {
             RCMessaging.warn(sender, "Der Spieler '" + args[1] + "' ist kein Bürger von " + resident.getCity().getName());
@@ -243,16 +240,14 @@ public class CityStaffCommands {
             return;
         }
 
-        if(ResidentHelper.isResident(player.getName(), resident.getCity()) != null)
+        if(ResidentUtil.isResident(player.getName(), resident.getCity()) != null)
         {
             TownCommandUtility.selectedAlreadyResident(sender);
             return;
         }
 
-        invites.put(player.getName(), resident.getCity());
         RCMessaging.send(sender, RCMessaging.blue("Du hast " + player.getName() + " nach " + resident.getCity().getName() + " eingeladen!"), false);
-        RCMessaging.send(player, RCMessaging.blue("Du wurdest von " + sender.getName() + " in die Stadt " + resident.getCity().getName() + " eingeladen!"), false);
-        RCMessaging.send(player, RCMessaging.blue("Bestätige die Einladung mit /town accept"), false);
+        ResidentUtil.sentInvitation(player, resident.getCity());
     }
 
     public static void setdesc(CommandSender sender, String[] args)

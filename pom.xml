@@ -18,7 +18,7 @@
     </ciManagement>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@bitbucket.org/raidcraft/rccities.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@raid-craft.org/raidcraft/rccities.git</developerConnection>
     </scm>
 
     <repositories>
