@@ -61,7 +61,7 @@ public class PlayerListener implements Listener
 
                 //balance sign
                 if(ChatColor.stripColor(sign.getLine(2)).equalsIgnoreCase(MainConfig.getSignTopicTownBank())) {
-                    sign.setLine(3, ChatColor.GOLD
+                    sign.setLine(3, ChatColor.DARK_BLUE
                             + String.valueOf(RCCitiesPlugin.get().getEconomy().getBalance(city.getBankAccount())));
                     sign.update();
                 }
