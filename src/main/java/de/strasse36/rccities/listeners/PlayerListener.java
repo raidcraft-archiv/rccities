@@ -168,7 +168,7 @@ public class PlayerListener implements Listener
             event.setLine(0, ChatColor.GREEN + MainConfig.getRCCitiesSignTag());
             event.setLine(1, resident.getCity().getName());
             event.setLine(2, ChatColor.DARK_RED + MainConfig.getSignTopicTownBank());
-            event.setLine(3, ChatColor.GOLD
+            event.setLine(3, ChatColor.DARK_BLUE
                     + String.valueOf(RCCitiesPlugin.get().getEconomy().getBalance(resident.getCity().getBankAccount())));
         }
     }
