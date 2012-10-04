@@ -47,5 +47,7 @@ rccities:
 signTopics:
     # join town sign
     joinTown: 'Beitreten'
+    # town bank balance sign
+    townBank: 'Kontostand'
     # deosit sign (% means amount)
     deposit: 'Spenden: %c'

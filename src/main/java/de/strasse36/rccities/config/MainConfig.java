@@ -97,6 +97,11 @@ public class MainConfig extends RCConfig {
 
     public static String getSignTopicJoinTown()
     {
-        return getRCCitiesSection().getString("joinTown", "Beitreten");
+        return getSignTopicSection().getString("joinTown", "Beitreten");
+    }
+
+    public static String getSignTopicTownBank()
+    {
+        return getSignTopicSection().getString("townBank", "Kontostand");
     }
 }

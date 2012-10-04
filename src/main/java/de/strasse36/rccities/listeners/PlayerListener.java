@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.commands.ResidentCommands;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.CityTable;
@@ -53,7 +54,16 @@ public class PlayerListener implements Listener
                 }
                 //invitation sign
                 if(ChatColor.stripColor(sign.getLine(2)).equalsIgnoreCase(MainConfig.getSignTopicJoinTown())) {
+                    sign.setLine(2, ChatColor.DARK_RED + MainConfig.getSignTopicJoinTown());
+                    sign.update();
                     ResidentUtil.sentInvitation(event.getPlayer(), city);
+                }
+
+                //balance sign
+                if(ChatColor.stripColor(sign.getLine(2)).equalsIgnoreCase(MainConfig.getSignTopicTownBank())) {
+                    sign.setLine(3, ChatColor.GOLD
+                            + String.valueOf(RCCitiesPlugin.get().getEconomy().getBalance(city.getBankAccount())));
+                    sign.update();
                 }
             }
         }
@@ -135,8 +145,31 @@ public class PlayerListener implements Listener
 
             event.setLine(0, ChatColor.GREEN + MainConfig.getRCCitiesSignTag());
             event.setLine(1, resident.getCity().getName());
-            event.setLine(2, ChatColor.RED + MainConfig.getSignTopicJoinTown());
+            event.setLine(2, ChatColor.DARK_RED + MainConfig.getSignTopicJoinTown());
             event.setLine(3, ChatColor.GRAY + "(klick mich)");
+        }
+
+        //balance sign
+        if(topic.equalsIgnoreCase(MainConfig.getSignTopicTownBank())) {
+            if(!event.getPlayer().hasPermission("rccities.sign.townbank.build")) {
+                RCMessaging.noPermission(event.getPlayer());
+                event.setCancelled(true);
+                return;
+            }
+
+            Resident resident = TableHandler.get().getResidentTable().getResident(event.getPlayer().getName());
+
+            if(resident == null || !resident.isMayor()) {
+                RCMessaging.warn(event.getPlayer(), "Dieses Schild können nur Bürgermeister aufstellen!");
+                event.setCancelled(true);
+                return;
+            }
+
+            event.setLine(0, ChatColor.GREEN + MainConfig.getRCCitiesSignTag());
+            event.setLine(1, resident.getCity().getName());
+            event.setLine(2, ChatColor.DARK_RED + MainConfig.getSignTopicTownBank());
+            event.setLine(3, ChatColor.GOLD
+                    + String.valueOf(RCCitiesPlugin.get().getEconomy().getBalance(resident.getCity().getBankAccount())));
         }
     }
 }
