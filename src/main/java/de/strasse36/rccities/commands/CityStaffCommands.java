@@ -1,5 +1,6 @@
 package de.strasse36.rccities.commands;
 
+import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -8,6 +9,8 @@ import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.CityTable;
+import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import de.strasse36.rccities.util.*;
 import org.bukkit.Bukkit;
@@ -344,6 +347,7 @@ public class CityStaffCommands {
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
 
+	    City city;
 	    if (!sender.hasPermission("rccities.cmd.withdraw.admin")) {
 		    //no resident
 		    if(resident == null || resident.getCity() == null)
@@ -357,6 +361,16 @@ public class CityStaffCommands {
 		    {
 			    TownCommandUtility.noMayor(sender);
 			    return;
+		    }
+
+		    city = resident.getCity();
+	    } else {
+		    if (args.length < 3) {
+			    RCMessaging.warn(sender, "Nicht genügend Parameter gefunden!");
+			    RCMessaging.warn(sender, "'/town withdraw <Town> <Betrag>' Hebt Coins aus der Stadtkasse ab.");
+			    return;
+		    } else {
+			    city = RCCitiesDatabase.get().getTable(CityTable.class).getCity(args[1]);
 		    }
 	    }
 
@@ -377,20 +391,20 @@ public class CityStaffCommands {
         }
 
         //not enough money
-        if(!RCCitiesPlugin.get().getEconomy().has(resident.getCity().getBankAccount(), amount))
+        if(!RCCitiesPlugin.get().getEconomy().has(city.getBankAccount(), amount))
         {
             RCMessaging.warn(sender, "Es sind nicht genügend Coins in der Stadtkasse!");
             return;
         }
 
         //decrease town account
-        RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), amount);
+        RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), amount);
 
         //increase player account
         RCCitiesPlugin.get().getEconomy().add(sender.getName(), amount);
 
         //town message
-        TownMessaging.sendTownResidents(resident.getCity(), RCMessaging.blue(resident.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
+        TownMessaging.sendTownResidents(city, RCMessaging.blue(resident.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
     }
 
     public static void pvp(CommandSender sender, String[] args)
