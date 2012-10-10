@@ -383,7 +383,7 @@ public class CityStaffCommands {
         }
 
         //wrong input
-        double amount = Toolbox.isDouble(args[1]);
+        double amount = args.length < 3 ? Toolbox.isDouble(args[1]) : Toolbox.isDouble(args[2]);
         if(amount == -1)
         {
             TownCommandUtility.wrongAmount(sender);
