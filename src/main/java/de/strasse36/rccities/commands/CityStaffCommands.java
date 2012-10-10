@@ -404,7 +404,7 @@ public class CityStaffCommands {
         RCCitiesPlugin.get().getEconomy().add(sender.getName(), amount);
 
         //town message
-        TownMessaging.sendTownResidents(city, RCMessaging.blue(resident.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
+        TownMessaging.sendTownResidents(city, RCMessaging.blue(sender.getName() + " hat " + amount + "c aus der Stadtkasse genommen!"));
     }
 
     public static void pvp(CommandSender sender, String[] args)
