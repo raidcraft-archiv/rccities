@@ -343,19 +343,22 @@ public class CityStaffCommands {
     public static void withdraw(CommandSender sender, String[] args)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
 
-        //no mayor
-        if(!resident.isMayor())
-        {
-            TownCommandUtility.noMayor(sender);
-            return;
-        }
+	    if (!sender.hasPermission("rccities.cmd.withdraw.admin")) {
+		    //no resident
+		    if(resident == null || resident.getCity() == null)
+		    {
+			    TownCommandUtility.noResident(sender);
+			    return;
+		    }
+
+		    //no mayor
+		    if(!resident.isMayor())
+		    {
+			    TownCommandUtility.noMayor(sender);
+			    return;
+		    }
+	    }
 
         //wrong parameter length
         if(args.length < 2)
