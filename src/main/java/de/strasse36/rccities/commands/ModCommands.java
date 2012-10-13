@@ -159,7 +159,7 @@ public class ModCommands
             return;
         }
         String oldName = city.getName();
-        city.setName(args[3]);
+        city.setName(args[2]);
         TableHandler.get().getCityTable().updateCity(city);
         RCMessaging.broadcast(RCMessaging.blue("Der Name der Stadt " + oldName + " wurde in " + city.getName() + " geändert!"));
     }
