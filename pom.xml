@@ -57,6 +57,14 @@
             <version>1.2.13</version>
             <scope>provided</scope>
         </dependency>
+        <!-- RCCoins -->
+        <dependency>
+            <groupId>de.raidcraft</groupId>
+            <artifactId>rccoins</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
