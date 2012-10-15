@@ -1,6 +1,7 @@
 package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
+import com.silthus.rccoins.commands.MoneyflowCommand;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.commands.PlotCommandAllocater;
 import de.strasse36.rccities.commands.TownCommandAllocater;
@@ -30,7 +31,6 @@ public class RCCitiesPlugin extends BukkitBasePlugin {
         new MainConfig(this);
         TableHandler.init();
         Taxes.init();
-        
         for(Resident resident : TableHandler.get().getResidentTable().getResidents()) {
             if(resident.getCity() == null) {
                 continue;

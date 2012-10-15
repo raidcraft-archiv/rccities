@@ -3,6 +3,7 @@ package de.strasse36.rccities.commands;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.silthus.rccoins.Bank;
 import com.silthus.rccoins.MoneyTransfer;
+import com.silthus.rccoins.commands.MoneyflowCommand;
 import com.silthus.rccoins.database.Database;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.strasse36.rccities.City;
@@ -393,8 +394,8 @@ public class CityStaffCommands {
         }
 
         //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(sender.getName()
-                , resident.getCity().getName()
+        MoneyTransfer moneyTransfer = new MoneyTransfer(resident.getCity().getName()
+                , sender.getName()
                 , -amount
                 , Bank.getTimestamp()
                 , true
@@ -479,6 +480,15 @@ public class CityStaffCommands {
         RCMessaging.warn(sender, "Unbekannter Parameter gefunden!");
         RCMessaging.warn(sender, "'/town mobspawn on' schaltet das Spawnen von Mobs in der Stadt ein.");
         RCMessaging.warn(sender, "'/town mobspawn off' schaltet das Spawnen von Mobs in der Stadt aus.");
+    }
+    
+    public static void townflow(CommandSender sender, String[] args) {
+        Resident resident = CommandUtility.checkAndGetResidentLeader(sender);
+
+        if(resident == null)
+            return;
+
+        MoneyflowCommand.printTransfers(sender, resident.getCity().getName(), 20);
     }
     
 

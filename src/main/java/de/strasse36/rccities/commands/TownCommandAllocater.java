@@ -118,6 +118,13 @@ public class TownCommandAllocater implements CommandExecutor
                 return true;
             }
 
+            //flow
+            if(args[0].equals("flow"))
+            {
+                CityStaffCommands.townflow(sender, args);
+                return true;
+            }
+
             /////////////////////////////MODERATOR//////////////////////////////////////////
             //create city and nominate mayor
             if(args[0].equals("create"))
