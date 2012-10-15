@@ -5,11 +5,10 @@ import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.commands.PlotCommandAllocater;
 import de.strasse36.rccities.commands.TownCommandAllocater;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.database.RCCitiesDatabase;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.listeners.BlockListener;
 import de.strasse36.rccities.listeners.PlayerListener;
 import de.strasse36.rccities.util.PermissionsManager;
-import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.Taxes;
 import org.bukkit.Bukkit;
 

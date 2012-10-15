@@ -1,10 +1,10 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities.database.tables;
 
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.City;
+import de.strasse36.rccities.database.TableNames;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.TableNames;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class CityTable extends RCTable<CityTable> {
 
     public CityTable(Database database) {
-        super(CityTable.class, database, TableNames.cityTable);
+        super(CityTable.class, database, TableNames.CITY_TABLE);
     }
 
     @Override

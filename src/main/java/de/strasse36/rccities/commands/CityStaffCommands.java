@@ -1,13 +1,13 @@
 package de.strasse36.rccities.commands;
 
-import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.util.RCMessaging;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.database.CityTable;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.database.tables.CityTable;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import de.strasse36.rccities.util.*;
@@ -15,9 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Author: Philip Urban

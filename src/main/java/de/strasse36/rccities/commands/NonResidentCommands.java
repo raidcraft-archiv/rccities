@@ -6,7 +6,8 @@ import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.RCCitiesDatabase;
-import de.strasse36.rccities.database.ResidentTable;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.database.tables.ResidentTable;
 import de.strasse36.rccities.util.*;
 import org.bukkit.command.CommandSender;
 

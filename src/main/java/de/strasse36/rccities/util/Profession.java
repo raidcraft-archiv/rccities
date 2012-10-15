@@ -3,6 +3,7 @@ package de.strasse36.rccities.util;
 import com.silthus.raidcraft.util.RCMessaging;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.exceptions.UnknownProfessionException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

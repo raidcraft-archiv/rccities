@@ -1,12 +1,12 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities.database.tables;
 
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import com.silthus.raidcraft.util.RCLogger;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
-import de.strasse36.rccities.util.TableHandler;
-import de.strasse36.rccities.util.TableNames;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.database.TableNames;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ResidentTable extends RCTable<ResidentTable> {
 
     public ResidentTable(Database database) {
-        super(ResidentTable.class, database, TableNames.residentTable);
+        super(ResidentTable.class, database, TableNames.RESIDENT_TABLE);
     }
 
     @Override

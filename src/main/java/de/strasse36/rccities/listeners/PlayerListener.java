@@ -1,22 +1,17 @@
 package de.strasse36.rccities.listeners;
 
 import com.silthus.raidcraft.util.RCMessaging;
-import com.silthus.raidcraft.util.SignUtils;
-import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.commands.ResidentCommands;
 import de.strasse36.rccities.config.MainConfig;
-import de.strasse36.rccities.database.CityTable;
+import de.strasse36.rccities.database.TableHandler;
+import de.strasse36.rccities.database.tables.CityTable;
 import de.strasse36.rccities.database.RCCitiesDatabase;
 import de.strasse36.rccities.util.ResidentUtil;
-import de.strasse36.rccities.util.TableHandler;
 import de.strasse36.rccities.util.WorldGuardManager;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;

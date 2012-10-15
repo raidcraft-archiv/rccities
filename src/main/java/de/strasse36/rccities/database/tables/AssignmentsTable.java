@@ -1,12 +1,12 @@
-package de.strasse36.rccities.database;
+package de.strasse36.rccities.database.tables;
 
 import com.silthus.raidcraft.database.Database;
 import com.silthus.raidcraft.database.RCTable;
 import de.strasse36.rccities.Assignment;
 import de.strasse36.rccities.Plot;
 import de.strasse36.rccities.Resident;
+import de.strasse36.rccities.database.TableNames;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.TableNames;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ import java.util.List;
 public class AssignmentsTable extends RCTable<AssignmentsTable> {
 
     public AssignmentsTable(Database database) {
-        super(AssignmentsTable.class, database, TableNames.getAssignmentsTable());
+        super(AssignmentsTable.class, database, TableNames.ASSIGNMENTS_TABLE);
     }
 
     @Override

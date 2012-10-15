@@ -2,7 +2,10 @@ package de.strasse36.rccities.database;
 
 import com.silthus.raidcraft.database.RCDatabase;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
-import de.strasse36.rccities.config.MainConfig;
+import de.strasse36.rccities.database.tables.AssignmentsTable;
+import de.strasse36.rccities.database.tables.CityTable;
+import de.strasse36.rccities.database.tables.PlotTable;
+import de.strasse36.rccities.database.tables.ResidentTable;
 
 /**
  * User: Silthus

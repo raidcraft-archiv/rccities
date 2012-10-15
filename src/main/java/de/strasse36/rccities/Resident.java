@@ -1,6 +1,6 @@
 package de.strasse36.rccities;
 
-import de.strasse36.rccities.util.TableHandler;
+import de.strasse36.rccities.database.TableHandler;
 
 /**
  * Author: Philip Urban
