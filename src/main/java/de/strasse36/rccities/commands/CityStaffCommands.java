@@ -1,6 +1,9 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
+import com.silthus.rccoins.Bank;
+import com.silthus.rccoins.MoneyTransfer;
+import com.silthus.rccoins.database.Database;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
@@ -388,6 +391,15 @@ public class CityStaffCommands {
             RCMessaging.warn(sender, "Es sind nicht genügend Coins in der Stadtkasse!");
             return;
         }
+
+        //log in money flow
+        MoneyTransfer moneyTransfer = new MoneyTransfer(sender.getName()
+                , resident.getCity().getName()
+                , -amount
+                , Bank.getTimestamp()
+                , true
+                , "Withdraw");
+        Database.addMoneyTransfer(moneyTransfer);
 
         //decrease town account
         RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), amount);

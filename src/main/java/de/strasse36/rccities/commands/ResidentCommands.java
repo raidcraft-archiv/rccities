@@ -4,6 +4,7 @@ import com.silthus.raidcraft.util.RCMessaging;
 import com.silthus.raidcraft.util.Task;
 import com.silthus.rccoins.Bank;
 import com.silthus.rccoins.MoneyTransfer;
+import com.silthus.rccoins.database.Database;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
@@ -290,8 +291,8 @@ public class ResidentCommands {
                 , amount
                 , Bank.getTimestamp()
                 , true
-                , "");
-        RCCoinsDatabase.addMoneyTransfer(moneyTransfer);
+                , "Deposit");
+        Database.addMoneyTransfer(moneyTransfer);
 
         //decrease player account
         RCCitiesPlugin.get().getEconomy().remove(sender.getName(), amount);
