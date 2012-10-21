@@ -32,7 +32,7 @@ public class CommandUtility {
         }
 
         //no leader
-        if(!resident.isLeadership())
+        if(!resident.isLeadership() && !sender.hasPermission("rccities.mod"))
         {
             TownCommandUtility.noLeadership(sender);
             return null;

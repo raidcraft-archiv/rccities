@@ -125,12 +125,7 @@ public class ResidentCommands {
     public static void townspawn(CommandSender sender, String[] args)
     {
         Resident resident = TableHandler.get().getResidentTable().getResident(sender.getName());
-        //no resident
-        if(resident == null || resident.getCity() == null)
-        {
-            TownCommandUtility.noResident(sender);
-            return;
-        }
+
         City city;
         if(args.length > 1 && sender.hasPermission("rccities.cmd.spawnall"))
         {
@@ -138,6 +133,12 @@ public class ResidentCommands {
         }
         else
         {
+            //no resident
+            if(resident == null || resident.getCity() == null)
+            {
+                TownCommandUtility.noResident(sender);
+                return;
+            }
             city = TableHandler.get().getResidentTable().getResident(sender.getName()).getCity();
         }
         
