@@ -198,6 +198,7 @@ public class CityStaffCommands {
             RCMessaging.warn(kickPlayer, "Du wurdest aus der Stadt '" + resident.getCity().getName() + "' geworfen!");
         TownMessaging.broadcast(RCMessaging.blue(resident.getName() + " hat " + kickResident.getName() + " aus " + resident.getCity().getName() + " geworfen!"));
 
+        // remove chunks from kicked resident
         resident.getCity().setSize(resident.getCity().getSize()- MainConfig.getChunksPerPlayer());
         TableHandler.get().getCityTable().updateCity(resident.getCity());
         //update region owners

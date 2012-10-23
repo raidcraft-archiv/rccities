@@ -233,6 +233,9 @@ public class ResidentCommands {
             return;
         }
         City city = resident.getCity();
+        // remove chunks from leaved city
+        city.setSize(city.getSize() - MainConfig.getChunksPerPlayer());
+        TableHandler.get().getCityTable().updateCity(city);
         PermissionsManager.removeGroup(resident.getName(), city.getName());
         resident.getCity().setId(0);
         resident.setProfession("");
