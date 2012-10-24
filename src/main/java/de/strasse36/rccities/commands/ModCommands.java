@@ -122,6 +122,11 @@ public class ModCommands
             TownCommandUtility.selectNoResident(sender);
             return;
         }
+
+        // remove chunks from leaved city
+        resident.getCity().setSize(resident.getCity().getSize() - MainConfig.getChunksPerPlayer());
+        TableHandler.get().getCityTable().updateCity(resident.getCity());
+
         if(resident.getCity() != null) {
             PermissionsManager.removeGroup(resident.getName(), resident.getCity().getName());
         }
