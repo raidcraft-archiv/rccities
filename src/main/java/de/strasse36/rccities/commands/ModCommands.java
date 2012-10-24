@@ -127,6 +127,10 @@ public class ModCommands
         resident.getCity().setSize(resident.getCity().getSize() - MainConfig.getChunksPerPlayer());
         TableHandler.get().getCityTable().updateCity(resident.getCity());
 
+        //add chunks to new city
+        city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());
+        TableHandler.get().getCityTable().updateCity(city);
+
         if(resident.getCity() != null) {
             PermissionsManager.removeGroup(resident.getName(), resident.getCity().getName());
         }
