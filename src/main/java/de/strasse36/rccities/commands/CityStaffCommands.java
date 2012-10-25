@@ -395,7 +395,7 @@ public class CityStaffCommands {
         }
 
         //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(resident.getCity().getName()
+        MoneyTransfer moneyTransfer = new MoneyTransfer(city.getName()
                 , sender.getName()
                 , -amount
                 , Bank.getTimestamp()
