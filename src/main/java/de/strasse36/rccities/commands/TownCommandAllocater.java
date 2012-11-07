@@ -5,15 +5,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Author: Philip Urban
  * Date: 26.02.12 - 20:14
  * Description:
  */
-public class TownCommandAllocater implements CommandExecutor
-{
+public class TownCommandAllocater implements CommandExecutor {
+    private final static int COMMAND_COOLDOWN = 5;
+    private Map<String, Long> cooldowns = new HashMap<String, Long>();
+    
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
-
+        String cmdStr;
 
         /////////////////////////////RESIDENTS//////////////////////////////////////////
         //mark town info
@@ -86,6 +91,9 @@ public class TownCommandAllocater implements CommandExecutor
             //mark region farewell & greetings
             if(args[0].equals("greetings"))
             {
+                if(checkCooldown(sender, "weCmd")) {
+                    return true;
+                }
                 CityStaffCommands.greetings(sender, args);
                 return true;
             }
@@ -93,6 +101,9 @@ public class TownCommandAllocater implements CommandExecutor
             //pvp
             if(args[0].equals("pvp"))
             {
+                if(checkCooldown(sender, "weCmd")) {
+                    return true;
+                }
                 CityStaffCommands.pvp(sender, args);
                 return true;
             }
@@ -100,6 +111,9 @@ public class TownCommandAllocater implements CommandExecutor
             //tnt
             if(args[0].equals("tnt"))
             {
+                if(checkCooldown(sender, "weCmd")) {
+                    return true;
+                }
                 CityStaffCommands.tnt(sender, args);
                 return true;
             }
@@ -107,6 +121,9 @@ public class TownCommandAllocater implements CommandExecutor
             //tnt
             if(args[0].equals("mobs"))
             {
+                if(checkCooldown(sender, "weCmd")) {
+                    return true;
+                }
                 CityStaffCommands.mobspawn(sender, args);
                 return true;
             }
@@ -195,6 +212,17 @@ public class TownCommandAllocater implements CommandExecutor
 
         RCMessaging.warn(sender, "Der eigengebene Befehl konnte nicht zugeordnet werden!");
         RCMessaging.warn(sender, "'/town help' zeigt alle verfügbaren Befehle an!");
+        return true;
+    }
+
+    private boolean checkCooldown(CommandSender sender, String type) {
+        if(cooldowns.containsKey(type) && cooldowns.get(type) + COMMAND_COOLDOWN > System.currentTimeMillis() / 1000) {
+            RCMessaging.warn(sender, "Du musst kurz warten bis du diesen Befehl ausführen kannst!");
+            return true;
+        }
+        else if(!cooldowns.containsKey(type)) {
+            cooldowns.put(type, System.currentTimeMillis() / 1000);
+        }
         return true;
     }
 
