@@ -220,10 +220,10 @@ public class TownCommandAllocater implements CommandExecutor {
             RCMessaging.warn(sender, "Du musst kurz warten bis du diesen Befehl ausführen kannst!");
             return true;
         }
-        else if(!cooldowns.containsKey(type)) {
+        else {
             cooldowns.put(type, System.currentTimeMillis() / 1000);
         }
-        return true;
+        return false;
     }
 
 }
