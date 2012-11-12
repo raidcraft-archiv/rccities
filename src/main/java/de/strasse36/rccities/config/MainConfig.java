@@ -90,6 +90,14 @@ public class MainConfig extends RCConfig {
     {
         return getRCCitiesSection().getString("rccitiesSignTag", "[Town]");
     }
+    
+    public static String getIgnoredRegion() {
+        return getRCCitiesSection().getString("ignoredRegion", "middleEarth");
+    }
+
+    public static boolean isBuildProtection() {
+        return getRCCitiesSection().getBoolean("buildProtection", true);
+    }
 
     public static ConfigurationSection getSignTopicSection() {
         return get().getConfig().getConfigurationSection("signTopics");

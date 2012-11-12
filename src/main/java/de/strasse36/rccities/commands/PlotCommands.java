@@ -143,7 +143,7 @@ public class PlotCommands {
             return;
         }
 
-        if(WorldGuardManager.getLocalRegions(player.getLocation()).size() > 0)
+        if(WorldGuardManager.isClaimable(player.getLocation()))
         {
             PlotCommandUtility.unclaimable(sender);
             return;

@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.strasse36.rccities.config.MainConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -122,6 +123,15 @@ public class WorldGuardManager {
 
     public static ApplicableRegionSet getLocalRegions(Location location) {
         return getWorldGuard().getRegionManager(location.getWorld()).getApplicableRegions(location);
+    }
+    
+    public static boolean isClaimable(Location location) {
+        for(ProtectedRegion region : getLocalRegions(location)) {
+            if(!region.getId().equalsIgnoreCase(MainConfig.getIgnoredRegion())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isOwner(String player, String id, World world) {

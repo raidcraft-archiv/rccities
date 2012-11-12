@@ -20,6 +20,10 @@ public class BlockListener implements Listener {
     @EventHandler( ignoreCancelled = true )
     public void onBlockPlace(BlockPlaceEvent event)
     {
+        if(!MainConfig.isBuildProtection()) {
+            return;
+        }
+
         if(event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
@@ -39,6 +43,10 @@ public class BlockListener implements Listener {
     @EventHandler( ignoreCancelled = true )
     public void onBlockBreak(BlockBreakEvent event)
     {
+        if(!MainConfig.isBuildProtection()) {
+            return;
+        }
+
         if(event.getPlayer().hasPermission("rccities.build.destroy"))
             return;
 

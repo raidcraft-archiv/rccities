@@ -43,6 +43,10 @@ rccities:
     plotsPerPenalty: 1
     # sign tag
     rccitiesSignTag: '[Town]'
+    # ignored region
+    ignoredRegion: 'middleEarth'
+    # enable build protection in non region areas
+    buildProtection: true
 
 signTopics:
     # join town sign

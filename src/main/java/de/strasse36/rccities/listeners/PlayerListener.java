@@ -72,6 +72,10 @@ public class PlayerListener implements Listener
         if (regionSet.size() != 0)
             return;
 
+        if(!MainConfig.isBuildProtection()) {
+            return;
+        }
+
         if (event.getPlayer().hasPermission("rccities.build.place"))
             return;
 
