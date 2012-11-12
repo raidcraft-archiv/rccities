@@ -33,7 +33,8 @@ public class ModCommands
             RCMessaging.noPermission(sender);
             return;
         }
-        RCCitiesPlugin.get().reloadConfig();
+        MainConfig.get().reload();
+        RCMessaging.send(sender, RCMessaging.green("RCCities Config wurde neu geladen!"));
     }
     
     public static void createCity(CommandSender sender, String[] args)
