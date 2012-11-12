@@ -27,6 +27,15 @@ public class ModCommands
 {
     private static Map<String, City> demolish = new HashMap<String, City>();
 
+    public static void reload(CommandSender sender, String[] args) {
+        if(!sender.hasPermission("rccities.cmd.reload"))
+        {
+            RCMessaging.noPermission(sender);
+            return;
+        }
+        RCCitiesPlugin.get().reloadConfig();
+    }
+    
     public static void createCity(CommandSender sender, String[] args)
     {
         if(!sender.hasPermission("rccities.cmd.create"))

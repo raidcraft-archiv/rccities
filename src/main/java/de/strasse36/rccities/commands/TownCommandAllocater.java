@@ -143,6 +143,14 @@ public class TownCommandAllocater implements CommandExecutor {
             }
 
             /////////////////////////////MODERATOR//////////////////////////////////////////
+
+            //relaod config and shit
+            if(args[0].equals("reload"))
+            {
+                ModCommands.reload(sender, args);
+                return true;
+            }
+
             //create city and nominate mayor
             if(args[0].equals("create"))
             {
