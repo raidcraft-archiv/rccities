@@ -134,8 +134,10 @@ public class ModCommands
         }
 
         // remove chunks from leaved city
-        resident.getCity().setSize(resident.getCity().getSize() - MainConfig.getChunksPerPlayer());
-        TableHandler.get().getCityTable().updateCity(resident.getCity());
+        if(resident.getCity() != null) {
+            resident.getCity().setSize(resident.getCity().getSize() - MainConfig.getChunksPerPlayer());
+            TableHandler.get().getCityTable().updateCity(resident.getCity());
+        }
 
         //add chunks to new city
         city.setSize(city.getSize() + MainConfig.getChunksPerPlayer());
