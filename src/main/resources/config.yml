@@ -44,7 +44,8 @@ rccities:
     # sign tag
     rccitiesSignTag: '[Town]'
     # ignored region
-    ignoredRegion: 'middleEarth'
+    ignoredRegions:
+        - 'rcmap'
     # enable build protection in non region areas
     buildProtection: true
 

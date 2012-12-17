@@ -127,7 +127,7 @@ public class WorldGuardManager {
     
     public static boolean isClaimable(Location location) {
         for(ProtectedRegion region : getLocalRegions(location)) {
-            if(!region.getId().equalsIgnoreCase(MainConfig.getIgnoredRegion())) {
+            if(!MainConfig.getIgnoredRegions().contains(region.getId())) {
                 return false;
             }
         }

@@ -6,6 +6,8 @@ import com.silthus.raidcraft.database.AbstractDatabaseConfig;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.List;
+
 /**
  *
  * 17.12.11 - 11:27
@@ -91,8 +93,8 @@ public class MainConfig extends RCConfig {
         return getRCCitiesSection().getString("rccitiesSignTag", "[Town]");
     }
     
-    public static String getIgnoredRegion() {
-        return getRCCitiesSection().getString("ignoredRegion", "middleEarth");
+    public static List<String> getIgnoredRegions() {
+        return getRCCitiesSection().getStringList("ignoredRegions");
     }
 
     public static boolean isBuildProtection() {
