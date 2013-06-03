@@ -1,9 +1,6 @@
 package de.strasse36.rccities.util;
 
 import com.silthus.raidcraft.util.Task;
-import com.silthus.rccoins.Bank;
-import com.silthus.rccoins.MoneyTransfer;
-import com.silthus.rccoins.database.Database;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
@@ -64,15 +61,6 @@ public class Taxes {
         {
             RCCitiesPlugin.get().getEconomy().remove(city.getBankAccount(), cityPopulation*MainConfig.getTaxAmount());
             TownMessaging.sendTownResidents(city, "Der Stadtkasse wurden Steuern in Höhe von " + cityPopulation*MainConfig.getTaxAmount() + "c abgezogen!");
-
-            //log in money flow
-            MoneyTransfer moneyTransfer = new MoneyTransfer(city.getName()
-                    , "RaidCraftBank"
-                    , -(cityPopulation*MainConfig.getTaxAmount())
-                    , Bank.getTimestamp()
-                    , true
-                    , "DailyTax");
-            Database.addMoneyTransfer(moneyTransfer);
         }
         else
         {

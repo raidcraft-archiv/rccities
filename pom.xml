@@ -43,10 +43,5 @@
             <artifactId>RaidCraftCore</artifactId>
             <version>1.7-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>de.raidcraft</groupId>
-            <artifactId>RCCoins</artifactId>
-            <version>1.2-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>

@@ -1,9 +1,6 @@
 package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
-import com.silthus.rccoins.Bank;
-import com.silthus.rccoins.MoneyTransfer;
-import com.silthus.rccoins.database.Database;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -14,7 +11,10 @@ import de.strasse36.rccities.bukkit.RCCitiesPlugin;
 import de.strasse36.rccities.config.MainConfig;
 import de.strasse36.rccities.database.TableHandler;
 import de.strasse36.rccities.exceptions.AlreadyExistsException;
-import de.strasse36.rccities.util.*;
+import de.strasse36.rccities.util.ChunkUtil;
+import de.strasse36.rccities.util.Toolbox;
+import de.strasse36.rccities.util.TownMessaging;
+import de.strasse36.rccities.util.WorldGuardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
@@ -182,15 +182,6 @@ public class PlotCommands {
         WorldGuardManager.getWorldGuard().getGlobalRegionManager().get(player.getWorld()).addRegion(region);
         WorldGuardManager.setTownFlags(regionId);
         WorldGuardManager.save();
-
-        //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(resident.getCity().getName()
-                , "RaidCraftBank"
-                , -MainConfig.getClaimPrice()
-                , Bank.getTimestamp()
-                , true
-                , "Claim");
-        Database.addMoneyTransfer(moneyTransfer);
 
         //withdraw city account
         RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getClaimPrice());
@@ -431,15 +422,6 @@ public class PlotCommands {
             return;
         }
 
-        //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(resident.getCity().getName()
-                , "RaidCraftBank"
-                , -chunkPrice
-                , Bank.getTimestamp()
-                , true
-                , "PlotBuy");
-        Database.addMoneyTransfer(moneyTransfer);
-
         //decrease town account
         RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), chunkPrice);
 
@@ -628,15 +610,6 @@ public class PlotCommands {
             RCMessaging.warn(sender, "Das setzen des Fackelrahmens kostet " + MainConfig.getMarkPrice() + "c!");
             return;
         }
-
-        //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(resident.getCity().getName()
-                , "RaidCraftBank"
-                , -MainConfig.getMarkPrice()
-                , Bank.getTimestamp()
-                , true
-                , "PlotMark");
-        Database.addMoneyTransfer(moneyTransfer);
 
         //decrease money
         RCCitiesPlugin.get().getEconomy().remove(resident.getCity().getBankAccount(), MainConfig.getMarkPrice());

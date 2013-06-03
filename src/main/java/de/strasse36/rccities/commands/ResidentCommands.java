@@ -2,9 +2,6 @@ package de.strasse36.rccities.commands;
 
 import com.silthus.raidcraft.util.RCMessaging;
 import com.silthus.raidcraft.util.Task;
-import com.silthus.rccoins.Bank;
-import com.silthus.rccoins.MoneyTransfer;
-import com.silthus.rccoins.database.Database;
 import de.strasse36.rccities.City;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.bukkit.RCCitiesPlugin;
@@ -288,15 +285,6 @@ public class ResidentCommands {
             RCMessaging.warn(sender, "Du hast nicht genügend Coins auf dem Konto!");
             return;
         }
-
-        //log in money flow
-        MoneyTransfer moneyTransfer = new MoneyTransfer(sender.getName()
-                , resident.getCity().getName()
-                , amount
-                , Bank.getTimestamp()
-                , true
-                , "Deposit");
-        Database.addMoneyTransfer(moneyTransfer);
 
         //decrease player account
         RCCitiesPlugin.get().getEconomy().remove(sender.getName(), amount);
