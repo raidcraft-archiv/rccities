@@ -475,8 +475,6 @@ public class CityStaffCommands {
 
         if(resident == null)
             return;
-
-        MoneyflowCommand.printTransfers(sender, resident.getCity().getName(), 20);
     }
     
 
