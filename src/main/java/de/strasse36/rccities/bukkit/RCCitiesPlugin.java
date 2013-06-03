@@ -1,7 +1,6 @@
 package de.strasse36.rccities.bukkit;
 
 import com.silthus.raidcraft.bukkit.BukkitBasePlugin;
-import com.silthus.rccoins.commands.MoneyflowCommand;
 import de.strasse36.rccities.Resident;
 import de.strasse36.rccities.commands.PlotCommandAllocater;
 import de.strasse36.rccities.commands.TownCommandAllocater;
