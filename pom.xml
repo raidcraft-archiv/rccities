@@ -22,12 +22,16 @@
     <artifactId>rccities</artifactId>
     <packaging>jar</packaging>
     <version>1.1.5-SNAPSHOT</version>
-    <name>RCCities</name>
+    <name>RCCIties</name>
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@git.raid-craft.de:22109/rccities.git</developerConnection>
+    </scm>
 
     <parent>
         <groupId>de.raidcraft</groupId>
         <artifactId>masterpom</artifactId>
-        <version>LATEST</version>
+        <version>RELEASE</version>
     </parent>
 
     <repositories>
@@ -40,8 +44,13 @@
     <dependencies>
         <dependency>
             <groupId>de.raidcraft</groupId>
-            <artifactId>RaidCraftCore</artifactId>
-            <version>LATEST</version>
+            <artifactId>raidcraft-api</artifactId>
+            <version>${rc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.raidcraft</groupId>
+            <artifactId>rcconversations</artifactId>
+            <version>${rc.version}</version>
         </dependency>
     </dependencies>
 </project>

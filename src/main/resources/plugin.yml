@@ -1,43 +1,8 @@
+main: de.raidcraft.rccities.RCCitiesPlugin
 name: RCCities
-version: 0.1
-description: This plugin allows to found and manage cities
+version: ${project.version}#${BUILDS_ALL_TIME}
+description: Provides player towns.
 author: Strasse36
-website: www.raid-craft.de
-
-main: de.strasse36.rccities.bukkit.RCCitiesPlugin
+website: http://www.raid-craft.de
+depend: [RaidCraft-API]
 database: true
-depend: [RaidCraftCore]
-
-commands:
-  rccities:
-    description: Main command.
-    aliases: [rcc, town]
-    usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
-  plot:
-    description: plot command.
-    usage: Gebe "/<command> help" ein um die verfügbaren Parameter anzuzeigen.
-
-permissions:
-  rccities.mod:
-    description: Gives access to moderator rccities skills
-    default: op
-    children:
-        rccities.cmd.create: true
-        rccities.cmd.mayor: true
-        rccities.cmd.spawnall: true
-        rccities.build.place: true
-        rccities.build.destroy: true
-        rccities.cmd.nowarmup: true
-        rccities.cmd.nocooldown: true
-
-  rccities.admin:
-    description: Gives access to all rccities skills
-    default: op
-    children:
-        rccities.cmd.setname: true
-        rccities.cmd.demolish: true
-        rccities.cmd.nowarmup: true
-        rccities.cmd.nocooldown: true
-  rccities.skill.mayor:
-    description: Mayor Skill
-    default: false
