@@ -7,7 +7,7 @@ import javax.persistence.Table;
  * @author Philip Urban
  */
 @Entity
-@Table(name = "rccities_cities")
-public class TCities {
+@Table(name = "rccities_residents")
+public class TResident {
 
 }

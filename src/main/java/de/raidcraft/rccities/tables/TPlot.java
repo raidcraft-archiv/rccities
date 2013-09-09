@@ -8,6 +8,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rccities_plots")
-public class TPlots {
+public class TPlot {
 
 }
