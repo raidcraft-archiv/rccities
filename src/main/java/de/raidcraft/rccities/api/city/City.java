@@ -5,7 +5,7 @@ import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.settings.Setting;
 import org.bukkit.Location;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Philip Urban
@@ -14,13 +14,33 @@ public interface City {
 
     public String getName();
 
+    public void setName(String name);
+
     public Location getSpawn();
+
+    public void setSpawn(Location spawn);
 
     public String getDescription();
 
-    public Set<Setting> getSettings();
+    public void setDescription(String description);
 
-    public Set<Resident> getResidents();
+    public Setting getSetting(String key);
 
-    public Set<Plot> getPlots();
+    public Collection<Setting> getSettings();
+
+    public void setSetting(String key, String value);
+
+    public Collection<Resident> getResidents();
+
+    public Resident getResident(String residentName);
+
+    public void addResident(Resident resident);
+
+    public Collection<Plot> getPlots();
+
+    public Plot getPlot(Location location);
+
+    public void addPlot(Plot plot);
+
+    public void save();
 }

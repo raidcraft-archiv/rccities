@@ -9,5 +9,7 @@ import java.util.Set;
  */
 public interface Resident {
 
+    public String getName();
+
     public Set<Plot> getPlots();
 }

@@ -3,9 +3,24 @@ package de.raidcraft.rccities.api.settings;
 /**
  * @author Philip Urban
  */
-public interface Setting {
+public class Setting {
 
-    public String getKey();
+    private String key;
+    private String value;
 
-    public String getValue();
+    public Setting(String key, String value) {
+
+        this.key = key;
+        this.value = value;
+    }
+
+    public String getKey() {
+
+        return key;
+    }
+
+    public String getValue() {
+
+        return value;
+    }
 }
