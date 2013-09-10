@@ -62,59 +62,96 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public Setting getSetting(String key) {
+    public final Setting getSetting(String key) {
 
         return settings.get(key);
     }
 
     @Override
-    public Collection<Setting> getSettings() {
+    public final Collection<Setting> getSettings() {
 
         return settings.values();
     }
 
     @Override
-    public void setSetting(String key, String value) {
+    public final void setSetting(String key, String value) {
 
         settings.put(key, new Setting(key, value));
         save();
     }
 
     @Override
-    public Collection<Resident> getResidents() {
+    public final void removeSetting(Setting setting) {
+
+        removeSetting(setting.getKey());
+    }
+
+    @Override
+    public final void removeSetting(String key) {
+
+        settings.remove(key);
+    }
+
+    @Override
+    public final Collection<Resident> getResidents() {
 
         return residents.values();
     }
 
     @Override
-    public Resident getResident(String residentName) {
+    public final Resident getResident(String residentName) {
 
         return residents.get(residentName);
     }
 
     @Override
-    public void addResident(Resident resident) {
+    public final void addResident(Resident resident) {
 
         residents.put(resident.getName(), resident);
     }
 
     @Override
-    public Collection<Plot> getPlots() {
+    public final void removeResident(Resident resident) {
+
+        removeResident(resident.getName());
+    }
+
+    @Override
+    public final void removeResident(String name) {
+
+        removeResident(name);
+    }
+
+    @Override
+    public final Collection<Plot> getPlots() {
 
         return plots.values();
     }
 
     @Override
-    public Plot getPlot(Location location) {
+    public final Plot getPlot(Location location) {
 
         Location simpleLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
         return plots.get(simpleLocation);
     }
 
     @Override
-    public void addPlot(Plot plot) {
+    public final void addPlot(Plot plot) {
 
         plots.put(plot.getLocation(), plot);
         save();
+    }
+
+    @Override
+    public final void removePlot(Plot plot) {
+
+        removePlot(plot.getLocation());
+    }
+
+    @Override
+    public final void removePlot(Location location) {
+
+        Location simpleLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+        plots.remove(simpleLocation);
     }
 }

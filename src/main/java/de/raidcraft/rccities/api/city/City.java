@@ -30,17 +30,29 @@ public interface City {
 
     public void setSetting(String key, String value);
 
+    public void removeSetting(Setting setting);
+
+    public void removeSetting(String key);
+
     public Collection<Resident> getResidents();
 
     public Resident getResident(String residentName);
 
     public void addResident(Resident resident);
 
+    public void removeResident(Resident resident);
+
+    public void removeResident(String name);
+
     public Collection<Plot> getPlots();
 
     public Plot getPlot(Location location);
 
     public void addPlot(Plot plot);
+
+    public void removePlot(Plot plot);
+
+    public void removePlot(Location location);
 
     public void save();
 }
