@@ -1,6 +1,7 @@
-package de.raidcraft.rccities;
+package de.raidcraft.rccities.implementations;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Profession;

@@ -1,7 +1,8 @@
-package de.raidcraft.rccities;
+package de.raidcraft.rccities.implementations;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
+import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.AbstractPlot;
 import de.raidcraft.rccities.tables.TPlot;
