@@ -26,7 +26,7 @@ public class DatabasePlot extends AbstractPlot {
         TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, plotId);
         assert tPlot != null : "Kein Plot mit der ID " + plotId + " gefunden!";
 
-        Location location = new Location(city.getSpawn().getWorld(), tPlot.getX(), 100, tPlot.getZ());
+        Location location = new Location(city.getSpawn().getWorld(), tPlot.getX(), 0, tPlot.getZ());
         setLocation(location);
 
         ProtectedRegion region = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).getRegion(getRegionName());

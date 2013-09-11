@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.api.plot;
 
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
@@ -23,7 +24,7 @@ public abstract class AbstractPlot implements Plot {
 
     protected AbstractPlot(Location location, City city) {
 
-        Location simpleLocation = new Location(location.getWorld(), location.getChunk().getX()*16 + 8, 100, location.getChunk().getZ()*16 + 8);
+        Location simpleLocation = new Location(location.getWorld(), location.getChunk().getX()*16 + 8, 0, location.getChunk().getZ()*16 + 8);
         this.location = simpleLocation;
         this.city = city;
 
@@ -84,6 +85,11 @@ public abstract class AbstractPlot implements Plot {
     @Override
     public final void createRegion() {
 
+        RegionManager regionManager = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld());
+        if(regionManager.getRegion(getRegionName()) != null) {
+            regionManager.removeRegion(getRegionName());
+        }
+
         Chunk chunk = location.getChunk();
         BlockVector vector1 = new BlockVector(
                 chunk.getX()*16,
@@ -97,7 +103,7 @@ public abstract class AbstractPlot implements Plot {
         );
 
         ProtectedCuboidRegion protectedCuboidRegion = new ProtectedCuboidRegion(getRegionName(), vector1, vector2);
-        RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).addRegion(protectedCuboidRegion);
+        regionManager.addRegion(protectedCuboidRegion);
         region = protectedCuboidRegion;
     }
 

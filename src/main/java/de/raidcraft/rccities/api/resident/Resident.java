@@ -12,4 +12,6 @@ public interface Resident {
     public String getName();
 
     public Set<AbstractPlot> getPlots();
+
+    public void delete();
 }

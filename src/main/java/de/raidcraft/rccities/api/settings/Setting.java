@@ -1,26 +1,23 @@
 package de.raidcraft.rccities.api.settings;
 
+import de.raidcraft.rccities.api.city.City;
+
 /**
  * @author Philip Urban
  */
-public class Setting {
+public interface Setting {
 
-    private String key;
-    private String value;
+    public int getId();
 
-    public Setting(String key, String value) {
+    public String getKey();
 
-        this.key = key;
-        this.value = value;
-    }
+    public String getValue();
 
-    public String getKey() {
+    public SettingType getSettingType();
 
-        return key;
-    }
+    public City getCity();
 
-    public String getValue() {
+    public void save();
 
-        return value;
-    }
+    public void delete();
 }

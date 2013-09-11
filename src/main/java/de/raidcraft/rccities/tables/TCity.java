@@ -37,6 +37,11 @@ public class TCity {
     @JoinColumn(name = "city_id")
     private Set<TSetting> settings;
 
+    public void loadChildren() {
+
+        //TODO
+    }
+
     public int getId() {
 
         return id;

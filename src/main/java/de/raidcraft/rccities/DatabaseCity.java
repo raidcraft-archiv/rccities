@@ -3,6 +3,7 @@ package de.raidcraft.rccities;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.tables.TCity;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
@@ -19,7 +20,18 @@ public class DatabaseCity extends AbstractCity {
 
     public DatabaseCity(int cityId) {
 
+        //XXX setter call order is important!!!
+        setId(cityId);
 
+        TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, cityId);
+        assert tCity != null : "Keine Stadt mit der ID " + cityId + " gefunden!";
+
+        tCity.loadChildren();
+        setName(tCity.getName());
+        setCreator(tCity.getCreator());
+        setCreationDate(tCity.getCreationDate());
+        setDescription(tCity.getDescription());
+        setSpawn(new Location(Bukkit.getWorld(tCity.getWorld()), tCity.getX(), tCity.getY(), tCity.getZ(), tCity.getYaw(), tCity.getPitch()));
     }
 
     @Override
@@ -52,5 +64,13 @@ public class DatabaseCity extends AbstractCity {
             tCity.setDescription(getDescription());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tCity);
         }
+    }
+
+    @Override
+    public void delete() {
+
+        //TODO get all city plots and delete them
+
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TCity.class, getId());
     }
 }
