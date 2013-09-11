@@ -1,5 +1,8 @@
 package de.raidcraft.rccities.tables;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.rccities.RCCitiesPlugin;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -39,7 +42,9 @@ public class TCity {
 
     public void loadChildren() {
 
-        //TODO
+        plots = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("city_id", id).findSet();
+        residents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", id).findSet();
+        settings = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TSetting.class).where().eq("city_id", id).findSet();
     }
 
     public int getId() {
