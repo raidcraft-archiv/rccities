@@ -15,8 +15,6 @@ public interface City {
 
     public String getFriendlyName();
 
-//    public void setName(String name);
-
     public String getCreator();
 
     public Timestamp getCreationDate();

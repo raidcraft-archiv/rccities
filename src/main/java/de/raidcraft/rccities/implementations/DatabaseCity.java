@@ -19,15 +19,10 @@ public class DatabaseCity extends AbstractCity {
         super(name, spawn, creator);
     }
 
-    public DatabaseCity(int cityId) {
+    public DatabaseCity(TCity tCity) {
 
         //XXX setter call order is important!!!
-        setId(cityId);
-
-        TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, cityId);
-        assert tCity != null : "Keine Stadt mit der ID " + cityId + " gefunden!";
-
-        tCity.loadChildren();
+        setId(tCity.getId());
         setName(tCity.getName());
         setCreator(tCity.getCreator());
         setCreationDate(tCity.getCreationDate());
