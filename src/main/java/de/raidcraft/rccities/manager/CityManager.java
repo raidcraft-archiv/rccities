@@ -25,25 +25,38 @@ public class CityManager {
         this.plugin = plugin;
     }
 
-    public void createCity(String name, Location location, String creator) throws RaidCraftException {
+    public void createCity(String cityName, Location location, String creator) throws RaidCraftException {
 
-        name = name.replace(' ', '_');
-        City city = getCity(name);
+        cityName = cityName.replace(' ', '_');
+        City city = getCity(cityName);
         if(city != null) {
             throw new RaidCraftException("Es gibt bereits eine Stadt mit diesem Namen!");
         }
-        city = new DatabaseCity(name, location, creator);
-        loadedCities.put(name, city);
+        city = new DatabaseCity(cityName, location, creator);
+        loadedCities.put(cityName, city);
     }
 
-    public void deleteCity(String name) throws RaidCraftException {
+    public void deleteCity(String cityName) throws RaidCraftException {
 
-        City city = getCity(name);
+        City city = getCity(cityName);
         if(city == null) {
             throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
         }
 
         city.delete();
+    }
+
+    public void setSpawn(String cityName, Location newSpawn) throws RaidCraftException {
+
+        City city = getCity(cityName);
+        if(city == null) {
+            throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
+        }
+        if(!newSpawn.getWorld().getName().equalsIgnoreCase(city.getSpawn().getWorld().getName())) {
+            throw new RaidCraftException("Der neue Spawn muss sich auf der selben Welt befinden!");
+        }
+
+        city.setSpawn(newSpawn);
     }
 
     public City getCity(String name) {
