@@ -1,6 +1,6 @@
 package de.raidcraft.rccities.api.resident;
 
-import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.plot.AbstractPlot;
 
 import java.util.Set;
 
@@ -11,5 +11,5 @@ public interface Resident {
 
     public String getName();
 
-    public Set<Plot> getPlots();
+    public Set<AbstractPlot> getPlots();
 }

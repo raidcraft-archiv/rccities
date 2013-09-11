@@ -1,15 +1,16 @@
 package de.raidcraft.rccities;
 
-import de.raidcraft.rccities.api.city.AbstractCity;
+import de.raidcraft.rccities.api.plot.AbstractPlot;
 
 /**
  * @author Philip Urban
  */
-public class DatabaseCity extends AbstractCity {
+public class DatabasePlot extends AbstractPlot {
 
     @Override
     public void save() {
-
         //TODO: implement
     }
+
+
 }

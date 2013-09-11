@@ -1,6 +1,6 @@
 package de.raidcraft.rccities.api.city;
 
-import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.plot.AbstractPlot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.settings.Setting;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -20,7 +20,7 @@ public abstract class AbstractCity implements City {
     private String description;
     private Map<String, Setting> settings = new CaseInsensitiveMap<>();
     private Map<String, Resident> residents = new CaseInsensitiveMap<>();
-    private Map<Location, Plot> plots = new HashMap<>();
+    private Map<Location, AbstractPlot> plots = new HashMap<>();
 
     @Override
     public final String getName() {
@@ -123,27 +123,27 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public final Collection<Plot> getPlots() {
+    public final Collection<AbstractPlot> getPlots() {
 
         return plots.values();
     }
 
     @Override
-    public final Plot getPlot(Location location) {
+    public final AbstractPlot getPlot(Location location) {
 
         Location simpleLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
         return plots.get(simpleLocation);
     }
 
     @Override
-    public final void addPlot(Plot plot) {
+    public final void addPlot(AbstractPlot plot) {
 
         plots.put(plot.getLocation(), plot);
         save();
     }
 
     @Override
-    public final void removePlot(Plot plot) {
+    public final void removePlot(AbstractPlot plot) {
 
         removePlot(plot.getLocation());
     }
