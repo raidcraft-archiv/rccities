@@ -1,6 +1,6 @@
 package de.raidcraft.rccities.api.city;
 
-import de.raidcraft.rccities.api.plot.AbstractPlot;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.settings.Setting;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -15,12 +15,32 @@ import java.util.Map;
  */
 public abstract class AbstractCity implements City {
 
+    private int id;
     private String name;
     private Location spawn;
     private String description;
     private Map<String, Setting> settings = new CaseInsensitiveMap<>();
     private Map<String, Resident> residents = new CaseInsensitiveMap<>();
-    private Map<Location, AbstractPlot> plots = new HashMap<>();
+    private Map<Location, Plot> plots = new HashMap<>();
+
+    protected AbstractCity(String name, Location spawn) {
+
+        this.name = name;
+        this.spawn = spawn;
+
+        save();
+    }
+
+    @Override
+    public int getId() {
+
+        return id;
+    }
+
+    protected void setId(int id) {
+
+        this.id = id;
+    }
 
     @Override
     public final String getName() {
@@ -29,8 +49,15 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
+    public String getFriendlyName() {
+
+        return name.replace('_', ' ');
+    }
+
+    @Override
     public final void setName(String name) {
 
+        name = name.replace(' ', '_');
         this.name = name;
         save();
     }
@@ -123,27 +150,27 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public final Collection<AbstractPlot> getPlots() {
+    public final Collection<Plot> getPlots() {
 
         return plots.values();
     }
 
     @Override
-    public final AbstractPlot getPlot(Location location) {
+    public final Plot getPlot(Location location) {
 
         Location simpleLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
         return plots.get(simpleLocation);
     }
 
     @Override
-    public final void addPlot(AbstractPlot plot) {
+    public final void addPlot(Plot plot) {
 
         plots.put(plot.getLocation(), plot);
         save();
     }
 
     @Override
-    public final void removePlot(AbstractPlot plot) {
+    public final void removePlot(Plot plot) {
 
         removePlot(plot.getLocation());
     }

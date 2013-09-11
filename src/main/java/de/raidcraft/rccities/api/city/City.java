@@ -1,6 +1,6 @@
 package de.raidcraft.rccities.api.city;
 
-import de.raidcraft.rccities.api.plot.AbstractPlot;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.settings.Setting;
 import org.bukkit.Location;
@@ -12,7 +12,11 @@ import java.util.Collection;
  */
 public interface City {
 
+    public int getId();
+
     public String getName();
+
+    public String getFriendlyName();
 
     public void setName(String name);
 
@@ -44,13 +48,13 @@ public interface City {
 
     public void removeResident(String name);
 
-    public Collection<AbstractPlot> getPlots();
+    public Collection<Plot> getPlots();
 
-    public AbstractPlot getPlot(Location location);
+    public Plot getPlot(Location location);
 
-    public void addPlot(AbstractPlot plot);
+    public void addPlot(Plot plot);
 
-    public void removePlot(AbstractPlot plot);
+    public void removePlot(Plot plot);
 
     public void removePlot(Location location);
 

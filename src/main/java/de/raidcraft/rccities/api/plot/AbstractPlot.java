@@ -1,8 +1,12 @@
 package de.raidcraft.rccities.api.plot;
 
-import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.raidcraft.RaidCraft;
+import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 /**
@@ -10,18 +14,53 @@ import org.bukkit.Location;
  */
 public abstract class AbstractPlot implements Plot {
 
+    private int id;
     private Location location;
-    private Region region;
+    private ProtectedRegion region;
     private City city;
 
-    protected AbstractPlot(Location location, Region region, City city) {
+    protected AbstractPlot() {}
 
-        Location simpleLocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+    protected AbstractPlot(Location location, City city) {
+
+        Location simpleLocation = new Location(location.getWorld(), location.getChunk().getX()*16 + 8, 100, location.getChunk().getZ()*16 + 8);
         this.location = simpleLocation;
-        this.region = region;
         this.city = city;
 
-        updateRegion();
+        save();
+        createRegion();
+    }
+
+    protected void setId(int id) {
+
+        this.id = id;
+    }
+
+    protected void setLocation(Location location) {
+
+        this.location = location;
+    }
+
+    protected void setRegion(ProtectedRegion region) {
+
+        this.region = region;
+    }
+
+    protected void setCity(City city) {
+
+        this.city = city;
+    }
+
+    @Override
+    public int getId() {
+
+        return id;
+    }
+
+    @Override
+    public String getRegionName() {
+
+        return city.getName() + "_" + getId();
     }
 
     @Override
@@ -31,7 +70,7 @@ public abstract class AbstractPlot implements Plot {
     }
 
     @Override
-    public Region getRegion() {
+    public ProtectedRegion getRegion() {
 
         return region;
     }
@@ -43,8 +82,28 @@ public abstract class AbstractPlot implements Plot {
     }
 
     @Override
-    public void updateRegion() {
+    public void createRegion() {
 
-        CuboidRegion cuboidRegion = new CuboidRegion()
+        Chunk chunk = location.getChunk();
+        BlockVector vector1 = new BlockVector(
+                chunk.getX()*16,
+                0,
+                chunk.getZ()*16
+        );
+        BlockVector vector2 = new BlockVector(
+                (chunk.getX()*16)+15,
+                location.getWorld().getMaxHeight(),
+                (chunk.getZ()*16)+15
+        );
+
+        ProtectedCuboidRegion protectedCuboidRegion = new ProtectedCuboidRegion(getRegionName(), vector1, vector2);
+        RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).addRegion(protectedCuboidRegion);
+        region = protectedCuboidRegion;
+    }
+
+    @Override
+    public void removeRegion() {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).removeRegion(getRegionName());
     }
 }

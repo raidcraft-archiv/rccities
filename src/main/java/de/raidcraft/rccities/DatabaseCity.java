@@ -10,6 +10,6 @@ public class DatabaseCity extends AbstractCity {
     @Override
     public void save() {
 
-        //TODO: implement
+        setId();
     }
 }
