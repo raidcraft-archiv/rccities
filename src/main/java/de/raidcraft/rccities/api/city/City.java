@@ -5,6 +5,7 @@ import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.settings.Setting;
 import org.bukkit.Location;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
@@ -18,7 +19,11 @@ public interface City {
 
     public String getFriendlyName();
 
-    public void setName(String name);
+//    public void setName(String name);
+
+    public String getCreator();
+
+    public Timestamp getCreationDate();
 
     public Location getSpawn();
 

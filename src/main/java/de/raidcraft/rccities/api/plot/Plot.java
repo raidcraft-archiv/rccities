@@ -23,5 +23,5 @@ public interface Plot {
 
     public void createRegion();
 
-    public void removeRegion();
+    public void delete();
 }

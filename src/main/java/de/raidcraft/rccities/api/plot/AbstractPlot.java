@@ -52,37 +52,37 @@ public abstract class AbstractPlot implements Plot {
     }
 
     @Override
-    public int getId() {
+    public final int getId() {
 
         return id;
     }
 
     @Override
-    public String getRegionName() {
+    public final String getRegionName() {
 
         return city.getName() + "_" + getId();
     }
 
     @Override
-    public Location getLocation() {
+    public final Location getLocation() {
 
         return location;
     }
 
     @Override
-    public ProtectedRegion getRegion() {
+    public final ProtectedRegion getRegion() {
 
         return region;
     }
 
     @Override
-    public City getCity() {
+    public final City getCity() {
 
         return city;
     }
 
     @Override
-    public void createRegion() {
+    public final void createRegion() {
 
         Chunk chunk = location.getChunk();
         BlockVector vector1 = new BlockVector(
@@ -102,7 +102,7 @@ public abstract class AbstractPlot implements Plot {
     }
 
     @Override
-    public void removeRegion() {
+    public void delete() {
 
         RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).removeRegion(getRegionName());
     }

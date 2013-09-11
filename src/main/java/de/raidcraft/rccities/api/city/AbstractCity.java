@@ -6,6 +6,7 @@ import de.raidcraft.rccities.api.settings.Setting;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Location;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,29 +18,39 @@ public abstract class AbstractCity implements City {
 
     private int id;
     private String name;
+    private String creator;
+    private Timestamp creationDate;
     private Location spawn;
     private String description;
     private Map<String, Setting> settings = new CaseInsensitiveMap<>();
     private Map<String, Resident> residents = new CaseInsensitiveMap<>();
     private Map<Location, Plot> plots = new HashMap<>();
 
-    protected AbstractCity(String name, Location spawn) {
+    protected AbstractCity() {}
+
+    protected AbstractCity(String name, Location spawn, String creator) {
 
         this.name = name;
         this.spawn = spawn;
+        this.creator = creator;
 
         save();
+    }
+
+    protected void setId(int id) {
+
+        this.id = id;
+    }
+
+    protected void setName(String name) {
+
+        this.name = name;
     }
 
     @Override
     public int getId() {
 
         return id;
-    }
-
-    protected void setId(int id) {
-
-        this.id = id;
     }
 
     @Override
@@ -54,12 +65,24 @@ public abstract class AbstractCity implements City {
         return name.replace('_', ' ');
     }
 
-    @Override
-    public final void setName(String name) {
+//    @Override
+//    public final void setName(String name) {
+//
+//        name = name.replace(' ', '_');
+//        this.name = name;
+//        save();
+//    }
 
-        name = name.replace(' ', '_');
-        this.name = name;
-        save();
+    @Override
+    public final String getCreator() {
+
+        return creator;
+    }
+
+    @Override
+    public final Timestamp getCreationDate() {
+
+        return creationDate;
     }
 
     @Override

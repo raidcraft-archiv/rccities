@@ -44,5 +44,10 @@ public class DatabasePlot extends AbstractPlot {
         setId(tPlot.getId());
     }
 
+    @Override
+    public void delete() {
 
+        super.delete();
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TPlot.class, getId());
+    }
 }

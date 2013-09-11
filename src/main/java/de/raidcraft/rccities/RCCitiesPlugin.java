@@ -39,7 +39,6 @@ public class RCCitiesPlugin extends BasePlugin {
         databases.add(TPlot.class);
         databases.add(TResident.class);
         databases.add(TAssignment.class);
-        databases.add(TLocation.class);
         databases.add(TSetting.class);
         return databases;
     }
