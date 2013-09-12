@@ -102,4 +102,23 @@ public abstract class AbstractCity implements City {
         this.description = description;
         save();
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractCity that = (AbstractCity) o;
+
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return name.hashCode();
+    }
 }

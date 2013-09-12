@@ -1,7 +1,6 @@
 package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Profession;
@@ -18,15 +17,14 @@ public class DatabaseResident extends AbstractResident {
         super(name, profession, city);
     }
 
-    public DatabaseResident(int residentId, City city) {
+    public DatabaseResident(TResident tResident) {
 
         //XXX setter call order is important!!!
-        setId(residentId);
+        setId(tResident.getId());
+
+        City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(tResident.getCity().getName());
+        assert city != null : "City of resident is null!";
         setCity(city);
-
-        TResident tResident = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class, residentId);
-        assert tResident != null : "Kein Resident mit der ID " + residentId + " gefunden!";
-
         setName(tResident.getName());
         setProfession(Profession.valueOf(tResident.getProfession()));
     }
