@@ -8,15 +8,15 @@ import de.raidcraft.rccities.api.city.City;
 public abstract class AbstractSetting implements Setting {
 
     private int id;
-    private String key;
+    private SettingType type;
     private String value;
     private City city;
 
     protected AbstractSetting() {}
 
-    protected AbstractSetting(String key, String value, City city) {
+    protected AbstractSetting(SettingType type, String value, City city) {
 
-        this.key = key;
+        this.type = type;
         this.value = value;
         this.city = city;
 
@@ -33,9 +33,9 @@ public abstract class AbstractSetting implements Setting {
         this.id = id;
     }
 
-    protected void setKey(String key) {
+    protected void setType(SettingType type) {
 
-        this.key = key;
+        this.type = type;
     }
 
     protected void setValue(String value) {
@@ -50,21 +50,15 @@ public abstract class AbstractSetting implements Setting {
     }
 
     @Override
-    public String getKey() {
+    public SettingType getType() {
 
-        return key;
+        return type;
     }
 
     @Override
     public String getValue() {
 
         return value;
-    }
-
-    @Override
-    public SettingType getSettingType() {
-
-        return SettingType.valueOf(key);
     }
 
     @Override

@@ -9,13 +9,13 @@ public interface Setting {
 
     public int getId();
 
-    public String getKey();
+    public SettingType getType();
 
     public String getValue();
 
-    public SettingType getSettingType();
-
     public City getCity();
+
+    public void refresh();
 
     public void save();
 
