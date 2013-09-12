@@ -1,6 +1,8 @@
 package de.raidcraft.rccities.api.resident;
 
 import de.raidcraft.rccities.api.city.City;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 /**
  * @author Philip Urban
@@ -72,5 +74,11 @@ public abstract class AbstractResident implements Resident {
     public City getCity() {
 
         return city;
+    }
+
+    @Override
+    public Player getPlayer() {
+
+        return Bukkit.getPlayer(name);
     }
 }

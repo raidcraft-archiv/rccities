@@ -4,9 +4,12 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.resident.ProfessionPermission;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.util.CaseInsensitiveMap;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,17 @@ public class ResidentManager {
     public ResidentManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
+    }
+
+    public void broadcastCityMessage(City city, String message) {
+
+        for(Resident resident : getResidents(city)) {
+
+            Player player = resident.getPlayer();
+            if(player != null) {
+                player.sendMessage(ChatColor.DARK_BLUE + message);
+            }
+        }
     }
 
     public List<Resident> getCitizenships(String name) {
@@ -42,6 +56,24 @@ public class ResidentManager {
         return cachedResidents.get(name);
     }
 
+    public List<Resident> getCitizenships(String name, ProfessionPermission permission) {
+
+        List<Resident> residents = getCitizenships(name);
+        List<Resident> citizenships = new ArrayList<>();
+
+        if(residents == null) return null;
+
+        for(Resident resident : residents) {
+            if(resident.getProfession().hasPermission(permission)) {
+                citizenships.add(resident);
+            }
+        }
+
+        if(citizenships.size() == 0) return null;
+
+        return citizenships;
+    }
+
     public Resident getResident(String name, City city) {
 
         List<Resident> residents = getCitizenships(name);
@@ -57,4 +89,29 @@ public class ResidentManager {
         return null;
     }
 
+    public List<Resident> getResidents(City city) {
+
+        List<Resident> residents = new ArrayList<>();
+        List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", city.getId()).findList();
+        for(TResident tResident : tResidents) {
+            if(!cachedResidents.containsKey(tResident.getName())) {
+                cachedResidents.put(tResident.getName(), new ArrayList<Resident>());
+            }
+            boolean exist = false;
+            for(Resident resident : cachedResidents.get(tResident.getName())) {
+                if(resident.getCity().equals(city)) {
+                    residents.add(resident);
+                    exist = true;
+                    break;
+                }
+            }
+            if(!exist) {
+                Resident resident = new DatabaseResident(tResident);
+                cachedResidents.get(resident.getName()).add(resident);
+                residents.add(resident);
+            }
+        }
+
+        return residents;
+    }
 }

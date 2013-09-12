@@ -47,29 +47,6 @@ public class CityManager {
         city.delete();
     }
 
-    public void setSpawn(String cityName, Location newSpawn) throws RaidCraftException {
-
-        City city = getCity(cityName);
-        if(city == null) {
-            throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
-        }
-        if(!newSpawn.getWorld().getName().equalsIgnoreCase(city.getSpawn().getWorld().getName())) {
-            throw new RaidCraftException("Der neue Spawn muss sich auf der selben Welt befinden!");
-        }
-
-        city.setSpawn(newSpawn);
-    }
-
-    public void setDescription(String cityName, String newDescription) throws RaidCraftException {
-
-        City city = getCity(cityName);
-        if(city == null) {
-            throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
-        }
-
-        city.setDescription(newDescription);
-    }
-
     public City getCity(String name) {
 
         City city = cachedCities.get(name);

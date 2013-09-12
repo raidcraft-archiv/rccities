@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.api.resident;
 
 import de.raidcraft.rccities.api.city.City;
+import org.bukkit.entity.Player;
 
 /**
  * @author Philip Urban
@@ -16,6 +17,8 @@ public interface Resident {
     public void setProfession(Profession profession);
 
     public City getCity();
+
+    public Player getPlayer();
 
     public void save();
 

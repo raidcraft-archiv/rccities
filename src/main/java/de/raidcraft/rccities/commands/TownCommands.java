@@ -5,11 +5,15 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.resident.ProfessionPermission;
+import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -106,14 +110,28 @@ public class TownCommands {
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
             Player player = (Player)sender;
 
-            String cityName;
+            City city;
             if(args.argsLength() > 0 && player.hasPermission("rccities.setspawn.all")) {
-                cityName = args.getString(0);
+                city = plugin.getCityManager().getCity(args.getString(0));
             }
             else {
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), ProfessionPermission.SET_SPAWN);
 
+                if(citizenships == null) {
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht den Stadtspawn zu verändern!");
+                }
+                if(citizenships.size() > 1) {
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht den Stadtspawn zu verändern! Gebe die gewünschte Stadt als Parameter an.");
+                }
+                city = citizenships.get(0).getCity();
             }
 
+            if(!city.getSpawn().getWorld().equals(player.getWorld())) {
+                throw new CommandException("Der Spawn muss sich auf der selben Welt wie die Stadt befinden!");
+            }
+
+            city.setSpawn(player.getLocation());
+            plugin.getResidentManager().broadcastCityMessage(city, "Der Stadtspawn von '" + city.getFriendlyName() + "' wurde versetzt!");
         }
 
         public void deleteCity(CommandSender sender, String cityName) {
