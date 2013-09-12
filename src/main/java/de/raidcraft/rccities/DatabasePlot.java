@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.implementations;
+package de.raidcraft.rccities;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;

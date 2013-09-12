@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.implementations;
+package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;

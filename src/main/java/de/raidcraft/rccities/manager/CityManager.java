@@ -2,13 +2,14 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.implementations.DatabaseCity;
 import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Location;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -17,15 +18,14 @@ import java.util.Map;
 public class CityManager {
 
     private RCCitiesPlugin plugin;
-
-    private Map<String, City> loadedCities = new CaseInsensitiveMap<>();
+    private Map<String, City> cachedCities = new CaseInsensitiveMap<>();
 
     public CityManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
     }
 
-    public void createCity(String cityName, Location location, String creator) throws RaidCraftException {
+    public City createCity(String cityName, Location location, String creator) throws RaidCraftException {
 
         cityName = cityName.replace(' ', '_');
         City city = getCity(cityName);
@@ -33,7 +33,8 @@ public class CityManager {
             throw new RaidCraftException("Es gibt bereits eine Stadt mit diesem Namen!");
         }
         city = new DatabaseCity(cityName, location, creator);
-        loadedCities.put(cityName, city);
+        cachedCities.put(cityName, city);
+        return city;
     }
 
     public void deleteCity(String cityName) throws RaidCraftException {
@@ -59,16 +60,43 @@ public class CityManager {
         city.setSpawn(newSpawn);
     }
 
+    public void setDescription(String cityName, String newDescription) throws RaidCraftException {
+
+        City city = getCity(cityName);
+        if(city == null) {
+            throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
+        }
+
+        city.setDescription(newDescription);
+    }
+
     public City getCity(String name) {
 
-        City city = loadedCities.get(name);
+        City city = cachedCities.get(name);
 
         if(city == null) {
             TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).where().ieq("name", name).findUnique();
             if(tCity != null) {
                 city = new DatabaseCity(tCity);
+                cachedCities.put(tCity.getName(), city);
             }
         }
         return city;
+    }
+
+    public Collection<City> getCities() {
+
+        for(TCity tCity : RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).findList()) {
+
+            if(!cachedCities.containsKey(tCity.getName())) {
+                cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
+            }
+        }
+        return cachedCities.values();
+    }
+
+    public void clearCache() {
+
+        cachedCities.clear();
     }
 }

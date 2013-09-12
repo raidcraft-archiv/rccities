@@ -1,7 +1,6 @@
-package de.raidcraft.rccities.implementations;
+package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.tables.TCity;
 import org.bukkit.Bukkit;
