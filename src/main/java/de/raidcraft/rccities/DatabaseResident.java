@@ -3,7 +3,7 @@ package de.raidcraft.rccities;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.AbstractResident;
-import de.raidcraft.rccities.api.resident.Profession;
+import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.rccities.tables.TSetting;
 
@@ -12,7 +12,7 @@ import de.raidcraft.rccities.tables.TSetting;
  */
 public class DatabaseResident extends AbstractResident {
 
-    public DatabaseResident(String name, Profession profession, City city) {
+    public DatabaseResident(String name, Role profession, City city) {
 
         super(name, profession, city);
     }
@@ -26,7 +26,7 @@ public class DatabaseResident extends AbstractResident {
         assert city != null : "City of resident is null!";
         setCity(city);
         setName(tResident.getName());
-        setProfession(Profession.valueOf(tResident.getProfession()));
+        setRole(Role.valueOf(tResident.getProfession()));
     }
 
     @Override
@@ -37,14 +37,14 @@ public class DatabaseResident extends AbstractResident {
             TResident tResident = new TResident();
             tResident.setCity(getCity());
             tResident.setName(getName());
-            tResident.setProfession(getProfession().name());
+            tResident.setProfession(getRole().name());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tResident);
             setId(tResident.getId());
         }
         // update existing resident
         else {
             TResident tResident = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class, getId());
-            tResident.setProfession(getProfession().name());
+            tResident.setProfession(getRole().name());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tResident);
         }
     }

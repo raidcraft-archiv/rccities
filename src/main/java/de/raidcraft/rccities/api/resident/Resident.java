@@ -12,9 +12,9 @@ public interface Resident {
 
     public String getName();
 
-    public Profession getProfession();
+    public Role getRole();
 
-    public void setProfession(Profession profession);
+    public void setRole(Role role);
 
     public City getCity();
 

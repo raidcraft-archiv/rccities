@@ -11,12 +11,12 @@ public abstract class AbstractResident implements Resident {
 
     private int id;
     private String name;
-    private Profession profession;
+    private Role profession;
     private City city;
 
     protected AbstractResident() {};
 
-    public AbstractResident(String name, Profession profession, City city) {
+    public AbstractResident(String name, Role profession, City city) {
 
         this.name = name;
         this.profession = profession;
@@ -37,7 +37,7 @@ public abstract class AbstractResident implements Resident {
 
     protected void setProfession(String profession) {
 
-        this.profession = Profession.valueOf(profession);
+        this.profession = Role.valueOf(profession);
     }
 
     protected void setCity(City city) {
@@ -58,15 +58,15 @@ public abstract class AbstractResident implements Resident {
     }
 
     @Override
-    public Profession getProfession() {
+    public Role getRole() {
 
         return profession;
     }
 
     @Override
-    public void setProfession(Profession profession) {
+    public void setRole(Role role) {
 
-        this.profession = profession;
+        this.profession = role;
         save();
     }
 

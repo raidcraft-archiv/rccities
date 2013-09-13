@@ -3,7 +3,7 @@ package de.raidcraft.rccities.api.resident;
 /**
  * @author Philip Urban
  */
-public enum ProfessionPermission {
+public enum RolePermission {
 
     BUILD_EVERYWHERE,
     KICK,

@@ -5,7 +5,7 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.resident.ProfessionPermission;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,6 +68,8 @@ public class TownCommands {
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
             Player player = (Player)sender;
 
+            //TODO claim first plot
+
             City city;
             try {
                 city = plugin.getCityManager().createCity(args.getString(0), player.getLocation(), player.getName());
@@ -111,14 +113,23 @@ public class TownCommands {
             Player player = (Player)sender;
 
             City city;
-            if(args.argsLength() > 0 && player.hasPermission("rccities.setspawn.all")) {
+            if(args.argsLength() > 0) {
                 city = plugin.getCityManager().getCity(args.getString(0));
+                if(city == null) {
+                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                }
+                if(!player.hasPermission("rccities.setspawn.all")) {
+                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
+                        throw new CommandException("Du darfst von dieser Stadt den Spawn nicht versetzen!");
+                    }
+                }
             }
             else {
-                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), ProfessionPermission.SET_SPAWN);
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.SET_SPAWN);
 
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht den Stadtspawn zu verändern!");
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht den Stadtspawn zu versetzen!");
                 }
                 if(citizenships.size() > 1) {
                     throw new CommandException("Du besitzt in mehreren Städten das Recht den Stadtspawn zu verändern! Gebe die gewünschte Stadt als Parameter an.");
@@ -132,6 +143,34 @@ public class TownCommands {
 
             city.setSpawn(player.getLocation());
             plugin.getResidentManager().broadcastCityMessage(city, "Der Stadtspawn von '" + city.getFriendlyName() + "' wurde versetzt!");
+        }
+
+        @Command(
+                aliases = {"setdescription", "setdesc"},
+                desc = "Change city description",
+                min = 2,
+                usage = "<Stadtname> <Beschreibung>"
+        )
+        @CommandPermissions("rccities.setdescription")
+        public void setDescription(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city = plugin.getCityManager().getCity(args.getString(0));
+            if(city == null) {
+                throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+            }
+            if(!player.hasPermission("rccities.setspawn.all")) {
+                Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
+                    throw new CommandException("Du darfst von dieser Stadt die Beschreibung nicht ändern!");
+                }
+            }
+            String description = args.getJoinedStrings(1);
+
+            city.setDescription(description);
+            plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt '" + city.getFriendlyName() + "' wurde geändert!");
         }
 
         public void deleteCity(CommandSender sender, String cityName) {

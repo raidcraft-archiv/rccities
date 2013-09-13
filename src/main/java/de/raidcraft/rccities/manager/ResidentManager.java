@@ -4,7 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.resident.ProfessionPermission;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -56,7 +56,7 @@ public class ResidentManager {
         return cachedResidents.get(name);
     }
 
-    public List<Resident> getCitizenships(String name, ProfessionPermission permission) {
+    public List<Resident> getCitizenships(String name, RolePermission permission) {
 
         List<Resident> residents = getCitizenships(name);
         List<Resident> citizenships = new ArrayList<>();
@@ -64,7 +64,7 @@ public class ResidentManager {
         if(residents == null) return null;
 
         for(Resident resident : residents) {
-            if(resident.getProfession().hasPermission(permission)) {
+            if(resident.getRole().hasPermission(permission)) {
                 citizenships.add(resident);
             }
         }
