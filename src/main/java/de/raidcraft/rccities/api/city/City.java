@@ -27,6 +27,12 @@ public interface City {
 
     public void setDescription(String description);
 
+    public int getPlotCredit();
+
+    public void setPlotCredit(int plotCredit);
+
+    public int getSize();
+
     public void save();
 
     public void delete();

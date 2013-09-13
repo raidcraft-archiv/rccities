@@ -15,6 +15,7 @@ public abstract class AbstractCity implements City {
     private Timestamp creationDate;
     private Location spawn;
     private String description;
+    private int plotCredit;
 
     protected AbstractCity() {}
 
@@ -45,6 +46,11 @@ public abstract class AbstractCity implements City {
     protected void setCreationDate(Timestamp creationDate) {
 
         this.creationDate = creationDate;
+    }
+
+    protected void setInitialPlotCredit(int plotCredit) {
+
+        this.plotCredit = plotCredit;
     }
 
     @Override
@@ -101,6 +107,19 @@ public abstract class AbstractCity implements City {
 
         this.description = description;
         save();
+    }
+
+    @Override
+    public void setPlotCredit(int plotCredit) {
+
+        this.plotCredit = plotCredit;
+        save();
+    }
+
+    @Override
+    public int getPlotCredit() {
+
+        return plotCredit;
     }
 
     @Override

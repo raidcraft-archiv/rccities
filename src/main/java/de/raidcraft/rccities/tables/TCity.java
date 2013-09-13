@@ -27,6 +27,7 @@ public class TCity {
     private double z;
     private float pitch;
     private float yaw;
+    private int plotCredit;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "city_id")
@@ -155,6 +156,16 @@ public class TCity {
     public void setYaw(float yaw) {
 
         this.yaw = yaw;
+    }
+
+    public int getPlotCredit() {
+
+        return plotCredit;
+    }
+
+    public void setPlotCredit(int plotCredit) {
+
+        this.plotCredit = plotCredit;
     }
 
     public Set<TPlot> getPlots() {

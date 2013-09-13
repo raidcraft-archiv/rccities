@@ -26,7 +26,14 @@ public class DatabaseCity extends AbstractCity {
         setCreator(tCity.getCreator());
         setCreationDate(tCity.getCreationDate());
         setDescription(tCity.getDescription());
+        setInitialPlotCredit(tCity.getPlotCredit());
         setSpawn(new Location(Bukkit.getWorld(tCity.getWorld()), tCity.getX(), tCity.getY(), tCity.getZ(), tCity.getYaw(), tCity.getPitch()));
+    }
+
+    @Override
+    public int getSize() {
+
+        return RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(this).size();
     }
 
     @Override
@@ -57,6 +64,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setPitch(getSpawn().getPitch());
             tCity.setYaw(getSpawn().getYaw());
             tCity.setDescription(getDescription());
+            tCity.setPlotCredit(getPlotCredit());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tCity);
         }
     }

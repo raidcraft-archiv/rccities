@@ -2,7 +2,6 @@ package de.raidcraft.rccities;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.AbstractPlot;
 import de.raidcraft.rccities.tables.TPlot;
@@ -18,14 +17,14 @@ public class DatabasePlot extends AbstractPlot {
         super(location, city);
     }
 
-    public DatabasePlot(int plotId, City city) {
+    public DatabasePlot(TPlot tPlot) {
 
         //XXX setter call order is important!!!
-        setId(plotId);
-        setCity(city);
+        setId(tPlot.getId());
 
-        TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, plotId);
-        assert tPlot != null : "Kein Plot mit der ID " + plotId + " gefunden!";
+        City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(tPlot.getCity().getName());
+        assert city != null : "City of plot is null!";
+        setCity(city);
 
         Location location = new Location(city.getSpawn().getWorld(), tPlot.getX(), 0, tPlot.getZ());
         setLocation(location);

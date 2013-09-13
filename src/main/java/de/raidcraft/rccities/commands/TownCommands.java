@@ -31,8 +31,21 @@ public class TownCommands {
             aliases = {"rccities", "town", "towns", "city"},
             desc = "Town commands"
     )
-    @NestedCommand(value = NestedCommands.class)
-    public void town(CommandContext args, CommandSender sender) {
+    @NestedCommand(value = NestedCommands.class, executeBody = true)
+    public void town(CommandContext args, CommandSender sender) throws CommandException {
+
+        if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+        Player player = (Player)sender;
+
+        List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName());
+        if(citizenships == null || citizenships.size() > 1) {
+            throw new CommandException("Nutze /town info <Stadtname>!");
+        }
+        try {
+            plugin.getCityManager().printCityInfo(citizenships.get(0).getName(), sender);
+        } catch (RaidCraftException e) {
+            throw new CommandException(e.getMessage());
+        }
     }
 
     public static class NestedCommands {
@@ -53,7 +66,9 @@ public class TownCommands {
 
             plugin.reload();
             plugin.getCityManager().clearCache();
-            sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen.");
+            plugin.getPlotManager().clearCache();
+            plugin.getResidentManager().clearCache();
+            sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen und alle Caches geleert!");
         }
 
         @Command(
@@ -171,6 +186,22 @@ public class TownCommands {
 
             city.setDescription(description);
             plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt '" + city.getFriendlyName() + "' wurde geändert!");
+        }
+
+        @Command(
+                aliases = {"info"},
+                desc = "Shows town info",
+                min = 1,
+                usage = "<Stadtname>"
+        )
+        @CommandPermissions("rccities.setdescription")
+        public void info(CommandContext args, CommandSender sender) throws CommandException {
+
+            try {
+                plugin.getCityManager().printCityInfo(args.getString(0), sender);
+            } catch (RaidCraftException e) {
+                throw new CommandException(e.getMessage());
+            }
         }
 
         public void deleteCity(CommandSender sender, String cityName) {

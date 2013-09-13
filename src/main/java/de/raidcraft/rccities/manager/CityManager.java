@@ -5,9 +5,13 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.util.CaseInsensitiveMap;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
 import java.util.Map;
@@ -41,10 +45,43 @@ public class CityManager {
 
         City city = getCity(cityName);
         if(city == null) {
-            throw new RaidCraftException("Es wurde keine Stadt mit dem namen gefunden!");
+            throw new RaidCraftException("Es wurde keine Stadt mit diesem namen gefunden!");
         }
 
         city.delete();
+    }
+
+    public void printCityInfo(String cityName, CommandSender sender) throws RaidCraftException {
+
+        City city = getCity(cityName);
+        if(city == null) {
+            throw new RaidCraftException("Es wurde keine Stadt mit diesem namen gefunden!");
+        }
+
+        String mayorList = "";
+        int mayorCount = 0;
+        String residentList = "";
+        int residentCount = 0;
+        for(Resident resident : plugin.getResidentManager().getResidents(city)) {
+            if(resident.getRole() == Role.MAYOR) {
+                if(!mayorList.isEmpty()) mayorList += ChatColor.GRAY + ", ";
+                mayorList += resident.getName();
+                mayorCount++;
+            }
+            else {
+                if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
+                residentList += resident.getName();
+            }
+        }
+
+        sender.sendMessage("*********************************");
+        sender.sendMessage(ChatColor.BLUE + "Informationen zur Stadt '" + ChatColor.AQUA + city.getFriendlyName() + ChatColor.BLUE + "'");
+        sender.sendMessage(ChatColor.BLUE + "Gründungsdatum: " + ChatColor.WHITE + city.getCreationDate().toString());
+        sender.sendMessage(ChatColor.BLUE + "Größe (Chunks): " + ChatColor.WHITE + city.getSize());
+        sender.sendMessage(ChatColor.BLUE + "Unclaimed Plots: " + ChatColor.WHITE + city.getPlotCredit());
+        sender.sendMessage(ChatColor.BLUE + "Bürgermeister (" + mayorCount + "): " + ChatColor.WHITE + mayorList);
+        sender.sendMessage(ChatColor.BLUE + "Einwohner (" + residentCount + "): " + ChatColor.WHITE + residentList);
+        sender.sendMessage("*********************************");
     }
 
     public City getCity(String name) {

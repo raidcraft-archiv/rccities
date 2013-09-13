@@ -114,4 +114,9 @@ public class ResidentManager {
 
         return residents;
     }
+
+    public void clearCache() {
+
+        cachedResidents.clear();
+    }
 }
