@@ -1,58 +1,18 @@
 package de.raidcraft.rccities.api.settings;
 
-import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.util.StringUtils;
 
 /**
  * @author Philip Urban
  */
 public abstract class AbstractSetting implements Setting {
 
-    private int id;
-    private SettingType type;
+    private String name;
     private String value;
-    private City city;
 
-    protected AbstractSetting() {}
+    protected AbstractSetting() {
 
-    protected AbstractSetting(SettingType type, String value, City city) {
-
-        this.type = type;
-        this.value = value;
-        this.city = city;
-
-        save();
-    }
-
-    protected void setCity(City city) {
-
-        this.city = city;
-    }
-
-    protected void setId(int id) {
-
-        this.id = id;
-    }
-
-    protected void setType(SettingType type) {
-
-        this.type = type;
-    }
-
-    protected void setValue(String value) {
-
-        this.value = value;
-    }
-
-    @Override
-    public int getId() {
-
-        return id;
-    }
-
-    @Override
-    public SettingType getType() {
-
-        return type;
+        this.name = StringUtils.formatName(getClass().getAnnotation(SettingInformation.class).name());
     }
 
     @Override
@@ -62,8 +22,15 @@ public abstract class AbstractSetting implements Setting {
     }
 
     @Override
-    public City getCity() {
+    public void setValue(String value) {
 
-        return city;
+        this.value = value;
+        refresh();
+    }
+
+    @Override
+    public String getName() {
+
+        return name;
     }
 }
