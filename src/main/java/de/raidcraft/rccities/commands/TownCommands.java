@@ -5,14 +5,15 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -190,11 +191,11 @@ public class TownCommands {
 
         @Command(
                 aliases = {"info"},
-                desc = "Shows town info",
+                desc = "Shows city info",
                 min = 1,
                 usage = "<Stadtname>"
         )
-        @CommandPermissions("rccities.setdescription")
+        @CommandPermissions("rccities.info")
         public void info(CommandContext args, CommandSender sender) throws CommandException {
 
             try {
@@ -203,6 +204,30 @@ public class TownCommands {
                 throw new CommandException(e.getMessage());
             }
         }
+
+        @Command(
+                aliases = {"list"},
+                desc = "List all existing cities"
+        )
+        @CommandPermissions("rccities.list")
+        public void list(CommandContext args, CommandSender sender) throws CommandException {
+
+            Collection<City> cities = plugin.getCityManager().getCities();
+            sender.sendMessage(ChatColor.BLUE + "Es gibt derzeit " + ChatColor.AQUA + cities.size() + ChatColor.BLUE + " Städte auf dem Server:");
+            String cityList = "";
+            for(City city : cities) {
+                if(!cityList.isEmpty()) cityList += ChatColor.WHITE + ", ";
+                cityList += ChatColor.BLUE + city.getFriendlyName();
+            }
+            sender.sendMessage(cityList);
+        }
+
+
+
+
+        /*
+         ***********************************************************************************************************************************
+         */
 
         public void deleteCity(CommandSender sender, String cityName) {
 
