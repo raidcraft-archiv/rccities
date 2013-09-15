@@ -29,13 +29,13 @@ public class FlagManager {
         this.plugin = plugin;
     }
 
-    public void registerCitySetting(Class<? extends CityFlag> clazz) {
+    public void registerCityFlag(Class<? extends CityFlag> clazz) {
 
         String name = StringUtils.formatName(clazz.getAnnotation(FlagInformation.class).name());
         cityFlags.put(name, clazz);
     }
 
-    public void registerPlotSetting(Class<? extends PlotFlag> clazz) {
+    public void registerPlotFlag(Class<? extends PlotFlag> clazz) {
 
         String name = StringUtils.formatName(clazz.getAnnotation(FlagInformation.class).name());
         plotFlags.put(name, clazz);

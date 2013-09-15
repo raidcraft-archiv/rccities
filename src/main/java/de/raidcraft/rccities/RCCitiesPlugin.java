@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.manager.*;
+import de.raidcraft.rccities.settings.city.PVPCityFlag;
 import de.raidcraft.rccities.tables.*;
 import org.bukkit.Bukkit;
 
@@ -38,6 +39,8 @@ public class RCCitiesPlugin extends BasePlugin {
         residentManager = new ResidentManager(this);
         assignmentManager = new AssignmentManager(this);
         flagManager = new FlagManager(this);
+
+        flagManager.registerCityFlag(PVPCityFlag.class);
     }
 
     @Override

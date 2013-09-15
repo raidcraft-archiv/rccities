@@ -12,9 +12,9 @@ import de.raidcraft.rccities.api.settings.FlagType;
         name = "PVP",
         type = FlagType.BOOLEAN
 )
-public class PVPCitySetting extends AbstractCityFlag {
+public class PVPCityFlag extends AbstractCityFlag {
 
-    public PVPCitySetting(City city) {
+    public PVPCityFlag(City city) {
 
         super(city);
     }
@@ -26,6 +26,6 @@ public class PVPCitySetting extends AbstractCityFlag {
 
         boolean currentValue = getType().convertToBoolean(getValue());
 
-        //TODO
+        //TODO: implement
     }
 }
