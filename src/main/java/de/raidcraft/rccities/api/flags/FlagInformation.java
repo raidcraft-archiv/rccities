@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.api.settings;
+package de.raidcraft.rccities.api.flags;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

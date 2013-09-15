@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.api.settings;
+package de.raidcraft.rccities.api.flags;
 
 /**
  * @author Philip Urban
