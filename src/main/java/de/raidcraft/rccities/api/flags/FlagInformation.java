@@ -14,4 +14,6 @@ public @interface FlagInformation {
 
     String name();
     FlagType type();
+    FlagRefreshType refreshType() default FlagRefreshType.ON_CHANGE;
+    int refreshInterval() default 60;
 }
