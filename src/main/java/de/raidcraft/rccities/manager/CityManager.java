@@ -95,6 +95,15 @@ public class CityManager {
                 cachedCities.put(tCity.getName(), city);
             }
         }
+        // search for name parts
+        if(city == null) {
+            for(Map.Entry<String, City> entry : cachedCities.entrySet()) {
+                if(entry.getKey().toLowerCase().startsWith(name.toLowerCase())) {
+                    city = entry.getValue();
+                    break;
+                }
+            }
+        }
         return city;
     }
 

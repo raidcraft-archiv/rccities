@@ -13,14 +13,14 @@ import javax.persistence.Table;
  * @author Philip Urban
  */
 @Entity
-@Table(name = "rccities_settings")
-public class TSetting {
+@Table(name = "rccities_flags")
+public class TFlag {
 
     @Id
     private int id;
     @ManyToOne
     private TCity city;
-    private String key;
+    private String name;
     private String value;
 
     public int getId() {
@@ -49,14 +49,14 @@ public class TSetting {
         this.city = city;
     }
 
-    public String getKey() {
+    public String getName() {
 
-        return key;
+        return name;
     }
 
-    public void setKey(String key) {
+    public void setName(String name) {
 
-        this.key = key;
+        this.name = name;
     }
 
     public String getValue() {

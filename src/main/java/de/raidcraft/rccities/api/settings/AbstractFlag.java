@@ -6,15 +6,15 @@ import de.raidcraft.util.StringUtils;
 /**
  * @author Philip Urban
  */
-public abstract class AbstractSetting implements Setting {
+public abstract class AbstractFlag implements Flag {
 
     private String name;
     private String value;
-    private SettingType type;
+    private FlagType type;
 
-    protected AbstractSetting() {
+    protected AbstractFlag() {
 
-        SettingInformation information = getClass().getAnnotation(SettingInformation.class);
+        FlagInformation information = getClass().getAnnotation(FlagInformation.class);
         this.name = StringUtils.formatName(information.name());
         this.type = information.type();
     }
@@ -28,7 +28,7 @@ public abstract class AbstractSetting implements Setting {
     @Override
     public void setValue(String value) throws RaidCraftException {
 
-        if(!type.validate(value)) throw new RaidCraftException(type.getErrorMsg());
+        if(!type.validate(value)) throw new RaidCraftException("Falscher Wertetyp: " + type.getErrorMsg());
 
         this.value = value;
         refresh();
@@ -41,7 +41,7 @@ public abstract class AbstractSetting implements Setting {
     }
 
     @Override
-    public SettingType getType() {
+    public FlagType getType() {
 
         return type;
     }

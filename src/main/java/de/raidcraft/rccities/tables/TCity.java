@@ -39,13 +39,13 @@ public class TCity {
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "city_id")
-    private Set<TSetting> settings;
+    private Set<TFlag> settings;
 
     public void loadChildren() {
 
         plots = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("city_id", id).findSet();
         residents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", id).findSet();
-        settings = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TSetting.class).where().eq("city_id", id).findSet();
+        settings = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TFlag.class).where().eq("city_id", id).findSet();
     }
 
     public int getId() {
@@ -188,12 +188,12 @@ public class TCity {
         this.residents = residents;
     }
 
-    public Set<TSetting> getSettings() {
+    public Set<TFlag> getSettings() {
 
         return settings;
     }
 
-    public void setSettings(Set<TSetting> settings) {
+    public void setSettings(Set<TFlag> settings) {
 
         this.settings = settings;
     }

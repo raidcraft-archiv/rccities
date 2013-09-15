@@ -4,8 +4,8 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Role;
+import de.raidcraft.rccities.tables.TFlag;
 import de.raidcraft.rccities.tables.TResident;
-import de.raidcraft.rccities.tables.TSetting;
 
 /**
  * @author Philip Urban
@@ -52,6 +52,6 @@ public class DatabaseResident extends AbstractResident {
     @Override
     public void delete() {
 
-        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TSetting.class, getId());
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TFlag.class, getId());
     }
 }

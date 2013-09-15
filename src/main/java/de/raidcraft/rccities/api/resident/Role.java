@@ -9,12 +9,25 @@ import java.util.Set;
 public enum Role {
 
     RESIDENT(),
-    MAYOR(RolePermission.KICK, RolePermission.INVITE, RolePermission.BUILD_EVERYWHERE,
-            RolePermission.PLOT_DISTRIBUTION, RolePermission.SET_DESCRIPTION, RolePermission.SET_SPAWN),
-    VICE_MAYOR(RolePermission.KICK, RolePermission.INVITE, RolePermission.BUILD_EVERYWHERE,
-            RolePermission.PLOT_DISTRIBUTION),
-    ASSISTANT(RolePermission.INVITE, RolePermission.BUILD_EVERYWHERE,
-            RolePermission.PLOT_DISTRIBUTION);
+    MAYOR(RolePermission.KICK,
+            RolePermission.INVITE,
+            RolePermission.BUILD_EVERYWHERE,
+            RolePermission.PLOT_DISTRIBUTION,
+            RolePermission.SET_DESCRIPTION,
+            RolePermission.SET_SPAWN,
+            RolePermission.CITY_FLAG_MODIFICATION),
+
+    VICE_MAYOR(RolePermission.KICK,
+            RolePermission.INVITE,
+            RolePermission.BUILD_EVERYWHERE,
+            RolePermission.PLOT_DISTRIBUTION,
+            RolePermission.CITY_FLAG_MODIFICATION,
+            RolePermission.PLOT_FLAG_MODIFICATION),
+
+    ASSISTANT(RolePermission.INVITE,
+            RolePermission.BUILD_EVERYWHERE,
+            RolePermission.PLOT_DISTRIBUTION,
+            RolePermission.PLOT_FLAG_MODIFICATION);
 
     private Set<RolePermission> permissions = new HashSet<>();
 

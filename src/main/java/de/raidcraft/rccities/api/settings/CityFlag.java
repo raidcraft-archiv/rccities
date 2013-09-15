@@ -5,9 +5,7 @@ import de.raidcraft.rccities.api.city.City;
 /**
  * @author Philip Urban
  */
-public interface CitySetting extends Setting {
+public interface CityFlag extends Flag {
 
     public City getCity();
-
-    public void setCity(City city);
 }

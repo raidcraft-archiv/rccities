@@ -5,11 +5,11 @@ import de.raidcraft.api.RaidCraftException;
 /**
  * @author Philip Urban
  */
-public interface Setting {
+public interface Flag {
 
     public String getName();
 
-    public SettingType getType();
+    public FlagType getType();
 
     public String getValue();
 

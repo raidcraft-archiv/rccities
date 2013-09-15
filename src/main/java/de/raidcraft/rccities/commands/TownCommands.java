@@ -137,7 +137,7 @@ public class TownCommands {
                 if(!player.hasPermission("rccities.setspawn.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
-                        throw new CommandException("Du darfst von dieser Stadt den Spawn nicht versetzen!");
+                        throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' den Spawn nicht versetzen!");
                     }
                 }
             }
@@ -180,7 +180,7 @@ public class TownCommands {
             if(!player.hasPermission("rccities.setspawn.all")) {
                 Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                 if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
-                    throw new CommandException("Du darfst von dieser Stadt die Beschreibung nicht ändern!");
+                    throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' die Beschreibung nicht ändern!");
                 }
             }
             String description = args.getJoinedStrings(1);
@@ -222,7 +222,37 @@ public class TownCommands {
             sender.sendMessage(cityList);
         }
 
+        @Command(
+                aliases = {"flag"},
+                desc = "Change city flag",
+                min = 3,
+                usage = "<Stadtname> <Flag> <Parameter>"
+        )
+        @CommandPermissions("rccities.flag")
+        public void flag(CommandContext args, CommandSender sender) throws CommandException {
 
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city = plugin.getCityManager().getCity(args.getString(0));
+            if(city == null) {
+                throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+            }
+            if(!player.hasPermission("rccities.flag.all")) {
+                Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                if(resident == null || !resident.getRole().hasPermission(RolePermission.CITY_FLAG_MODIFICATION)) {
+                    throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' keine Flags ändern!");
+                }
+            }
+            String flagName = args.getString(1);
+            String flagValue = args.getString(2);
+
+            try {
+                plugin.getFlagManager().setCityFlag(city, flagName, flagValue);
+            } catch (RaidCraftException e) {
+                throw new CommandException(e.getMessage());
+            }
+        }
 
 
         /*

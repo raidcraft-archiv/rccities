@@ -3,7 +3,7 @@ package de.raidcraft.rccities.api.settings;
 /**
  * @author Philip Urban
  */
-public enum SettingType {
+public enum FlagType {
 
     STRING("Es wurde Text erwartet!"),
     INTEGER("Es wurde eine Ganzzahl erwartet!"),
@@ -12,7 +12,7 @@ public enum SettingType {
 
     private String errorMsg;
 
-    private SettingType(String errorMsg) {
+    private FlagType(String errorMsg) {
 
         this.errorMsg = errorMsg;
     }
@@ -44,6 +44,8 @@ public enum SettingType {
         }
         else if(this == BOOLEAN) {
             if(input.equalsIgnoreCase("true")
+                    || input.equalsIgnoreCase("allow")
+                    || input.equalsIgnoreCase("deny")
                     || input.equalsIgnoreCase("false")
                     || input.equalsIgnoreCase("wahr")
                     || input.equalsIgnoreCase("falsch")
@@ -64,6 +66,7 @@ public enum SettingType {
     public boolean convertToBoolean(String value) {
 
         if(value.equalsIgnoreCase("true")
+                || value.equalsIgnoreCase("allow")
                 || value.equalsIgnoreCase("wahr")
                 || value.equalsIgnoreCase("ja")
                 || value.equalsIgnoreCase("1")) {

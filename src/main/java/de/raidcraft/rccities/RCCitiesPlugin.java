@@ -4,10 +4,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.rccities.commands.TownCommands;
-import de.raidcraft.rccities.manager.AssignmentManager;
-import de.raidcraft.rccities.manager.CityManager;
-import de.raidcraft.rccities.manager.PlotManager;
-import de.raidcraft.rccities.manager.ResidentManager;
+import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.tables.*;
 import org.bukkit.Bukkit;
 
@@ -26,6 +23,7 @@ public class RCCitiesPlugin extends BasePlugin {
     private PlotManager plotManager;
     private ResidentManager residentManager;
     private AssignmentManager assignmentManager;
+    private FlagManager flagManager;
 
     @Override
     public void enable() {
@@ -39,6 +37,7 @@ public class RCCitiesPlugin extends BasePlugin {
         plotManager = new PlotManager(this);
         residentManager = new ResidentManager(this);
         assignmentManager = new AssignmentManager(this);
+        flagManager = new FlagManager(this);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class RCCitiesPlugin extends BasePlugin {
         databases.add(TPlot.class);
         databases.add(TResident.class);
         databases.add(TAssignment.class);
-        databases.add(TSetting.class);
+        databases.add(TFlag.class);
         return databases;
     }
 
@@ -85,5 +84,10 @@ public class RCCitiesPlugin extends BasePlugin {
     public AssignmentManager getAssignmentManager() {
 
         return assignmentManager;
+    }
+
+    public FlagManager getFlagManager() {
+
+        return flagManager;
     }
 }
