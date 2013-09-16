@@ -6,3 +6,12 @@ author: Strasse36
 website: http://www.raid-craft.de
 depend: [RaidCraft-API]
 database: true
+
+permissions:
+   rccities.admin:
+     children:
+       rccities.create: true
+   rccities.player:
+     children:
+       rccities.leave: true
+

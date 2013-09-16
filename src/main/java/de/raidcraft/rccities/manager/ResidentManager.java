@@ -5,8 +5,9 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.api.resident.Role;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
@@ -46,6 +47,11 @@ public class ResidentManager {
     }
 
     public void removeResident(City city, String residentName) throws RaidCraftException {
+
+        //TODO
+    }
+
+    public void changeRole(City city, String residentName, Role newRole) {
 
         //TODO
     }

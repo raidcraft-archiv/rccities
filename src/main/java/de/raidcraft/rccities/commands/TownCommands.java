@@ -263,8 +263,8 @@ public class TownCommands {
                 min = 1,
                 usage = "[Stadtname] <Spielername>"
         )
-        @CommandPermissions("rccities.invite")
-        public void invite(CommandContext args, CommandSender sender) throws CommandException {
+                 @CommandPermissions("rccities.invite")
+                 public void invite(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
             Player player = (Player)sender;
@@ -333,6 +333,104 @@ public class TownCommands {
             Bukkit.broadcastMessage(ChatColor.BLUE + player.getName() + " ist nun Einwohner von '" + city.getFriendlyName() + "'!");
         }
 
+        @Command(
+                aliases = {"leave"},
+                desc = "Leaves a city",
+                flags = "f",
+                usage = "[Stadtname]"
+        )
+        @CommandPermissions("rccities.leave")
+        public void leave(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city;
+            if(args.argsLength() > 0) {
+                city = plugin.getCityManager().getCity(args.getString(0));
+                if(city == null) {
+                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                }
+                if(!player.hasPermission("rccities.invite.all")) {
+                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    if(resident == null) {
+                        throw new CommandException("Du bist kein Einwohner der Stadt '" + city.getFriendlyName() + "'!");
+                    }
+                    else if(!resident.getRole().hasPermission(RolePermission.LEAVE)) {
+                        throw new CommandException("Du darfst die Stadt '" + city.getFriendlyName() + "' nicht verlassen!");
+                    }
+                }
+            }
+            else {
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.LEAVE);
+
+                if(citizenships == null) {
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht diese zu verlassen!");
+                }
+                if(citizenships.size() > 1) {
+                    throw new CommandException("Du bist Bürger von mehreren Städten. Gebe die gewünschte Stadt als Parameter an.");
+                }
+                city = citizenships.get(0).getCity();
+            }
+
+            if(args.hasFlag('f')) {
+                leaveCity(player, city);
+            }
+            else {
+                try {
+                    new QueuedCaptchaCommand(sender, this, "leaveCity", player, city);
+                } catch (NoSuchMethodException e) {
+                    throw new CommandException(e.getMessage());
+                }
+            }
+        }
+
+        @Command(
+                aliases = {"kick"},
+                desc = "Kicks a resident",
+                usage = "[Stadtname] <Spieler>"
+        )
+        @CommandPermissions("rccities.kick")
+        public void kick(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city;
+            String targetResident;
+            if(args.argsLength() > 1) {
+                targetResident = args.getString(1);
+                city = plugin.getCityManager().getCity(args.getString(0));
+                if(city == null) {
+                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                }
+                if(!player.hasPermission("rccities.invite.all")) {
+                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    if(resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
+                        throw new CommandException("Du darfst in die Stadt '" + city.getFriendlyName() + "' keine Bürger einladen!");
+                    }
+                }
+            }
+            else {
+                targetResident = args.getString(0);
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.KICK);
+                if(citizenships == null) {
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler einzuladen!");
+                }
+                if(citizenships.size() > 1) {
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler einzuladen! Gebe die gewünschte Stadt als Parameter an.");
+                }
+                city = citizenships.get(0).getCity();
+            }
+
+            try {
+                plugin.getResidentManager().removeResident(city, targetResident);
+            } catch (RaidCraftException e) {
+                throw new CommandException(e.getMessage());
+            }
+            Bukkit.broadcastMessage(ChatColor.BLUE + targetResident + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
+        }
+
 
         /*
          ***********************************************************************************************************************************
@@ -346,6 +444,16 @@ public class TownCommands {
                 sender.sendMessage(ChatColor.RED + e.getMessage());
             }
             Bukkit.broadcastMessage(ChatColor.BLUE + "Die Stadt '" + cityName + "' wurde gelöscht!");
+        }
+
+        public void leaveCity(Player player, City city) {
+
+            try {
+                plugin.getResidentManager().removeResident(city, player.getName());
+            } catch (RaidCraftException e) {
+                player.sendMessage(ChatColor.RED + e.getMessage());
+            }
+            Bukkit.broadcastMessage(ChatColor.BLUE + player.getName() + " hat die Stadt '" + city.getFriendlyName() + "' verlassen!");
         }
     }
 

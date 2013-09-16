@@ -8,7 +8,10 @@ import java.util.Set;
  */
 public enum Role {
 
-    RESIDENT(),
+    SLAVE(),
+
+    RESIDENT(RolePermission.LEAVE),
+
     MAYOR(RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
