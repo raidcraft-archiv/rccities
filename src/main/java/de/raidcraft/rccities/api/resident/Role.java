@@ -8,11 +8,13 @@ import java.util.Set;
  */
 public enum Role {
 
-    SLAVE(),
+    SLAVE("Sklave"),
 
-    RESIDENT(RolePermission.LEAVE),
+    RESIDENT("Einwohner",
+            RolePermission.LEAVE),
 
-    MAYOR(RolePermission.KICK,
+    MAYOR("Bürgermeister",
+            RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
@@ -20,22 +22,26 @@ public enum Role {
             RolePermission.SET_SPAWN,
             RolePermission.CITY_FLAG_MODIFICATION),
 
-    VICE_MAYOR(RolePermission.KICK,
+    VICE_MAYOR("Vize Bürgermeister",
+            RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.CITY_FLAG_MODIFICATION,
             RolePermission.PLOT_FLAG_MODIFICATION),
 
-    ASSISTANT(RolePermission.INVITE,
+    ASSISTANT("Stadtassistent",
+            RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.PLOT_FLAG_MODIFICATION);
 
     private Set<RolePermission> permissions = new HashSet<>();
+    private String friendlyName;
 
-    private Role(RolePermission... permissions) {
+    private Role(String friendlyName, RolePermission... permissions) {
 
+        this.friendlyName = friendlyName;
         for(RolePermission permission : permissions) {
             this.permissions.add(permission);
         }
@@ -44,5 +50,10 @@ public enum Role {
     public boolean hasPermission(RolePermission permission) {
 
         return permissions.contains(permission);
+    }
+
+    public String getFriendlyName() {
+
+        return friendlyName;
     }
 }

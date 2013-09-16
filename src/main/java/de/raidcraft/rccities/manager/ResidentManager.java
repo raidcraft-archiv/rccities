@@ -65,7 +65,23 @@ public class ResidentManager {
 
     public void printResidentInfo(String playerName, CommandSender sender) {
 
+        List<Resident> citizenships = getCitizenships(playerName);
+        if(citizenships == null || citizenships.size() == 0) {
+            sender.sendMessage(ChatColor.RED + "Keine Einwohner Informationen zu '" + playerName + "' gefunden!");
+        }
 
+        sender.sendMessage("*********************************");
+        sender.sendMessage(ChatColor.BLUE + "Einwohner Informationen zu '" + ChatColor.AQUA + citizenships.get(0).getName() + ChatColor.BLUE + "'");
+        if(citizenships.size() == 1) {
+            sender.sendMessage(ChatColor.BLUE + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.BLUE + " Stadt:");
+        }
+        else {
+            sender.sendMessage(ChatColor.BLUE + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.BLUE + " Städten:");
+        }
+        for(Resident resident : citizenships) {
+            sender.sendMessage(ChatColor.BLUE + resident.getCity().getFriendlyName() + " : " + ChatColor.WHITE + resident.getRole().getFriendlyName());
+        }
+        sender.sendMessage("*********************************");
     }
 
     public List<Resident> getCitizenships(String name) {
