@@ -8,7 +8,7 @@ public enum FlagType {
     STRING("Es wurde Text erwartet!"),
     INTEGER("Es wurde eine Ganzzahl erwartet!"),
     DOUBLE("Es wurde eine Kommazahl erwartet!"),
-    BOOLEAN("Es wurde ein Boolean (wahr/falsch) erwartet!");
+    BOOLEAN("Es wurde ein Boolean (allow/deny) erwartet!");
 
     private String errorMsg;
 
