@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
  */
 public abstract class AbstractResident implements Resident {
 
-    private int id;
-    private String name;
-    private Role profession;
-    private City city;
+    protected int id;
+    protected String name;
+    protected Role profession;
+    protected City city;
 
     protected AbstractResident() {};
 
@@ -23,26 +23,6 @@ public abstract class AbstractResident implements Resident {
         this.city = city;
 
         save();
-    }
-
-    protected void setId(int id) {
-
-        this.id = id;
-    }
-
-    protected void setName(String name) {
-
-        this.name = name;
-    }
-
-    protected void setProfession(String profession) {
-
-        this.profession = Role.valueOf(profession);
-    }
-
-    protected void setCity(City city) {
-
-        this.city = city;
     }
 
     @Override

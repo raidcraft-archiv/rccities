@@ -15,10 +15,10 @@ import org.bukkit.Location;
  */
 public abstract class AbstractPlot implements Plot {
 
-    private int id;
-    private Location location;
-    private ProtectedRegion region;
-    private City city;
+    protected int id;
+    protected Location location;
+    protected ProtectedRegion region;
+    protected City city;
 
     protected AbstractPlot() {}
 
@@ -30,26 +30,6 @@ public abstract class AbstractPlot implements Plot {
 
         save();
         createRegion();
-    }
-
-    protected void setId(int id) {
-
-        this.id = id;
-    }
-
-    protected void setLocation(Location location) {
-
-        this.location = location;
-    }
-
-    protected void setRegion(ProtectedRegion region) {
-
-        this.region = region;
-    }
-
-    protected void setCity(City city) {
-
-        this.city = city;
     }
 
     @Override

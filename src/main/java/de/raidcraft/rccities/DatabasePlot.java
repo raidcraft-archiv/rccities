@@ -20,17 +20,17 @@ public class DatabasePlot extends AbstractPlot {
     public DatabasePlot(TPlot tPlot) {
 
         //XXX setter call order is important!!!
-        setId(tPlot.getId());
+        this.id = tPlot.getId();
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(tPlot.getCity().getName());
         assert city != null : "City of plot is null!";
-        setCity(city);
+        this.city = city;
 
         Location location = new Location(city.getSpawn().getWorld(), tPlot.getX(), 0, tPlot.getZ());
-        setLocation(location);
+        this.location = location;
 
         ProtectedRegion region = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).getRegion(getRegionName());
-        setRegion(region);
+        this.region = region;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class DatabasePlot extends AbstractPlot {
         tPlot.setX(getLocation().getBlockX());
         tPlot.setZ(getLocation().getBlockZ());
         RaidCraft.getDatabase(RCCitiesPlugin.class).save(tPlot);
-        setId(tPlot.getId());
+        this.id = tPlot.getId();
     }
 
     @Override

@@ -21,13 +21,13 @@ public class DatabaseCity extends AbstractCity {
     public DatabaseCity(TCity tCity) {
 
         //XXX setter call order is important!!!
-        setId(tCity.getId());
-        setName(tCity.getName());
-        setCreator(tCity.getCreator());
-        setCreationDate(tCity.getCreationDate());
-        setDescription(tCity.getDescription());
-        setInitialPlotCredit(tCity.getPlotCredit());
-        setSpawn(new Location(Bukkit.getWorld(tCity.getWorld()), tCity.getX(), tCity.getY(), tCity.getZ(), tCity.getYaw(), tCity.getPitch()));
+        id = tCity.getId();
+        name = tCity.getName();
+        creator = tCity.getCreator();
+        creationDate = tCity.getCreationDate();
+        description = tCity.getDescription();
+        plotCredit = tCity.getPlotCredit();
+        spawn = new Location(Bukkit.getWorld(tCity.getWorld()), tCity.getX(), tCity.getY(), tCity.getZ(), tCity.getYaw(), tCity.getPitch());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setPitch(getSpawn().getPitch());
             tCity.setYaw(getSpawn().getYaw());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
-            setId(tCity.getId());
+            id = tCity.getId();
         }
         // update existing city
         else {

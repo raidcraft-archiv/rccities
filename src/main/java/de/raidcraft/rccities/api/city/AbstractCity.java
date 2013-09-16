@@ -9,13 +9,13 @@ import java.sql.Timestamp;
  */
 public abstract class AbstractCity implements City {
 
-    private int id;
-    private String name;
-    private String creator;
-    private Timestamp creationDate;
-    private Location spawn;
-    private String description;
-    private int plotCredit;
+    protected int id;
+    protected String name;
+    protected String creator;
+    protected Timestamp creationDate;
+    protected Location spawn;
+    protected String description;
+    protected int plotCredit;
 
     protected AbstractCity() {}
 
@@ -26,31 +26,6 @@ public abstract class AbstractCity implements City {
         this.creator = creator;
 
         save();
-    }
-
-    protected void setId(int id) {
-
-        this.id = id;
-    }
-
-    protected void setName(String name) {
-
-        this.name = name;
-    }
-
-    protected void setCreator(String creator) {
-
-        this.creator = creator;
-    }
-
-    protected void setCreationDate(Timestamp creationDate) {
-
-        this.creationDate = creationDate;
-    }
-
-    protected void setInitialPlotCredit(int plotCredit) {
-
-        this.plotCredit = plotCredit;
     }
 
     @Override

@@ -20,12 +20,12 @@ public class DatabaseResident extends AbstractResident {
     public DatabaseResident(TResident tResident) {
 
         //XXX setter call order is important!!!
-        setId(tResident.getId());
+        this.id = tResident.getId();
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(tResident.getCity().getName());
         assert city != null : "City of resident is null!";
-        setCity(city);
-        setName(tResident.getName());
+        this.city = city;
+        this.name = tResident.getName();
         setRole(Role.valueOf(tResident.getProfession()));
     }
 
@@ -39,7 +39,7 @@ public class DatabaseResident extends AbstractResident {
             tResident.setName(getName());
             tResident.setProfession(getRole().name());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tResident);
-            setId(tResident.getId());
+            this.id = tResident.getId();
         }
         // update existing resident
         else {
