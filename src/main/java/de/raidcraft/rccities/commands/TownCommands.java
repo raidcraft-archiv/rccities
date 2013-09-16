@@ -45,7 +45,7 @@ public class TownCommands {
             throw new CommandException("Mehrere Städte gefunden: Nutze /town info <Stadtname>!");
         }
         try {
-            plugin.getCityManager().printCityInfo(citizenships.get(0).getName(), sender);
+            plugin.getCityManager().printCityInfo(citizenships.get(0).getCity().getName(), sender);
         } catch (RaidCraftException e) {
             throw new CommandException(e.getMessage());
         }
@@ -216,11 +216,11 @@ public class TownCommands {
         public void list(CommandContext args, CommandSender sender) throws CommandException {
 
             Collection<City> cities = plugin.getCityManager().getCities();
-            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.GREEN + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
+            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.YELLOW + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
             String cityList = "";
             for(City city : cities) {
-                if(!cityList.isEmpty()) cityList += ChatColor.WHITE + ", ";
-                cityList += ChatColor.GREEN + city.getFriendlyName();
+                if(!cityList.isEmpty()) cityList += ChatColor.GOLD + ", ";
+                cityList += ChatColor.YELLOW + city.getFriendlyName();
             }
             sender.sendMessage(cityList);
         }

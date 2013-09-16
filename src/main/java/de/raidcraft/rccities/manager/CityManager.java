@@ -70,12 +70,12 @@ public class CityManager {
         for(Resident resident : plugin.getResidentManager().getResidents(city)) {
             if(resident.getRole() == Role.MAYOR) {
                 if(!mayorList.isEmpty()) mayorList += ChatColor.GRAY + ", ";
-                mayorList += resident.getName();
+                mayorList += ChatColor.YELLOW + resident.getName();
                 mayorCount++;
             }
             else {
                 if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
-                residentList += resident.getName();
+                residentList += ChatColor.YELLOW + resident.getName();
             }
         }
 
