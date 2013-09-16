@@ -80,12 +80,12 @@ public class CityManager {
         }
 
         sender.sendMessage("*********************************");
-        sender.sendMessage(ChatColor.GOLD + "Informationen zur Stadt '" + ChatColor.AQUA + city.getFriendlyName() + ChatColor.GOLD + "'");
-        sender.sendMessage(ChatColor.GOLD + "Gründungsdatum: " + ChatColor.WHITE + city.getCreationDate().toString());
-        sender.sendMessage(ChatColor.GOLD + "Größe (Chunks): " + ChatColor.WHITE + city.getSize());
-        sender.sendMessage(ChatColor.GOLD + "Unclaimed Plots: " + ChatColor.WHITE + city.getPlotCredit());
-        sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.WHITE + mayorList);
-        sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.WHITE + residentList);
+        sender.sendMessage(ChatColor.GOLD + "Informationen zur Stadt '" + ChatColor.YELLOW + city.getFriendlyName() + ChatColor.GOLD + "'");
+        sender.sendMessage(ChatColor.GOLD + "Gründungsdatum: " + ChatColor.YELLOW + city.getCreationDate().toString());
+        sender.sendMessage(ChatColor.GOLD + "Größe (Chunks): " + ChatColor.YELLOW + city.getSize());
+        sender.sendMessage(ChatColor.GOLD + "Unclaimed Plots: " + ChatColor.YELLOW + city.getPlotCredit());
+        sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.YELLOW + mayorList);
+        sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.YELLOW + residentList);
         sender.sendMessage("*********************************");
     }
 

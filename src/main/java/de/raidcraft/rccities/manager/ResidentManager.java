@@ -71,15 +71,15 @@ public class ResidentManager {
         }
 
         sender.sendMessage("*********************************");
-        sender.sendMessage(ChatColor.GOLD + "Einwohner Informationen zu '" + ChatColor.AQUA + citizenships.get(0).getName() + ChatColor.GOLD + "'");
+        sender.sendMessage(ChatColor.GOLD + "Einwohner Informationen zu '" + ChatColor.YELLOW + citizenships.get(0).getName() + ChatColor.GOLD + "'");
         if(citizenships.size() == 1) {
-            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.GOLD + " Stadt:");
+            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.YELLOW + citizenships.size() + ChatColor.GOLD + " Stadt:");
         }
         else {
-            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.GOLD + " Städten:");
+            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.YELLOW + citizenships.size() + ChatColor.GOLD + " Städten:");
         }
         for(Resident resident : citizenships) {
-            sender.sendMessage(ChatColor.GOLD + resident.getCity().getFriendlyName() + " : " + ChatColor.WHITE + resident.getRole().getFriendlyName());
+            sender.sendMessage(ChatColor.GOLD + resident.getCity().getFriendlyName() + " : " + ChatColor.YELLOW + resident.getRole().getFriendlyName());
         }
         sender.sendMessage("*********************************");
     }
