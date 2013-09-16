@@ -91,11 +91,11 @@ public class TownCommands {
 
             City city;
             try {
-                city = plugin.getCityManager().createCity(args.getString(0), player.getLocation(), player.getName());
+                city = plugin.getCityManager().createCity(args.getJoinedStrings(0), player.getLocation(), player.getName());
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + "Es wurde die Stadt '" + city.getFriendlyName() + "' gegründet!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + "Es wurde die Stadt '" + city.getFriendlyName() + "' gegründet!");
         }
 
         @Command(
@@ -216,11 +216,11 @@ public class TownCommands {
         public void list(CommandContext args, CommandSender sender) throws CommandException {
 
             Collection<City> cities = plugin.getCityManager().getCities();
-            sender.sendMessage(ChatColor.BLUE + "Es gibt derzeit " + ChatColor.AQUA + cities.size() + ChatColor.BLUE + " Städte auf dem Server:");
+            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.AQUA + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
             String cityList = "";
             for(City city : cities) {
                 if(!cityList.isEmpty()) cityList += ChatColor.WHITE + ", ";
-                cityList += ChatColor.BLUE + city.getFriendlyName();
+                cityList += ChatColor.GOLD + city.getFriendlyName();
             }
             sender.sendMessage(cityList);
         }
@@ -305,8 +305,8 @@ public class TownCommands {
             }
 
             invites.put(targetPlayer.getName(), city);
-            targetPlayer.sendMessage(ChatColor.BLUE + "Du wurdest in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
-            targetPlayer.sendMessage(ChatColor.BLUE + "Bestätige die Einladung mit '/town accept'");
+            targetPlayer.sendMessage(ChatColor.GOLD + "Du wurdest in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
+            targetPlayer.sendMessage(ChatColor.GOLD + "Bestätige die Einladung mit '/town accept'");
             player.sendMessage(ChatColor.GREEN + "Du hast " + targetPlayer.getName() + " in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
         }
 
@@ -330,7 +330,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + player.getName() + " ist nun Einwohner von '" + city.getFriendlyName() + "'!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + " ist nun Einwohner von '" + city.getFriendlyName() + "'!");
         }
 
         @Command(
@@ -428,7 +428,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + targetResident + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + targetResident + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
         }
 
         /*
@@ -442,7 +442,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 sender.sendMessage(ChatColor.RED + e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + "Die Stadt '" + cityName + "' wurde gelöscht!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + "Die Stadt '" + cityName + "' wurde gelöscht!");
         }
 
         public void leaveCity(Player player, City city) {
@@ -452,7 +452,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 player.sendMessage(ChatColor.RED + e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.BLUE + player.getName() + " hat die Stadt '" + city.getFriendlyName() + "' verlassen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + " hat die Stadt '" + city.getFriendlyName() + "' verlassen!");
         }
     }
 

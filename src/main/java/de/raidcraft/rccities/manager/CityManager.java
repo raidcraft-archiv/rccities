@@ -32,6 +32,10 @@ public class CityManager {
     public City createCity(String cityName, Location location, String creator) throws RaidCraftException {
 
         cityName = cityName.replace(' ', '_');
+
+        if(cityName.length() > 20) {
+            throw new RaidCraftException("Der angegebene Stadtname ist zu lange!");
+        }
         City city = getCity(cityName);
         if(city != null) {
             throw new RaidCraftException("Es gibt bereits eine Stadt mit diesem Namen!");
@@ -76,12 +80,12 @@ public class CityManager {
         }
 
         sender.sendMessage("*********************************");
-        sender.sendMessage(ChatColor.BLUE + "Informationen zur Stadt '" + ChatColor.AQUA + city.getFriendlyName() + ChatColor.BLUE + "'");
-        sender.sendMessage(ChatColor.BLUE + "Gründungsdatum: " + ChatColor.WHITE + city.getCreationDate().toString());
-        sender.sendMessage(ChatColor.BLUE + "Größe (Chunks): " + ChatColor.WHITE + city.getSize());
-        sender.sendMessage(ChatColor.BLUE + "Unclaimed Plots: " + ChatColor.WHITE + city.getPlotCredit());
-        sender.sendMessage(ChatColor.BLUE + "Bürgermeister (" + mayorCount + "): " + ChatColor.WHITE + mayorList);
-        sender.sendMessage(ChatColor.BLUE + "Einwohner (" + residentCount + "): " + ChatColor.WHITE + residentList);
+        sender.sendMessage(ChatColor.GOLD + "Informationen zur Stadt '" + ChatColor.AQUA + city.getFriendlyName() + ChatColor.GOLD + "'");
+        sender.sendMessage(ChatColor.GOLD + "Gründungsdatum: " + ChatColor.WHITE + city.getCreationDate().toString());
+        sender.sendMessage(ChatColor.GOLD + "Größe (Chunks): " + ChatColor.WHITE + city.getSize());
+        sender.sendMessage(ChatColor.GOLD + "Unclaimed Plots: " + ChatColor.WHITE + city.getPlotCredit());
+        sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.WHITE + mayorList);
+        sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.WHITE + residentList);
         sender.sendMessage("*********************************");
     }
 

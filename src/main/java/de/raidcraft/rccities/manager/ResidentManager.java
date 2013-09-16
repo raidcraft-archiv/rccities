@@ -37,7 +37,7 @@ public class ResidentManager {
 
             Player player = resident.getPlayer();
             if(player != null) {
-                player.sendMessage(ChatColor.BLUE + message);
+                player.sendMessage(ChatColor.GOLD + message);
             }
         }
     }
@@ -71,15 +71,15 @@ public class ResidentManager {
         }
 
         sender.sendMessage("*********************************");
-        sender.sendMessage(ChatColor.BLUE + "Einwohner Informationen zu '" + ChatColor.AQUA + citizenships.get(0).getName() + ChatColor.BLUE + "'");
+        sender.sendMessage(ChatColor.GOLD + "Einwohner Informationen zu '" + ChatColor.AQUA + citizenships.get(0).getName() + ChatColor.GOLD + "'");
         if(citizenships.size() == 1) {
-            sender.sendMessage(ChatColor.BLUE + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.BLUE + " Stadt:");
+            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.GOLD + " Stadt:");
         }
         else {
-            sender.sendMessage(ChatColor.BLUE + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.BLUE + " Städten:");
+            sender.sendMessage(ChatColor.GOLD + "Bürgerschaft in " + ChatColor.WHITE + citizenships.size() + ChatColor.GOLD + " Städten:");
         }
         for(Resident resident : citizenships) {
-            sender.sendMessage(ChatColor.BLUE + resident.getCity().getFriendlyName() + " : " + ChatColor.WHITE + resident.getRole().getFriendlyName());
+            sender.sendMessage(ChatColor.GOLD + resident.getCity().getFriendlyName() + " : " + ChatColor.WHITE + resident.getRole().getFriendlyName());
         }
         sender.sendMessage("*********************************");
     }
