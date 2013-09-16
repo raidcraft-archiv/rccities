@@ -317,6 +317,8 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
+            player.sendMessage(ChatColor.GREEN + "Du hast erfolgreich die Flag '" + ChatColor.YELLOW + flagName.toUpperCase()
+                    + ChatColor.GREEN + "' auf den Wert '" + ChatColor.YELLOW + flagValue.toUpperCase() + "' gesetzt!");
         }
 
         @Command(
