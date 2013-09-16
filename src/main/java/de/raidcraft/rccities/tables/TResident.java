@@ -4,10 +4,8 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author Philip Urban
@@ -22,6 +20,10 @@ public class TResident {
     private TCity city;
     private String name;
     private String profession;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "resident_id")
+    private Set<TAssignment> assignment;
 
     public int getId() {
 
