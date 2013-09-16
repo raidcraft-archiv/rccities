@@ -49,6 +49,7 @@ public class CityManager {
         }
 
         city.delete();
+        cachedCities.remove(city.getName());
     }
 
     public void printCityInfo(String cityName, CommandSender sender) throws RaidCraftException {
@@ -97,6 +98,7 @@ public class CityManager {
         }
         // search for name parts
         if(city == null) {
+            getCities();
             for(Map.Entry<String, City> entry : cachedCities.entrySet()) {
                 if(entry.getKey().toLowerCase().startsWith(name.toLowerCase())) {
                     city = entry.getValue();

@@ -42,7 +42,7 @@ public class TownCommands {
 
         List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName());
         if(citizenships == null || citizenships.size() > 1) {
-            throw new CommandException("Nutze /town info <Stadtname>!");
+            throw new CommandException("Mehrere Städte gefunden: Nutze /town info <Stadtname>!");
         }
         try {
             plugin.getCityManager().printCityInfo(citizenships.get(0).getName(), sender);
@@ -65,7 +65,7 @@ public class TownCommands {
                 aliases = {"reload"},
                 desc = "Reloads the plugin"
         )
-        @CommandPermissions("rccities.reload")
+        @CommandPermissions("rccities.town.reload")
         public void reload(CommandContext args, CommandSender sender) {
 
             plugin.reload();
@@ -81,7 +81,7 @@ public class TownCommands {
                 min = 1,
                 usage = "<Stadtname>"
         )
-         @CommandPermissions("rccities.create")
+         @CommandPermissions("rccities.town.create")
          public void create(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -105,7 +105,7 @@ public class TownCommands {
                 flags = "f",
                 usage = "<Stadtname>"
         )
-        @CommandPermissions("rccities.delete")
+        @CommandPermissions("rccities.town.delete")
         public void delete(CommandContext args, CommandSender sender) throws CommandException {
 
             if(args.hasFlag('f')) {
@@ -125,7 +125,7 @@ public class TownCommands {
                 desc = "Redefine the town spawn location",
                 usage = "[Stadtname]"
         )
-        @CommandPermissions("rccities.setspawn")
+        @CommandPermissions("rccities.town.setspawn")
         public void setSpawn(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -170,7 +170,7 @@ public class TownCommands {
                 min = 2,
                 usage = "<Stadtname> <Beschreibung>"
         )
-        @CommandPermissions("rccities.setdescription")
+        @CommandPermissions("rccities.town.setdescription")
         public void setDescription(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -198,7 +198,7 @@ public class TownCommands {
                 min = 1,
                 usage = "<Stadtname>"
         )
-        @CommandPermissions("rccities.info")
+        @CommandPermissions("rccities.town.info")
         public void info(CommandContext args, CommandSender sender) throws CommandException {
 
             try {
@@ -212,7 +212,7 @@ public class TownCommands {
                 aliases = {"list"},
                 desc = "List all existing cities"
         )
-        @CommandPermissions("rccities.list")
+        @CommandPermissions("rccities.town.list")
         public void list(CommandContext args, CommandSender sender) throws CommandException {
 
             Collection<City> cities = plugin.getCityManager().getCities();
@@ -231,7 +231,7 @@ public class TownCommands {
                 min = 3,
                 usage = "<Stadtname> <Flag> <Parameter>"
         )
-        @CommandPermissions("rccities.flag")
+        @CommandPermissions("rccities.town.flag")
         public void flag(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -263,7 +263,7 @@ public class TownCommands {
                 min = 1,
                 usage = "[Stadtname] <Spielername>"
         )
-                 @CommandPermissions("rccities.invite")
+                 @CommandPermissions("rccities.town.invite")
                  public void invite(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -280,7 +280,7 @@ public class TownCommands {
                 if(city == null) {
                     throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
                 }
-                if(!player.hasPermission("rccities.invite.all")) {
+                if(!player.hasPermission("rccities.town.invite.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.INVITE)) {
                         throw new CommandException("Du darfst in die Stadt '" + city.getFriendlyName() + "' keine Bürger einladen!");
@@ -314,7 +314,7 @@ public class TownCommands {
                 aliases = {"accept"},
                 desc = "Accept an invite"
         )
-        @CommandPermissions("rccities.invite")
+        @CommandPermissions("rccities.town.invite")
         public void accept(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -339,7 +339,7 @@ public class TownCommands {
                 flags = "f",
                 usage = "[Stadtname]"
         )
-        @CommandPermissions("rccities.leave")
+        @CommandPermissions("rccities.town.leave")
         public void leave(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -351,7 +351,7 @@ public class TownCommands {
                 if(city == null) {
                     throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
                 }
-                if(!player.hasPermission("rccities.invite.all")) {
+                if(!player.hasPermission("rccities.town.leave.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null) {
                         throw new CommandException("Du bist kein Einwohner der Stadt '" + city.getFriendlyName() + "'!");
@@ -390,7 +390,7 @@ public class TownCommands {
                 desc = "Kicks a resident",
                 usage = "[Stadtname] <Spieler>"
         )
-        @CommandPermissions("rccities.kick")
+        @CommandPermissions("rccities.town.kick")
         public void kick(CommandContext args, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
@@ -404,10 +404,10 @@ public class TownCommands {
                 if(city == null) {
                     throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
                 }
-                if(!player.hasPermission("rccities.invite.all")) {
+                if(!player.hasPermission("rccities.town.kick.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
-                        throw new CommandException("Du darfst in die Stadt '" + city.getFriendlyName() + "' keine Bürger einladen!");
+                        throw new CommandException("Du darfst keine Bürger aus der Stadt '" + city.getFriendlyName() + "' schmeissen!");
                     }
                 }
             }
@@ -415,10 +415,10 @@ public class TownCommands {
                 targetResident = args.getString(0);
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.KICK);
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler einzuladen!");
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler rauszuschmeissen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler einzuladen! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler rauszuschmeissen! Gebe die gewünschte Stadt als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
@@ -430,7 +430,6 @@ public class TownCommands {
             }
             Bukkit.broadcastMessage(ChatColor.BLUE + targetResident + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
         }
-
 
         /*
          ***********************************************************************************************************************************

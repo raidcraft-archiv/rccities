@@ -11,6 +11,7 @@ import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -41,19 +42,30 @@ public class ResidentManager {
         }
     }
 
-    public void addResident(City city, Player player) throws RaidCraftException {
+    public Resident addResident(City city, Player player) throws RaidCraftException {
 
-        //TODO
+        Resident resident = getResident(player.getName(), city);
+        if(resident != null) {
+            throw new RaidCraftException(player.getName() + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
+        }
+
+        return new DatabaseResident(player.getName(), Role.RESIDENT, city);
     }
 
     public void removeResident(City city, String residentName) throws RaidCraftException {
 
-        //TODO
+        Resident resident = getResident(residentName, city);
+        if(resident == null) {
+            throw new RaidCraftException(residentName + " ist kein Einwohner von '" + city.getFriendlyName() + "'!");
+        }
+
+        resident.delete();
+        cachedResidents.remove(resident.getName());
     }
 
-    public void changeRole(City city, String residentName, Role newRole) {
+    public void printResidentInfo(String playerName, CommandSender sender) {
 
-        //TODO
+
     }
 
     public List<Resident> getCitizenships(String name) {

@@ -52,6 +52,8 @@ public class DatabaseResident extends AbstractResident {
     @Override
     public void delete() {
 
+        //TODO: delete all resident plots (assignment + worldguard membership)
+
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TFlag.class, getId());
     }
 }
