@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -34,9 +35,19 @@ public class ResidentManager {
 
             Player player = resident.getPlayer();
             if(player != null) {
-                player.sendMessage(ChatColor.DARK_BLUE + message);
+                player.sendMessage(ChatColor.BLUE + message);
             }
         }
+    }
+
+    public void addResident(City city, Player player) throws RaidCraftException {
+
+        //TODO
+    }
+
+    public void removeResident(City city, String residentName) throws RaidCraftException {
+
+        //TODO
     }
 
     public List<Resident> getCitizenships(String name) {

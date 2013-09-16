@@ -7,6 +7,7 @@ import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Philip Urban
@@ -52,6 +54,7 @@ public class TownCommands {
     public static class NestedCommands {
 
         private final RCCitiesPlugin plugin;
+        private Map<String, City> invites = new CaseInsensitiveMap<>();
 
         public NestedCommands(RCCitiesPlugin plugin) {
 
@@ -92,7 +95,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.DARK_BLUE + "Es wurde die Stadt '" + city.getFriendlyName() + "' gegründet!");
+            Bukkit.broadcastMessage(ChatColor.BLUE + "Es wurde die Stadt '" + city.getFriendlyName() + "' gegründet!");
         }
 
         @Command(
@@ -179,7 +182,7 @@ public class TownCommands {
             }
             if(!player.hasPermission("rccities.setspawn.all")) {
                 Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-                if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
+                if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_DESCRIPTION)) {
                     throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' die Beschreibung nicht ändern!");
                 }
             }
@@ -254,6 +257,82 @@ public class TownCommands {
             }
         }
 
+        @Command(
+                aliases = {"invite"},
+                desc = "Invites an player as resident",
+                min = 1,
+                usage = "[Stadtname] <Spielername>"
+        )
+        @CommandPermissions("rccities.invite")
+        public void invite(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city;
+            Player targetPlayer;
+            if(args.argsLength() > 1) {
+                targetPlayer = Bukkit.getPlayer(args.getString(1));
+                if(targetPlayer == null) {
+                    throw new CommandException("Der gewählte Spieler muss online sein!");
+                }
+                city = plugin.getCityManager().getCity(args.getString(0));
+                if(city == null) {
+                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                }
+                if(!player.hasPermission("rccities.invite.all")) {
+                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    if(resident == null || !resident.getRole().hasPermission(RolePermission.INVITE)) {
+                        throw new CommandException("Du darfst in die Stadt '" + city.getFriendlyName() + "' keine Bürger einladen!");
+                    }
+                }
+            }
+            else {
+                targetPlayer = Bukkit.getPlayer(args.getString(1));
+                if(targetPlayer == null) {
+                    throw new CommandException("Der gewählte Spieler muss online sein!");
+                }
+
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.INVITE);
+
+                if(citizenships == null) {
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler einzuladen!");
+                }
+                if(citizenships.size() > 1) {
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler einzuladen! Gebe die gewünschte Stadt als Parameter an.");
+                }
+                city = citizenships.get(0).getCity();
+            }
+
+            invites.put(targetPlayer.getName(), city);
+            targetPlayer.sendMessage(ChatColor.BLUE + "Du wurdest in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
+            targetPlayer.sendMessage(ChatColor.BLUE + "Bestätige die Einladung mit '/town accept'");
+            player.sendMessage(ChatColor.GREEN + "Du hast " + targetPlayer.getName() + " in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
+        }
+
+        @Command(
+                aliases = {"accept"},
+                desc = "Accept an invite"
+        )
+        @CommandPermissions("rccities.invite")
+        public void accept(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            if(!invites.containsKey(player.getName())) {
+                throw new CommandException("Du hast keine offenen Einladungen!");
+            }
+
+            City city = invites.get(player.getName());
+            try {
+                plugin.getResidentManager().addResident(city, player);
+            } catch (RaidCraftException e) {
+                throw new CommandException(e.getMessage());
+            }
+            Bukkit.broadcastMessage(ChatColor.BLUE + player.getName() + " ist nun Einwohner von '" + city.getFriendlyName() + "'!");
+        }
+
 
         /*
          ***********************************************************************************************************************************
@@ -266,7 +345,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 sender.sendMessage(ChatColor.RED + e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.DARK_BLUE + "Die Stadt '" + cityName + "' wurde gelöscht!");
+            Bukkit.broadcastMessage(ChatColor.BLUE + "Die Stadt '" + cityName + "' wurde gelöscht!");
         }
     }
 
