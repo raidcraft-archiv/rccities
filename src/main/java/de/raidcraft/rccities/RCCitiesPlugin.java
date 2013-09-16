@@ -59,7 +59,8 @@ public class RCCitiesPlugin extends BasePlugin {
         databases.add(TPlot.class);
         databases.add(TResident.class);
         databases.add(TAssignment.class);
-        databases.add(TFlag.class);
+        databases.add(TCityFlag.class);
+        databases.add(TPlotFlag.class);
         return databases;
     }
 

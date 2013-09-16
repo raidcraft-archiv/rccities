@@ -7,7 +7,7 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.flags.PlotFlag;
-import de.raidcraft.rccities.tables.TFlag;
+import de.raidcraft.rccities.tables.TCityFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.StringUtils;
 
@@ -67,14 +67,14 @@ public class FlagManager {
         flag.setValue(flagValue);
 
         flagName = flagName.toLowerCase();
-        TFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TFlag.class).where().eq("city_id", city.getId()).eq("name", flagName).findUnique();
+        TCityFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TCityFlag.class).where().eq("city_id", city.getId()).eq("name", flagName).findUnique();
         if(tFlag != null) {
             tFlag.setValue(flagValue);
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tFlag);
         }
         else {
-            tFlag = new TFlag();
+            tFlag = new TCityFlag();
             tFlag.setCity(city);
             tFlag.setName(flagName);
             tFlag.setValue(flagValue);
