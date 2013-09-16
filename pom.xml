@@ -22,7 +22,7 @@
     <artifactId>rccities</artifactId>
     <packaging>jar</packaging>
     <version>1.1.5-SNAPSHOT</version>
-    <name>RCCIties</name>
+    <name>RCCities</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@git.raid-craft.de:22109/rccities.git</developerConnection>
