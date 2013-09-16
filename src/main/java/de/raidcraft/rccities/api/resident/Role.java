@@ -8,21 +8,34 @@ import java.util.Set;
  */
 public enum Role {
 
-    SLAVE("Sklave"),
+    SLAVE("Sklave", true),
 
-    RESIDENT("Einwohner",
+    RESIDENT("Einwohner", false,
             RolePermission.LEAVE),
 
-    MAYOR("Bürgermeister",
+    ADMIN("Administrator", true,
             RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.SET_DESCRIPTION,
             RolePermission.SET_SPAWN,
+            RolePermission.CITY_FLAG_MODIFICATION,
+            RolePermission.PROMOTE,
+            RolePermission.SPAWN_TELEPORT
+            ),
+
+    MAYOR("Bürgermeister", true,
+            RolePermission.KICK,
+            RolePermission.INVITE,
+            RolePermission.BUILD_EVERYWHERE,
+            RolePermission.PLOT_DISTRIBUTION,
+            RolePermission.SET_DESCRIPTION,
+            RolePermission.SET_SPAWN,
+            RolePermission.PROMOTE,
             RolePermission.CITY_FLAG_MODIFICATION),
 
-    VICE_MAYOR("Vize Bürgermeister",
+    VICE_MAYOR("Vize Bürgermeister", false,
             RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
@@ -30,7 +43,7 @@ public enum Role {
             RolePermission.CITY_FLAG_MODIFICATION,
             RolePermission.PLOT_FLAG_MODIFICATION),
 
-    ASSISTANT("Stadtassistent",
+    ASSISTANT("Stadtassistent", false,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
@@ -38,10 +51,12 @@ public enum Role {
 
     private Set<RolePermission> permissions = new HashSet<>();
     private String friendlyName;
+    private boolean adminOnly;
 
-    private Role(String friendlyName, RolePermission... permissions) {
+    private Role(String friendlyName, boolean adminOnly, RolePermission... permissions) {
 
         this.friendlyName = friendlyName;
+        this.adminOnly = adminOnly;
         for(RolePermission permission : permissions) {
             this.permissions.add(permission);
         }
@@ -55,5 +70,10 @@ public enum Role {
     public String getFriendlyName() {
 
         return friendlyName;
+    }
+
+    public boolean isAdminOnly() {
+
+        return adminOnly;
     }
 }

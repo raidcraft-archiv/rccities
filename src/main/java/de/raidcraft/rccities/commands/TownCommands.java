@@ -121,6 +121,50 @@ public class TownCommands {
         }
 
         @Command(
+                aliases = {"spawn"},
+                desc = "Teleport to town spawn",
+                usage = "[Stadtname]"
+        )
+        @CommandPermissions("rccities.town.spawn")
+        public void spawn(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city;
+            if(args.argsLength() > 0) {
+                city = plugin.getCityManager().getCity(args.getString(0));
+                if(city == null) {
+                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                }
+                if(!player.hasPermission("rccities.town.spawn.all")) {
+                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    if(resident == null || !resident.getRole().hasPermission(RolePermission.SPAWN_TELEPORT)) {
+                        throw new CommandException("Du darfst dich nicht zum Spawn der Stadt '" + city.getFriendlyName() + "' porten!");
+                    }
+                }
+            }
+            else {
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.SPAWN_TELEPORT);
+
+                if(citizenships == null) {
+                    throw new CommandException("Du besitzt in keiner Stadt das Recht dich zum Spawn zu porten!");
+                }
+                if(citizenships.size() > 1) {
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht dich zum Spawn zu porten! Gebe die gewünschte Stadt als Parameter an.");
+                }
+                city = citizenships.get(0).getCity();
+            }
+
+            if(!city.getSpawn().getWorld().equals(player.getWorld())) {
+                throw new CommandException("Du befindest dich auf der falschen Welt!");
+            }
+
+            player.teleport(city.getSpawn());
+            player.sendMessage(ChatColor.YELLOW + "Du wurdest zum Stadtspawn von '" + city.getFriendlyName() + "' teleportiert!");
+        }
+
+        @Command(
                 aliases = {"setspawn"},
                 desc = "Redefine the town spawn location",
                 usage = "[Stadtname]"

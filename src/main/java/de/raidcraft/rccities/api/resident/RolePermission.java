@@ -14,5 +14,6 @@ public enum RolePermission {
     CITY_FLAG_MODIFICATION,
     PLOT_FLAG_MODIFICATION,
     LEAVE,
-    PROMOTE
+    PROMOTE,
+    SPAWN_TELEPORT
 }

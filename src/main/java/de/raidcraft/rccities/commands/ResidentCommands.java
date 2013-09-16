@@ -109,6 +109,9 @@ public class ResidentCommands {
             } catch (IllegalArgumentException e) {
                 throw new CommandException("Es gibt keinen Beruf mit diesem Namen. Verfügbare Berufe: " + Arrays.toString(Role.values()));
             }
+            if(newRole.isAdminOnly() && !player.hasPermission("rccities.resident.promote.all")) {
+                throw new CommandException("Dieser Beruf kann nur von Serveradministratoren vergeben werden!");
+            }
 
             Resident targetResident = plugin.getResidentManager().getResident(target, city);
             if(targetResident == null) {
