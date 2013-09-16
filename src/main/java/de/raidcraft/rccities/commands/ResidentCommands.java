@@ -105,7 +105,7 @@ public class ResidentCommands {
 
             Role newRole = null;
             try {
-                newRole = Role.valueOf(roleName);
+                newRole = Role.valueOf(roleName.toUpperCase());
             } catch (IllegalArgumentException e) {
                 throw new CommandException("Es gibt keinen Beruf mit diesem Namen. Verfügbare Berufe: " + Arrays.toString(Role.values()));
             }
