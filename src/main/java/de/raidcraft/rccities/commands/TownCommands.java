@@ -216,11 +216,11 @@ public class TownCommands {
         public void list(CommandContext args, CommandSender sender) throws CommandException {
 
             Collection<City> cities = plugin.getCityManager().getCities();
-            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.AQUA + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
+            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.GREEN + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
             String cityList = "";
             for(City city : cities) {
                 if(!cityList.isEmpty()) cityList += ChatColor.WHITE + ", ";
-                cityList += ChatColor.GOLD + city.getFriendlyName();
+                cityList += ChatColor.GREEN + city.getFriendlyName();
             }
             sender.sendMessage(cityList);
         }

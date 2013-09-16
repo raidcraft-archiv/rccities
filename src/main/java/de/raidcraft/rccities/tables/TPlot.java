@@ -70,4 +70,14 @@ public class TPlot {
 
         this.z = z;
     }
+
+    public Set<TAssignment> getAssignment() {
+
+        return assignment;
+    }
+
+    public void setAssignment(Set<TAssignment> assignment) {
+
+        this.assignment = assignment;
+    }
 }
