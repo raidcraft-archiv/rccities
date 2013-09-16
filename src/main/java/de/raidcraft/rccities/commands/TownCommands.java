@@ -304,6 +304,10 @@ public class TownCommands {
                 city = citizenships.get(0).getCity();
             }
 
+            if(player.getName().equalsIgnoreCase(targetPlayer.getName())) {
+                throw new CommandException("Du kannst dich nicht selbst in die Stadt einladen!");
+            }
+
             invites.put(targetPlayer.getName(), city);
             targetPlayer.sendMessage(ChatColor.GOLD + "Du wurdest in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
             targetPlayer.sendMessage(ChatColor.GOLD + "Bestätige die Einladung mit '/town accept'");
@@ -421,6 +425,10 @@ public class TownCommands {
                     throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler rauszuschmeissen! Gebe die gewünschte Stadt als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
+            }
+
+            if(player.getName().equalsIgnoreCase(targetResident)) {
+                throw new CommandException("Du kannst dich nicht selbst aus der Stadt schmeissen!");
             }
 
             try {
