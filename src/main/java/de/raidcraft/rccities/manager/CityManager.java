@@ -76,6 +76,7 @@ public class CityManager {
             else {
                 if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
                 residentList += ChatColor.YELLOW + resident.getName();
+                residentCount++;
             }
         }
 
