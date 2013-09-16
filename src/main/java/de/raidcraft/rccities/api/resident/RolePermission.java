@@ -13,5 +13,6 @@ public enum RolePermission {
     PLOT_DISTRIBUTION,
     CITY_FLAG_MODIFICATION,
     PLOT_FLAG_MODIFICATION,
-    LEAVE
+    LEAVE,
+    PROMOTE
 }
