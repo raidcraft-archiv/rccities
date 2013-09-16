@@ -4,7 +4,6 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Role;
-import de.raidcraft.rccities.tables.TFlag;
 import de.raidcraft.rccities.tables.TResident;
 
 /**
@@ -54,6 +53,6 @@ public class DatabaseResident extends AbstractResident {
 
         //TODO: delete all resident plots (assignment + worldguard membership)
 
-        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TFlag.class, getId());
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TResident.class, getId());
     }
 }
