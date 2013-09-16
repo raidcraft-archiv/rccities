@@ -288,7 +288,7 @@ public class TownCommands {
                 }
             }
             else {
-                targetPlayer = Bukkit.getPlayer(args.getString(1));
+                targetPlayer = Bukkit.getPlayer(args.getString(0));
                 if(targetPlayer == null) {
                     throw new CommandException("Der gewählte Spieler muss online sein!");
                 }
