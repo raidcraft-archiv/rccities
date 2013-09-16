@@ -103,8 +103,10 @@ public class ResidentCommands {
                 city = citizenships.get(0).getCity();
             }
 
-            Role newRole = Role.valueOf(roleName);
-            if(newRole == null) {
+            Role newRole = null;
+            try {
+                newRole = Role.valueOf(roleName);
+            } catch (IllegalArgumentException e) {
                 throw new CommandException("Es gibt keinen Beruf mit diesem Namen. Verfügbare Berufe: " + Arrays.toString(Role.values()));
             }
 
