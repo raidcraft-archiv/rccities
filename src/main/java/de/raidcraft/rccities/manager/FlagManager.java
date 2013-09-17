@@ -4,17 +4,17 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.flags.CityFlag;
-import de.raidcraft.rccities.api.flags.FlagInformation;
-import de.raidcraft.rccities.api.flags.PlotFlag;
+import de.raidcraft.rccities.api.flags.*;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.tables.TCityFlag;
 import de.raidcraft.rccities.tables.TPlotFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.StringUtils;
+import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +31,15 @@ public class FlagManager {
     private Map<String, Map<String, CityFlag>> cachedCityFlags = new CaseInsensitiveMap<>();
     private Map<Integer,  Map<String, PlotFlag>> cachedPlotFlags = new HashMap<>();
 
+    private FlagRefreshTask refreshTask;
+
     public FlagManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
         loadExistingFlags();
+
+        refreshTask = new FlagRefreshTask();
+        Bukkit.getScheduler().runTaskTimer(plugin, refreshTask, 0, 60 * 20);
     }
 
     public void registerCityFlag(Class<? extends CityFlag> clazz) {
@@ -132,11 +137,19 @@ public class FlagManager {
 
             Class<? extends CityFlag> clazz = cityFlags.get(tCityFlag.getName());
             if(clazz == null) continue;
+            FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
             City city = plugin.getCityManager().getCity(tCityFlag.getName());
             if(city == null) continue;
             try {
                 CityFlag flag = loadCityFlag(clazz, city);
                 flag.setValue(tCityFlag.getValue());
+                if(annotation.refreshType() == FlagRefreshType.ON_START) {
+                    flag.refresh();
+                }
+                if(annotation.refreshType() == FlagRefreshType.PERIODICALLY) {
+                    refreshTask.addFlagInformation(annotation, flag);
+                }
+
             } catch (RaidCraftException e) {}
         }
 
@@ -198,5 +211,75 @@ public class FlagManager {
 
         cachedCityFlags.clear();
         cachedPlotFlags.clear();
+    }
+
+    public class FlagRefreshTask implements Runnable {
+
+        private List<FlagRefreshInformation> refreshInformation = new ArrayList<>();
+
+        @Override
+        public void run() {
+
+            for(FlagRefreshInformation information : refreshInformation) {
+                information.increaseLastRefresh();
+                if(information.getLastRefresh() > information.getAnnotation().refreshInterval()) {
+                    information.resetLastRefresh();
+                    information.getFlag().refresh();
+                }
+            }
+        }
+
+        public void addFlagInformation(FlagInformation annotation, Flag flag) {
+
+            refreshInformation.add(new FlagRefreshInformation(annotation, flag));
+        }
+
+        public void removeFlagInformation(Flag flag) {
+
+            for(FlagRefreshInformation information : refreshInformation) {
+                if(information.getFlag() == flag) {
+                    refreshInformation.remove(information);
+                    return;
+                }
+            }
+        }
+
+        public class FlagRefreshInformation {
+
+            private FlagInformation annotation;
+            private Flag flag;
+            private int lastRefresh = 0;
+
+            public FlagRefreshInformation(FlagInformation annotation, Flag flag) {
+
+                this.annotation = annotation;
+                this.flag = flag;
+            }
+
+            public FlagInformation getAnnotation() {
+
+                return annotation;
+            }
+
+            public Flag getFlag() {
+
+                return flag;
+            }
+
+            public int getLastRefresh() {
+
+                return lastRefresh;
+            }
+
+            public void increaseLastRefresh() {
+
+                this.lastRefresh++;
+            }
+
+            public void resetLastRefresh() {
+
+                this.lastRefresh = 0;
+            }
+        }
     }
 }

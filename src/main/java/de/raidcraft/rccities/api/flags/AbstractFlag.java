@@ -14,9 +14,9 @@ public abstract class AbstractFlag implements Flag {
 
     protected AbstractFlag() {
 
-        FlagInformation information = getClass().getAnnotation(FlagInformation.class);
-        this.name = StringUtils.formatName(information.name());
-        this.type = information.type();
+        FlagInformation annotation = getClass().getAnnotation(FlagInformation.class);
+        this.name = StringUtils.formatName(annotation.name());
+        this.type = annotation.type();
     }
 
     @Override
