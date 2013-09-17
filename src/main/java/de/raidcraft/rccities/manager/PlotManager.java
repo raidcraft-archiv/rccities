@@ -46,10 +46,18 @@ public class PlotManager {
 
     public Plot getPlot(int id) {
 
-        Plot plot;
-        //TODO
-
-        return plot;
+        for(Plot plot : cachedPlots.values()) {
+            if(plot.getId() == id) {
+                return plot;
+            }
+        }
+        TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, id);
+        if(tPlot != null) {
+            Plot plot = new DatabasePlot(tPlot);
+            cachedPlots.put(plot.getLocation(), plot);
+            return plot;
+        }
+        return null;
     }
 
     public void clearCache() {
