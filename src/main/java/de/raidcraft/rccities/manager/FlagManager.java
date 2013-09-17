@@ -7,12 +7,15 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.flags.PlotFlag;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.tables.TCityFlag;
+import de.raidcraft.rccities.tables.TPlotFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.StringUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,9 +27,13 @@ public class FlagManager {
     private Map<String, Class<? extends CityFlag>> cityFlags = new CaseInsensitiveMap<>();
     private Map<String, Class<? extends PlotFlag>> plotFlags = new CaseInsensitiveMap<>();
 
+    private Map<String, Map<String, CityFlag>> cachedCityFlags = new CaseInsensitiveMap<>();
+    private Map<String,  Map<String, PlotFlag>> cachedPlotFlags = new CaseInsensitiveMap<>();
+
     public FlagManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
+        loadExistingFlags();
     }
 
     public void registerCityFlag(Class<? extends CityFlag> clazz) {
@@ -53,19 +60,15 @@ public class FlagManager {
         }
 
         CityFlag flag;
-        try {
-            Class[] argTypes = {City.class};
-            Constructor constructor = cityFlags.get(flagName).getDeclaredConstructor(argTypes);
-            flag  = (CityFlag)constructor.newInstance(city);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-
-            RaidCraft.LOGGER.warning("RCCities Flag Error: " + e.getMessage());
-            e.printStackTrace();
-            throw new RaidCraftException("Interner Fehler aufgetreten: " + e.getMessage());
+        // load cached flag
+        if(cachedCityFlags.containsKey(city.getName()) && cachedCityFlags.get(city.getName()).containsKey(flagName)) {
+            flag = cachedCityFlags.get(city.getName()).get(flagName);
         }
-
+        // create new
+        else {
+            flag = loadCityFlag(cityFlags.get(flagName), city);
+        }
         flag.setValue(flagValue);
-
         flagName = flagName.toLowerCase();
         TCityFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TCityFlag.class).where().eq("city_id", city.getId()).eq("name", flagName).findUnique();
@@ -80,5 +83,82 @@ public class FlagManager {
             tFlag.setValue(flagValue);
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tFlag);
         }
+    }
+
+    private void loadExistingFlags() {
+
+        clearCache();
+
+        List<TCityFlag> tCityFlags = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCityFlag.class).findList();
+        for(TCityFlag tCityFlag : tCityFlags) {
+
+            Class<? extends CityFlag> clazz = cityFlags.get(tCityFlag.getName());
+            if(clazz == null) continue;
+            City city = plugin.getCityManager().getCity(tCityFlag.getName());
+            if(city == null) continue;
+            try {
+                CityFlag flag = loadCityFlag(clazz, city);
+                flag.setValue(tCityFlag.getValue());
+            } catch (RaidCraftException e) {}
+        }
+
+        List<TPlotFlag> tPlotFlags = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlotFlag.class).findList();
+        for(TPlotFlag tPlotFlag : tPlotFlags) {
+
+            Class<? extends PlotFlag> clazz = plotFlags.get(tPlotFlag.getName());
+            if(clazz == null) continue;
+            Plot plot = plugin.getPlotManager().getPlot(tPlotFlag.getPlot().getId());
+            if(plot == null) continue;
+            try {
+                PlotFlag flag = loadPlotFlag(clazz, plot);
+                flag.setValue(tPlotFlag.getValue());
+            } catch (RaidCraftException e) {}
+        }
+    }
+
+    private CityFlag loadCityFlag(Class<? extends CityFlag> clazz, City city) throws RaidCraftException {
+
+        CityFlag flag;
+        try {
+            Class[] argTypes = {City.class};
+            Constructor constructor = clazz.getDeclaredConstructor(argTypes);
+            flag  = (CityFlag)constructor.newInstance(city);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+
+            RaidCraft.LOGGER.warning("RCCities Flag Error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RaidCraftException("Interner Fehler aufgetreten: " + e.getMessage());
+        }
+        if(!cachedCityFlags.containsKey(city.getName())) {
+            cachedCityFlags.put(city.getName(), new CaseInsensitiveMap<CityFlag>());
+        }
+        cachedCityFlags.get(city.getName()).put(flag.getName(), flag);
+        return flag;
+    }
+
+    private PlotFlag loadPlotFlag(Class<? extends PlotFlag> clazz, Plot plot) throws RaidCraftException {
+
+        PlotFlag flag;
+        try {
+            Class[] argTypes = {City.class};
+            Constructor constructor = clazz.getDeclaredConstructor(argTypes);
+            flag  = (PlotFlag)constructor.newInstance(plot);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+
+            RaidCraft.LOGGER.warning("RCCities Flag Error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RaidCraftException("Interner Fehler aufgetreten: " + e.getMessage());
+        }
+        if(!cachedPlotFlags.containsKey(plot.getCity().getName())) {
+            cachedPlotFlags.put(plot.getCity().getName(), new CaseInsensitiveMap<PlotFlag>());
+        }
+        cachedPlotFlags.get(plot.getCity().getName()).put(flag.getName(), flag);
+        return flag;
+    }
+
+    public void clearCache() {
+
+        cachedCityFlags.clear();
+        cachedPlotFlags.clear();
     }
 }

@@ -72,6 +72,7 @@ public class TownCommands {
             plugin.getCityManager().clearCache();
             plugin.getPlotManager().clearCache();
             plugin.getResidentManager().clearCache();
+            plugin.getFlagManager().clearCache();
             sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen und alle Caches geleert!");
         }
 

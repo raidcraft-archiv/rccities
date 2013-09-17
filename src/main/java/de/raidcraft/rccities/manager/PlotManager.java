@@ -44,6 +44,14 @@ public class PlotManager {
         return plots;
     }
 
+    public Plot getPlot(int id) {
+
+        Plot plot;
+        //TODO
+
+        return plot;
+    }
+
     public void clearCache() {
 
         cachedPlots.clear();
