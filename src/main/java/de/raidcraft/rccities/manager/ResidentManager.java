@@ -52,14 +52,8 @@ public class ResidentManager {
         return new DatabaseResident(player.getName(), Role.RESIDENT, city);
     }
 
-    public void removeResident(City city, String residentName) throws RaidCraftException {
+    public void removeFromCache(Resident resident) {
 
-        Resident resident = getResident(residentName, city);
-        if(resident == null) {
-            throw new RaidCraftException(residentName + " ist kein Einwohner von '" + city.getFriendlyName() + "'!");
-        }
-
-        resident.delete();
         cachedResidents.remove(resident.getName());
     }
 

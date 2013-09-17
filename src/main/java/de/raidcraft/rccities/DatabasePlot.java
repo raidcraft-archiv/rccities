@@ -48,6 +48,11 @@ public class DatabasePlot extends AbstractPlot {
     public void delete() {
 
         super.delete();
+        RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
+
+        //TODO delete assignments
+
+        plugin.getPlotManager().removeFromCache(this);
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TPlot.class, getId());
     }
 }

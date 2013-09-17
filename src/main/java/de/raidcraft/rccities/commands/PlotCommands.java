@@ -41,11 +41,11 @@ public class PlotCommands {
         }
 
         @Command(
-                aliases = {"buy"},
-                desc = "Buy new plots"
+                aliases = {"take"},
+                desc = "Take a plot from player"
         )
-        @CommandPermissions("rccities.plot.buy")
-        public void buy(CommandContext args, CommandSender sender) {
+        @CommandPermissions("rccities.plot.take")
+        public void take(CommandContext args, CommandSender sender) {
 
             //TODO
         }
@@ -56,6 +56,26 @@ public class PlotCommands {
         )
         @CommandPermissions("rccities.plot.give")
         public void give(CommandContext args, CommandSender sender) {
+
+            //TODO
+        }
+
+        @Command(
+                aliases = {"claim"},
+                desc = "Claims a plot"
+        )
+        @CommandPermissions("rccities.plot.claim")
+        public void claim(CommandContext args, CommandSender sender) {
+
+            //TODO
+        }
+
+        @Command(
+                aliases = {"unclaim"},
+                desc = "Unclaims a plot"
+        )
+        @CommandPermissions("rccities.plot.unclaim")
+        public void unclaim(CommandContext args, CommandSender sender) {
 
             //TODO
         }

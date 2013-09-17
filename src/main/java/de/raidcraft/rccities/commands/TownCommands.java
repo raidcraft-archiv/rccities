@@ -109,12 +109,17 @@ public class TownCommands {
         @CommandPermissions("rccities.town.delete")
         public void delete(CommandContext args, CommandSender sender) throws CommandException {
 
+            City city = plugin.getCityManager().getCity(args.getString(0));
+            if(city == null) {
+                throw new CommandException("Es wurde keine Stadt mit diesem namen gefunden!");
+            }
+
             if(args.hasFlag('f')) {
-                deleteCity(sender, args.getString(0));
+                deleteCity(sender, city);
             }
             else {
                 try {
-                    new QueuedCaptchaCommand(sender, this, "deleteCity", sender, args.getString(0));
+                    new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city);
                 } catch (NoSuchMethodException e) {
                     throw new CommandException(e.getMessage());
                 }
@@ -442,12 +447,17 @@ public class TownCommands {
                 city = citizenships.get(0).getCity();
             }
 
+            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            if(resident == null) {
+                throw new CommandException("Du bist kein Einwohner der Stadt '" + city.getFriendlyName() + "'!");
+            }
+
             if(args.hasFlag('f')) {
-                leaveCity(player, city);
+                leaveCity(resident);
             }
             else {
                 try {
-                    new QueuedCaptchaCommand(sender, this, "leaveCity", player, city);
+                    new QueuedCaptchaCommand(sender, this, "leaveCity", resident);
                 } catch (NoSuchMethodException e) {
                     throw new CommandException(e.getMessage());
                 }
@@ -466,9 +476,9 @@ public class TownCommands {
             Player player = (Player)sender;
 
             City city;
-            String targetResident;
+            String target;
             if(args.argsLength() > 1) {
-                targetResident = args.getString(1);
+                target = args.getString(1);
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
                     throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
@@ -481,7 +491,7 @@ public class TownCommands {
                 }
             }
             else {
-                targetResident = args.getString(0);
+                target = args.getString(0);
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.KICK);
                 if(citizenships == null) {
                     throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler rauszuschmeissen!");
@@ -492,40 +502,33 @@ public class TownCommands {
                 city = citizenships.get(0).getCity();
             }
 
-            if(player.getName().equalsIgnoreCase(targetResident)) {
+            if(player.getName().equalsIgnoreCase(target)) {
                 throw new CommandException("Du kannst dich nicht selbst aus der Stadt schmeissen!");
             }
 
-            try {
-                plugin.getResidentManager().removeResident(city, targetResident);
-            } catch (RaidCraftException e) {
-                throw new CommandException(e.getMessage());
+            Resident resident = plugin.getResidentManager().getResident(target, city);
+            if(resident == null) {
+                throw new CommandException(target + " ist kein Einwohner von '" + city.getFriendlyName() + "'!");
             }
-            Bukkit.broadcastMessage(ChatColor.GOLD + targetResident + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
+
+            resident.delete();
+            Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
         }
 
         /*
          ***********************************************************************************************************************************
          */
 
-        public void deleteCity(CommandSender sender, String cityName) {
+        public void deleteCity(CommandSender sender, City city) {
 
-            try {
-                plugin.getCityManager().deleteCity(cityName);
-            } catch (RaidCraftException e) {
-                sender.sendMessage(ChatColor.RED + e.getMessage());
-            }
-            Bukkit.broadcastMessage(ChatColor.GOLD + "Die Stadt '" + cityName + "' wurde gelöscht!");
+            city.delete();
+            Bukkit.broadcastMessage(ChatColor.GOLD + "Die Stadt '" + city.getFriendlyName() + "' wurde gelöscht!");
         }
 
-        public void leaveCity(Player player, City city) {
+        public void leaveCity(Resident resident) {
 
-            try {
-                plugin.getResidentManager().removeResident(city, player.getName());
-            } catch (RaidCraftException e) {
-                player.sendMessage(ChatColor.RED + e.getMessage());
-            }
-            Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + " hat die Stadt '" + city.getFriendlyName() + "' verlassen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + resident.getName() + " hat die Stadt '" + resident.getCity().getFriendlyName() + "' verlassen!");
+            resident.delete();
         }
     }
 

@@ -51,8 +51,12 @@ public class DatabaseResident extends AbstractResident {
     @Override
     public void delete() {
 
-        //TODO: delete all resident plots (assignment + worldguard membership)
+        RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
+        //TODO delete assignments
+        //TODO remove region ownerships
+
+        plugin.getResidentManager().removeFromCache(this);
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TResident.class, getId());
     }
 }

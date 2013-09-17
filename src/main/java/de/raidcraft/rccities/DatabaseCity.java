@@ -2,6 +2,8 @@ package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.AbstractCity;
+import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TCity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -72,8 +74,15 @@ public class DatabaseCity extends AbstractCity {
     @Override
     public void delete() {
 
-        //TODO get all city plots and delete them
+        RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
+        for(Plot plot : plugin.getPlotManager().getPlots(this)) {
+            plot.delete();
+        }
+        for(Resident resident : plugin.getResidentManager().getResidents(this)) {
+            resident.delete();
+        }
 
+        plugin.getCityManager().removeFromCache(this);
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TCity.class, getId());
     }
 }

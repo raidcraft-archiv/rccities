@@ -44,6 +44,11 @@ public class PlotManager {
         return plots;
     }
 
+    public void removeFromCache(Plot plot) {
+
+        cachedPlots.remove(plot.getLocation());
+    }
+
     public Plot getPlot(int id) {
 
         for(Plot plot : cachedPlots.values()) {

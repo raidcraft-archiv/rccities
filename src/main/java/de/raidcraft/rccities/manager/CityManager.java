@@ -45,14 +45,8 @@ public class CityManager {
         return city;
     }
 
-    public void deleteCity(String cityName) throws RaidCraftException {
+    public void removeFromCache(City city) {
 
-        City city = getCity(cityName);
-        if(city == null) {
-            throw new RaidCraftException("Es wurde keine Stadt mit diesem namen gefunden!");
-        }
-
-        city.delete();
         cachedCities.remove(city.getName());
     }
 
