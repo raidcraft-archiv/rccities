@@ -11,7 +11,8 @@ public enum Role {
     SLAVE("Sklave", true),
 
     RESIDENT("Einwohner", false,
-            RolePermission.LEAVE),
+            RolePermission.LEAVE
+    ),
 
     ADMIN("Administrator", true,
             RolePermission.KICK,
@@ -22,8 +23,9 @@ public enum Role {
             RolePermission.SET_SPAWN,
             RolePermission.CITY_FLAG_MODIFICATION,
             RolePermission.PROMOTE,
-            RolePermission.SPAWN_TELEPORT
-            ),
+            RolePermission.SPAWN_TELEPORT,
+            RolePermission.PLOT_BUY
+    ),
 
     MAYOR("Bürgermeister", true,
             RolePermission.KICK,
@@ -33,7 +35,10 @@ public enum Role {
             RolePermission.SET_DESCRIPTION,
             RolePermission.SET_SPAWN,
             RolePermission.PROMOTE,
-            RolePermission.CITY_FLAG_MODIFICATION),
+            RolePermission.CITY_FLAG_MODIFICATION,
+            RolePermission.PLOT_FLAG_MODIFICATION,
+            RolePermission.PLOT_BUY
+    ),
 
     VICE_MAYOR("Vize Bürgermeister", false,
             RolePermission.KICK,
@@ -41,13 +46,17 @@ public enum Role {
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.CITY_FLAG_MODIFICATION,
-            RolePermission.PLOT_FLAG_MODIFICATION),
+            RolePermission.PLOT_FLAG_MODIFICATION,
+            RolePermission.PROMOTE,
+            RolePermission.PLOT_BUY
+    ),
 
     ASSISTANT("Stadtassistent", false,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
-            RolePermission.PLOT_FLAG_MODIFICATION);
+            RolePermission.PLOT_FLAG_MODIFICATION
+    );
 
     private Set<RolePermission> permissions = new HashSet<>();
     private String friendlyName;

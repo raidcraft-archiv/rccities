@@ -3,6 +3,7 @@ package de.raidcraft.rccities.commands;
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.api.resident.RolePermission;
@@ -74,8 +75,11 @@ public class ResidentCommands {
             Player player = (Player)sender;
 
             City city;
+            Role newRole;
+            Role oldRole;
             String target;
             String roleName;
+
             if(args.argsLength() > 2) {
                 target = args.getString(1);
                 roleName = args.getString(2);
@@ -103,7 +107,6 @@ public class ResidentCommands {
                 city = citizenships.get(0).getCity();
             }
 
-            Role newRole = null;
             try {
                 newRole = Role.valueOf(roleName.toUpperCase());
             } catch (IllegalArgumentException e) {
@@ -117,8 +120,21 @@ public class ResidentCommands {
             if(targetResident == null) {
                 throw new CommandException("In dieser Stadt gibt es keinen Einwohner mit dem Namen '" + target + "'");
             }
+            oldRole = targetResident.getRole();
 
             targetResident.setRole(newRole);
+            // set owner on all city plots
+            if(!oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
+                for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+                    plot.getRegion().getOwners().addPlayer(targetResident.getName());
+                }
+            }
+            // remove owner from all city plots
+            if(oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && !newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
+                for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+                    plot.getRegion().getOwners().removePlayer(targetResident.getName());
+                }
+            }
             Bukkit.broadcastMessage(ChatColor.GOLD + targetResident.getName() + " ist nun " + newRole.getFriendlyName() + " der Stadt '" + city.getFriendlyName() + "'!");
         }
     }

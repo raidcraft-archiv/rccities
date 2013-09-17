@@ -41,6 +41,16 @@ public class PlotCommands {
         }
 
         @Command(
+                aliases = {"buy"},
+                desc = "Buy new plots"
+        )
+        @CommandPermissions("rccities.plot.buy")
+        public void buy(CommandContext args, CommandSender sender) {
+
+            //TODO
+        }
+
+        @Command(
                 aliases = {"give"},
                 desc = "Distributes a plot"
         )
