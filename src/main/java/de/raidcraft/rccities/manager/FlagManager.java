@@ -15,6 +15,7 @@ import de.raidcraft.util.StringUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class FlagManager {
     private Map<String, Class<? extends PlotFlag>> plotFlags = new CaseInsensitiveMap<>();
 
     private Map<String, Map<String, CityFlag>> cachedCityFlags = new CaseInsensitiveMap<>();
-    private Map<String,  Map<String, PlotFlag>> cachedPlotFlags = new CaseInsensitiveMap<>();
+    private Map<Integer,  Map<String, PlotFlag>> cachedPlotFlags = new HashMap<>();
 
     public FlagManager(RCCitiesPlugin plugin) {
 
@@ -79,6 +80,43 @@ public class FlagManager {
         else {
             tFlag = new TCityFlag();
             tFlag.setCity(city);
+            tFlag.setName(flagName);
+            tFlag.setValue(flagValue);
+            RaidCraft.getDatabase(RCCitiesPlugin.class).save(tFlag);
+        }
+    }
+
+    public void setPlotFlag(Plot plot, String flagName, String flagValue) throws RaidCraftException {
+
+        if(!plotFlags.containsKey(flagName)) {
+            String flagList = "";
+            for(String name : plotFlags.keySet()) {
+                if(!flagList.isEmpty()) flagList += ", ";
+                flagList += name;
+            }
+            throw new RaidCraftException("Unbekannte Flag! Verfügbare Flags: " + flagList);
+        }
+
+        PlotFlag flag;
+        // load cached flag
+        if(cachedPlotFlags.containsKey(plot.getId()) && cachedPlotFlags.get(plot.getId()).containsKey(flagName)) {
+            flag = cachedPlotFlags.get(plot.getId()).get(flagName);
+        }
+        // create new
+        else {
+            flag = loadPlotFlag(plotFlags.get(flagName), plot);
+        }
+        flag.setValue(flagValue);
+        flagName = flagName.toLowerCase();
+        TPlotFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TPlotFlag.class).where().eq("plot_id", plot.getId()).eq("name", flagName).findUnique();
+        if(tFlag != null) {
+            tFlag.setValue(flagValue);
+            RaidCraft.getDatabase(RCCitiesPlugin.class).update(tFlag);
+        }
+        else {
+            tFlag = new TPlotFlag();
+            tFlag.setPlot(plot);
             tFlag.setName(flagName);
             tFlag.setValue(flagValue);
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tFlag);
@@ -149,8 +187,8 @@ public class FlagManager {
             e.printStackTrace();
             throw new RaidCraftException("Interner Fehler aufgetreten: " + e.getMessage());
         }
-        if(!cachedPlotFlags.containsKey(plot.getCity().getName())) {
-            cachedPlotFlags.put(plot.getCity().getName(), new CaseInsensitiveMap<PlotFlag>());
+        if(!cachedPlotFlags.containsKey(plot.getId())) {
+            cachedPlotFlags.put(plot.getId(), new CaseInsensitiveMap<PlotFlag>());
         }
         cachedPlotFlags.get(plot.getCity().getName()).put(flag.getName(), flag);
         return flag;
