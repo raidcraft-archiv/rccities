@@ -9,6 +9,8 @@ import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.flags.city.PVPCityFlag;
 import de.raidcraft.rccities.tables.*;
+import de.raidcraft.rccities.util.DynmapManager;
+import de.raidcraft.rccities.util.SchematicManager;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class RCCitiesPlugin extends BasePlugin {
     private ResidentManager residentManager;
     private AssignmentManager assignmentManager;
     private FlagManager flagManager;
+    private SchematicManager schematicManager;
+    private DynmapManager dynmapManager;
 
     @Override
     public void enable() {
@@ -43,6 +47,8 @@ public class RCCitiesPlugin extends BasePlugin {
         residentManager = new ResidentManager(this);
         assignmentManager = new AssignmentManager(this);
         flagManager = new FlagManager(this);
+        schematicManager = new SchematicManager(this);
+        dynmapManager = new DynmapManager();
 
         flagManager.registerCityFlag(PVPCityFlag.class);
     }
@@ -97,5 +103,15 @@ public class RCCitiesPlugin extends BasePlugin {
     public FlagManager getFlagManager() {
 
         return flagManager;
+    }
+
+    public SchematicManager getSchematicManager() {
+
+        return schematicManager;
+    }
+
+    public DynmapManager getDynmapManager() {
+
+        return dynmapManager;
     }
 }

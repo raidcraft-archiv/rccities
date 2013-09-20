@@ -2,6 +2,7 @@ package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TResident;
@@ -54,7 +55,11 @@ public class DatabaseResident extends AbstractResident {
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
         //TODO delete assignments
-        //TODO remove region ownerships
+
+        for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+            plot.getRegion().getOwners().removePlayer(getName());
+            plot.getRegion().getMembers().removePlayer(getName());
+        }
 
         plugin.getResidentManager().removeFromCache(this);
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TResident.class, getId());
