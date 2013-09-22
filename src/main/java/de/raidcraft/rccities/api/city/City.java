@@ -31,6 +31,16 @@ public interface City {
 
     public void setPlotCredit(int plotCredit);
 
+    public int getMaxRadius();
+
+    public void setMaxRadius(int maxRadius);
+
+    public int getExp();
+
+    public void addExp(int exp);
+
+    public void removeExp(int exp);
+
     public int getSize();
 
     public void save();

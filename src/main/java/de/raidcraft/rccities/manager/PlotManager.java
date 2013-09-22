@@ -6,6 +6,7 @@ import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.tables.TPlot;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -63,6 +64,21 @@ public class PlotManager {
             return plot;
         }
         return null;
+    }
+
+    public Plot getPlot(Chunk chunk) {
+
+        Location simpleLocation = new Location(chunk.getWorld(), chunk.getX()*16 + 8, 0, chunk.getZ()*16 + 8);
+        Plot plot = cachedPlots.get(simpleLocation);
+
+        if(plot == null) {
+            TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("x", simpleLocation.getX()).eq("z", simpleLocation.getZ()).findUnique();
+            if(tPlot != null) {
+                plot = new DatabasePlot(tPlot);
+                cachedPlots.put(plot.getLocation(), plot);
+            }
+        }
+        return plot;
     }
 
     public void clearCache() {

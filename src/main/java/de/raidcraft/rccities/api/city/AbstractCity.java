@@ -16,6 +16,8 @@ public abstract class AbstractCity implements City {
     protected Location spawn;
     protected String description;
     protected int plotCredit;
+    protected int maxRadius;
+    protected int exp;
 
     protected AbstractCity() {}
 
@@ -95,6 +97,36 @@ public abstract class AbstractCity implements City {
     public int getPlotCredit() {
 
         return plotCredit;
+    }
+
+    @Override
+    public void removeExp(int exp) {
+
+        this.exp -= exp;
+    }
+
+    @Override
+    public void addExp(int exp) {
+
+        this.exp += exp;
+    }
+
+    @Override
+    public int getExp() {
+
+        return exp;
+    }
+
+    @Override
+    public void setMaxRadius(int maxRadius) {
+
+        this.maxRadius = maxRadius;
+    }
+
+    @Override
+    public int getMaxRadius() {
+
+        return maxRadius;
     }
 
     @Override

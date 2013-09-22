@@ -34,6 +34,9 @@ public class SchematicManager {
         try {
             String schematicName = getSchematicName(plot);
             File file = new File(getSchematicDir(plot.getLocation().getWorld()), schematicName);
+            if(file.exists()) {
+                return;
+            }
 
             Vector pos1 = new Vector(plot.getLocation().getChunk().getX()*16, 0, plot.getLocation().getChunk().getZ()*16);
             Vector pos2 = new Vector(plot.getLocation().getChunk().getX()*16 + 15, plot.getLocation().getWorld().getMaxHeight(), plot.getLocation().getChunk().getZ()*16 + 15);
