@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -55,6 +56,12 @@ public class DatabaseCity extends AbstractCity {
     public void refreshFlags() {
 
         RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().refreshCityFlags(this);
+    }
+
+    @Override
+    public List<Resident> getResidents() {
+
+        return RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResidents(this);
     }
 
     @Override

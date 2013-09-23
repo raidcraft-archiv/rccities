@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DatabasePlot extends AbstractPlot {
 
-    protected Map<String, Resident> assignedResidents = new CaseInsensitiveMap<>();
+    private Map<String, Resident> assignedResidents = new CaseInsensitiveMap<>();
 
     public DatabasePlot(Location location, City city) {
 
@@ -65,6 +65,10 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public List<Resident> getAssignedResidents() {
 
+        // prevent NPE!?!?!?
+        if(assignedResidents == null) {
+            return new ArrayList<>();
+        }
         return new ArrayList<>(assignedResidents.values());
     }
 

@@ -1,9 +1,11 @@
 package de.raidcraft.rccities.api.city;
 
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -49,6 +51,8 @@ public interface City {
     public void removeFlag(String flagName);
 
     public void refreshFlags();
+
+    public List<Resident> getResidents();
 
     public void save();
 
