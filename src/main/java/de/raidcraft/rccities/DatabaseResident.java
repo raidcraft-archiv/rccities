@@ -54,11 +54,9 @@ public class DatabaseResident extends AbstractResident {
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
-        //TODO delete assignments
-
         for(Plot plot : plugin.getPlotManager().getPlots(city)) {
-            plot.getRegion().getOwners().removePlayer(getName());
-            plot.getRegion().getMembers().removePlayer(getName());
+            plot.removeResident(this);
+            plot.updateRegion(false);
         }
 
         plugin.getResidentManager().removeFromCache(this);

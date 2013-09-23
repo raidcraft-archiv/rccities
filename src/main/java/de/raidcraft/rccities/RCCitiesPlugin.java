@@ -90,6 +90,8 @@ public class RCCitiesPlugin extends BasePlugin {
         public String[] ignoredRegions = new String[]{"rcmap"};
         @Setting("default-town-radius")
         public int defaultMaxRadius = 64;
+        @Setting("initial-plot-credit")
+        public int initialPlotCredit = 3;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

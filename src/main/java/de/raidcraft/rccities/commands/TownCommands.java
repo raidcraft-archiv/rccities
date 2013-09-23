@@ -3,8 +3,10 @@ package de.raidcraft.rccities.commands;
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
+import de.raidcraft.rccities.DatabasePlot;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -31,7 +33,7 @@ public class TownCommands {
     }
 
     @Command(
-            aliases = {"rccities", "town", "towns", "city"},
+            aliases = {"gilde", "guild", "rccities", "town", "towns", "city"},
             desc = "Town commands"
     )
     @NestedCommand(value = NestedCommands.class, executeBody = true)
@@ -88,11 +90,23 @@ public class TownCommands {
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
             Player player = (Player)sender;
 
-            //TODO claim first plot
-
             City city;
             try {
                 city = plugin.getCityManager().createCity(args.getJoinedStrings(0), player.getLocation(), player.getName());
+
+                // create initial plot
+                Plot plot = new DatabasePlot(player.getLocation(), city);
+
+                // create schematic
+                try {
+                    plugin.getSchematicManager().createSchematic(plot);
+                } catch (RaidCraftException e) {
+                    throw new CommandException(e.getMessage());
+                }
+
+                // withdraw plot credit
+                city.setPlotCredit(plugin.getConfig().initialPlotCredit);
+
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
