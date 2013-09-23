@@ -38,10 +38,15 @@ public class PlotCommands {
     @NestedCommand(value = NestedCommands.class, executeBody = true)
     public void plot(CommandContext args, CommandSender sender) throws CommandException {
 
+        Plot plot;
         if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
         Player player = (Player)sender;
+        plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
+        if(plot == null) {
+            throw new CommandException("Hier befindet sich kein Plot! Nutze '/plot info <Plot ID>'");
+        }
 
-        //TODO print plot info
+        plugin.getPlotManager().printPlotInfo(plot, sender);
     }
 
     public static class NestedCommands {
@@ -308,6 +313,34 @@ public class PlotCommands {
             }
             player.sendMessage(ChatColor.GREEN + "Du hast erfolgreich die Flag '" + ChatColor.YELLOW + flagName.toUpperCase()
                     + ChatColor.GREEN + "' auf den Wert '" + ChatColor.YELLOW + flagValue.toUpperCase() + "' gesetzt!");
+        }
+
+        @Command(
+                aliases = {"info"},
+                desc = "Shows info about a plot",
+                usage = "[Plot ID]"
+        )
+        @CommandPermissions("rccities.plot.info")
+        public void info(CommandContext args, CommandSender sender) throws CommandException {
+
+            Plot plot;
+            if(args.argsLength() > 0) {
+                int plotId = args.getInteger(0);
+                plot = plugin.getPlotManager().getPlot(plotId);
+                if(plot == null) {
+                    throw new CommandException("Es gibt kein Plot mit dieser ID!");
+                }
+            }
+            else {
+                if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+                Player player = (Player)sender;
+                plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
+                if(plot == null) {
+                    throw new CommandException("Hier befindet sich kein Plot!");
+                }
+            }
+
+            plugin.getPlotManager().printPlotInfo(plot, sender);
         }
 
         /*

@@ -5,9 +5,12 @@ import de.raidcraft.rccities.DatabasePlot;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TPlot;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +28,23 @@ public class PlotManager {
     public PlotManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
+    }
+
+    public void printPlotInfo(Plot plot, CommandSender sender) {
+
+        String assignmentsList = "";
+        int assignmentCount = 0;
+        for(Resident resident : plot.getAssignedResidents()) {
+            if(!assignmentsList.isEmpty()) assignmentsList += ChatColor.GRAY + ", ";
+            assignmentsList += ChatColor.YELLOW + resident.getName();
+            assignmentCount++;
+        }
+
+        sender.sendMessage("*********************************");
+        sender.sendMessage(ChatColor.GOLD + "Informationen zum Plot '" + ChatColor.YELLOW + plot.getRegionName() + ChatColor.GOLD + "'");
+        sender.sendMessage(ChatColor.GOLD + "Stadt: " + ChatColor.YELLOW + plot.getCity().getFriendlyName());
+        sender.sendMessage(ChatColor.GOLD + "Besitzer (" + assignmentCount + "): " + ChatColor.YELLOW + assignmentsList);
+        sender.sendMessage("*********************************");
     }
 
     public List<Plot> getPlots(City city) {
