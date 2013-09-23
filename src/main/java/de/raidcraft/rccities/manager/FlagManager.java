@@ -25,10 +25,12 @@ import java.util.Map;
 public class FlagManager {
 
     private RCCitiesPlugin plugin;
-    private Map<String, Class<? extends CityFlag>> cityFlags = new CaseInsensitiveMap<>();
-    private Map<String, Class<? extends PlotFlag>> plotFlags = new CaseInsensitiveMap<>();
+    private Map<String, Class<? extends CityFlag>> registeredCityFlags = new CaseInsensitiveMap<>();
+    private Map<String, Class<? extends PlotFlag>> registeredPlotFlags = new CaseInsensitiveMap<>();
 
+    // city name -> map(flag name, flag)
     private Map<String, Map<String, CityFlag>> cachedCityFlags = new CaseInsensitiveMap<>();
+    // plot id -> map(flag name, flag)
     private Map<Integer,  Map<String, PlotFlag>> cachedPlotFlags = new HashMap<>();
 
     private FlagRefreshTask refreshTask;
@@ -45,20 +47,20 @@ public class FlagManager {
     public void registerCityFlag(Class<? extends CityFlag> clazz) {
 
         String name = StringUtils.formatName(clazz.getAnnotation(FlagInformation.class).name());
-        cityFlags.put(name, clazz);
+        registeredCityFlags.put(name, clazz);
     }
 
     public void registerPlotFlag(Class<? extends PlotFlag> clazz) {
 
         String name = StringUtils.formatName(clazz.getAnnotation(FlagInformation.class).name());
-        plotFlags.put(name, clazz);
+        registeredPlotFlags.put(name, clazz);
     }
 
     public void setCityFlag(City city, String flagName, String flagValue) throws RaidCraftException {
 
-        if(!cityFlags.containsKey(flagName)) {
+        if(!registeredCityFlags.containsKey(flagName)) {
             String flagList = "";
-            for(String name : cityFlags.keySet()) {
+            for(String name : registeredCityFlags.keySet()) {
                 if(!flagList.isEmpty()) flagList += ", ";
                 flagList += name;
             }
@@ -72,9 +74,15 @@ public class FlagManager {
         }
         // create new
         else {
-            flag = loadCityFlag(cityFlags.get(flagName), city);
+            flag = loadCityFlag(registeredCityFlags.get(flagName), city);
         }
         flag.setValue(flagValue);
+        // save in cache
+        if(!cachedCityFlags.containsKey(city.getName())) {
+            cachedCityFlags.put(city.getName(), new CaseInsensitiveMap<CityFlag>());
+        }
+        cachedCityFlags.get(city.getName()).put(flag.getName(), flag);
+
         flagName = flagName.toLowerCase();
         TCityFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TCityFlag.class).where().eq("city_id", city.getId()).eq("name", flagName).findUnique();
@@ -91,11 +99,21 @@ public class FlagManager {
         }
     }
 
+    public void removeCityFlag(City city, String flagName) {
+
+        TCityFlag flag = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TCityFlag.class).where().eq("city_id", city.getId()).ieq("name", flagName).findUnique();
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(flag);
+
+        if(!cachedCityFlags.containsKey(city.getName())) return;
+        cachedCityFlags.get(city.getName()).remove(flagName);
+    }
+
     public void setPlotFlag(Plot plot, String flagName, String flagValue) throws RaidCraftException {
 
-        if(!plotFlags.containsKey(flagName)) {
+        if(!registeredPlotFlags.containsKey(flagName)) {
             String flagList = "";
-            for(String name : plotFlags.keySet()) {
+            for(String name : registeredPlotFlags.keySet()) {
                 if(!flagList.isEmpty()) flagList += ", ";
                 flagList += name;
             }
@@ -109,9 +127,15 @@ public class FlagManager {
         }
         // create new
         else {
-            flag = loadPlotFlag(plotFlags.get(flagName), plot);
+            flag = loadPlotFlag(registeredPlotFlags.get(flagName), plot);
         }
         flag.setValue(flagValue);
+        // save in cache
+        if(!cachedPlotFlags.containsKey(plot.getId())) {
+            cachedPlotFlags.put(plot.getId(), new CaseInsensitiveMap<PlotFlag>());
+        }
+        cachedPlotFlags.get(plot.getId()).put(flag.getName(), flag);
+
         flagName = flagName.toLowerCase();
         TPlotFlag tFlag = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TPlotFlag.class).where().eq("plot_id", plot.getId()).eq("name", flagName).findUnique();
@@ -128,6 +152,32 @@ public class FlagManager {
         }
     }
 
+    public void removePlotFlag(Plot plot, String flagName) {
+
+        TPlotFlag flag = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TPlotFlag.class).where().eq("plot_id", plot.getId()).ieq("name", flagName).findUnique();
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(flag);
+
+        if(!cachedPlotFlags.containsKey(plot.getId())) return;
+        cachedPlotFlags.get(plot.getId()).remove(flagName);
+    }
+
+    public void refreshCityFlags(City city) {
+
+        if(!cachedCityFlags.containsKey(city.getName())) return;
+        for(Flag flag : cachedCityFlags.get(city.getName()).values()) {
+            flag.refresh();
+        }
+    }
+
+    public void refreshPlotFlags(Plot plot) {
+
+        if(!cachedPlotFlags.containsKey(plot.getId())) return;
+        for(Flag flag : cachedPlotFlags.get(plot.getId()).values()) {
+            flag.refresh();
+        }
+    }
+
     private void loadExistingFlags() {
 
         clearCache();
@@ -135,7 +185,7 @@ public class FlagManager {
         List<TCityFlag> tCityFlags = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCityFlag.class).findList();
         for(TCityFlag tCityFlag : tCityFlags) {
 
-            Class<? extends CityFlag> clazz = cityFlags.get(tCityFlag.getName());
+            Class<? extends CityFlag> clazz = registeredCityFlags.get(tCityFlag.getName());
             if(clazz == null) continue;
             FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
             City city = plugin.getCityManager().getCity(tCityFlag.getName());
@@ -156,7 +206,7 @@ public class FlagManager {
         List<TPlotFlag> tPlotFlags = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlotFlag.class).findList();
         for(TPlotFlag tPlotFlag : tPlotFlags) {
 
-            Class<? extends PlotFlag> clazz = plotFlags.get(tPlotFlag.getName());
+            Class<? extends PlotFlag> clazz = registeredPlotFlags.get(tPlotFlag.getName());
             if(clazz == null) continue;
             Plot plot = plugin.getPlotManager().getPlot(tPlotFlag.getPlot().getId());
             if(plot == null) continue;

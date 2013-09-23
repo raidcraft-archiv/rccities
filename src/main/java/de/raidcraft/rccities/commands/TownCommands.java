@@ -327,7 +327,7 @@ public class TownCommands {
             }
 
             try {
-                plugin.getFlagManager().setCityFlag(city, flagName, flagValue);
+                city.setFlag(flagName, flagValue);
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }

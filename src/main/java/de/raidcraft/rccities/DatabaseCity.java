@@ -1,6 +1,7 @@
 package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
@@ -36,6 +37,24 @@ public class DatabaseCity extends AbstractCity {
     public int getSize() {
 
         return RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(this).size();
+    }
+
+    @Override
+    public void setFlag(String flagName, String flagValue) throws RaidCraftException {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(this, flagName, flagValue);
+    }
+
+    @Override
+    public void removeFlag(String flagName) {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().removeCityFlag(this, flagName);
+    }
+
+    @Override
+    public void refreshFlags() {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().refreshCityFlags(this);
     }
 
     @Override

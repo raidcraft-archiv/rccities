@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.api.plot;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Location;
@@ -27,6 +28,12 @@ public interface Plot {
     public void assignResident(Resident resident);
 
     public void removeResident(Resident resident);
+
+    public void setFlag(String flagName, String flagValue) throws RaidCraftException;
+
+    public void removeFlag(String flagName);
+
+    public void refreshFlags();
 
     public void save();
 

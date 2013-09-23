@@ -10,6 +10,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
@@ -116,9 +117,10 @@ public abstract class AbstractPlot implements Plot {
 
             // owner
             DefaultDomain defaultDomain = new DefaultDomain();
+            for(Resident resident : getAssignedResidents()) {
+                defaultDomain.addPlayer(resident.getName());
+            }
             region.setOwners(defaultDomain);
-
-            // greetings
         }
     }
 

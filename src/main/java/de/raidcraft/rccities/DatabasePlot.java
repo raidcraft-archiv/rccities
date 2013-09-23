@@ -2,6 +2,7 @@ package de.raidcraft.rccities;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.AbstractPlot;
 import de.raidcraft.rccities.api.resident.Resident;
@@ -41,6 +42,24 @@ public class DatabasePlot extends AbstractPlot {
         ProtectedRegion region = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).getRegion(getRegionName());
         this.region = region;
         loadAssignments();
+    }
+
+    @Override
+    public void setFlag(String flagName, String flagValue) throws RaidCraftException {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setPlotFlag(this, flagName, flagValue);
+    }
+
+    @Override
+    public void removeFlag(String flagName) {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().removePlotFlag(this, flagName);
+    }
+
+    @Override
+    public void refreshFlags() {
+
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().refreshPlotFlags(this);
     }
 
     @Override
@@ -102,9 +121,14 @@ public class DatabasePlot extends AbstractPlot {
         super.delete();
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
-        //TODO delete assignments
+        // delete assignment
+        List<TAssignment> assignments = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class).where().eq("plot_id", getId()).findList();
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(assignments);
 
+        // delete from cache
         plugin.getPlotManager().removeFromCache(this);
+
+        // delete plot
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TPlot.class, getId());
     }
 }
