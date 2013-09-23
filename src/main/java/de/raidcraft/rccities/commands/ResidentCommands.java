@@ -141,13 +141,13 @@ public class ResidentCommands {
             // set owner on all city plots
             if(!oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
                 for(Plot plot : plugin.getPlotManager().getPlots(city)) {
-                    plot.getRegion().getOwners().addPlayer(targetResident.getName());
+                    plot.updateRegion(false);
                 }
             }
             // remove owner from all city plots
             if(oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && !newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
                 for(Plot plot : plugin.getPlotManager().getPlots(city)) {
-                    plot.getRegion().getOwners().removePlayer(targetResident.getName());
+                    plot.updateRegion(false);
                 }
             }
             Bukkit.broadcastMessage(ChatColor.GOLD + targetResident.getName() + " ist nun " + newRole.getFriendlyName() + " der Stadt '" + city.getFriendlyName() + "'!");
