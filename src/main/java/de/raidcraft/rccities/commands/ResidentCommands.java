@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.commands;
 
 import com.sk89q.minecraft.util.commands.*;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
@@ -66,6 +67,7 @@ public class ResidentCommands {
                 aliases = {"setrole", "promote"},
                 desc = "Shows info about a resident",
                 min = 2,
+                flags = "f",
                 usage = "[Stadtname] <Spieler> <Beruf>"
         )
         @CommandPermissions("rccities.resident.promote")
@@ -118,7 +120,20 @@ public class ResidentCommands {
 
             Resident targetResident = plugin.getResidentManager().getResident(target, city);
             if(targetResident == null) {
-                throw new CommandException("In dieser Stadt gibt es keinen Einwohner mit dem Namen '" + target + "'");
+                if(player.hasPermission("rccities.resident.promote.all") && args.hasFlag('f')) {
+                    Player targetPlayer = Bukkit.getPlayer(target);
+                    if(targetPlayer == null) {
+                        throw new CommandException("Der Spieler muss Online sein wenn er noch nicht in dieser Stadt Einwohner ist!");
+                    }
+                    try {
+                        targetResident = plugin.getResidentManager().addResident(city, targetPlayer);
+                    } catch (RaidCraftException e) {
+                        throw new CommandException(e.getMessage());
+                    }
+                }
+                else {
+                    throw new CommandException("In dieser Stadt gibt es keinen Einwohner mit dem Namen '" + target + "'");
+                }
             }
             oldRole = targetResident.getRole();
 
