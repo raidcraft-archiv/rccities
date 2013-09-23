@@ -53,19 +53,57 @@ public class PlotCommands {
 
         @Command(
                 aliases = {"take"},
-                desc = "Take a plot from player"
+                desc = "Take a plot from player",
+                min = 1,
+                usage = "<Einwohner> [Plot ID]"
         )
         @CommandPermissions("rccities.plot.take")
         public void take(CommandContext args, CommandSender sender) throws CommandException {
 
-            //TODO
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            Plot plot;
+            if(args.argsLength() > 1) {
+                int plotId = args.getInteger(1);
+                plot = plugin.getPlotManager().getPlot(plotId);
+                if(plot == null) {
+                    throw new CommandException("Es gibt kein Plot mit dieser ID!");
+                }
+            }
+            else {
+                plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
+                if(plot == null) {
+                    throw new CommandException("Hier befindet sich kein Plot zum vergeben!");
+                }
+            }
+
+            City city = plot.getCity();
+
+            // check if resident has permission
+            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
+                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
+            }
+
+            Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
+            if(targetResident == null) {
+                throw new CommandException("Der angegebene Spieler ist kein Einwohner deiner Stadt '" + city.getFriendlyName() + "'!");
+            }
+
+            plot.removeResident(resident);
+            player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich " + targetResident.getName() + " entzogen!");
+            if(targetResident.getPlayer() != null) {
+                targetResident.getPlayer()
+                        .sendMessage(ChatColor.GREEN + "Dir wurde in der Stadt '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' entzogen!");
+            }
         }
 
         @Command(
                 aliases = {"give"},
                 desc = "Distributes a plot",
                 min = 1,
-                usage = "<Einwohner>"
+                usage = "<Einwohner> [Plot ID]"
         )
         @CommandPermissions("rccities.plot.give")
         public void give(CommandContext args, CommandSender sender) throws CommandException {
@@ -84,7 +122,7 @@ public class PlotCommands {
             else {
                 plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
                 if(plot == null) {
-                    throw new CommandException("Hier befindet sich kein Chunk zum vergeben!");
+                    throw new CommandException("Hier befindet sich kein Plot zum vergeben!");
                 }
             }
 
