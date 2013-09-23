@@ -8,6 +8,7 @@ import de.raidcraft.api.config.Setting;
 import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
+import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.flags.city.PVPCityFlag;
 import de.raidcraft.rccities.tables.*;
@@ -43,6 +44,8 @@ public class RCCitiesPlugin extends BasePlugin {
         registerCommands(TownCommands.class);
         registerCommands(ResidentCommands.class);
         registerCommands(PlotCommands.class);
+
+        registerEvents(new ExpListener());
 
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
