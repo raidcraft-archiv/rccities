@@ -28,6 +28,8 @@ public class TCity {
     private float pitch;
     private float yaw;
     private int plotCredit;
+    private int maxRadius;
+    private int exp;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "city_id")
@@ -166,6 +168,26 @@ public class TCity {
     public void setPlotCredit(int plotCredit) {
 
         this.plotCredit = plotCredit;
+    }
+
+    public int getMaxRadius() {
+
+        return maxRadius;
+    }
+
+    public void setMaxRadius(int maxRadius) {
+
+        this.maxRadius = maxRadius;
+    }
+
+    public int getExp() {
+
+        return exp;
+    }
+
+    public void setExp(int exp) {
+
+        this.exp = exp;
     }
 
     public Set<TPlot> getPlots() {

@@ -103,7 +103,7 @@ public class TownCommands {
                 aliases = {"delete"},
                 desc = "Delete an existing city",
                 min = 1,
-                flags = "f",
+                flags = "r",
                 usage = "<Stadtname>"
         )
         @CommandPermissions("rccities.town.delete")
@@ -114,12 +114,20 @@ public class TownCommands {
                 throw new CommandException("Es wurde keine Stadt mit diesem namen gefunden!");
             }
 
-            if(args.hasFlag('f')) {
-                deleteCity(sender, city);
+            boolean restoreSchematics= false;
+            if(args.hasFlag('r')) {
+                restoreSchematics = true;
             }
+
             else {
                 try {
-                    new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city);
+                    if(restoreSchematics) {
+                        sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots zurückgesetzt!");
+                    }
+                    else {
+                        sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots NICHT zurückgesetzt!");
+                    }
+                    new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city, restoreSchematics);
                 } catch (NoSuchMethodException e) {
                     throw new CommandException(e.getMessage());
                 }
@@ -519,7 +527,15 @@ public class TownCommands {
          ***********************************************************************************************************************************
          */
 
-        public void deleteCity(CommandSender sender, City city) {
+        public void deleteCity(CommandSender sender, City city, boolean restoreSchematics) {
+
+            if(restoreSchematics) {
+                try {
+                    plugin.getSchematicManager().restoreCity(city);
+                } catch (RaidCraftException e) {
+                    sender.sendMessage(ChatColor.RED + "Es ist ein Fehler beim wiederherstellen der Plots aufgetreten! (" + e.getMessage() + ")");
+                }
+            }
 
             city.delete();
             Bukkit.broadcastMessage(ChatColor.GOLD + "Die Stadt '" + city.getFriendlyName() + "' wurde gelöscht!");

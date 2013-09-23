@@ -1,10 +1,14 @@
 package de.raidcraft.rccities.commands;
 
 import com.sk89q.minecraft.util.commands.*;
+import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.rccities.DatabasePlot;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -103,7 +107,31 @@ public class PlotCommands {
             }
 
             // check max radius
+            Location plotCenter = new Location(chunk.getWorld(), chunk.getX()*16 + 8, 0, chunk.getZ()*16 + 8);
+            Location fixedSpawn = city.getSpawn().clone();
+            fixedSpawn.setY(0);
+            if(city.getSpawn().distance(plotCenter) > city.getMaxRadius()) {
+                throw new CommandException("Deine Stadt darf nur im Umkreis von " + city.getMaxRadius() + " Blöcken um den Spawn claimen!");
+            }
 
+            // check plot credit
+            if(city.getPlotCredit() == 0) {
+                throw new CommandException("Deine Stadt hat keine freien Plots zum claimen!");
+            }
+
+            Plot plot = new DatabasePlot(plotCenter, city);
+
+            // create schematic
+            try {
+                plugin.getSchematicManager().createSchematic(plot);
+            } catch (RaidCraftException e) {
+                throw new CommandException(e.getMessage());
+            }
+
+            // withdraw plot credit
+            city.setPlotCredit(city.getPlotCredit() - 1);
+
+            player.sendMessage(ChatColor.GREEN + "Der Plot wurde erfolgreich geclaimt! (Restliches Guthaben: " + city.getPlotCredit() + " Plots)");
         }
 
         @Command(

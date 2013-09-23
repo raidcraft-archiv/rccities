@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.api.plot;
 
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -29,7 +30,7 @@ public abstract class AbstractPlot implements Plot {
         this.city = city;
 
         save();
-        createRegion();
+        updateRegion(true);
     }
 
     @Override
@@ -63,28 +64,45 @@ public abstract class AbstractPlot implements Plot {
     }
 
     @Override
-    public final void createRegion() {
+    public final void updateRegion(boolean create) {
 
-        RegionManager regionManager = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld());
-        if(regionManager.getRegion(getRegionName()) != null) {
-            regionManager.removeRegion(getRegionName());
+        // force create region
+        if(create) {
+            RegionManager regionManager = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld());
+            if(regionManager.getRegion(getRegionName()) != null) {
+                regionManager.removeRegion(getRegionName());
+            }
+
+            Chunk chunk = location.getChunk();
+            BlockVector vector1 = new BlockVector(
+                    chunk.getX()*16,
+                    0,
+                    chunk.getZ()*16
+            );
+            BlockVector vector2 = new BlockVector(
+                    (chunk.getX()*16)+15,
+                    location.getWorld().getMaxHeight(),
+                    (chunk.getZ()*16)+15
+            );
+
+            ProtectedCuboidRegion protectedCuboidRegion = new ProtectedCuboidRegion(getRegionName(), vector1, vector2);
+            regionManager.addRegion(protectedCuboidRegion);
+            region = protectedCuboidRegion;
         }
 
-        Chunk chunk = location.getChunk();
-        BlockVector vector1 = new BlockVector(
-                chunk.getX()*16,
-                0,
-                chunk.getZ()*16
-        );
-        BlockVector vector2 = new BlockVector(
-                (chunk.getX()*16)+15,
-                location.getWorld().getMaxHeight(),
-                (chunk.getZ()*16)+15
-        );
+        // update flags, owner and greetings
+        if(region != null) {
 
-        ProtectedCuboidRegion protectedCuboidRegion = new ProtectedCuboidRegion(getRegionName(), vector1, vector2);
-        regionManager.addRegion(protectedCuboidRegion);
-        region = protectedCuboidRegion;
+            //TODO maybe we have to set other regions as parent
+
+            // flags
+
+            // owner
+            DefaultDomain defaultDomain = new DefaultDomain();
+            region.setOwners(defaultDomain);
+
+            // greetings
+        }
     }
 
     @Override

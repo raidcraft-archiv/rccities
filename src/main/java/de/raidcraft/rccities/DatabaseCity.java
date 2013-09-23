@@ -53,6 +53,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setZ(getSpawn().getZ());
             tCity.setPitch(getSpawn().getPitch());
             tCity.setYaw(getSpawn().getYaw());
+            tCity.setMaxRadius(RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius);
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
         }
@@ -67,6 +68,8 @@ public class DatabaseCity extends AbstractCity {
             tCity.setYaw(getSpawn().getYaw());
             tCity.setDescription(getDescription());
             tCity.setPlotCredit(getPlotCredit());
+            tCity.setMaxRadius(getMaxRadius());
+            tCity.setExp(getExp());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tCity);
         }
     }

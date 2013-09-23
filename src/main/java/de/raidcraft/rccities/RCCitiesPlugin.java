@@ -88,6 +88,8 @@ public class RCCitiesPlugin extends BasePlugin {
 
         @Setting("ignored-regions")
         public String[] ignoredRegions = new String[]{"rcmap"};
+        @Setting("default-town-radius")
+        public int defaultMaxRadius = 64;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

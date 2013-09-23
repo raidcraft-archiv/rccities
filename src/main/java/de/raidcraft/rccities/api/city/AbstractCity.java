@@ -103,12 +103,14 @@ public abstract class AbstractCity implements City {
     public void removeExp(int exp) {
 
         this.exp -= exp;
+        save();
     }
 
     @Override
     public void addExp(int exp) {
 
         this.exp += exp;
+        save();
     }
 
     @Override
@@ -121,6 +123,7 @@ public abstract class AbstractCity implements City {
     public void setMaxRadius(int maxRadius) {
 
         this.maxRadius = maxRadius;
+        save();
     }
 
     @Override

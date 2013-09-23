@@ -9,6 +9,7 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
+import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import org.bukkit.World;
 
@@ -65,7 +66,12 @@ public class SchematicManager {
         }
     }
 
-    public void pasteSchematic(Plot plot) throws RaidCraftException {
+    public void restoreCity(City city) throws RaidCraftException {
+
+        //TODO
+    }
+
+    private void pasteSchematic(Plot plot) throws RaidCraftException {
 
         String schematicName = getSchematicName(plot);
         File file = new File(getSchematicDir(plot.getLocation().getWorld()), schematicName);
