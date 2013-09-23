@@ -4,13 +4,22 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.AbstractPlot;
+import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.tables.TAssignment;
 import de.raidcraft.rccities.tables.TPlot;
+import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Location;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Philip Urban
  */
 public class DatabasePlot extends AbstractPlot {
+
+    protected Map<String, Resident> assignedResidents = new CaseInsensitiveMap<>();
 
     public DatabasePlot(Location location, City city) {
 
@@ -31,6 +40,49 @@ public class DatabasePlot extends AbstractPlot {
 
         ProtectedRegion region = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld()).getRegion(getRegionName());
         this.region = region;
+        loadAssignments();
+    }
+
+    @Override
+    public List<Resident> getAssignedResidents() {
+
+        return new ArrayList<>(assignedResidents.values());
+    }
+
+    @Override
+    public void assignResident(Resident resident) {
+
+        if(assignedResidents.containsKey(resident.getName())) return;
+        assignedResidents.put(resident.getName(), resident);
+        TAssignment tAssignment = new TAssignment();
+        tAssignment.setPlot(this);
+        tAssignment.setResident(resident);
+        RaidCraft.getDatabase(RCCitiesPlugin.class).save(tAssignment);
+    }
+
+    @Override
+    public void removeResident(Resident resident) {
+
+        Resident removedResident = assignedResidents.remove(resident.getName());
+        if(removedResident != null) {
+            // delete assignment
+            TAssignment assignment = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                    .find(TAssignment.class).where().eq("resident_id", removedResident.getId()).eq("plot_id", getId()).findUnique();
+            RaidCraft.getDatabase(RCCitiesPlugin.class).delete(assignment);
+            // update region
+            updateRegion(false);
+        }
+    }
+
+    private void loadAssignments() {
+
+        List<TAssignment> assignments = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class).where().eq("plot_id", getId()).findList();
+        for(TAssignment assignment : assignments) {
+
+            Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(assignment.getResident().getName(), getCity());
+            if(resident == null) continue;
+            assignedResidents.put(resident.getName(), resident);
+        }
     }
 
     @Override

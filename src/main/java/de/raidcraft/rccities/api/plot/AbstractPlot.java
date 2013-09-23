@@ -2,6 +2,8 @@ package de.raidcraft.rccities.api.plot;
 
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -96,6 +98,21 @@ public abstract class AbstractPlot implements Plot {
             //TODO maybe we have to set other regions as parent
 
             // flags
+//            region.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+//            region.setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
+//            region.setFlag(DefaultFlag.POTION_SPLASH, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.MOB_DAMAGE, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.CREEPER_EXPLOSION, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.GHAST_FIREBALL, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.ENDER_BUILD, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.FIRE_SPREAD, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.LIGHTNING, StateFlag.State.DENY);
+            region.setFlag(DefaultFlag.CHEST_ACCESS, StateFlag.State.ALLOW);
+            region.setFlag(DefaultFlag.PLACE_VEHICLE, StateFlag.State.ALLOW);
+            region.setFlag(DefaultFlag.DESTROY_VEHICLE, StateFlag.State.ALLOW);
+
+            //settings
 
             // owner
             DefaultDomain defaultDomain = new DefaultDomain();

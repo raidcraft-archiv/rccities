@@ -2,7 +2,10 @@ package de.raidcraft.rccities.api.plot;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Location;
+
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -18,6 +21,12 @@ public interface Plot {
     public ProtectedRegion getRegion();
 
     public City getCity();
+
+    public List<Resident> getAssignedResidents();
+
+    public void assignResident(Resident resident);
+
+    public void removeResident(Resident resident);
 
     public void save();
 
