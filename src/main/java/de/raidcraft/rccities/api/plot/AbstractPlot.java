@@ -113,7 +113,8 @@ public abstract class AbstractPlot implements Plot {
             region.setFlag(DefaultFlag.PLACE_VEHICLE, StateFlag.State.ALLOW);
             region.setFlag(DefaultFlag.DESTROY_VEHICLE, StateFlag.State.ALLOW);
 
-            //settings
+            // flags
+            refreshFlags();
 
             // owner
             DefaultDomain defaultDomain = new DefaultDomain();
