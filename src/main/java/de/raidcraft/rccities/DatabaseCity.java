@@ -32,7 +32,7 @@ public class DatabaseCity extends AbstractCity {
         description = tCity.getDescription();
         plotCredit = tCity.getPlotCredit();
         maxRadius = tCity.getMaxRadius();
-        spawn = new Location(Bukkit.getWorld(tCity.getWorld()), tCity.getX(), tCity.getY(), tCity.getZ(), tCity.getYaw(), tCity.getPitch());
+        spawn = new Location(Bukkit.getWorld(tCity.getWorld()), (double)tCity.getX() / 1000D, (double)tCity.getY() / 1000D, (double)tCity.getZ() / 1000D, (float)tCity.getYaw() / 1000F, (float)tCity.getPitch() / 1000F);
     }
 
     @Override
@@ -75,11 +75,11 @@ public class DatabaseCity extends AbstractCity {
             tCity.setCreator(getCreator());
             tCity.setName(getName());
             tCity.setWorld(getSpawn().getWorld().getName());
-            tCity.setX(getSpawn().getX());
-            tCity.setY(getSpawn().getY());
-            tCity.setZ(getSpawn().getZ());
-            tCity.setPitch(getSpawn().getPitch());
-            tCity.setYaw(getSpawn().getYaw());
+            tCity.setX((int)getSpawn().getX() * 1000);
+            tCity.setY((int)getSpawn().getY() * 1000);
+            tCity.setZ((int)getSpawn().getZ() * 1000);
+            tCity.setPitch((int)getSpawn().getPitch() * 1000);
+            tCity.setYaw((int)getSpawn().getYaw() * 1000);
             tCity.setMaxRadius(getMaxRadius());
             tCity.setPlotCredit(getPlotCredit());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
@@ -89,11 +89,11 @@ public class DatabaseCity extends AbstractCity {
         else {
             TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, getId());
             tCity.setWorld(getSpawn().getWorld().getName());
-            tCity.setX(getSpawn().getX());
-            tCity.setY(getSpawn().getY());
-            tCity.setZ(getSpawn().getZ());
-            tCity.setPitch(getSpawn().getPitch());
-            tCity.setYaw(getSpawn().getYaw());
+            tCity.setX((int)getSpawn().getX() * 1000);
+            tCity.setY((int)getSpawn().getY() * 1000);
+            tCity.setZ((int)getSpawn().getZ() * 1000);
+            tCity.setPitch((int)getSpawn().getPitch() * 1000);
+            tCity.setYaw((int)getSpawn().getYaw() * 1000);
             tCity.setDescription(getDescription());
             tCity.setPlotCredit(getPlotCredit());
             tCity.setMaxRadius(getMaxRadius());

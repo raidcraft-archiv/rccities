@@ -15,7 +15,6 @@ import java.util.Set;
 public class TPlot {
 
     @Id
-    @Version
     private int id;
     @ManyToOne
     private TCity city;

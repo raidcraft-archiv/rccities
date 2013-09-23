@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class TCityFlag {
 
     @Id
-    @Version
     private int id;
     @ManyToOne
     private TCity city;

@@ -15,7 +15,6 @@ import javax.persistence.*;
 public class TAssignment {
 
     @Id
-    @Version
     private int id;
     @ManyToOne
     private TPlot plot;

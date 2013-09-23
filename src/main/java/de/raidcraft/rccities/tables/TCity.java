@@ -15,7 +15,6 @@ import java.util.Set;
 public class TCity {
 
     @Id
-    @Version
     private int id;
     private String name;
     private String creator;
@@ -23,11 +22,11 @@ public class TCity {
     @Lob
     private String description;
     private String world;
-    private double x;
-    private double y;
-    private double z;
-    private float pitch;
-    private float yaw;
+    private int x;
+    private int y;
+    private int z;
+    private int pitch;
+    private int yaw;
     private int plotCredit;
     private int maxRadius;
     private int exp;
@@ -111,52 +110,52 @@ public class TCity {
         this.world = world;
     }
 
-    public double getX() {
+    public int getX() {
 
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(int x) {
 
         this.x = x;
     }
 
-    public double getY() {
+    public int getY() {
 
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(int y) {
 
         this.y = y;
     }
 
-    public double getZ() {
+    public int getZ() {
 
         return z;
     }
 
-    public void setZ(double z) {
+    public void setZ(int z) {
 
         this.z = z;
     }
 
-    public float getPitch() {
+    public int getPitch() {
 
         return pitch;
     }
 
-    public void setPitch(float pitch) {
+    public void setPitch(int pitch) {
 
         this.pitch = pitch;
     }
 
-    public float getYaw() {
+    public int getYaw() {
 
         return yaw;
     }
 
-    public void setYaw(float yaw) {
+    public void setYaw(int yaw) {
 
         this.yaw = yaw;
     }

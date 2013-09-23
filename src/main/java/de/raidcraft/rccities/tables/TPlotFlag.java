@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class TPlotFlag {
 
     @Id
-    @Version
     private int id;
     @ManyToOne
     private TPlot plot;
