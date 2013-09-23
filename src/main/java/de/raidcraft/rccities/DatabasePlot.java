@@ -77,6 +77,7 @@ public class DatabasePlot extends AbstractPlot {
         tAssignment.setPlot(this);
         tAssignment.setResident(resident);
         RaidCraft.getDatabase(RCCitiesPlugin.class).save(tAssignment);
+        updateRegion(false);
     }
 
     @Override
