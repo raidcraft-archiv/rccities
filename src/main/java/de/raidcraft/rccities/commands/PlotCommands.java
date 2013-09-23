@@ -208,7 +208,7 @@ public class PlotCommands {
             Location plotCenter = new Location(chunk.getWorld(), chunk.getX()*16 + 8, 0, chunk.getZ()*16 + 8);
             Location fixedSpawn = city.getSpawn().clone();
             fixedSpawn.setY(0);
-            if(city.getSpawn().distance(plotCenter) > city.getMaxRadius()) {
+            if(fixedSpawn.distance(plotCenter) > city.getMaxRadius()) {
                 throw new CommandException("Deine Stadt darf nur im Umkreis von " + city.getMaxRadius() + " Blöcken um den Spawn claimen!");
             }
 
