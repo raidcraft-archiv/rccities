@@ -119,18 +119,16 @@ public class TownCommands {
                 restoreSchematics = true;
             }
 
-            else {
-                try {
-                    if(restoreSchematics) {
-                        sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots zurückgesetzt!");
-                    }
-                    else {
-                        sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots NICHT zurückgesetzt!");
-                    }
-                    new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city, restoreSchematics);
-                } catch (NoSuchMethodException e) {
-                    throw new CommandException(e.getMessage());
+            try {
+                if(restoreSchematics) {
+                    sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots zurückgesetzt!");
                 }
+                else {
+                    sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots NICHT zurückgesetzt!");
+                }
+                new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city, restoreSchematics);
+            } catch (NoSuchMethodException e) {
+                throw new CommandException(e.getMessage());
             }
         }
 

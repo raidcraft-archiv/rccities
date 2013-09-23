@@ -93,7 +93,7 @@ public abstract class AbstractPlot implements Plot {
             region = protectedCuboidRegion;
         }
 
-        // update flags, owner and greetings
+        // update flags, owner and settings (plot flags)
         if(region != null) {
 
             //TODO maybe we have to set other regions as parent

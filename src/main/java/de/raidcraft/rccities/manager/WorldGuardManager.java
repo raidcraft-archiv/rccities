@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.util;
+package de.raidcraft.rccities.manager;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;

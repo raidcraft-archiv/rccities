@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.util;
+package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;

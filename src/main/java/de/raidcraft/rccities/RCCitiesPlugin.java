@@ -11,9 +11,9 @@ import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.flags.city.PVPCityFlag;
 import de.raidcraft.rccities.tables.*;
-import de.raidcraft.rccities.util.DynmapManager;
-import de.raidcraft.rccities.util.SchematicManager;
-import de.raidcraft.rccities.util.WorldGuardManager;
+import de.raidcraft.rccities.manager.DynmapManager;
+import de.raidcraft.rccities.manager.SchematicManager;
+import de.raidcraft.rccities.manager.WorldGuardManager;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

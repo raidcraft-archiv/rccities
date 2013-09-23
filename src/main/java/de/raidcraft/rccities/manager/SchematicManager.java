@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.util;
+package de.raidcraft.rccities.manager;
 
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
@@ -68,10 +68,13 @@ public class SchematicManager {
 
     public void restoreCity(City city) throws RaidCraftException {
 
-        //TODO
+        for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+
+            restorePlot(plot);
+        }
     }
 
-    private void pasteSchematic(Plot plot) throws RaidCraftException {
+    public void restorePlot(Plot plot) throws RaidCraftException {
 
         String schematicName = getSchematicName(plot);
         File file = new File(getSchematicDir(plot.getLocation().getWorld()), schematicName);
