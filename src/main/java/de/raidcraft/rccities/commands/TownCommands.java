@@ -104,9 +104,6 @@ public class TownCommands {
                     throw new CommandException(e.getMessage());
                 }
 
-                // withdraw plot credit
-                city.setPlotCredit(plugin.getConfig().initialPlotCredit);
-
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }

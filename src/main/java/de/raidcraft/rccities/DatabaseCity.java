@@ -80,6 +80,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setPitch(getSpawn().getPitch());
             tCity.setYaw(getSpawn().getYaw());
             tCity.setMaxRadius(RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius);
+            tCity.setPlotCredit(RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().initialPlotCredit);
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
         }
