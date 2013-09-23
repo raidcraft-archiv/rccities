@@ -15,6 +15,7 @@ import java.util.Set;
 public class TCity {
 
     @Id
+    @Version
     private int id;
     private String name;
     private String creator;

@@ -4,10 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.plot.Plot;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Philip Urban
@@ -17,6 +14,7 @@ import javax.persistence.Table;
 public class TPlotFlag {
 
     @Id
+    @Version
     private int id;
     @ManyToOne
     private TPlot plot;
