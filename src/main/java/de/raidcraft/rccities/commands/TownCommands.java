@@ -256,6 +256,7 @@ public class TownCommands {
             String description = args.getJoinedStrings(1);
 
             city.setDescription(description);
+            player.sendMessage(ChatColor.GREEN + "Du hast die Beschreibung der Stadt '" + city.getFriendlyName() + "' geändert!");
             plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt '" + city.getFriendlyName() + "' wurde geändert!");
         }
 

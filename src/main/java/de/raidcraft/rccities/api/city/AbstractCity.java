@@ -28,6 +28,7 @@ public abstract class AbstractCity implements City {
         this.name = name;
         this.spawn = spawn;
         this.creator = creator;
+        this.creationDate = new Timestamp(System.currentTimeMillis());
         this.plotCredit = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().initialPlotCredit;
         this.maxRadius = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius;
 
