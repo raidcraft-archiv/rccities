@@ -41,6 +41,7 @@ public class CityManager {
             throw new RaidCraftException("Es gibt bereits eine Stadt mit diesem Namen!");
         }
         city = new DatabaseCity(cityName, location, creator);
+
         cachedCities.put(cityName, city);
         return city;
     }

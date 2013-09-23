@@ -1,5 +1,7 @@
 package de.raidcraft.rccities.api.city;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.rccities.RCCitiesPlugin;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
@@ -26,6 +28,8 @@ public abstract class AbstractCity implements City {
         this.name = name;
         this.spawn = spawn;
         this.creator = creator;
+        this.plotCredit = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().initialPlotCredit;
+        this.maxRadius = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius;
 
         save();
     }

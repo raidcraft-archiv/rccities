@@ -62,6 +62,8 @@ public class RCCitiesPlugin extends BasePlugin {
         worldGuardManager = new WorldGuardManager(this, worldGuard);
 
         flagManager.registerCityFlag(PVPCityFlag.class);
+
+        //TODO check city regions
     }
 
     @Override
