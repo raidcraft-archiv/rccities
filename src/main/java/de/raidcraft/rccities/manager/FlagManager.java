@@ -67,6 +67,18 @@ public class FlagManager {
             throw new RaidCraftException("Unbekannte Flag! Verfügbare Flags: " + flagList);
         }
 
+        // delete flag if value is null
+        if(flagValue == null) {
+            TCityFlag tCityFlag = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCityFlag.class).where().eq("city_id", city.getId()).ieq("name", flagName).findUnique();
+            if(tCityFlag != null) {
+                RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tCityFlag);
+            }
+            if(cachedCityFlags.containsKey(city.getName())) {
+                cachedCityFlags.get(city.getName()).remove(flagName);
+            }
+            return;
+        }
+
         CityFlag flag;
         // load cached flag
         if(cachedCityFlags.containsKey(city.getName()) && cachedCityFlags.get(city.getName()).containsKey(flagName)) {
@@ -126,6 +138,18 @@ public class FlagManager {
                 flagList += name;
             }
             throw new RaidCraftException("Unbekannte Flag! Verfügbare Flags: " + flagList);
+        }
+
+        // delete flag if value is null
+        if(flagValue == null) {
+            TPlotFlag tPlotFlag = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlotFlag.class).where().eq("plot_id", plot.getId()).ieq("name", flagName).findUnique();
+            if(tPlotFlag != null) {
+                RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tPlotFlag);
+            }
+            if(cachedCityFlags.containsKey(plot.getId())) {
+                cachedCityFlags.get(plot.getId()).remove(flagName);
+            }
+            return;
         }
 
         PlotFlag flag;
@@ -279,6 +303,18 @@ public class FlagManager {
         }
         cachedPlotFlags.get(plot.getCity().getName()).put(flag.getName(), flag);
         return flag;
+    }
+
+    public CityFlag getCityFlag(City city, String flagName) {
+
+        if(!cachedCityFlags.containsKey(city.getName())) return null;
+        return cachedCityFlags.get(city.getName()).get(flagName);
+    }
+
+    public PlotFlag getPlotFlag(Plot plot, String flagName) {
+
+        if(!cachedPlotFlags.containsKey(plot.getId())) return null;
+        return cachedPlotFlags.get(plot.getId()).get(flagName);
     }
 
     public void clearCache() {

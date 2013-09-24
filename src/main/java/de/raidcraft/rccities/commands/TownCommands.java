@@ -296,7 +296,7 @@ public class TownCommands {
         @Command(
                 aliases = {"flag"},
                 desc = "Change city flag",
-                min = 3,
+                min = 1,
                 usage = "[Stadtname] <Flag> <Parameter>"
         )
         @CommandPermissions("rccities.town.flag")
@@ -307,10 +307,12 @@ public class TownCommands {
 
             City city;
             String flagName;
-            String flagValue;
-            if(args.argsLength() > 2) {
+            String flagValue = null;
+            if(args.argsLength() > 1) {
                 flagName = args.getString(1);
-                flagValue = args.getString(2);
+                if(args.argsLength() > 2) {
+                    flagValue = args.getString(2);
+                }
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
                     throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
@@ -324,7 +326,9 @@ public class TownCommands {
             }
             else {
                 flagName = args.getString(0);
-                flagValue = args.getString(1);
+                if(args.argsLength() > 1) {
+                    flagValue = args.getString(1);
+                }
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.CITY_FLAG_MODIFICATION);
 
                 if(citizenships == null) {
