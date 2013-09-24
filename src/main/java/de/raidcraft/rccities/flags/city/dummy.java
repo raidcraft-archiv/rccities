@@ -21,9 +21,9 @@ import de.raidcraft.rccities.api.plot.Plot;
         refreshInterval = 0,
         cooldown = 60
 )
-public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
+public class dummy extends AbstractBooleanPlotwiseCityFlag {
 
-    public PvpCityFlag(City city) {
+    public dummy(City city) {
 
         super(city);
     }
