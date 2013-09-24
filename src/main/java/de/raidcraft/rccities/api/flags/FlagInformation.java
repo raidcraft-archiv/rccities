@@ -16,4 +16,5 @@ public @interface FlagInformation {
     FlagType type();
     FlagRefreshType refreshType() default FlagRefreshType.ON_CHANGE;
     int refreshInterval() default 60;
+    int cooldown() default 30;
 }

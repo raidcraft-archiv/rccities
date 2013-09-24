@@ -11,6 +11,7 @@ public abstract class AbstractFlag implements Flag {
     private String name;
     private String value;
     private FlagType type;
+    private long lastChange;
 
     protected AbstractFlag() {
 
@@ -31,7 +32,7 @@ public abstract class AbstractFlag implements Flag {
         if(!type.validate(value)) throw new RaidCraftException("Falscher Wertetyp: " + type.getErrorMsg());
 
         this.value = value;
-        refresh();
+        lastChange = System.currentTimeMillis();
     }
 
     @Override
@@ -44,5 +45,11 @@ public abstract class AbstractFlag implements Flag {
     public FlagType getType() {
 
         return type;
+    }
+
+    @Override
+    public long getLastChange() {
+
+        return lastChange;
     }
 }

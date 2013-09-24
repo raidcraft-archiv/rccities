@@ -76,6 +76,12 @@ public class FlagManager {
         else {
             flag = loadCityFlag(registeredCityFlags.get(flagName), city);
         }
+
+        long cooldown = flag.getLastChange() + flag.getClass().getAnnotation(FlagInformation.class).cooldown() - (System.currentTimeMillis() / 1000);
+        if(cooldown > 0) {
+            throw new RaidCraftException("Diese Flag kann erst wieder in " + cooldown + " Sekunden geändert werden!");
+        }
+
         flag.setValue(flagValue);
         // save in cache
         if(!cachedCityFlags.containsKey(city.getName())) {
@@ -129,6 +135,12 @@ public class FlagManager {
         else {
             flag = loadPlotFlag(registeredPlotFlags.get(flagName), plot);
         }
+
+        long cooldown = flag.getLastChange() + flag.getClass().getAnnotation(FlagInformation.class).cooldown() - (System.currentTimeMillis() / 1000);
+        if(cooldown > 0) {
+            throw new RaidCraftException("Diese Flag kann erst wieder in " + cooldown + " Sekunden geändert werden!");
+        }
+
         flag.setValue(flagValue);
         // save in cache
         if(!cachedPlotFlags.containsKey(plot.getId())) {

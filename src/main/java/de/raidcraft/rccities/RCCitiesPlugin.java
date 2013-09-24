@@ -8,6 +8,7 @@ import de.raidcraft.api.config.Setting;
 import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
+import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.flags.city.PVPCityFlag;
@@ -62,6 +63,7 @@ public class RCCitiesPlugin extends BasePlugin {
         worldGuardManager = new WorldGuardManager(this, worldGuard);
 
         flagManager.registerCityFlag(PVPCityFlag.class);
+        flagManager.registerCityFlag(GreetingsCityFlag.class);
 
         //TODO check city regions
     }

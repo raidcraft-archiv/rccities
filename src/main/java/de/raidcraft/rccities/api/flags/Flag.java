@@ -15,5 +15,7 @@ public interface Flag {
 
     public void setValue(String value) throws RaidCraftException;
 
+    public long getLastChange();
+
     public void refresh();
 }
