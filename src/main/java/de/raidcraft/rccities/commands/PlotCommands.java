@@ -17,8 +17,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 /**
  * @author Philip Urban
  */
@@ -269,7 +267,7 @@ public class PlotCommands {
                 aliases = {"flag"},
                 desc = "Change plot flag",
                 min = 2,
-                usage = "<Flag> <Parameter>"
+                usage = "[Plot ID] <Flag> <Parameter>"
         )
         @CommandPermissions("rccities.plot.flag")
         public void flag(CommandContext args, CommandSender sender) throws CommandException {
@@ -277,41 +275,37 @@ public class PlotCommands {
             if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
             Player player = (Player)sender;
 
-            //TODO
-
-            City city;
+            Plot plot;
             String flagName;
             String flagValue;
             if(args.argsLength() > 2) {
+                int plotId = args.getInteger(0);
                 flagName = args.getString(1);
                 flagValue = args.getString(2);
-                city = plugin.getCityManager().getCity(args.getString(0));
-                if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
-                }
-                if(!player.hasPermission("rccities.town.flag.all")) {
-                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-                    if(resident == null || !resident.getRole().hasPermission(RolePermission.CITY_FLAG_MODIFICATION)) {
-                        throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' keine Flags ändern!");
-                    }
+                plot = plugin.getPlotManager().getPlot(plotId);
+                if(plot == null) {
+                    throw new CommandException("Es gibt kein Plot mit dieser ID!");
                 }
             }
             else {
                 flagName = args.getString(0);
                 flagValue = args.getString(1);
-                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.CITY_FLAG_MODIFICATION);
+                plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
+                if(plot == null) {
+                    throw new CommandException("Hier befindet sich kein Plot!");
+                }
+            }
 
-                if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht Flags zu ändern!");
-                }
-                if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht Flags zu verändern! Gebe die gewünschte Stadt als Parameter an.");
-                }
-                city = citizenships.get(0).getCity();
+            City city = plot.getCity();
+
+            // check if resident has permission
+            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_FLAG_MODIFICATION)) {
+                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu konfigurieren!");
             }
 
             try {
-                city.setFlag(flagName, flagValue);
+                plot.setFlag(flagName, flagValue);
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
