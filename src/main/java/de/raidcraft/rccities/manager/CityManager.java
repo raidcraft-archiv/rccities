@@ -80,6 +80,8 @@ public class CityManager {
         sender.sendMessage(ChatColor.GOLD + "Beschreibung: " + ChatColor.YELLOW + city.getDescription());
         sender.sendMessage(ChatColor.GOLD + "Gründungsdatum: " + ChatColor.YELLOW + city.getCreationDate().toString());
         sender.sendMessage(ChatColor.GOLD + "Größe (Chunks): " + ChatColor.YELLOW + city.getSize());
+        sender.sendMessage(ChatColor.GOLD + "Größe (Radius): " + ChatColor.YELLOW + city.getMaxRadius());
+        sender.sendMessage(ChatColor.GOLD + "EXP: " + ChatColor.YELLOW + city.getExp());
         sender.sendMessage(ChatColor.GOLD + "Unclaimed Plots: " + ChatColor.YELLOW + city.getPlotCredit());
         sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.YELLOW + mayorList);
         sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.YELLOW + residentList);
