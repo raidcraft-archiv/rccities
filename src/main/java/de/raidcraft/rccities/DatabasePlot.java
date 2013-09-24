@@ -134,6 +134,7 @@ public class DatabasePlot extends AbstractPlot {
         plugin.getPlotManager().removeFromCache(this);
 
         // delete plot
-        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TPlot.class, getId());
+        TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, getId());
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tPlot);
     }
 }

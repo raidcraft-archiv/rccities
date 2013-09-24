@@ -114,6 +114,7 @@ public class DatabaseCity extends AbstractCity {
         }
 
         plugin.getCityManager().removeFromCache(this);
-        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(TCity.class, getId());
+        TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, getId());
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tCity);
     }
 }
