@@ -20,6 +20,7 @@ public abstract class AbstractCity implements City {
     protected int plotCredit;
     protected int maxRadius;
     protected int exp;
+    protected int level;
 
     protected AbstractCity() {}
 
@@ -28,6 +29,7 @@ public abstract class AbstractCity implements City {
         this.name = name;
         this.spawn = spawn;
         this.creator = creator;
+        this.level = 1;
         this.creationDate = new Timestamp(System.currentTimeMillis());
         this.plotCredit = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().initialPlotCredit;
         this.maxRadius = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius;
@@ -102,6 +104,18 @@ public abstract class AbstractCity implements City {
 
         this.plotCredit = plotCredit;
         save();
+    }
+
+    @Override
+    public int getLevel() {
+
+        return level;
+    }
+
+    @Override
+    public void setLevel(int level) {
+
+        this.level = level;
     }
 
     @Override

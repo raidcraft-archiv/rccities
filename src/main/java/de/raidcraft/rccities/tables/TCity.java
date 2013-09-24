@@ -30,6 +30,7 @@ public class TCity {
     private int plotCredit;
     private int maxRadius;
     private int exp;
+    private int level;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "city_id")
@@ -188,6 +189,16 @@ public class TCity {
     public void setExp(int exp) {
 
         this.exp = exp;
+    }
+
+    public int getLevel() {
+
+        return level;
+    }
+
+    public void setLevel(int level) {
+
+        this.level = level;
     }
 
     public Set<TPlot> getPlots() {

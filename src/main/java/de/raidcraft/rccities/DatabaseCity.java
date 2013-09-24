@@ -24,7 +24,6 @@ public class DatabaseCity extends AbstractCity {
 
     public DatabaseCity(TCity tCity) {
 
-        //XXX setter call order is important!!!
         id = tCity.getId();
         name = tCity.getName();
         creator = tCity.getCreator();
@@ -32,6 +31,7 @@ public class DatabaseCity extends AbstractCity {
         description = tCity.getDescription();
         plotCredit = tCity.getPlotCredit();
         maxRadius = tCity.getMaxRadius();
+        level = tCity.getLevel();
         spawn = new Location(Bukkit.getWorld(tCity.getWorld()), (double)tCity.getX() / 1000D, (double)tCity.getY() / 1000D, (double)tCity.getZ() / 1000D, (float)tCity.getYaw() / 1000F, (float)tCity.getPitch() / 1000F);
     }
 
@@ -82,6 +82,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setYaw((int)getSpawn().getYaw() * 1000);
             tCity.setMaxRadius(getMaxRadius());
             tCity.setPlotCredit(getPlotCredit());
+            tCity.setLevel(getLevel());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
         }
@@ -98,6 +99,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setPlotCredit(getPlotCredit());
             tCity.setMaxRadius(getMaxRadius());
             tCity.setExp(getExp());
+            tCity.setLevel(getLevel());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tCity);
         }
     }
