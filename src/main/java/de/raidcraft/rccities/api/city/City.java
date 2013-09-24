@@ -18,6 +18,8 @@ public interface City {
 
     public String getFriendlyName();
 
+    public String getBankAccountName();
+
     public String getCreator();
 
     public Timestamp getCreationDate();

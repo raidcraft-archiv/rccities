@@ -1,10 +1,12 @@
 package de.raidcraft.rccities.flags.city;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.flags.AbstractCityFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
+import de.raidcraft.rccities.api.plot.Plot;
 
 /**
  * @author Philip Urban
@@ -13,9 +15,10 @@ import de.raidcraft.rccities.api.flags.FlagType;
         name = "PVP",
         type = FlagType.BOOLEAN,
         refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0
+        refreshInterval = 0,
+        cooldown = 60
 )
-public class PVPCityFlag extends AbstractCityFlag {
+public class PVPCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
     public PVPCityFlag(City city) {
 
@@ -23,12 +26,14 @@ public class PVPCityFlag extends AbstractCityFlag {
     }
 
     @Override
-    public void refresh() {
+    public void allow(Plot plot) {
 
-        if(getCity() == null) return;
+        plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
+    }
 
-        boolean currentValue = getType().convertToBoolean(getValue());
+    @Override
+    public void deny(Plot plot) {
 
-        //TODO: implement
+        plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
     }
 }

@@ -17,5 +17,5 @@ public interface Flag {
 
     public long getLastChange();
 
-    public void refresh();
+    public void refresh() throws RaidCraftException;
 }

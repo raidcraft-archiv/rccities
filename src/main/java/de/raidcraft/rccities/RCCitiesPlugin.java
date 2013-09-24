@@ -9,6 +9,7 @@ import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
+import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.flags.city.PVPCityFlag;
@@ -62,8 +63,12 @@ public class RCCitiesPlugin extends BasePlugin {
         dynmapManager = new DynmapManager();
         worldGuardManager = new WorldGuardManager(this, worldGuard);
 
+        // city flags
         flagManager.registerCityFlag(PVPCityFlag.class);
         flagManager.registerCityFlag(GreetingsCityFlag.class);
+
+        // plot flags
+        flagManager.registerPlotFlag(MarkPlotFlag.class);
 
         //TODO check city regions
     }
@@ -99,6 +104,8 @@ public class RCCitiesPlugin extends BasePlugin {
         public int defaultMaxRadius = 64;
         @Setting("initial-plot-credit")
         public int initialPlotCredit = 3;
+        @Setting("flag-plot-mark-cost")
+        public double flagPlotMarkCost = 0.01;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

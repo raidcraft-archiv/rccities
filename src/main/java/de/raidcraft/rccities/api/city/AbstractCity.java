@@ -54,6 +54,12 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
+    public String getBankAccountName() {
+
+        return "city_" + name;
+    }
+
+    @Override
     public final String getCreator() {
 
         return creator;

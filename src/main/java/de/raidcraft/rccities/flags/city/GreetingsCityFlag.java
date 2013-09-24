@@ -1,10 +1,7 @@
 package de.raidcraft.rccities.flags.city;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import de.raidcraft.RaidCraft;
-import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.flags.AbstractCityFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
@@ -19,9 +16,10 @@ import org.bukkit.ChatColor;
         name = "GREETINGS",
         type = FlagType.BOOLEAN,
         refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0
+        refreshInterval = 0,
+        cooldown = 60
 )
-public class GreetingsCityFlag extends AbstractCityFlag {
+public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
     public GreetingsCityFlag(City city) {
 
@@ -29,26 +27,19 @@ public class GreetingsCityFlag extends AbstractCityFlag {
     }
 
     @Override
-    public void refresh() {
+    public void allow(Plot plot) {
 
-        if(getCity() == null) return;
-
-        boolean currentValue = getType().convertToBoolean(getValue());
-
-        if(currentValue) {
-            for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(getCity())) {
-                String residentList = "";
-                for(Resident resident : plot.getAssignedResidents()) {
-                    if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
-                    residentList += ChatColor.GREEN + resident.getName();
-                }
-                plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, ChatColor.GREEN + "~ " + plot.getId() + ": " + residentList + " ~");
-            }
+        String residentList = "";
+        for(Resident resident : plot.getAssignedResidents()) {
+            if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
+            residentList += ChatColor.GREEN + resident.getName();
         }
-        else {
-            for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(getCity())) {
-                plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, null);
-            }
-        }
+        plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, ChatColor.GREEN + "~ " + plot.getId() + ": " + residentList + " ~");
+    }
+
+    @Override
+    public void deny(Plot plot) {
+
+        plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, null);
     }
 }

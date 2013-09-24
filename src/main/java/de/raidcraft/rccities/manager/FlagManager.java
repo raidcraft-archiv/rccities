@@ -83,6 +83,8 @@ public class FlagManager {
         }
 
         flag.setValue(flagValue);
+        flag.refresh();
+
         // save in cache
         if(!cachedCityFlags.containsKey(city.getName())) {
             cachedCityFlags.put(city.getName(), new CaseInsensitiveMap<CityFlag>());
@@ -142,6 +144,8 @@ public class FlagManager {
         }
 
         flag.setValue(flagValue);
+        flag.refresh();
+
         // save in cache
         if(!cachedPlotFlags.containsKey(plot.getId())) {
             cachedPlotFlags.put(plot.getId(), new CaseInsensitiveMap<PlotFlag>());
@@ -178,7 +182,11 @@ public class FlagManager {
 
         if(!cachedCityFlags.containsKey(city.getName())) return;
         for(Flag flag : cachedCityFlags.get(city.getName()).values()) {
-            flag.refresh();
+            try {
+                flag.refresh();
+            } catch (RaidCraftException e) {
+                RaidCraft.LOGGER.warning("Fehler beim aktualisieren einer Flag! " + e.getMessage());
+            }
         }
     }
 
@@ -186,7 +194,11 @@ public class FlagManager {
 
         if(!cachedPlotFlags.containsKey(plot.getId())) return;
         for(Flag flag : cachedPlotFlags.get(plot.getId()).values()) {
-            flag.refresh();
+            try {
+                flag.refresh();
+            } catch (RaidCraftException e) {
+                RaidCraft.LOGGER.warning("Fehler beim aktualisieren einer Flag! " + e.getMessage());
+            }
         }
     }
 
@@ -286,7 +298,11 @@ public class FlagManager {
                 information.increaseLastRefresh();
                 if(information.getLastRefresh() > information.getAnnotation().refreshInterval()) {
                     information.resetLastRefresh();
-                    information.getFlag().refresh();
+                    try {
+                        information.getFlag().refresh();
+                    } catch (RaidCraftException e) {
+                        RaidCraft.LOGGER.warning("Fehler beim aktualisieren einer Flag! " + e.getMessage());
+                    }
                 }
             }
         }
