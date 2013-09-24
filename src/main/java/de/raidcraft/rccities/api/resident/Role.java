@@ -23,6 +23,7 @@ public enum Role {
             RolePermission.SET_DESCRIPTION,
             RolePermission.SET_SPAWN,
             RolePermission.CITY_FLAG_MODIFICATION,
+            RolePermission.PLOT_FLAG_MODIFICATION,
             RolePermission.PROMOTE,
             RolePermission.SPAWN_TELEPORT,
             RolePermission.PLOT_BUY
