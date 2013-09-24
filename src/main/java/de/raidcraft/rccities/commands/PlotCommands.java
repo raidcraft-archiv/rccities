@@ -248,6 +248,10 @@ public class PlotCommands {
                 throw new CommandException("Hier befindet sich kein Chunk zum unclaimen!");
             }
 
+            if(plugin.getPlotManager().getPlots(plot.getCity()).size() == 1) {
+                throw new CommandException("Der letze Plot kann nicht gelöscht werden!");
+            }
+
             try {
                 if(restoreSchematics) {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft zurückgesetzt!");
