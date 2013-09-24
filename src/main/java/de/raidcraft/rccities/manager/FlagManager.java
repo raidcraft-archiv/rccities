@@ -265,7 +265,7 @@ public class FlagManager {
 
         PlotFlag flag;
         try {
-            Class[] argTypes = {City.class};
+            Class[] argTypes = {Plot.class};
             Constructor constructor = clazz.getDeclaredConstructor(argTypes);
             flag  = (PlotFlag)constructor.newInstance(plot);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

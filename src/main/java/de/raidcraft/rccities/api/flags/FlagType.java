@@ -51,6 +51,8 @@ public enum FlagType {
                     || input.equalsIgnoreCase("falsch")
                     || input.equalsIgnoreCase("ja")
                     || input.equalsIgnoreCase("nein")
+                    || input.equalsIgnoreCase("on")
+                    || input.equalsIgnoreCase("off")
                     || input.equalsIgnoreCase("1")
                     || input.equalsIgnoreCase("0")) {
                 return true;
@@ -69,6 +71,7 @@ public enum FlagType {
                 || value.equalsIgnoreCase("allow")
                 || value.equalsIgnoreCase("wahr")
                 || value.equalsIgnoreCase("ja")
+                || value.equalsIgnoreCase("on")
                 || value.equalsIgnoreCase("1")) {
             return true;
         }

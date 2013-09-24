@@ -19,7 +19,7 @@ import org.bukkit.block.Block;
  * @author Philip Urban
  */
 @FlagInformation(
-        name = "PVP",
+        name = "MARK",
         type = FlagType.BOOLEAN,
         refreshType = FlagRefreshType.ON_CHANGE,
         refreshInterval = 0,
