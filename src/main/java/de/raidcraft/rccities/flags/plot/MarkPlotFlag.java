@@ -128,7 +128,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
         Block aboveBlock = block.getRelative(0, 1, 0);
 
         if(aboveBlock.getType() != Material.AIR) return;
-        if(block.isLiquid() || BlockType.canPassThrough(block.getTypeId())) return;
+        if(block.isLiquid() || BlockType.canPassThrough(block.getTypeId()) || BlockType.isTranslucent(block.getTypeId())) return;
 
         aboveBlock.setType(Material.TORCH);
     }
