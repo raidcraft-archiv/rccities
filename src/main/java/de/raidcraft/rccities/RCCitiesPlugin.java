@@ -9,7 +9,7 @@ import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
-import de.raidcraft.rccities.flags.city.dummy;
+import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
@@ -65,7 +65,7 @@ public class RCCitiesPlugin extends BasePlugin {
         worldGuardManager = new WorldGuardManager(this, worldGuard);
 
         // city flags
-        flagManager.registerCityFlag(dummy.class);
+        flagManager.registerCityFlag(PvpCityFlag.class);
         flagManager.registerCityFlag(GreetingsCityFlag.class);
 
         // plot flags
