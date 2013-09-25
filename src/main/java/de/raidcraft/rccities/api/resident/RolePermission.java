@@ -17,5 +17,7 @@ public enum RolePermission {
     PLOT_FLAG_MODIFICATION,
     LEAVE,
     PROMOTE,
-    SPAWN_TELEPORT
+    SPAWN_TELEPORT,
+    DEPOSIT,
+    WITHDRAW
 }

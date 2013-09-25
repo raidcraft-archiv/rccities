@@ -5,9 +5,12 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
+import de.raidcraft.rccities.conversation.FindCityAction;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
@@ -15,9 +18,7 @@ import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.tables.*;
-import de.raidcraft.rccities.manager.DynmapManager;
-import de.raidcraft.rccities.manager.SchematicManager;
-import de.raidcraft.rccities.manager.WorldGuardManager;
+import de.raidcraft.rcconversations.actions.ActionManager;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -72,7 +73,16 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(MarkPlotFlag.class);
         flagManager.registerPlotFlag(PvpPlotFlag.class);
 
-        //TODO check city regions
+        ActionManager.registerAction(new FindCityAction());
+
+        // create regions if they don't exist
+        for(City city : cityManager.getCities()) {
+            for(Plot plot : plotManager.getPlots(city)) {
+                if(plot.getRegion() == null) {
+                    plot.updateRegion(true);
+                }
+            }
+        }
     }
 
     @Override

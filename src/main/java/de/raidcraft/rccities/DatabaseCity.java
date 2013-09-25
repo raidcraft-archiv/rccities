@@ -85,6 +85,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setLevel(getLevel());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
+            RaidCraft.getEconomy().createAccount(getBankAccountName());
         }
         // update existing city
         else {
@@ -115,8 +116,11 @@ public class DatabaseCity extends AbstractCity {
             resident.delete();
         }
 
+        RaidCraft.getEconomy().deleteAccount(getBankAccountName());
+
         plugin.getCityManager().removeFromCache(this);
         TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, getId());
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tCity);
+
     }
 }
