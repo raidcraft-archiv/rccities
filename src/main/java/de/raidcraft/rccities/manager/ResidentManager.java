@@ -62,6 +62,7 @@ public class ResidentManager {
         List<Resident> citizenships = getCitizenships(playerName);
         if(citizenships == null || citizenships.size() == 0) {
             sender.sendMessage(ChatColor.RED + "Keine Einwohner Informationen zu '" + playerName + "' gefunden!");
+            return;
         }
 
         sender.sendMessage("*********************************");
