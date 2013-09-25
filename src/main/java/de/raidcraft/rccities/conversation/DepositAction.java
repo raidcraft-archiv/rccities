@@ -26,7 +26,15 @@ public class DepositAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
-        Double amount = args.getDouble("amount");
+        String amountString = args.getString("amount");
+        amountString = ParseString.INST.parse(conversation, amountString);
+
+        Double amount;
+        try {
+            amount = Double.parseDouble(amountString);
+        } catch (NumberFormatException e) {
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Amount '" + amountString + "' is not a double!");
+        }
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if(city == null) {
