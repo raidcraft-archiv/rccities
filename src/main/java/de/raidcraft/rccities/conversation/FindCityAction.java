@@ -35,6 +35,7 @@ public class FindCityAction extends AbstractAction {
         conversation.set("city_name", city.getName());
         conversation.set("city_money", economy.getBalance(city.getBankAccountName()));
         conversation.set("city_money_formatted", economy.getFormattedAmount(economy.getBalance(city.getBankAccountName())));
+        conversation.set("city_bankaccount", city.getBankAccountName());
 
         changeStage(conversation, success);
     }
