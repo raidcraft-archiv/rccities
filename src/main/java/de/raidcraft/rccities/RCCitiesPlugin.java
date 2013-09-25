@@ -11,6 +11,8 @@ import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.conversation.FindCityAction;
+import de.raidcraft.rccities.conversation.HasRolePermissionAction;
+import de.raidcraft.rccities.conversation.IsCityMemberAction;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
@@ -74,6 +76,8 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(PvpPlotFlag.class);
 
         ActionManager.registerAction(new FindCityAction());
+        ActionManager.registerAction(new IsCityMemberAction());
+        ActionManager.registerAction(new HasRolePermissionAction());
 
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {
