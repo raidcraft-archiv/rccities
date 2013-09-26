@@ -8,6 +8,7 @@ import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TCity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -42,9 +43,9 @@ public class DatabaseCity extends AbstractCity {
     }
 
     @Override
-    public void setFlag(String flagName, String flagValue) throws RaidCraftException {
+    public void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException {
 
-        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(this, flagName, flagValue);
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(this, player, flagName, flagValue);
     }
 
     @Override

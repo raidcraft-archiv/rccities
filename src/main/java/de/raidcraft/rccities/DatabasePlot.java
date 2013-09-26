@@ -10,6 +10,7 @@ import de.raidcraft.rccities.tables.TAssignment;
 import de.raidcraft.rccities.tables.TPlot;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +46,9 @@ public class DatabasePlot extends AbstractPlot {
     }
 
     @Override
-    public void setFlag(String flagName, String flagValue) throws RaidCraftException {
+    public void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException {
 
-        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setPlotFlag(this, flagName, flagValue);
+        RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setPlotFlag(this, player, flagName, flagValue);
     }
 
     @Override

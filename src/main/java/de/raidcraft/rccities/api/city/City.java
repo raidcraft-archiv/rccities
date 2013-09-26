@@ -3,6 +3,7 @@ package de.raidcraft.rccities.api.city;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.resident.Resident;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -52,7 +53,7 @@ public interface City {
 
     public int getSize();
 
-    public void setFlag(String flagName, String flagValue) throws RaidCraftException;
+    public void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException;
 
     public void removeFlag(String flagName);
 

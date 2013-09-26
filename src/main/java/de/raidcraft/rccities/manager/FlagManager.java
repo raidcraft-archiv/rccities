@@ -11,6 +11,7 @@ import de.raidcraft.rccities.tables.TPlotFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -56,7 +57,7 @@ public class FlagManager {
         registeredPlotFlags.put(name, clazz);
     }
 
-    public void setCityFlag(City city, String flagName, String flagValue) throws RaidCraftException {
+    public void setCityFlag(City city, Player player, String flagName, String flagValue) throws RaidCraftException {
 
         if(!registeredCityFlags.containsKey(flagName)) {
             String flagList = "";
@@ -89,7 +90,14 @@ public class FlagManager {
             flag = loadCityFlag(registeredCityFlags.get(flagName), city);
         }
 
-        long cooldown = (flag.getLastChange() / 1000) + flag.getClass().getAnnotation(FlagInformation.class).cooldown() - (System.currentTimeMillis() / 1000);
+        FlagInformation annotation = flag.getClass().getAnnotation(FlagInformation.class);
+
+        // check if admin only
+        if(annotation.adminOnly() && player != null && !player.hasPermission("rccities.flag.all")) {
+            throw new RaidCraftException("Diese Flag kann nur von Administratoren geändert werden!");
+        }
+
+        long cooldown = (flag.getLastChange() / 1000) + annotation.cooldown() - (System.currentTimeMillis() / 1000);
         if(cooldown > 0) {
             throw new RaidCraftException("Diese Flag kann erst wieder in " + cooldown + " Sekunden geändert werden!");
         }
@@ -129,13 +137,7 @@ public class FlagManager {
         cachedCityFlags.get(city.getName()).remove(flagName);
     }
 
-    public void setCityFlag(City city, Class<? extends CityFlag> clazz, Object value) throws RaidCraftException {
-
-        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
-        setCityFlag(city, annotation.name(), value.toString());
-    }
-
-    public void setPlotFlag(Plot plot, String flagName, String flagValue) throws RaidCraftException {
+    public void setPlotFlag(Plot plot, Player player, String flagName, String flagValue) throws RaidCraftException {
 
         if(!registeredPlotFlags.containsKey(flagName)) {
             String flagList = "";
@@ -168,7 +170,14 @@ public class FlagManager {
             flag = loadPlotFlag(registeredPlotFlags.get(flagName), plot);
         }
 
-        long cooldown = (flag.getLastChange() / 1000) + flag.getClass().getAnnotation(FlagInformation.class).cooldown() - (System.currentTimeMillis() / 1000);
+        FlagInformation annotation = flag.getClass().getAnnotation(FlagInformation.class);
+
+        // check if admin only
+        if(annotation.adminOnly() && player != null && !player.hasPermission("rccities.flag.all")) {
+            throw new RaidCraftException("Diese Flag kann nur von Administratoren geändert werden!");
+        }
+
+        long cooldown = (flag.getLastChange() / 1000) + annotation.cooldown() - (System.currentTimeMillis() / 1000);
         if(cooldown > 0) {
             throw new RaidCraftException("Diese Flag kann erst wieder in " + cooldown + " Sekunden geändert werden!");
         }
@@ -198,10 +207,16 @@ public class FlagManager {
         }
     }
 
-    public void setPlotFlag(Plot plot, Class<? extends PlotFlag> clazz, Object value) throws RaidCraftException {
+    public void setCityFlag(City city, Player player, Class<? extends CityFlag> clazz, Object value) throws RaidCraftException {
 
         FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
-        setPlotFlag(plot, annotation.name(), value.toString());
+        setCityFlag(city, player, annotation.name(), value.toString());
+    }
+
+    public void setPlotFlag(Plot plot, Player player, Class<? extends PlotFlag> clazz, Object value) throws RaidCraftException {
+
+        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
+        setPlotFlag(plot, player, annotation.name(), value.toString());
     }
 
     public void removePlotFlag(Plot plot, String flagName) {

@@ -111,9 +111,9 @@ public class TownCommands {
                 }
 
                 // set flags at the end because of possible errors
-                plugin.getFlagManager().setCityFlag(city, PvpCityFlag.class, false);        // disable pvp
-                plugin.getFlagManager().setCityFlag(city, InviteCityFlag.class, false);     // disable invites
-                plugin.getFlagManager().setCityFlag(city, GreetingsCityFlag.class, true);   // enable greetings
+                plugin.getFlagManager().setCityFlag(city, player, PvpCityFlag.class, false);        // disable pvp
+                plugin.getFlagManager().setCityFlag(city, player, InviteCityFlag.class, false);     // disable invites
+                plugin.getFlagManager().setCityFlag(city, player, GreetingsCityFlag.class, true);   // enable greetings
 
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
