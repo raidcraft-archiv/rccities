@@ -2,6 +2,7 @@ package de.raidcraft.rccities.api.city;
 
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rcupgrades.api.holder.UpgradeHolder;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -37,9 +38,7 @@ public interface City {
 
     public void setPlotCredit(int plotCredit);
 
-    public int getLevel();
-
-    public void setLevel(int level);
+    public UpgradeHolder getUpgrades();
 
     public int getMaxRadius();
 

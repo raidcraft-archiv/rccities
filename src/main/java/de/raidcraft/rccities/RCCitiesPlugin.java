@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
@@ -21,7 +22,9 @@ import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.tables.*;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class RCCitiesPlugin extends BasePlugin {
     private WorldGuardPlugin worldGuard;
     private WorldEditPlugin worldEdit;
     private LocalConfiguration config;
+    private ConfigurationSection upgradeConfiguration;
 
     private CityManager cityManager;
     private PlotManager plotManager;
@@ -89,6 +93,13 @@ public class RCCitiesPlugin extends BasePlugin {
                 }
             }
         }
+
+        // load upgrade holder
+        for(File file : getDataFolder().listFiles()) {
+            if (file.getName().equalsIgnoreCase(config.upgradeHolder + ".yml")) {
+                upgradeConfiguration = configure(new SimpleConfiguration<>(this, file));
+            }
+        }
     }
 
     @Override
@@ -124,6 +135,8 @@ public class RCCitiesPlugin extends BasePlugin {
         public int initialPlotCredit = 3;
         @Setting("flag-plot-mark-cost")
         public double flagPlotMarkCost = 0.01;
+        @Setting("city-upgrade-holder")
+        public String upgradeHolder = "city-upgrade-holder";
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 
@@ -184,5 +197,10 @@ public class RCCitiesPlugin extends BasePlugin {
     public WorldGuardManager getWorldGuardManager() {
 
         return worldGuardManager;
+    }
+
+    public ConfigurationSection getUpgradeConfiguration() {
+
+        return upgradeConfiguration;
     }
 }

@@ -6,6 +6,7 @@ import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TCity;
+import de.raidcraft.rcupgrades.RCUpgradesPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,8 +33,9 @@ public class DatabaseCity extends AbstractCity {
         description = tCity.getDescription();
         plotCredit = tCity.getPlotCredit();
         maxRadius = tCity.getMaxRadius();
-        level = tCity.getLevel();
         spawn = new Location(Bukkit.getWorld(tCity.getWorld()), (double)tCity.getX() / 1000D, (double)tCity.getY() / 1000D, (double)tCity.getZ() / 1000D, (float)tCity.getYaw() / 1000F, (float)tCity.getPitch() / 1000F);
+        upgradeHolder = RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager()
+                .loadDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration(),id);
     }
 
     @Override
@@ -76,14 +78,16 @@ public class DatabaseCity extends AbstractCity {
             tCity.setCreator(getCreator());
             tCity.setName(getName());
             tCity.setWorld(getSpawn().getWorld().getName());
-            tCity.setX((int)getSpawn().getX() * 1000);
-            tCity.setY((int)getSpawn().getY() * 1000);
-            tCity.setZ((int)getSpawn().getZ() * 1000);
-            tCity.setPitch((int)getSpawn().getPitch() * 1000);
-            tCity.setYaw((int)getSpawn().getYaw() * 1000);
+            tCity.setX((int) getSpawn().getX() * 1000);
+            tCity.setY((int) getSpawn().getY() * 1000);
+            tCity.setZ((int) getSpawn().getZ() * 1000);
+            tCity.setPitch((int) getSpawn().getPitch() * 1000);
+            tCity.setYaw((int) getSpawn().getYaw() * 1000);
             tCity.setMaxRadius(getMaxRadius());
             tCity.setPlotCredit(getPlotCredit());
-            tCity.setLevel(getLevel());
+            upgradeHolder = RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager()
+                    .createDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration());
+            tCity.setUpgradeId(upgradeHolder.getId());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
             RaidCraft.getEconomy().createAccount(getBankAccountName());
@@ -92,16 +96,15 @@ public class DatabaseCity extends AbstractCity {
         else {
             TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, getId());
             tCity.setWorld(getSpawn().getWorld().getName());
-            tCity.setX((int)getSpawn().getX() * 1000);
-            tCity.setY((int)getSpawn().getY() * 1000);
-            tCity.setZ((int)getSpawn().getZ() * 1000);
-            tCity.setPitch((int)getSpawn().getPitch() * 1000);
-            tCity.setYaw((int)getSpawn().getYaw() * 1000);
+            tCity.setX((int) getSpawn().getX() * 1000);
+            tCity.setY((int) getSpawn().getY() * 1000);
+            tCity.setZ((int) getSpawn().getZ() * 1000);
+            tCity.setPitch((int) getSpawn().getPitch() * 1000);
+            tCity.setYaw((int) getSpawn().getYaw() * 1000);
             tCity.setDescription(getDescription());
             tCity.setPlotCredit(getPlotCredit());
             tCity.setMaxRadius(getMaxRadius());
             tCity.setExp(getExp());
-            tCity.setLevel(getLevel());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tCity);
         }
     }
@@ -118,10 +121,10 @@ public class DatabaseCity extends AbstractCity {
         }
 
         RaidCraft.getEconomy().deleteAccount(getBankAccountName());
+        RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager().deleteUpgradeHolder(getUpgrades().getId());
 
         plugin.getCityManager().removeFromCache(this);
         TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, getId());
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tCity);
-
     }
 }

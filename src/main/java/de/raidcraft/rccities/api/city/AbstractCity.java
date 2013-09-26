@@ -2,6 +2,7 @@ package de.raidcraft.rccities.api.city;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
+import de.raidcraft.rcupgrades.api.holder.UpgradeHolder;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
@@ -20,7 +21,7 @@ public abstract class AbstractCity implements City {
     protected int plotCredit;
     protected int maxRadius;
     protected int exp;
-    protected int level;
+    protected UpgradeHolder upgradeHolder;
 
     protected AbstractCity() {}
 
@@ -29,7 +30,6 @@ public abstract class AbstractCity implements City {
         this.name = name;
         this.spawn = spawn;
         this.creator = creator;
-        this.level = 1;
         this.creationDate = new Timestamp(System.currentTimeMillis());
         this.plotCredit = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().initialPlotCredit;
         this.maxRadius = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().defaultMaxRadius;
@@ -107,18 +107,6 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public int getLevel() {
-
-        return level;
-    }
-
-    @Override
-    public void setLevel(int level) {
-
-        this.level = level;
-    }
-
-    @Override
     public int getPlotCredit() {
 
         return plotCredit;
@@ -155,6 +143,12 @@ public abstract class AbstractCity implements City {
     public int getMaxRadius() {
 
         return maxRadius;
+    }
+
+    @Override
+    public UpgradeHolder getUpgrades() {
+
+        return upgradeHolder;
     }
 
     @Override
