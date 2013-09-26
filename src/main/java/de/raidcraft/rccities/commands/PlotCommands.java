@@ -305,7 +305,7 @@ public class PlotCommands {
             }
 
             try {
-                plot.setFlag(flagName, flagValue);
+                plot.setFlag(player, flagName, flagValue);
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }

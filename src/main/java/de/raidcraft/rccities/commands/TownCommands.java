@@ -334,7 +334,7 @@ public class TownCommands {
             }
 
             try {
-                city.setFlag(flagName, flagValue);
+                city.setFlag(player, flagName, flagValue);
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
