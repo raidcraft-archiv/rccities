@@ -6,20 +6,17 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.FlagInformation;
-import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
 import de.raidcraft.rccities.api.flags.PlotFlag;
 import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 
 /**
  * @author Philip Urban
  */
 @FlagInformation(
         name = "PVP",
-        type = FlagType.BOOLEAN,
-        refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0,
-        cooldown = 60
+        type = FlagType.BOOLEAN
 )
 public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
@@ -32,7 +29,7 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
     public void allow(Plot plot) {
 
         // check if plot has its own pvp setting -> skip
-        PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, "pvp");
+        PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, PvpPlotFlag.class);
         if(existingFlag != null && !existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
 
         plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
@@ -42,7 +39,7 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
     public void deny(Plot plot) {
 
         // check if plot has its own pvp setting -> skip
-        PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, "pvp");
+        PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, PvpPlotFlag.class);
         if(existingFlag != null && existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
 
         plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.DENY);

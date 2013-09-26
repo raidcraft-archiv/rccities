@@ -5,7 +5,6 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.flags.AbstractPlotFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
-import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
 import de.raidcraft.rccities.api.plot.Plot;
 
@@ -15,8 +14,6 @@ import de.raidcraft.rccities.api.plot.Plot;
 @FlagInformation(
         name = "PVP",
         type = FlagType.BOOLEAN,
-        refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0,
         cooldown = 60
 )
 public class PvpPlotFlag extends AbstractPlotFlag {

@@ -6,9 +6,13 @@ import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.DatabasePlot;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
+import de.raidcraft.rccities.flags.city.PvpCityFlag;
+import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -94,6 +98,8 @@ public class TownCommands {
             try {
                 city = plugin.getCityManager().createCity(args.getJoinedStrings(0), player.getLocation(), player.getName());
 
+                // default flags
+
                 // create initial plot
                 Plot plot = new DatabasePlot(player.getLocation(), city);
 
@@ -103,6 +109,11 @@ public class TownCommands {
                 } catch (RaidCraftException e) {
                     throw new CommandException(e.getMessage());
                 }
+
+                // set flags at the end because of possible errors
+                plugin.getFlagManager().setCityFlag(city, PvpCityFlag.class, false);        // disable pvp
+                plugin.getFlagManager().setCityFlag(city, InviteCityFlag.class, false);     // disable invites
+                plugin.getFlagManager().setCityFlag(city, GreetingsCityFlag.class, true);   // enable greetings
 
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
@@ -380,6 +391,12 @@ public class TownCommands {
 
             if(player.getName().equalsIgnoreCase(targetPlayer.getName())) {
                 throw new CommandException("Du kannst dich nicht selbst in die Stadt einladen!");
+            }
+
+            // invite is locked
+            CityFlag inviteFlag = plugin.getFlagManager().getCityFlag(city, InviteCityFlag.class);
+            if(inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
+                throw new CommandException("Deine Stadt darf zurzeit keine neuen Spieler einladen!");
             }
 
             invites.put(targetPlayer.getName(), city);

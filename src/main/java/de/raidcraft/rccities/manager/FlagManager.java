@@ -129,6 +129,12 @@ public class FlagManager {
         cachedCityFlags.get(city.getName()).remove(flagName);
     }
 
+    public void setCityFlag(City city, Class<? extends CityFlag> clazz, Object value) throws RaidCraftException {
+
+        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
+        setCityFlag(city, annotation.name(), value.toString());
+    }
+
     public void setPlotFlag(Plot plot, String flagName, String flagValue) throws RaidCraftException {
 
         if(!registeredPlotFlags.containsKey(flagName)) {
@@ -190,6 +196,12 @@ public class FlagManager {
             tFlag.setValue(flagValue);
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tFlag);
         }
+    }
+
+    public void setPlotFlag(Plot plot, Class<? extends PlotFlag> clazz, Object value) throws RaidCraftException {
+
+        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
+        setPlotFlag(plot, annotation.name(), value.toString());
     }
 
     public void removePlotFlag(Plot plot, String flagName) {
@@ -315,6 +327,18 @@ public class FlagManager {
 
         if(!cachedPlotFlags.containsKey(plot.getId())) return null;
         return cachedPlotFlags.get(plot.getId()).get(flagName);
+    }
+
+    public CityFlag getCityFlag(City city, Class<? extends CityFlag> clazz) {
+
+        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
+        return getCityFlag(city, annotation.name());
+    }
+
+    public PlotFlag getPlotFlag(Plot plot, Class<? extends PlotFlag> clazz) {
+
+        FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
+        return getPlotFlag(plot, annotation.name());
     }
 
     public void clearCache() {

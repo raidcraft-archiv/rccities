@@ -3,7 +3,6 @@ package de.raidcraft.rccities.flags.city;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.FlagInformation;
-import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
@@ -14,10 +13,7 @@ import org.bukkit.ChatColor;
  */
 @FlagInformation(
         name = "GREETINGS",
-        type = FlagType.BOOLEAN,
-        refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0,
-        cooldown = 60
+        type = FlagType.BOOLEAN
 )
 public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {
 

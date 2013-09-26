@@ -7,7 +7,6 @@ import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.flags.AbstractPlotFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
-import de.raidcraft.rccities.api.flags.FlagRefreshType;
 import de.raidcraft.rccities.api.flags.FlagType;
 import de.raidcraft.rccities.api.plot.Plot;
 import org.bukkit.Chunk;
@@ -21,8 +20,6 @@ import org.bukkit.block.Block;
 @FlagInformation(
         name = "MARK",
         type = FlagType.BOOLEAN,
-        refreshType = FlagRefreshType.ON_CHANGE,
-        refreshInterval = 0,
         cooldown = 5
 )
 public class MarkPlotFlag extends AbstractPlotFlag {
