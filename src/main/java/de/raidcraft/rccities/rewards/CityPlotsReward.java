@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * @author Philip Urban
  */
 @RewardInformation("CITY_PLOTS")
-public class CityPlotsReward<T> extends AbstractReward<T> {
+public class CityPlotsReward extends AbstractReward<City> {
 
     int plotAmount;
     boolean broadcast;
@@ -29,10 +29,7 @@ public class CityPlotsReward<T> extends AbstractReward<T> {
     }
 
     @Override
-    public void reward(T object) {
-
-        if (object == null || City.class != object.getClass()) return;
-        City city = (City)object;
+    public void reward(City city) {
 
         city.setPlotCredit(city.getPlotCredit() + plotAmount);
 
