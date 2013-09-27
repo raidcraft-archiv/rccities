@@ -6,6 +6,7 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.api.requirement.RequirementManager;
 import de.raidcraft.api.reward.RewardManager;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
@@ -20,6 +21,7 @@ import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
+import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.tables.*;
 import de.raidcraft.rcconversations.actions.ActionManager;
@@ -81,13 +83,18 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(MarkPlotFlag.class);
         flagManager.registerPlotFlag(PvpPlotFlag.class);
 
+        // conversation actions
         ActionManager.registerAction(new FindCityAction());
         ActionManager.registerAction(new IsCityMemberAction());
         ActionManager.registerAction(new HasRolePermissionAction());
         ActionManager.registerAction(new DepositAction());
         ActionManager.registerAction(new WithdrawAction());
 
+        // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);
+
+        // upgrade requirements
+        RequirementManager.registerRequirementType(CityExpRequirement.class);
 
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {

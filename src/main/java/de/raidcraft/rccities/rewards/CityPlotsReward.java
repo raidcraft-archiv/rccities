@@ -2,6 +2,7 @@ package de.raidcraft.rccities.rewards;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.reward.AbstractReward;
+import de.raidcraft.api.reward.RewardInformation;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * @author Philip Urban
  */
+@RewardInformation("CITY_PLOTS")
 public class CityPlotsReward<T> extends AbstractReward<T> {
 
     int plotAmount;
@@ -30,7 +32,6 @@ public class CityPlotsReward<T> extends AbstractReward<T> {
     public void reward(T object) {
 
         if (object == null || City.class != object.getClass()) return;
-
         City city = (City)object;
 
         city.setPlotCredit(city.getPlotCredit() + plotAmount);
