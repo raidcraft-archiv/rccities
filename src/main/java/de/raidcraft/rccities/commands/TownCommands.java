@@ -239,7 +239,7 @@ public class TownCommands {
             }
 
             city.setSpawn(player.getLocation());
-            plugin.getResidentManager().broadcastCityMessage(city, "Der Stadtspawn von '" + city.getFriendlyName() + "' wurde versetzt!");
+            plugin.getResidentManager().broadcastCityMessage(city, "Der Stadtspawn wurde versetzt!");
         }
 
         @Command(
@@ -268,7 +268,7 @@ public class TownCommands {
 
             city.setDescription(description);
             player.sendMessage(ChatColor.GREEN + "Du hast die Beschreibung der Stadt '" + city.getFriendlyName() + "' geändert!");
-            plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt '" + city.getFriendlyName() + "' wurde geändert!");
+            plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt wurde geändert!");
         }
 
         @Command(

@@ -33,11 +33,13 @@ public class ResidentManager {
 
     public void broadcastCityMessage(City city, String message) {
 
+        String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + city.getFriendlyName() + ChatColor.DARK_GRAY + "] ";
+
         for(Resident resident : getResidents(city)) {
 
             Player player = resident.getPlayer();
             if(player != null) {
-                player.sendMessage(ChatColor.GOLD + message);
+                player.sendMessage(prefix + ChatColor.GOLD + message);
             }
         }
     }

@@ -6,6 +6,7 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.api.reward.RewardManager;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
@@ -19,6 +20,7 @@ import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
+import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.tables.*;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import org.bukkit.Bukkit;
@@ -84,6 +86,8 @@ public class RCCitiesPlugin extends BasePlugin {
         ActionManager.registerAction(new HasRolePermissionAction());
         ActionManager.registerAction(new DepositAction());
         ActionManager.registerAction(new WithdrawAction());
+
+        RewardManager.registerRewardType(CityPlotsReward.class);
 
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {
