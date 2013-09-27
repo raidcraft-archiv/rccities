@@ -10,11 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
  * @author Philip Urban
  */
 @RequirementInformation("CITY_EXP")
-public class CityExpRequirement<T> extends AbstractRequirement<T> {
+public class CityExpRequirement extends AbstractRequirement<City> {
 
     private int amount;
 
-    public CityExpRequirement(RequirementResolver<T> resolver, ConfigurationSection config) {
+    public CityExpRequirement(RequirementResolver<City> resolver, ConfigurationSection config) {
 
         super(resolver, config);
     }
@@ -26,10 +26,7 @@ public class CityExpRequirement<T> extends AbstractRequirement<T> {
     }
 
     @Override
-    public boolean isMet(T object) {
-
-        if (object == null || City.class != object.getClass()) return false;
-        City city = (City)object;
+    public boolean isMet(City city) {
 
         if(city.getExp() >= amount) {
             return true;
