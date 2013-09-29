@@ -222,6 +222,9 @@ public class PlotCommands {
             // withdraw plot credit
             city.setPlotCredit(city.getPlotCredit() - 1);
 
+            // reload city flags
+            city.refreshFlags();
+
             player.sendMessage(ChatColor.GREEN + "Der Plot wurde erfolgreich geclaimt! (Restliches Guthaben: " + city.getPlotCredit() + " Plots)");
         }
 
