@@ -5,8 +5,10 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.request.JoinRequest;
+import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
@@ -43,6 +45,14 @@ public class FindCityAction extends AbstractAction {
             if(!joinRequest.isRejected()) openRequests++;
         }
         conversation.set("city_open_requests", openRequests);
+
+        double joinCosts = 0;
+        CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
+        if(joinCostsCityFlag != null) {
+            joinCosts = joinCostsCityFlag.getType().convertToDouble(joinCostsCityFlag.getValue());
+        }
+        conversation.set("city_join_costs_friendly", economy.getFormattedAmount(joinCosts));
+        conversation.set("city_join_costs", joinCosts);
 
         changeStage(conversation, success);
     }

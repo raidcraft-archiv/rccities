@@ -15,6 +15,7 @@ import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.conversation.*;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
+import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
@@ -78,6 +79,7 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerCityFlag(PvpCityFlag.class);
         flagManager.registerCityFlag(GreetingsCityFlag.class);
         flagManager.registerCityFlag(InviteCityFlag.class);
+        flagManager.registerCityFlag(JoinCostsCityFlag.class);
 
         // plot flags
         flagManager.registerPlotFlag(MarkPlotFlag.class);
@@ -153,6 +155,8 @@ public class RCCitiesPlugin extends BasePlugin {
         public double flagPlotMarkCost = 0.01;
         @Setting("city-upgrade-holder")
         public String upgradeHolder = "city-upgrade-holder";
+        @Setting("join-costs")
+        public double joinCosts = 0.01;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

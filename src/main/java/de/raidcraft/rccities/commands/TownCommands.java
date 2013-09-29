@@ -11,6 +11,7 @@ import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
+import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -114,6 +115,7 @@ public class TownCommands {
                 plugin.getFlagManager().setCityFlag(city, player, PvpCityFlag.class, false);        // disable pvp
                 plugin.getFlagManager().setCityFlag(city, player, InviteCityFlag.class, false);     // disable invites
                 plugin.getFlagManager().setCityFlag(city, player, GreetingsCityFlag.class, true);   // enable greetings
+                plugin.getFlagManager().setCityFlag(city, player, JoinCostsCityFlag.class, 0.01);   // default join costs
 
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
