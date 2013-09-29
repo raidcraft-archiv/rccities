@@ -490,6 +490,7 @@ public class TownCommands {
         @Command(
                 aliases = {"kick"},
                 desc = "Kicks a resident",
+                flags = "f",
                 usage = "[Stadtname] <Spieler>"
         )
         @CommandPermissions("rccities.town.kick")
@@ -525,7 +526,7 @@ public class TownCommands {
                 city = citizenships.get(0).getCity();
             }
 
-            if(player.getName().equalsIgnoreCase(target)) {
+            if(!args.hasFlag('f') && player.getName().equalsIgnoreCase(target)) {
                 throw new CommandException("Du kannst dich nicht selbst aus der Stadt schmeissen!");
             }
 
