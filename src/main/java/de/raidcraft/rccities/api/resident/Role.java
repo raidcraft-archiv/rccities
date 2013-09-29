@@ -16,6 +16,7 @@ public enum Role {
     ),
 
     ADMIN("Administrator", true,
+            RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
@@ -34,6 +35,7 @@ public enum Role {
     ),
 
     MAYOR("Bürgermeister", true,
+            RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
@@ -51,6 +53,7 @@ public enum Role {
     ),
 
     VICE_MAYOR("Vize Bürgermeister", false,
+            RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
@@ -65,6 +68,7 @@ public enum Role {
     ),
 
     ASSISTANT("Stadtassistent", false,
+            RolePermission.LEAVE,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
