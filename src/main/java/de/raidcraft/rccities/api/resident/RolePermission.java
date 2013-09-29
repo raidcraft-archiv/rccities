@@ -19,5 +19,6 @@ public enum RolePermission {
     PROMOTE,
     SPAWN_TELEPORT,
     DEPOSIT,
-    WITHDRAW
+    WITHDRAW,
+    STAFF
 }

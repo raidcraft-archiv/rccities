@@ -43,13 +43,18 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
     @Override
     public void save() {
 
-        TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
+        TJoinRequest tJoinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
-        if(joinRequest == null) {
-            joinRequest = new TJoinRequest();
-            joinRequest.setCity(getCity());
-            joinRequest.setPlayer(getPlayer());
-            RaidCraft.getDatabase(RCCitiesPlugin.class).save(joinRequest);
+        if(tJoinRequest == null) {
+            tJoinRequest = new TJoinRequest();
+            tJoinRequest.setCity(getCity());
+            tJoinRequest.setPlayer(getPlayer());
+            RaidCraft.getDatabase(RCCitiesPlugin.class).save(tJoinRequest);
+        }
+        else if(tJoinRequest.isRejected() != isRejected() || !tJoinRequest.getRejectReason().equalsIgnoreCase(getRejectReason())) {
+            tJoinRequest.setRejected(isRejected());
+            tJoinRequest.setRejectReason(getRejectReason());
+            RaidCraft.getDatabase(RCCitiesPlugin.class).update(tJoinRequest);
         }
     }
 

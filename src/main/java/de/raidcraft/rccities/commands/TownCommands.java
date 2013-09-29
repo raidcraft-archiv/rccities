@@ -48,7 +48,7 @@ public class TownCommands {
 
         List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName());
         if(citizenships == null || citizenships.size() > 1) {
-            throw new CommandException("Mehrere Städte gefunden: Nutze /town info <Stadtname>!");
+            throw new CommandException("Mehrere Gilden gefunden: Nutze /gilde info <Gildenname>!");
         }
         try {
             plugin.getCityManager().printCityInfo(citizenships.get(0).getCity().getName(), sender);

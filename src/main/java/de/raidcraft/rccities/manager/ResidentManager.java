@@ -44,6 +44,21 @@ public class ResidentManager {
         }
     }
 
+    public void broadcastCityMessage(City city, String message, RolePermission receiverPermission) {
+
+        String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + city.getFriendlyName() + ChatColor.DARK_GRAY + "] ";
+
+        for(Resident resident : getResidents(city)) {
+
+            if(!resident.getRole().hasPermission(receiverPermission)) continue;
+
+            Player player = resident.getPlayer();
+            if(player != null) {
+                player.sendMessage(prefix + ChatColor.GOLD + message);
+            }
+        }
+    }
+
     public Resident addResident(City city, Player player) throws RaidCraftException {
 
         Resident resident = getResident(player.getName(), city);

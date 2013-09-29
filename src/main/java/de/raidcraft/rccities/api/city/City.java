@@ -63,6 +63,10 @@ public interface City {
 
     public List<JoinRequest> getJoinRequests();
 
+    public JoinRequest getJoinRequest(String playerName);
+
+    public void sendJoinRequest(String playerName);
+
     public void save();
 
     public void delete();

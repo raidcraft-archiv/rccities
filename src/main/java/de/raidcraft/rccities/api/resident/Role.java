@@ -29,7 +29,8 @@ public enum Role {
             RolePermission.SPAWN_TELEPORT,
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
-            RolePermission.WITHDRAW
+            RolePermission.WITHDRAW,
+            RolePermission.STAFF
     ),
 
     MAYOR("Bürgermeister", true,
@@ -45,7 +46,8 @@ public enum Role {
             RolePermission.PLOT_FLAG_MODIFICATION,
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
-            RolePermission.WITHDRAW
+            RolePermission.WITHDRAW,
+            RolePermission.STAFF
     ),
 
     VICE_MAYOR("Vize Bürgermeister", false,
@@ -58,7 +60,8 @@ public enum Role {
             RolePermission.PLOT_FLAG_MODIFICATION,
             RolePermission.PROMOTE,
             RolePermission.PLOT_BUY,
-            RolePermission.DEPOSIT
+            RolePermission.DEPOSIT,
+            RolePermission.STAFF
     ),
 
     ASSISTANT("Stadtassistent", false,
@@ -66,7 +69,8 @@ public enum Role {
             RolePermission.BUILD_EVERYWHERE,
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.PLOT_FLAG_MODIFICATION,
-            RolePermission.DEPOSIT
+            RolePermission.DEPOSIT,
+            RolePermission.STAFF
     );
 
     private Set<RolePermission> permissions = new HashSet<>();

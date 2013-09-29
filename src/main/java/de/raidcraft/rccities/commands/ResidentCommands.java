@@ -87,12 +87,12 @@ public class ResidentCommands {
                 roleName = args.getString(2);
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Namen '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.resident.promote.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
-                        throw new CommandException("Du darfst keine Berufe in der Stadt '" + city.getFriendlyName() + "' zuweisen!");
+                        throw new CommandException("Du darfst keine Berufe in der Gilde '" + city.getFriendlyName() + "' zuweisen!");
                     }
                 }
             }
@@ -101,10 +101,10 @@ public class ResidentCommands {
                 roleName = args.getString(1);
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.PROMOTE);
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spielern Berufe zuzuteilen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht Spielern Berufe zuzuteilen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spielern Berufe zuzuteilen! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spielern Berufe zuzuteilen! Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
@@ -123,7 +123,7 @@ public class ResidentCommands {
                 if(player.hasPermission("rccities.resident.promote.all") && args.hasFlag('f')) {
                     Player targetPlayer = Bukkit.getPlayer(target);
                     if(targetPlayer == null) {
-                        throw new CommandException("Der Spieler muss Online sein wenn er noch nicht in dieser Stadt Einwohner ist!");
+                        throw new CommandException("Der Spieler muss Online sein wenn er noch nicht in dieser Gilde Mitglied ist!");
                     }
                     try {
                         targetResident = plugin.getResidentManager().addResident(city, targetPlayer);
@@ -132,7 +132,7 @@ public class ResidentCommands {
                     }
                 }
                 else {
-                    throw new CommandException("In dieser Stadt gibt es keinen Einwohner mit dem Namen '" + target + "'");
+                    throw new CommandException("In dieser Gilde gibt es kein Mitglied mit dem Namen '" + target + "'");
                 }
             }
             oldRole = targetResident.getRole();
@@ -150,7 +150,7 @@ public class ResidentCommands {
                     plot.updateRegion(false);
                 }
             }
-            Bukkit.broadcastMessage(ChatColor.GOLD + targetResident.getName() + " ist nun " + newRole.getFriendlyName() + " der Stadt '" + city.getFriendlyName() + "'!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + targetResident.getName() + " ist nun " + newRole.getFriendlyName() + " der Gilde '" + city.getFriendlyName() + "'!");
         }
     }
 

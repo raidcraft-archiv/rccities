@@ -18,6 +18,7 @@ public abstract class AbstractJoinRequest implements JoinRequest {
         this.city = city;
         this.rejected = rejected;
         this.rejectReason = rejectReason;
+        save();
     }
 
     @Override
@@ -42,6 +43,7 @@ public abstract class AbstractJoinRequest implements JoinRequest {
     public void setRejected(boolean rejected) {
 
         this.rejected = rejected;
+        save();
     }
 
     @Override
@@ -54,5 +56,6 @@ public abstract class AbstractJoinRequest implements JoinRequest {
     public void setRejectReason(String rejectReason) {
 
         this.rejectReason = rejectReason;
+        save();
     }
 }
