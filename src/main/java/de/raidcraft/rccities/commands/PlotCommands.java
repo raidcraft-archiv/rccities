@@ -97,6 +97,8 @@ public class PlotCommands {
             }
 
             plot.removeResident(resident);
+            plot.getCity().refreshFlags();
+            plot.refreshFlags();
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich " + targetResident.getName() + " entzogen!");
             if(targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
@@ -145,6 +147,8 @@ public class PlotCommands {
             }
 
             plot.assignResident(resident);
+            plot.getCity().refreshFlags();
+            plot.refreshFlags();
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich an " + targetResident.getName() + " vergeben!");
             if(targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
