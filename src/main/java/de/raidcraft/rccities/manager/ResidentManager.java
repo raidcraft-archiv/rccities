@@ -145,8 +145,6 @@ public class ResidentManager {
             }
         }
 
-        if(citizenships.size() == 0) return null;
-
         return citizenships;
     }
 
