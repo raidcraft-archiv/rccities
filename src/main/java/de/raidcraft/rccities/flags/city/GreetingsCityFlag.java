@@ -30,7 +30,10 @@ public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {
             if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
             residentList += ChatColor.GREEN + resident.getName();
         }
-        plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, ChatColor.GREEN + "~ " + plot.getId() + ": " + residentList + " ~");
+        if(residentList.isEmpty()) {
+            residentList = "No owners";
+        }
+        plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, ChatColor.GREEN + "~ " + plot.getRegionName() + ": " + residentList + " ~");
     }
 
     @Override
