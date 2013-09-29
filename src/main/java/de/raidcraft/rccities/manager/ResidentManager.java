@@ -8,6 +8,7 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.rccities.tables.TJoinRequest;
 import de.raidcraft.rccities.tables.TResident;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
@@ -104,6 +105,14 @@ public class ResidentManager {
             sender.sendMessage(ChatColor.GOLD + resident.getCity().getFriendlyName() + " : " + ChatColor.YELLOW + resident.getRole().getFriendlyName());
         }
         sender.sendMessage("*********************************");
+    }
+
+    public void deleteOtherJoinRequests(String playerName, City exceptedCity) {
+
+        List<TJoinRequest> tJoinRequests = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TJoinRequest.class).where().ieq("player", playerName).ne("city_id", exceptedCity.getId()).findList();
+        if(tJoinRequests == null || tJoinRequests.size() == 0) return;
+        RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tJoinRequests);
     }
 
     public List<Resident> getCitizenships(String name) {

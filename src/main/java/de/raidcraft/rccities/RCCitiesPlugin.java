@@ -156,7 +156,7 @@ public class RCCitiesPlugin extends BasePlugin {
         @Setting("city-upgrade-holder")
         public String upgradeHolder = "city-upgrade-holder";
         @Setting("join-costs")
-        public double joinCosts = 0.01;
+        public double joinCosts = 0.1;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 
