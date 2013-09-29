@@ -92,6 +92,7 @@ public class RCCitiesPlugin extends BasePlugin {
         ActionManager.registerAction(new SendJoinRequestAction());
         ActionManager.registerAction(new AcceptJoinRequestAction());
         ActionManager.registerAction(new RejectJoinRequestAction());
+        ActionManager.registerAction(new HasCitizenshipAction());
 
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);

@@ -153,5 +153,4 @@ public class ResidentCommands {
             Bukkit.broadcastMessage(ChatColor.GOLD + targetResident.getName() + " ist nun " + newRole.getFriendlyName() + " der Gilde '" + city.getFriendlyName() + "'!");
         }
     }
-
 }
