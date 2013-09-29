@@ -104,6 +104,12 @@ public class RCCitiesPlugin extends BasePlugin {
                 }
             }
         }
+    }
+
+    @Override
+    public void reload() {
+
+        config = configure(new LocalConfiguration(this));
 
         // load upgrade holder
         for(File file : getDataFolder().listFiles()) {
@@ -111,12 +117,6 @@ public class RCCitiesPlugin extends BasePlugin {
                 upgradeConfiguration = configure(new SimpleConfiguration<>(this, file));
             }
         }
-    }
-
-    @Override
-    public void reload() {
-
-        config = configure(new LocalConfiguration(this));
     }
 
     @Override
