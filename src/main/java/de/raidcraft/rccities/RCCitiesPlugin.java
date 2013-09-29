@@ -133,6 +133,7 @@ public class RCCitiesPlugin extends BasePlugin {
         databases.add(TAssignment.class);
         databases.add(TCityFlag.class);
         databases.add(TPlotFlag.class);
+        databases.add(TJoinRequest.class);
         return databases;
     }
 

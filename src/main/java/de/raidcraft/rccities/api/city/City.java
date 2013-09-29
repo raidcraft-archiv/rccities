@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.api.city;
 
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rcupgrades.api.holder.UpgradeHolder;
 import org.bukkit.Location;
@@ -60,6 +61,8 @@ public interface City {
 
     public List<Resident> getResidents();
 
+    public List<JoinRequest> getJoinRequests();
+
     public void save();
 
     public void delete();
@@ -67,4 +70,5 @@ public interface City {
     public boolean equals(Object o);
 
     public int hashCode();
+
 }

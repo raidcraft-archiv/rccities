@@ -4,14 +4,17 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TCity;
+import de.raidcraft.rccities.tables.TJoinRequest;
 import de.raidcraft.rcupgrades.RCUpgradesPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +69,20 @@ public class DatabaseCity extends AbstractCity {
     public List<Resident> getResidents() {
 
         return RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResidents(this);
+    }
+
+    @Override
+    public List<JoinRequest> getJoinRequests() {
+
+        List<JoinRequest> joinRequests = new ArrayList<>();
+
+        List<TJoinRequest> tJoinRequests = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                .find(TJoinRequest.class).where().eq("city_id", getId()).findList();
+        for(TJoinRequest tJoinRequest : tJoinRequests) {
+            JoinRequest joinRequest = new DatabaseJoinRequest(tJoinRequest.getPlayer(), this, tJoinRequest.isRejected(), tJoinRequest.getRejectReason());
+            joinRequests.add(joinRequest);
+        }
+        return joinRequests;
     }
 
     @Override
