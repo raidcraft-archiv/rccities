@@ -328,7 +328,7 @@ public class FlagManager {
         if(!cachedPlotFlags.containsKey(plot.getId())) {
             cachedPlotFlags.put(plot.getId(), new CaseInsensitiveMap<PlotFlag>());
         }
-        cachedPlotFlags.get(plot.getCity().getName()).put(flag.getName(), flag);
+        cachedPlotFlags.get(plot.getId()).put(flag.getName(), flag);
         return flag;
     }
 
