@@ -263,7 +263,7 @@ public class FlagManager {
             Class<? extends CityFlag> clazz = registeredCityFlags.get(tCityFlag.getName());
             if(clazz == null) continue;
             FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
-            City city = plugin.getCityManager().getCity(tCityFlag.getName());
+            City city = plugin.getCityManager().getCity(tCityFlag.getCity().getName());
             if(city == null) continue;
             try {
                 CityFlag flag = loadCityFlag(clazz, city);
