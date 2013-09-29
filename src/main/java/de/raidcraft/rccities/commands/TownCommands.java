@@ -115,7 +115,7 @@ public class TownCommands {
                 plugin.getFlagManager().setCityFlag(city, player, PvpCityFlag.class, false);        // disable pvp
                 plugin.getFlagManager().setCityFlag(city, player, InviteCityFlag.class, false);     // disable invites
                 plugin.getFlagManager().setCityFlag(city, player, GreetingsCityFlag.class, true);   // enable greetings
-                plugin.getFlagManager().setCityFlag(city, player, JoinCostsCityFlag.class, 0.01);   // default join costs
+                plugin.getFlagManager().setCityFlag(city, player, JoinCostsCityFlag.class, plugin.getConfig().joinCosts);   // default join costs
 
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
