@@ -48,10 +48,12 @@ public class ListJoinRequestsAction extends AbstractAction {
         if(city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
-
-        List<JoinRequest> joinRequestList = city.getJoinRequests();
         String entranceStage = "join_requests_";
 
+        List<JoinRequest> joinRequestList = city.getJoinRequests();
+        if(joinRequestList.size() == 0) {
+            new SimpleStage(entranceStage, text + "|&cKein Anträge verfügbar!", new ArrayList<Answer>());
+        }
 
         int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
         if(pages == 0) pages = 1;
