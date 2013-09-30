@@ -85,6 +85,8 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(MarkPlotFlag.class);
         flagManager.registerPlotFlag(PvpPlotFlag.class);
 
+        flagManager.loadExistingFlags();
+
         // conversation actions
         ActionManager.registerAction(new FindCityAction());
         ActionManager.registerAction(new IsCityMemberAction());

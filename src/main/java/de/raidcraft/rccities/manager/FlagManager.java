@@ -39,7 +39,6 @@ public class FlagManager {
     public FlagManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
-        loadExistingFlags();
 
         refreshTask = new FlagRefreshTask();
         Bukkit.getScheduler().runTaskTimer(plugin, refreshTask, 0, 60 * 20);
@@ -253,7 +252,7 @@ public class FlagManager {
         }
     }
 
-    private void loadExistingFlags() {
+    public void loadExistingFlags() {
 
         clearCache();
 
@@ -283,11 +282,19 @@ public class FlagManager {
 
             Class<? extends PlotFlag> clazz = registeredPlotFlags.get(tPlotFlag.getName());
             if(clazz == null) continue;
+            FlagInformation annotation = clazz.getAnnotation(FlagInformation.class);
             Plot plot = plugin.getPlotManager().getPlot(tPlotFlag.getPlot().getId());
             if(plot == null) continue;
             try {
                 PlotFlag flag = loadPlotFlag(clazz, plot);
                 flag.setValue(tPlotFlag.getValue());
+                if(annotation.refreshType() == FlagRefreshType.ON_START) {
+                    flag.refresh();
+                }
+                if(annotation.refreshType() == FlagRefreshType.PERIODICALLY) {
+                    refreshTask.addFlagInformation(annotation, flag);
+                }
+
             } catch (RaidCraftException e) {}
         }
     }
