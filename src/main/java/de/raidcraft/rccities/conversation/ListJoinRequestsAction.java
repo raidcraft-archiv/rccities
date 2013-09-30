@@ -6,7 +6,7 @@ import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rcconversations.actions.common.StageAction;
-import de.raidcraft.rcconversations.actions.player.GiveTargetCompassAction;
+import de.raidcraft.rcconversations.actions.variables.SetVariableAction;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
@@ -41,15 +41,13 @@ public class ListJoinRequestsAction extends AbstractAction {
         String text = args.getString("text");
         text = ParseString.INST.parse(conversation, text);
         String nextStage = args.getString("next-stage", "next");
+        String varName = args.getString("var", "join_request");
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if(city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
-
-        Player player = conversation.getPlayer();
-        Stage currentStage = conversation.getCurrentStage();
 
         List<JoinRequest> joinRequestList = city.getJoinRequests();
         String entranceStage = "join_requests_";
@@ -66,7 +64,7 @@ public class ListJoinRequestsAction extends AbstractAction {
 
             for (a = 0; a < pageSize; a++) {
                 if (joinRequestList.size() <= a + (i * pageSize)) break;
-                answers.add(createStationAnswer(conversation.getPlayer(), a, joinRequestList.get(i*pageSize + a), nextStage));
+                answers.add(createAnswer(conversation.getPlayer(), a, joinRequestList.get(i * pageSize + a), nextStage, varName));
             }
             a++;
 
@@ -96,14 +94,15 @@ public class ListJoinRequestsAction extends AbstractAction {
         conversation.triggerCurrentStage();
     }
 
-    private Answer createStationAnswer(Player player, int number, JoinRequest joinRequest, String nextStage) {
+    private Answer createAnswer(Player player, int number, JoinRequest joinRequest, String nextStage, String varName) {
 
         List<ActionArgumentList> actions = new ArrayList<>();
         int i = 0;
         Map<String, Object> data = new HashMap<>();
-        data.put("city", joinRequest.getCity().getName());
-        data.put("candidate", joinRequest.getPlayer());
-        actions.add(new ActionArgumentList(String.valueOf(i++), EditJoinRequestAction.class, data));
+        data.put("variable", varName);
+        data.put("value", joinRequest.getPlayer());
+        data.put("local", true);
+        actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
         String crossed = (joinRequest.isRejected()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
