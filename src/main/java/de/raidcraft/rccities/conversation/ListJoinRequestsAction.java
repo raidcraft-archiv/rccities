@@ -52,7 +52,8 @@ public class ListJoinRequestsAction extends AbstractAction {
 
         List<JoinRequest> joinRequestList = city.getJoinRequests();
         if(joinRequestList.size() == 0) {
-            new SimpleStage(entranceStage, text + "|&cKein Anträge verfügbar!", new ArrayList<Answer>());
+            Stage stage = new SimpleStage(entranceStage, text + "|&cKein Anträge verfügbar!", new ArrayList<Answer>());
+            conversation.addStage(stage);
         }
 
         int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
