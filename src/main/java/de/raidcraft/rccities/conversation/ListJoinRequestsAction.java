@@ -16,6 +16,7 @@ import de.raidcraft.rcconversations.api.answer.SimpleAnswer;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.api.stage.SimpleStage;
 import de.raidcraft.rcconversations.api.stage.Stage;
+import de.raidcraft.rcconversations.conversations.EndReason;
 import de.raidcraft.rcconversations.util.ParseString;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -52,47 +53,46 @@ public class ListJoinRequestsAction extends AbstractAction {
 
         List<JoinRequest> joinRequestList = city.getJoinRequests();
         if(joinRequestList.size() == 0) {
-            Stage stage = new SimpleStage(entranceStage, text + "|&cKein Anträge verfügbar!", new ArrayList<Answer>());
-            conversation.addStage(stage);
+            conversation.getPlayer().sendMessage(" ");
+            conversation.getPlayer().sendMessage(ChatColor.RED + "Keine Anträge verfügbar!");
+            conversation.endConversation(EndReason.INFORM);
         }
-        else {
-            int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
-            if(pages == 0) pages = 1;
-            for (int i = 0; i < pages; i++) {
+        int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
+        if(pages == 0) pages = 1;
+        for (int i = 0; i < pages; i++) {
 
-                Stage stage;
-                List<Answer> answers = new ArrayList<>();
+            Stage stage;
+            List<Answer> answers = new ArrayList<>();
 
-                int a;
+            int a;
 
-                for (a = 0; a < pageSize; a++) {
-                    if (joinRequestList.size() <= a + (i * pageSize)) break;
-                    answers.add(createAnswer(conversation.getPlayer(), a, joinRequestList.get(i * pageSize + a), nextStage, varName));
-                }
-                a++;
-
-                String nextDynamicStage;
-                if (pages - 1 == i) {
-                    nextDynamicStage = entranceStage;
-                }
-                else {
-                    nextDynamicStage = entranceStage + "_" + (i + 1);
-                }
-                String thisStage;
-                if(i == 0) {
-                    thisStage = entranceStage;
-                }
-                else {
-                    thisStage = entranceStage + "_" + i;
-                }
-
-                if(pages > 1) {
-                    answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
-                }
-                stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
-
-                conversation.addStage(stage);
+            for (a = 0; a < pageSize; a++) {
+                if (joinRequestList.size() <= a + (i * pageSize)) break;
+                answers.add(createAnswer(conversation.getPlayer(), a, joinRequestList.get(i * pageSize + a), nextStage, varName));
             }
+            a++;
+
+            String nextDynamicStage;
+            if (pages - 1 == i) {
+                nextDynamicStage = entranceStage;
+            }
+            else {
+                nextDynamicStage = entranceStage + "_" + (i + 1);
+            }
+            String thisStage;
+            if(i == 0) {
+                thisStage = entranceStage;
+            }
+            else {
+                thisStage = entranceStage + "_" + i;
+            }
+
+            if(pages > 1) {
+                answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
+            }
+            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
+
+            conversation.addStage(stage);
         }
         conversation.setCurrentStage(entranceStage);
         conversation.triggerCurrentStage();

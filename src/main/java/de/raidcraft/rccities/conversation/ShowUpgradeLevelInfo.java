@@ -50,6 +50,7 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
 
         Player player = conversation.getPlayer();
 
+        player.sendMessage(" ");
         player.sendMessage(ChatColor.AQUA + "Informationen zum Upgrade '" + ChatColor.GOLD + level.getName() + ChatColor.AQUA + "':");
         player.sendMessage(ChatColor.AQUA + "Freischalt-Bedingung:");
         for(String requirement : level.getRequirementDescription()) {
