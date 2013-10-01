@@ -76,10 +76,16 @@ public class TownCommands {
         public void reload(CommandContext args, CommandSender sender) {
 
             plugin.reload();
+
+            for(City city : plugin.getCityManager().getCities()) {
+                plugin.getDynmapManager().addCityMarker(city);
+            }
+
             plugin.getCityManager().clearCache();
             plugin.getPlotManager().clearCache();
             plugin.getResidentManager().clearCache();
             plugin.getFlagManager().clearCache();
+
             sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen und alle Caches geleert!");
         }
 
@@ -116,6 +122,8 @@ public class TownCommands {
                 plugin.getFlagManager().setCityFlag(city, player, InviteCityFlag.class, false);     // disable invites
                 plugin.getFlagManager().setCityFlag(city, player, GreetingsCityFlag.class, true);   // enable greetings
                 plugin.getFlagManager().setCityFlag(city, player, JoinCostsCityFlag.class, plugin.getConfig().joinCosts);   // default join costs
+
+                plugin.getDynmapManager().addCityMarker(city);
 
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
