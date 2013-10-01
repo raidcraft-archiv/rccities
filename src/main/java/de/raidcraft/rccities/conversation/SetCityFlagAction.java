@@ -36,6 +36,8 @@ public class SetCityFlagAction extends AbstractAction {
 
         try {
             RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(city, conversation.getPlayer(), flagName, flagValue);
+            conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast erfolgreich die Flag '" + ChatColor.YELLOW + flagName.toUpperCase()
+                    + ChatColor.GREEN + "' auf den Wert '" + ChatColor.YELLOW + flagValue.toUpperCase() + ChatColor.GREEN + "' gesetzt!");
         } catch (RaidCraftException e) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Fehler beim ändern der Flag: " + e.getMessage());
         }
