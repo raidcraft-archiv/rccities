@@ -55,43 +55,44 @@ public class ListJoinRequestsAction extends AbstractAction {
             Stage stage = new SimpleStage(entranceStage, text + "|&cKein Anträge verfügbar!", new ArrayList<Answer>());
             conversation.addStage(stage);
         }
+        else {
+            int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
+            if(pages == 0) pages = 1;
+            for (int i = 0; i < pages; i++) {
 
-        int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
-        if(pages == 0) pages = 1;
-        for (int i = 0; i < pages; i++) {
+                Stage stage;
+                List<Answer> answers = new ArrayList<>();
 
-            Stage stage;
-            List<Answer> answers = new ArrayList<>();
+                int a;
 
-            int a;
+                for (a = 0; a < pageSize; a++) {
+                    if (joinRequestList.size() <= a + (i * pageSize)) break;
+                    answers.add(createAnswer(conversation.getPlayer(), a, joinRequestList.get(i * pageSize + a), nextStage, varName));
+                }
+                a++;
 
-            for (a = 0; a < pageSize; a++) {
-                if (joinRequestList.size() <= a + (i * pageSize)) break;
-                answers.add(createAnswer(conversation.getPlayer(), a, joinRequestList.get(i * pageSize + a), nextStage, varName));
+                String nextDynamicStage;
+                if (pages - 1 == i) {
+                    nextDynamicStage = entranceStage;
+                }
+                else {
+                    nextDynamicStage = entranceStage + "_" + (i + 1);
+                }
+                String thisStage;
+                if(i == 0) {
+                    thisStage = entranceStage;
+                }
+                else {
+                    thisStage = entranceStage + "_" + i;
+                }
+
+                if(pages > 1) {
+                    answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
+                }
+                stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
+
+                conversation.addStage(stage);
             }
-            a++;
-
-            String nextDynamicStage;
-            if (pages - 1 == i) {
-                nextDynamicStage = entranceStage;
-            }
-            else {
-                nextDynamicStage = entranceStage + "_" + (i + 1);
-            }
-            String thisStage;
-            if(i == 0) {
-                thisStage = entranceStage;
-            }
-            else {
-                thisStage = entranceStage + "_" + i;
-            }
-
-            if(pages > 1) {
-                answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
-            }
-            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
-
-            conversation.addStage(stage);
         }
         conversation.setCurrentStage(entranceStage);
         conversation.triggerCurrentStage();
