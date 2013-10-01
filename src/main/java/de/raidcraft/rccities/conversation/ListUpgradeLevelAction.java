@@ -44,7 +44,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         String upgradeType = args.getString("upgrade-type");
         upgradeType = ParseString.INST.parse(conversation, upgradeType);
         String nextStage = args.getString("next-stage", "next");
-        String varName = args.getString("var", "city_upgrade");
+        String varName = args.getString("var", "city_level");
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
@@ -114,7 +114,12 @@ public class ListUpgradeLevelAction extends AbstractAction {
         data.put("variable", varName);
         data.put("value", level.getNumber());
         data.put("local", true);
+        Map<String, Object> data2 = new HashMap<>();
+        data2.put("variable", varName + "_name");
+        data2.put("value", level.getName());
+        data2.put("local", true);
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
+        actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data2));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
         String crossed = (level.isUnlocked()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
