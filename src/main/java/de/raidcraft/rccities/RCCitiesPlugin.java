@@ -102,6 +102,7 @@ public class RCCitiesPlugin extends BasePlugin {
         ActionManager.registerAction(new ListUpgradeTypesAction());
         ActionManager.registerAction(new ListCityFlagsAction());
         ActionManager.registerAction(new SetCityFlagAction());
+        ActionManager.registerAction(new ListUpgradeLevelAction());
 
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);

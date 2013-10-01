@@ -16,7 +16,8 @@ import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.api.stage.SimpleStage;
 import de.raidcraft.rcconversations.api.stage.Stage;
 import de.raidcraft.rcconversations.util.ParseString;
-import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
+import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ import java.util.Map;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="LIST_CITY_UPGRADE_TYPES")
-public class ListUpgradeTypesAction extends AbstractAction {
+@ActionInformation(name="LIST_CITY_UPGRADE_LEVEL")
+public class ListUpgradeLevelAction extends AbstractAction {
 
     private static final int MAX_PLACES_PER_STAGE = 4;
 
@@ -39,8 +40,10 @@ public class ListUpgradeTypesAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
         String text = args.getString("text");
         text = ParseString.INST.parse(conversation, text);
+        String upgradeType = args.getString("upgrade-type");
+        upgradeType = ParseString.INST.parse(conversation, upgradeType);
         String nextStage = args.getString("next-stage", "next");
-        String varName = args.getString("var", "city_upgrade_type");
+        String varName = args.getString("var", "city_upgrade");
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
@@ -48,11 +51,11 @@ public class ListUpgradeTypesAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        List<Upgrade> upgrades = city.getUpgrades().getUpgrades();
-        String entranceStage = "city_upgrades_";
+        List<UpgradeLevel> levels = city.getUpgrades().getUpgrade(upgradeType).getLevels();
+        String entranceStage = "city_levels_";
 
 
-        int pages = (int) (((double) upgrades.size() / (double) pageSize) + 0.5);
+        int pages = (int) (((double) levels.size() / (double) pageSize) + 0.5);
         if(pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 
@@ -62,8 +65,8 @@ public class ListUpgradeTypesAction extends AbstractAction {
             int a;
 
             for (a = 0; a < pageSize; a++) {
-                if (upgrades.size() <= a + (i * pageSize)) break;
-                answers.add(createAnswer(conversation.getPlayer(), a, upgrades.get(i * pageSize + a), nextStage, varName));
+                if (levels.size() <= a + (i * pageSize)) break;
+                answers.add(createAnswer(conversation.getPlayer(), a, levels.get(i * pageSize + a), nextStage, varName));
             }
             a++;
 
@@ -93,17 +96,18 @@ public class ListUpgradeTypesAction extends AbstractAction {
         conversation.triggerCurrentStage();
     }
 
-    private Answer createAnswer(Player player, int number, Upgrade upgrade, String nextStage, String varName) {
+    private Answer createAnswer(Player player, int number, UpgradeLevel level, String nextStage, String varName) {
 
         List<ActionArgumentList> actions = new ArrayList<>();
         int i = 0;
         Map<String, Object> data = new HashMap<>();
         data.put("variable", varName);
-        data.put("value", upgrade.getId());
+        data.put("value", level.getNumber());
         data.put("local", true);
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
-        return new SimpleAnswer(String.valueOf(number + 1), upgrade.getName(), actions);
+        String crossed = (level.isUnlocked()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
+        return new SimpleAnswer(String.valueOf(number + 1), "[L" + level.getNumber() + "] " + crossed + level.getName(), actions);
     }
 }
