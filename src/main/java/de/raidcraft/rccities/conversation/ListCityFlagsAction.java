@@ -93,7 +93,12 @@ public class ListCityFlagsAction extends AbstractAction {
         data.put("variable", varName);
         data.put("value", flagInformation.name());
         data.put("local", true);
+        Map<String, Object> data2 = new HashMap<>();
+        data2.put("variable", varName + "_friendlyname");
+        data2.put("value", flagInformation.friendlyName());
+        data2.put("local", true);
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
+        actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data2));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
         return new SimpleAnswer(String.valueOf(number + 1), flagInformation.friendlyName(), actions);
