@@ -9,6 +9,8 @@ public interface Flag {
 
     public String getName();
 
+    public String getFriendlyName();
+
     public FlagType getType();
 
     public String getValue();

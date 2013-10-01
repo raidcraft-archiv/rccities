@@ -363,6 +363,16 @@ public class FlagManager {
         return getPlotFlag(plot, annotation.name());
     }
 
+    public List<FlagInformation> getRegisteredCityFlagInformationList() {
+
+        List<FlagInformation> flagInformationList = new ArrayList<>();
+        for(Class<? extends Flag> registeredFlagClass : registeredCityFlags.values()) {
+            FlagInformation annotation = registeredFlagClass.getAnnotation(FlagInformation.class);
+            flagInformationList.add(annotation);
+        }
+        return flagInformationList;
+    }
+
     public void clearCache() {
 
         cachedCityFlags.clear();

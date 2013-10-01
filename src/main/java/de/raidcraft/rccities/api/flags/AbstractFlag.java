@@ -9,6 +9,7 @@ import de.raidcraft.util.StringUtils;
 public abstract class AbstractFlag implements Flag {
 
     private String name;
+    private String friendlyName;
     private String value;
     private FlagType type;
     private long lastChange;
@@ -17,6 +18,7 @@ public abstract class AbstractFlag implements Flag {
 
         FlagInformation annotation = getClass().getAnnotation(FlagInformation.class);
         this.name = StringUtils.formatName(annotation.name());
+        this.friendlyName = annotation.friendlyName();
         this.type = annotation.type();
     }
 
@@ -39,6 +41,12 @@ public abstract class AbstractFlag implements Flag {
     public String getName() {
 
         return name;
+    }
+
+    @Override
+    public String getFriendlyName() {
+
+        return friendlyName;
     }
 
     @Override

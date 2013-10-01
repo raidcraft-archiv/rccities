@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
  */
 @FlagInformation(
         name = "MARK",
+        friendlyName = "Fackelmarkierung",
         type = FlagType.BOOLEAN,
         cooldown = 5
 )

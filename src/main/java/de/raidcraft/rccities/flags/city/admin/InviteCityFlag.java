@@ -11,6 +11,7 @@ import de.raidcraft.rccities.api.flags.FlagType;
  */
 @FlagInformation(
         name = "INVITE",
+        friendlyName = "Neue Einwohner",
         type = FlagType.BOOLEAN,
         cooldown = 0,
         adminOnly = true

@@ -16,6 +16,7 @@ import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
  */
 @FlagInformation(
         name = "PVP",
+        friendlyName = "PvP Kampf",
         type = FlagType.BOOLEAN
 )
 public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {

@@ -11,6 +11,7 @@ import de.raidcraft.rccities.api.flags.FlagType;
  */
 @FlagInformation(
         name = "JOIN_COSTS",
+        friendlyName = "Beitrittskosten",
         type = FlagType.DOUBLE,
         cooldown = 0
 )

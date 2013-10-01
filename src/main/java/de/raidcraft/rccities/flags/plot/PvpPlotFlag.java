@@ -13,6 +13,7 @@ import de.raidcraft.rccities.api.plot.Plot;
  */
 @FlagInformation(
         name = "PVP",
+        friendlyName = "PvP Kampf",
         type = FlagType.BOOLEAN,
         cooldown = 60
 )
