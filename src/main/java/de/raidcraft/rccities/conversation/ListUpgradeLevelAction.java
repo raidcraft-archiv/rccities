@@ -17,6 +17,7 @@ import de.raidcraft.rcconversations.api.stage.SimpleStage;
 import de.raidcraft.rcconversations.api.stage.Stage;
 import de.raidcraft.rcconversations.util.ParseString;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
+import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -51,7 +52,16 @@ public class ListUpgradeLevelAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        List<UpgradeLevel> levels = city.getUpgrades().getUpgrade(upgradeType).getLevels();
+        Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
+        if(upgrade == null) {
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
+        }
+
+        List< UpgradeLevel > levels = upgrade.getLevels();
+        // delete not reachable levels
+        for(UpgradeLevel level : new ArrayList<>(levels)) {
+            if(level.getNumber() > upgrade.getHighestLockedLevel().getNumber()) levels.remove(level);
+        }
         String entranceStage = "city_levels_";
 
 
@@ -108,6 +118,6 @@ public class ListUpgradeLevelAction extends AbstractAction {
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
         String crossed = (level.isUnlocked()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
-        return new SimpleAnswer(String.valueOf(number + 1), "[L" + level.getNumber() + "] " + crossed + level.getName(), actions);
+        return new SimpleAnswer(String.valueOf(number + 1), crossed + level.getName(), actions);
     }
 }
