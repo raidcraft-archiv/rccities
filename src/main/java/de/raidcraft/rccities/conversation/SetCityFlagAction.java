@@ -40,6 +40,7 @@ public class SetCityFlagAction extends AbstractAction {
                     + ChatColor.GREEN + "' auf den Wert '" + ChatColor.YELLOW + flagValue.toUpperCase() + ChatColor.GREEN + "' gesetzt!");
         } catch (RaidCraftException e) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Fehler beim ändern der Flag: " + e.getMessage());
+            conversation.getPlayer().sendMessage(ChatColor.RED + e.getMessage());
         }
         conversation.endConversation(EndReason.INFORM);
     }
