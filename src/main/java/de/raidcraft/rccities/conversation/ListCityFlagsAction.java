@@ -41,6 +41,10 @@ public class ListCityFlagsAction extends AbstractAction {
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         List<FlagInformation> flagInformationList = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getRegisteredCityFlagInformationList();
+        for(FlagInformation flagInformation : new ArrayList<>(flagInformationList)) {
+            if(flagInformation.adminOnly() && !showAdminFlags) flagInformationList.remove(flagInformation);
+        }
+
         String entranceStage = "city_flags_";
 
 
