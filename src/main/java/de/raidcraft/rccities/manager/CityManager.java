@@ -95,7 +95,16 @@ public class CityManager {
 
     public int getCityLevel(City city) {
 
-        return city.getUpgrades().getUpgrade("1").getHighestLockedLevel().getNumber() - 1;
+        UpgradeLevel upgradeLevel = city.getUpgrades().getUpgrade("1").getHighestLockedLevel();
+        if(upgradeLevel == null) {
+            for(UpgradeLevel level : city.getUpgrades().getUpgrade("1").getLevels()) {
+                if(upgradeLevel == null || upgradeLevel.getNumber() < level.getNumber()) {
+                    upgradeLevel = level;
+                }
+            }
+            return upgradeLevel.getNumber();
+        }
+        return upgradeLevel.getNumber() - 1;
     }
 
     public double getServerJoinCosts(City city) {
