@@ -88,12 +88,12 @@ public class PlotCommands {
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
             if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
-                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
+                throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
             }
 
             Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
             if(targetResident == null) {
-                throw new CommandException("Der angegebene Spieler ist kein Einwohner deiner Stadt '" + city.getFriendlyName() + "'!");
+                throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
 
             plot.removeResident(resident);
@@ -102,7 +102,7 @@ public class PlotCommands {
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich " + targetResident.getName() + " entzogen!");
             if(targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
-                        .sendMessage(ChatColor.GREEN + "Dir wurde in der Stadt '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' entzogen!");
+                        .sendMessage(ChatColor.GREEN + "Dir wurde in der Gilde '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' entzogen!");
             }
         }
 
@@ -138,12 +138,12 @@ public class PlotCommands {
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
             if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
-                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu vergeben!");
+                throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu vergeben!");
             }
 
             Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
             if(targetResident == null) {
-                throw new CommandException("Der angegebene Spieler ist kein Einwohner deiner Stadt '" + city.getFriendlyName() + "'!");
+                throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
 
             plot.assignResident(resident);
@@ -152,7 +152,7 @@ public class PlotCommands {
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich an " + targetResident.getName() + " vergeben!");
             if(targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
-                        .sendMessage(ChatColor.GREEN + "Dir wurde in der Stadt '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' zugewiesen!");
+                        .sendMessage(ChatColor.GREEN + "Dir wurde in der Gilde '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' zugewiesen!");
             }
         }
 
@@ -187,7 +187,7 @@ public class PlotCommands {
             for(Plot plot : neighborPlots) {
                 if(plot == null) continue;
                 if(city != null && !city.equals(plot.getCity())) {
-                    throw new CommandException("Dieser Plot liegt zu dicht an einer anderen Stadt!");
+                    throw new CommandException("Dieser Plot liegt zu dicht an einer anderen Gilde!");
                 }
                 city = plot.getCity();
             }
@@ -198,12 +198,12 @@ public class PlotCommands {
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
             if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_CLAIM)) {
-                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu claimen!");
+                throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu claimen!");
             }
 
             // check plot credit
             if(city.getPlotCredit() == 0) {
-                throw new CommandException("Deine Stadt hat keine freien Plots zum claimen!");
+                throw new CommandException("Deine Gilde hat keine freien Plots zum claimen!");
             }
 
             // check max radius
@@ -211,7 +211,7 @@ public class PlotCommands {
             Location fixedSpawn = city.getSpawn().clone();
             fixedSpawn.setY(0);
             if(fixedSpawn.distance(plotCenter) > city.getMaxRadius()) {
-                throw new CommandException("Deine Stadt darf nur im Umkreis von " + city.getMaxRadius() + " Blöcken um den Spawn claimen!");
+                throw new CommandException("Deine Gilde darf nur im Umkreis von " + city.getMaxRadius() + " Blöcken um den Stadtmittelpunkt claimen!");
             }
 
             Plot plot = new DatabasePlot(plotCenter, city);
@@ -308,7 +308,7 @@ public class PlotCommands {
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
             if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_FLAG_MODIFICATION)) {
-                throw new CommandException("Du hast in der Stadt '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu konfigurieren!");
+                throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu konfigurieren!");
             }
 
             try {

@@ -68,7 +68,7 @@ public class ResidentCommands {
                 desc = "Shows info about a resident",
                 min = 2,
                 flags = "f",
-                usage = "[Stadtname] <Spieler> <Beruf>"
+                usage = "[Gilde] <Spieler> <Beruf>"
         )
         @CommandPermissions("rccities.resident.promote")
         public void setRole(CommandContext args, CommandSender sender) throws CommandException {

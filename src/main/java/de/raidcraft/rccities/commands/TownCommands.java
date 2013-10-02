@@ -93,7 +93,7 @@ public class TownCommands {
                 aliases = {"create"},
                 desc = "Create a new city",
                 min = 1,
-                usage = "<Stadtname>"
+                usage = "<Gilde>"
         )
          @CommandPermissions("rccities.town.create")
          public void create(CommandContext args, CommandSender sender) throws CommandException {
@@ -128,7 +128,7 @@ public class TownCommands {
             } catch (RaidCraftException e) {
                 throw new CommandException(e.getMessage());
             }
-            Bukkit.broadcastMessage(ChatColor.GOLD + "Es wurde die Stadt '" + city.getFriendlyName() + "' gegründet!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + "Es wurde die Gilde '" + city.getFriendlyName() + "' gegründet!");
         }
 
         @Command(
@@ -136,27 +136,27 @@ public class TownCommands {
                 desc = "Delete an existing city",
                 min = 1,
                 flags = "r",
-                usage = "<Stadtname>"
+                usage = "<Gilde>"
         )
         @CommandPermissions("rccities.town.delete")
         public void delete(CommandContext args, CommandSender sender) throws CommandException {
 
             City city = plugin.getCityManager().getCity(args.getString(0));
             if(city == null) {
-                throw new CommandException("Es wurde keine Stadt mit diesem namen gefunden!");
+                throw new CommandException("Es wurde keine Gilde mit diesem namen gefunden!");
             }
 
-            boolean restoreSchematics= false;
+            boolean restoreSchematics= true;
             if(args.hasFlag('r')) {
-                restoreSchematics = true;
+                restoreSchematics = false;
             }
 
             try {
                 if(restoreSchematics) {
-                    sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots zurückgesetzt!");
+                    sender.sendMessage(ChatColor.YELLOW + "Bei der Löschung der Gilde werden vorhandene Plots " + ChatColor.DARK_RED + "zurückgesetzt" + ChatColor.YELLOW + "!");
                 }
                 else {
-                    sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung der Stadt werden vorhandene Plots NICHT zurückgesetzt!");
+                    sender.sendMessage(ChatColor.YELLOW + "Bei der Löschung der Gilde werden vorhandene Plots " + ChatColor.DARK_RED + "NICHT zurückgesetzt" + ChatColor.YELLOW + "!");
                 }
                 new QueuedCaptchaCommand(sender, this, "deleteCity", sender, city, restoreSchematics);
             } catch (NoSuchMethodException e) {
@@ -167,7 +167,7 @@ public class TownCommands {
         @Command(
                 aliases = {"spawn"},
                 desc = "Teleport to town spawn",
-                usage = "[Stadtname]"
+                usage = "[Gilde]"
         )
         @CommandPermissions("rccities.town.spawn")
         public void spawn(CommandContext args, CommandSender sender) throws CommandException {
@@ -179,12 +179,12 @@ public class TownCommands {
             if(args.argsLength() > 0) {
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.town.spawn.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.SPAWN_TELEPORT)) {
-                        throw new CommandException("Du darfst dich nicht zum Spawn der Stadt '" + city.getFriendlyName() + "' porten!");
+                        throw new CommandException("Du darfst dich nicht zum Spawn der Gilde '" + city.getFriendlyName() + "' porten!");
                     }
                 }
             }
@@ -192,10 +192,10 @@ public class TownCommands {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.SPAWN_TELEPORT);
 
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht dich zum Spawn zu porten!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht dich zum Spawn zu porten!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht dich zum Spawn zu porten! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Gilden das Recht dich zum Spawn zu porten! Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
@@ -205,13 +205,13 @@ public class TownCommands {
             }
 
             player.teleport(city.getSpawn());
-            player.sendMessage(ChatColor.YELLOW + "Du wurdest zum Stadtspawn von '" + city.getFriendlyName() + "' teleportiert!");
+            player.sendMessage(ChatColor.YELLOW + "Du wurdest zum Spawn von '" + city.getFriendlyName() + "' teleportiert!");
         }
 
         @Command(
                 aliases = {"setspawn"},
                 desc = "Redefine the town spawn location",
-                usage = "[Stadtname]"
+                usage = "[Gilde]"
         )
         @CommandPermissions("rccities.town.setspawn")
         public void setSpawn(CommandContext args, CommandSender sender) throws CommandException {
@@ -223,12 +223,12 @@ public class TownCommands {
             if(args.argsLength() > 0) {
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.setspawn.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_SPAWN)) {
-                        throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' den Spawn nicht versetzen!");
+                        throw new CommandException("Du darfst von der Gilde '" + city.getFriendlyName() + "' den Spawn nicht versetzen!");
                     }
                 }
             }
@@ -236,27 +236,27 @@ public class TownCommands {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.SET_SPAWN);
 
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht den Stadtspawn zu versetzen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht den Spawn zu versetzen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht den Stadtspawn zu verändern! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Gilden das Recht den Spawn zu verändern! Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
 
             if(!city.getSpawn().getWorld().equals(player.getWorld())) {
-                throw new CommandException("Der Spawn muss sich auf der selben Welt wie die Stadt befinden!");
+                throw new CommandException("Der Spawn muss sich auf der selben Welt wie die Gilde befinden!");
             }
 
             city.setSpawn(player.getLocation());
-            plugin.getResidentManager().broadcastCityMessage(city, "Der Stadtspawn wurde versetzt!");
+            plugin.getResidentManager().broadcastCityMessage(city, "Der Spawn wurde versetzt!");
         }
 
         @Command(
                 aliases = {"setdescription", "setdesc"},
                 desc = "Change city description",
                 min = 2,
-                usage = "<Stadtname> <Beschreibung>"
+                usage = "<Gilde> <Beschreibung>"
         )
         @CommandPermissions("rccities.town.setdescription")
         public void setDescription(CommandContext args, CommandSender sender) throws CommandException {
@@ -266,26 +266,26 @@ public class TownCommands {
 
             City city = plugin.getCityManager().getCity(args.getString(0));
             if(city == null) {
-                throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
             }
             if(!player.hasPermission("rccities.setspawn.all")) {
                 Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                 if(resident == null || !resident.getRole().hasPermission(RolePermission.SET_DESCRIPTION)) {
-                    throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' die Beschreibung nicht ändern!");
+                    throw new CommandException("Du darfst von der Gilde '" + city.getFriendlyName() + "' die Beschreibung nicht ändern!");
                 }
             }
             String description = args.getJoinedStrings(1);
 
             city.setDescription(description);
-            player.sendMessage(ChatColor.GREEN + "Du hast die Beschreibung der Stadt '" + city.getFriendlyName() + "' geändert!");
-            plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Stadt wurde geändert!");
+            player.sendMessage(ChatColor.GREEN + "Du hast die Beschreibung der Gilde '" + city.getFriendlyName() + "' geändert!");
+            plugin.getResidentManager().broadcastCityMessage(city, "Die Beschreibung der Gilde wurde geändert!");
         }
 
         @Command(
                 aliases = {"info"},
                 desc = "Shows city info",
                 min = 1,
-                usage = "<Stadtname>"
+                usage = "<Gilde>"
         )
         @CommandPermissions("rccities.town.info")
         public void info(CommandContext args, CommandSender sender) throws CommandException {
@@ -318,7 +318,7 @@ public class TownCommands {
                 aliases = {"flag"},
                 desc = "Change city flag",
                 min = 2,
-                usage = "<Stadtname> <Flag> [Parameter]"
+                usage = "<Gilde> <Flag> [Parameter]"
         )
         @CommandPermissions("rccities.town.flag")
         public void flag(CommandContext args, CommandSender sender) throws CommandException {
@@ -334,12 +334,12 @@ public class TownCommands {
             }
             city = plugin.getCityManager().getCity(args.getString(0));
             if(city == null) {
-                throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
             }
             if(!player.hasPermission("rccities.town.flag.all")) {
                 Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                 if(resident == null || !resident.getRole().hasPermission(RolePermission.CITY_FLAG_MODIFICATION)) {
-                    throw new CommandException("Du darfst von der Stadt '" + city.getFriendlyName() + "' keine Flags ändern!");
+                    throw new CommandException("Du darfst von der Gilde '" + city.getFriendlyName() + "' keine Flags ändern!");
                 }
             }
 
@@ -356,7 +356,7 @@ public class TownCommands {
                 aliases = {"invite"},
                 desc = "Invites an player as resident",
                 min = 1,
-                usage = "[Stadtname] <Spielername>"
+                usage = "[Gilde] <Spielername>"
         )
                  @CommandPermissions("rccities.town.invite")
                  public void invite(CommandContext args, CommandSender sender) throws CommandException {
@@ -373,12 +373,12 @@ public class TownCommands {
                 }
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.town.invite.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.INVITE)) {
-                        throw new CommandException("Du darfst in die Stadt '" + city.getFriendlyName() + "' keine Bürger einladen!");
+                        throw new CommandException("Du darfst in die Gilde '" + city.getFriendlyName() + "' keine Bürger einladen!");
                     }
                 }
             }
@@ -391,28 +391,28 @@ public class TownCommands {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.INVITE);
 
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler einzuladen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht Spieler einzuladen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler einzuladen! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Gilden das Recht Spieler einzuladen! Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
 
             if(player.getName().equalsIgnoreCase(targetPlayer.getName())) {
-                throw new CommandException("Du kannst dich nicht selbst in die Stadt einladen!");
+                throw new CommandException("Du kannst dich nicht selbst in die Gilde einladen!");
             }
 
             // invite is locked
             CityFlag inviteFlag = plugin.getFlagManager().getCityFlag(city, InviteCityFlag.class);
             if(inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
-                throw new CommandException("Deine Stadt darf zurzeit keine neuen Spieler einladen!");
+                throw new CommandException("Deine Gilde darf zurzeit keine neuen Spieler einladen!");
             }
 
             invites.put(targetPlayer.getName(), city);
-            targetPlayer.sendMessage(ChatColor.GOLD + "Du wurdest in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
-            targetPlayer.sendMessage(ChatColor.GOLD + "Bestätige die Einladung mit '/town accept'");
-            player.sendMessage(ChatColor.GREEN + "Du hast " + targetPlayer.getName() + " in die Stadt '" + city.getFriendlyName() + "' eingeladen!");
+            targetPlayer.sendMessage(ChatColor.GOLD + "Du wurdest in die Gilde '" + city.getFriendlyName() + "' eingeladen!");
+            targetPlayer.sendMessage(ChatColor.GOLD + "Bestätige die Einladung mit '/gilde accept'");
+            player.sendMessage(ChatColor.GREEN + "Du hast " + targetPlayer.getName() + " in die Gilde '" + city.getFriendlyName() + "' eingeladen!");
         }
 
         @Command(
@@ -442,7 +442,7 @@ public class TownCommands {
                 aliases = {"leave"},
                 desc = "Leaves a city",
                 flags = "f",
-                usage = "[Stadtname]"
+                usage = "[Gilde]"
         )
         @CommandPermissions("rccities.town.leave")
         public void leave(CommandContext args, CommandSender sender) throws CommandException {
@@ -454,15 +454,15 @@ public class TownCommands {
             if(args.argsLength() > 0) {
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.town.leave.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null) {
-                        throw new CommandException("Du bist kein Einwohner der Stadt '" + city.getFriendlyName() + "'!");
+                        throw new CommandException("Du bist kein Einwohner der Gilde '" + city.getFriendlyName() + "'!");
                     }
                     else if(!resident.getRole().hasPermission(RolePermission.LEAVE)) {
-                        throw new CommandException("Du darfst die Stadt '" + city.getFriendlyName() + "' nicht verlassen!");
+                        throw new CommandException("Du darfst die Gilde '" + city.getFriendlyName() + "' nicht verlassen!");
                     }
                 }
             }
@@ -470,17 +470,17 @@ public class TownCommands {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.LEAVE);
 
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht diese zu verlassen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht diese zu verlassen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du bist Bürger von mehreren Städten. Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du bist Bürger von mehreren Gilden. Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
 
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
             if(resident == null) {
-                throw new CommandException("Du bist kein Einwohner der Stadt '" + city.getFriendlyName() + "'!");
+                throw new CommandException("Du bist kein Mitglied der Gilde '" + city.getFriendlyName() + "'!");
             }
 
             if(args.hasFlag('f')) {
@@ -499,7 +499,7 @@ public class TownCommands {
                 aliases = {"kick"},
                 desc = "Kicks a resident",
                 flags = "f",
-                usage = "[Stadtname] <Spieler>"
+                usage = "[Gilde] <Spieler>"
         )
         @CommandPermissions("rccities.town.kick")
         public void kick(CommandContext args, CommandSender sender) throws CommandException {
@@ -513,12 +513,12 @@ public class TownCommands {
                 target = args.getString(1);
                 city = plugin.getCityManager().getCity(args.getString(0));
                 if(city == null) {
-                    throw new CommandException("Es gibt keine Stadt mit dem Name '" + args.getString(0) + "'!");
+                    throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
                 }
                 if(!player.hasPermission("rccities.town.kick.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
-                        throw new CommandException("Du darfst keine Bürger aus der Stadt '" + city.getFriendlyName() + "' schmeissen!");
+                        throw new CommandException("Du darfst keine Bürger aus der Gilde '" + city.getFriendlyName() + "' schmeissen!");
                     }
                 }
             }
@@ -526,25 +526,25 @@ public class TownCommands {
                 target = args.getString(0);
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.KICK);
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Stadt das Recht Spieler rauszuschmeissen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht Spieler rauszuschmeissen!");
                 }
                 if(citizenships.size() > 1) {
-                    throw new CommandException("Du besitzt in mehreren Städten das Recht Spieler rauszuschmeissen! Gebe die gewünschte Stadt als Parameter an.");
+                    throw new CommandException("Du besitzt in mehreren Gilden das Recht Spieler rauszuschmeissen! Gebe die gewünschte Gilde als Parameter an.");
                 }
                 city = citizenships.get(0).getCity();
             }
 
             if(!args.hasFlag('f') && player.getName().equalsIgnoreCase(target)) {
-                throw new CommandException("Du kannst dich nicht selbst aus der Stadt schmeissen!");
+                throw new CommandException("Du kannst dich nicht selbst aus der Gilde schmeissen!");
             }
 
             Resident resident = plugin.getResidentManager().getResident(target, city);
             if(resident == null) {
-                throw new CommandException(target + " ist kein Einwohner von '" + city.getFriendlyName() + "'!");
+                throw new CommandException(target + " ist kein Mitglied von '" + city.getFriendlyName() + "'!");
             }
 
             resident.delete();
-            Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Stadt '" + city.getFriendlyName() + "' geschmissen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Gilde '" + city.getFriendlyName() + "' geschmissen!");
         }
 
         /*
@@ -562,12 +562,12 @@ public class TownCommands {
             }
 
             city.delete();
-            Bukkit.broadcastMessage(ChatColor.GOLD + "Die Stadt '" + city.getFriendlyName() + "' wurde gelöscht!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + "Die Gilde '" + city.getFriendlyName() + "' wurde gelöscht!");
         }
 
         public void leaveCity(Resident resident) {
 
-            Bukkit.broadcastMessage(ChatColor.GOLD + resident.getName() + " hat die Stadt '" + resident.getCity().getFriendlyName() + "' verlassen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + resident.getName() + " hat die Gilde '" + resident.getCity().getFriendlyName() + "' verlassen!");
             resident.delete();
         }
     }
