@@ -40,22 +40,8 @@ public abstract class AbstractJoinRequest implements JoinRequest {
     }
 
     @Override
-    public void setRejected(boolean rejected) {
-
-        this.rejected = rejected;
-        save();
-    }
-
-    @Override
     public String getRejectReason() {
 
         return rejectReason;
-    }
-
-    @Override
-    public void setRejectReason(String rejectReason) {
-
-        this.rejectReason = rejectReason;
-        save();
     }
 }

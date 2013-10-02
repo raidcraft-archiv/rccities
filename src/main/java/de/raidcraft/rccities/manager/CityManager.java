@@ -5,15 +5,19 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TCity;
+import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,6 +90,29 @@ public class CityManager {
         sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.YELLOW + mayorList);
         sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.YELLOW + residentList);
         sender.sendMessage("*********************************");
+    }
+
+    public void addUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
+
+        //TODO
+    }
+
+    public UpgradeRequest getUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
+
+        for(UpgradeRequest upgradeRequest : getUpgradeRequests(city)) {
+            if(upgradeRequest.getUpgradeLevel().equals(upgradeLevel)) {
+                return upgradeRequest;
+            }
+        }
+        return null;
+    }
+
+    public List<UpgradeRequest> getUpgradeRequests(City city) {
+
+        List<UpgradeRequest> requests = new ArrayList<>();
+
+        //TODO
+        return requests;
     }
 
     public City getCity(String name) {

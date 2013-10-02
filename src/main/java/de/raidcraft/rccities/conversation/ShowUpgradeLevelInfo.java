@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
@@ -48,10 +49,28 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
+        String state;
+        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
+
+        if(level.isUnlocked()) {
+            state = ChatColor.GREEN + "Freigeschaltet";
+        }
+        else if(upgradeRequest == null) {
+            state = ChatColor.RED + "Nicht Freigeschaltet";
+        }
+        else if(upgradeRequest.isRejected()) {
+            state = ChatColor.RED + "Freischaltung abgelehnt (" + upgradeRequest.getRejectReason() + ")";
+        }
+        else {
+            state = ChatColor.YELLOW + "Freischaltung beantragt";
+        }
+
+
         Player player = conversation.getPlayer();
 
         player.sendMessage(" ");
         player.sendMessage(ChatColor.AQUA + "Informationen zum Upgrade '" + ChatColor.GOLD + level.getName() + ChatColor.AQUA + "':");
+        player.sendMessage(ChatColor.AQUA + "Status: " + state);
         player.sendMessage(ChatColor.AQUA + "Freischalt-Bedingung:");
         for(String requirement : level.getRequirementDescription()) {
             player.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + requirement);

@@ -4,15 +4,20 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
+import de.raidcraft.rcconversations.conversations.EndReason;
 import de.raidcraft.rcconversations.util.MathHelper;
 import de.raidcraft.rcconversations.util.ParseString;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
+import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
+import de.raidcraft.util.DateUtil;
+import org.bukkit.ChatColor;
 
 /**
  * @author Philip Urban
@@ -48,10 +53,37 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
 
         //TODO implement
 
-        // check if already requested
+        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
+        conversation.getPlayer().sendMessage("");
 
-        // request
+        // check existing request
+        if(upgradeRequest != null) {
+            // check if rejected (cooldown)
+            if(upgradeRequest.isRejected()) {
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
+                        + " gestellt werden.");
+                conversation.endConversation(EndReason.INFORM);
+            }
 
-        // inform
+            // check if in request progress
+            else {
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt. Bitte habe etwas Geduld!");
+                conversation.endConversation(EndReason.INFORM);
+            }
+        }
+
+        // add request
+        UnlockResult unlockResult = level.tryToUnlock(city);
+
+        if(unlockResult.isSuccessful()) {
+            conversation.getPlayer().sendMessage(ChatColor.GREEN + "Die Freischaltung war erfolgreich!");
+            conversation.endConversation(EndReason.INFORM);
+        }
+        else {
+            conversation.getPlayer().sendMessage(ChatColor.RED + unlockResult.getLongReason());
+            conversation.endConversation(EndReason.INFORM);
+        }
     }
 }
