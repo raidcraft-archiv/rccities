@@ -36,6 +36,7 @@ public class DatabaseCity extends AbstractCity {
         description = tCity.getDescription();
         plotCredit = tCity.getPlotCredit();
         maxRadius = tCity.getMaxRadius();
+        exp = tCity.getExp();
         spawn = new Location(Bukkit.getWorld(tCity.getWorld()), (double)tCity.getX() / 1000D, (double)tCity.getY() / 1000D, (double)tCity.getZ() / 1000D, (float)tCity.getYaw() / 1000F, (float)tCity.getPitch() / 1000F);
         upgradeHolder = RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager()
                 .loadDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration(),id);
