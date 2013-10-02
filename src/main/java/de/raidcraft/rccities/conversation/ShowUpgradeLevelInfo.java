@@ -54,7 +54,7 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
 
         if(level.isUnlocked()) {
             state = ChatColor.GREEN + "Freigeschaltet";
-            conversation.set("level_state_indicator", "&m&c");
+            conversation.set("level_state_indicator", "&c&m");
         }
         else if(upgradeRequest == null) {
             state = ChatColor.RED + "Nicht Freigeschaltet";
@@ -66,7 +66,7 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         }
         else {
             state = ChatColor.YELLOW + "Freischaltung beantragt";
-            conversation.set("level_state_indicator", "&m&c");
+            conversation.set("level_state_indicator", "&c&m");
         }
 
         Player player = conversation.getPlayer();
