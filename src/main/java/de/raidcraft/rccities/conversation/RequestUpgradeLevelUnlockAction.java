@@ -53,6 +53,12 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
 
         //TODO implement
 
+        // level is already unlocked
+        if(level.isUnlocked()) {
+            conversation.getPlayer().sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
+            conversation.endConversation(EndReason.INFORM);
+        }
+
         UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
         conversation.getPlayer().sendMessage("");
 
