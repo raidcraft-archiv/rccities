@@ -51,16 +51,15 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
-        //TODO implement
+        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
+        conversation.getPlayer().sendMessage("");
 
         // level is already unlocked
         if(level.isUnlocked()) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
             conversation.endConversation(EndReason.INFORM);
+            return;
         }
-
-        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
-        conversation.getPlayer().sendMessage("");
 
         // check existing request
         if(upgradeRequest != null) {
@@ -78,6 +77,7 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
                 conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt. Bitte habe etwas Geduld!");
                 conversation.endConversation(EndReason.INFORM);
             }
+            return;
         }
 
         // add request
