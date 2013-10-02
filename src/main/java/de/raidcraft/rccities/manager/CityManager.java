@@ -92,6 +92,16 @@ public class CityManager {
         sender.sendMessage("*********************************");
     }
 
+    public int getCityLevel(City city) {
+
+        return city.getUpgrades().getUpgrade("1").getHighestLockedLevel().getNumber() - 1;
+    }
+
+    public double getServerJoinCosts(City city) {
+
+        return plugin.getConfig().joinCosts * getCityLevel(city);
+    }
+
     public void addUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
 
         //TODO

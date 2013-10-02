@@ -16,6 +16,7 @@ import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
+import org.bukkit.ChatColor;
 
 /**
  * @author Philip Urban
@@ -40,19 +41,20 @@ public class AcceptJoinRequestAction extends AbstractAction {
         if(joinRequest == null) return;
 
         Economy economy = RaidCraft.getEconomy();
-
-        if(!economy.hasEnough(city.getBankAccountName(), RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().joinCosts)) {
-            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Gilde hat nicht genug Geld um neue Mitglieder anzunehmen!", RolePermission.STAFF);
+        double joinCosts = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getServerJoinCosts(city);
+        if(!economy.hasEnough(city.getBankAccountName(), joinCosts)) {
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                    .broadcastCityMessage(city, "Die Gilde hat nicht genug Geld um neue Mitglieder anzunehmen! (" + economy.getFormattedAmount(joinCosts) + ChatColor.GOLD + " benötigt)", RolePermission.STAFF);
             return;
         }
 
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
         if(joinCostsCityFlag != null) {
-            double joinCosts = joinCostsCityFlag.getType().convertToDouble(joinCostsCityFlag.getValue());
-            economy.add(city.getBankAccountName(), joinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
-            economy.substract(candidate, joinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
+            double customJoinCosts = joinCostsCityFlag.getType().convertToDouble(joinCostsCityFlag.getValue());
+            economy.add(city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
+            economy.substract(candidate, customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
         }
-        economy.substract(city.getBankAccountName(), RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().joinCosts, BalanceSource.GUILD, "Beitrittssteuern von " + candidate);
+        economy.substract(city.getBankAccountName(), joinCosts, BalanceSource.GUILD, "Beitrittssteuern von " + candidate);
 
         joinRequest.accept();
     }
