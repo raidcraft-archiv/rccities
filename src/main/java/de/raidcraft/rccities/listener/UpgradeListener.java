@@ -15,9 +15,9 @@ public class UpgradeListener implements Listener {
     @EventHandler
     public void onUnlockUpgrade(UpgradeUnlockEvent event) {
 
-        if(!(event.getUpgradeLevel().getUpgradeHolder().getObject() instanceof City)) return;
+        if(!(event.getObject() instanceof City)) return;
 
-        City city = (City)event.getUpgradeLevel().getUpgradeHolder().getObject();
+        City city = (City)event.getObject();
         int maxLevel = event.getUpgradeLevel().getLevel();
         Bukkit.broadcastMessage(ChatColor.GOLD + "Die Gilde '" + city.getFriendlyName() + "' ist auf Level " + ChatColor.RED + maxLevel + ChatColor.GOLD + " aufgestiegen!");
     }

@@ -195,7 +195,7 @@ public class TownCommands {
                 String option = args.getString(1);
                 String reason = null;
                 if(args.argsLength() > 2) {
-                    reason = args.getString(2);
+                    reason = args.getJoinedStrings(2);
                 }
                 if(option.equalsIgnoreCase("accept")) {
                     upgradeRequest.accept();
@@ -214,6 +214,7 @@ public class TownCommands {
                     }
                     upgradeRequest.reject(reason);
                     sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' " + ChatColor.RED + "abgelehnt" + ChatColor.GREEN +"!");
+                    plugin.getResidentManager().broadcastCityMessage(city, "Der Upgrade-Antrag wurde abgelehnt, Grund: " + reason);
                     return;
                 }
                 throw new CommandException("Parameter nicht erkannt. Nutze <accept> oder <reject> umd Anträge zu bearbeiten!");
