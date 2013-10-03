@@ -1,6 +1,5 @@
 package de.raidcraft.rccities.requirements;
 
-import de.raidcraft.RaidCraft;
 import de.raidcraft.api.requirement.AbstractRequirement;
 import de.raidcraft.api.requirement.RequirementInformation;
 import de.raidcraft.api.requirement.RequirementResolver;
@@ -28,8 +27,6 @@ public class CityExpRequirement extends AbstractRequirement<City> {
 
     @Override
     public boolean isMet(City city) {
-
-        RaidCraft.LOGGER.info("DEBUG: REQUIREMENT: " + getName());
 
         if(city.getExp() >= amount) {
             return true;

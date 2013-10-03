@@ -67,7 +67,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         String entranceStage = "city_levels_";
 
 
-        int pages = (int) (((double) levels.size() / (double) pageSize) + 0.5);
+        int pages = (int)Math.ceil(((double) levels.size() / (double) pageSize));
         if(pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 

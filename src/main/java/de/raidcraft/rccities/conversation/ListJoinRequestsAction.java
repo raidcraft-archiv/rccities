@@ -57,7 +57,7 @@ public class ListJoinRequestsAction extends AbstractAction {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Keine Anträge verfügbar!");
             conversation.endConversation(EndReason.INFORM);
         }
-        int pages = (int) (((double) joinRequestList.size() / (double) pageSize) + 0.5);
+        int pages = (int)Math.ceil(((double) joinRequestList.size() / (double) pageSize));
         if(pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 

@@ -52,7 +52,7 @@ public class ListUpgradeTypesAction extends AbstractAction {
         String entranceStage = "city_upgrades_";
 
 
-        int pages = (int) (((double) upgrades.size() / (double) pageSize) + 0.5);
+        int pages = (int)Math.ceil(((double) upgrades.size() / (double) pageSize));
         if(pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 

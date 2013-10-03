@@ -48,7 +48,7 @@ public class ListCityFlagsAction extends AbstractAction {
         String entranceStage = "city_flags_";
 
 
-        int pages = (int) (((double) flagInformationList.size() / (double) pageSize) + 0.5);
+        int pages = (int)Math.ceil(((double) flagInformationList.size() / (double) pageSize));
         if(pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 

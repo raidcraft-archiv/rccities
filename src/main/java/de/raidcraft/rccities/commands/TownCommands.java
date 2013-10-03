@@ -15,6 +15,7 @@ import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
+import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -198,8 +199,13 @@ public class TownCommands {
                 }
                 if(option.equalsIgnoreCase("accept")) {
                     upgradeRequest.accept();
-                    sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' angenommen!");
-                    upgradeRequest.getUpgradeLevel().tryToUnlock(city);
+                    UnlockResult unlockResult = upgradeRequest.getUpgradeLevel().tryToUnlock(city);
+                    if(unlockResult.isSuccessful()) {
+                        sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' angenommen!");
+                    }
+                    else {
+                        sender.sendMessage(ChatColor.GREEN + " Das Upgrade ist fehlgeschlagen da andere Bedingungen nicht mehr erfüllt sind!");
+                    }
                     return;
                 }
                 if(option.equalsIgnoreCase("reject")) {
