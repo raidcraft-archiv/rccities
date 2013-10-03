@@ -100,7 +100,7 @@ public class CityManager {
 
         UpgradeLevel upgradeLevel = getMainUpgrade(city).getHighestUnlockedLevel();
         if(upgradeLevel == null) {
-            return "~ Max Level ~";
+            return "0";
         }
         return upgradeLevel.getId();
     }
