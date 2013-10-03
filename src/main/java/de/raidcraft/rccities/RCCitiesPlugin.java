@@ -68,30 +68,6 @@ public class RCCitiesPlugin extends BasePlugin {
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
-        reload();
-
-        cityManager = new CityManager(this);
-        plotManager = new PlotManager(this);
-        residentManager = new ResidentManager(this);
-        assignmentManager = new AssignmentManager(this);
-        flagManager = new FlagManager(this);
-        schematicManager = new SchematicManager(this);
-        dynmapManager = new DynmapManager();
-        worldGuardManager = new WorldGuardManager(this, worldGuard);
-        upgradeRequestManager = new UpgradeRequestManager(this);
-
-        // city flags
-        flagManager.registerCityFlag(PvpCityFlag.class);
-        flagManager.registerCityFlag(GreetingsCityFlag.class);
-        flagManager.registerCityFlag(InviteCityFlag.class);
-        flagManager.registerCityFlag(JoinCostsCityFlag.class);
-
-        // plot flags
-        flagManager.registerPlotFlag(MarkPlotFlag.class);
-        flagManager.registerPlotFlag(PvpPlotFlag.class);
-
-        flagManager.loadExistingFlags();
-
         // conversation actions
         ActionManager.registerAction(new FindCityAction());
         ActionManager.registerAction(new IsCityMemberAction());
@@ -118,6 +94,30 @@ public class RCCitiesPlugin extends BasePlugin {
         RequirementManager.registerRequirementType(CityExpRequirement.class);
         RequirementManager.registerRequirementType(CityMoneyRequirement.class);
         RequirementManager.registerRequirementType(CityStaffRequirement.class);
+
+        reload();
+
+        cityManager = new CityManager(this);
+        plotManager = new PlotManager(this);
+        residentManager = new ResidentManager(this);
+        assignmentManager = new AssignmentManager(this);
+        flagManager = new FlagManager(this);
+        schematicManager = new SchematicManager(this);
+        dynmapManager = new DynmapManager();
+        worldGuardManager = new WorldGuardManager(this, worldGuard);
+        upgradeRequestManager = new UpgradeRequestManager(this);
+
+        // city flags
+        flagManager.registerCityFlag(PvpCityFlag.class);
+        flagManager.registerCityFlag(GreetingsCityFlag.class);
+        flagManager.registerCityFlag(InviteCityFlag.class);
+        flagManager.registerCityFlag(JoinCostsCityFlag.class);
+
+        // plot flags
+        flagManager.registerPlotFlag(MarkPlotFlag.class);
+        flagManager.registerPlotFlag(PvpPlotFlag.class);
+
+        flagManager.loadExistingFlags();
 
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {

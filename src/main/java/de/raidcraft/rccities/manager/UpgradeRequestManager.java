@@ -27,7 +27,7 @@ public class UpgradeRequestManager {
         this.plugin = plugin;
 
         informTask = new UpgradeRequestInformTask(this);
-        Bukkit.getScheduler().runTaskTimer(plugin, informTask, 0, 5 * 60 * 20);
+        Bukkit.getScheduler().runTaskTimer(plugin, informTask, 5 * 60 * 20, 5 * 60 * 20);
     }
 
     public UpgradeRequest getRequest(City city, UpgradeLevel upgradeLevel) {
