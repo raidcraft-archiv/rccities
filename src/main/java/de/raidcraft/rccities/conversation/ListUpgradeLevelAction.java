@@ -57,11 +57,16 @@ public class ListUpgradeLevelAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
-        List< UpgradeLevel > levels = upgrade.getLevels();
+        List<UpgradeLevel> levels = upgrade.getLevels();
         // delete not reachable levels
+        boolean lockedFound = false;
         for(UpgradeLevel level : new ArrayList<>(levels)) {
-            UpgradeLevel highestLockedLevel = upgrade.getHighestLockedLevel();
-            if(highestLockedLevel != null && level.getId() > highestLockedLevel.getId()) levels.remove(level);
+            if(lockedFound) {
+                levels.remove(level);
+                continue;
+            }
+            if(level.isUnlocked()) continue;
+            else lockedFound = true;
         }
         String entranceStage = "city_levels_";
 
