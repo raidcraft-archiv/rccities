@@ -23,6 +23,7 @@ public abstract class AbstractBooleanPlotwiseCityFlag extends AbstractCityFlag {
         if(getCity() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
+        announce(currentValue);
 
         for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(getCity())) {
             if(currentValue) {
@@ -33,6 +34,8 @@ public abstract class AbstractBooleanPlotwiseCityFlag extends AbstractCityFlag {
             }
         }
     }
+
+    public abstract void announce(boolean state);
 
     public abstract void allow(Plot plot);
 

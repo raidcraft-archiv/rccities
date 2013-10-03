@@ -27,6 +27,17 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
     }
 
     @Override
+    public void announce(boolean state) {
+
+        if(state) {
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet nun erlaubt!");
+        }
+        else {
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet nun verboten!");
+        }
+    }
+
+    @Override
     public void allow(Plot plot) {
 
         // check if plot has its own pvp setting -> skip

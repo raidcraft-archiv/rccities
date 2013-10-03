@@ -24,6 +24,10 @@ public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {
     }
 
     @Override
+    public void announce(boolean state) {
+    }
+
+    @Override
     public void allow(Plot plot) {
 
         String residentList = "";
