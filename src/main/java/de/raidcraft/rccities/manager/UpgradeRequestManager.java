@@ -7,7 +7,6 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rccities.tables.TUpgradeRequest;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -78,12 +77,18 @@ public class UpgradeRequestManager {
             List<UpgradeRequest> openRequests = upgradeRequestManager.getOpenRequests();
             if(openRequests.size() == 0) return;
 
+            String list = "";
+            for(UpgradeRequest request : openRequests) {
+                if(!list.isEmpty()) list += ", ";
+                list += request.getCity().getFriendlyName();
+            }
+
             for(Player player : Bukkit.getOnlinePlayers()) {
 
                 if(!player.hasPermission("rccities.upgrades.process")) continue;
 
                 player.sendMessage(ChatColor.GRAY + "Es liegen Upgrade-Anfragen von Gilden vor:");
-                player.sendMessage(ChatColor.GRAY + StringUtils.join(openRequests, ", ") + " (nutze /gilde upgrade <Gilde>)");
+                player.sendMessage(ChatColor.GRAY + list + " (nutze /gilde upgrade <Gilde>)");
             }
         }
     }
