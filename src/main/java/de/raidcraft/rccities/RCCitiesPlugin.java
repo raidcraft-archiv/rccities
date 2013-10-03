@@ -176,7 +176,7 @@ public class RCCitiesPlugin extends BasePlugin {
         @Setting("city-upgrade-holder")
         public String upgradeHolder = "city-upgrade-holder";
         @Setting("join-costs")
-        public double joinCosts = 0.1;
+        public String joinCosts = "10S";
         @Setting("upgrade-request-reject-cooldown")
         public int upgradeRequestCooldown = 5 * 24 * 60;// 5 days in minutes
 

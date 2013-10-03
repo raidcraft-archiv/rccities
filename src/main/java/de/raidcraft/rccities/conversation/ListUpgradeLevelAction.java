@@ -59,7 +59,6 @@ public class ListUpgradeLevelAction extends AbstractAction {
 
         List<UpgradeLevel> levels = upgrade.getLevels();
         // delete not reachable levels
-        UpgradeLevel highestLevel = null;
         UpgradeLevel highestLockedLevel = upgrade.getHighestLockedLevel();
         for(UpgradeLevel level : new ArrayList<>(levels)) {
             if(!level.isUnlocked() && highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel()) levels.remove(level);

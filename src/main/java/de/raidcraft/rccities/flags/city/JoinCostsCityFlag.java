@@ -12,7 +12,7 @@ import de.raidcraft.rccities.api.flags.FlagType;
 @FlagInformation(
         name = "JOIN_COSTS",
         friendlyName = "Beitrittskosten",
-        type = FlagType.DOUBLE,
+        type = FlagType.MONEY,
         cooldown = 0
 )
 public class JoinCostsCityFlag extends AbstractCityFlag {

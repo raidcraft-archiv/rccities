@@ -1,25 +1,39 @@
 package de.raidcraft.rccities.api.flags;
 
+import org.bukkit.ChatColor;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Philip Urban
  */
 public enum FlagType {
 
-    STRING("Es wurde Text erwartet!"),
-    INTEGER("Es wurde eine Ganzzahl erwartet!"),
-    DOUBLE("Es wurde eine Kommazahl erwartet!"),
-    BOOLEAN("Es wurde ein Boolean (allow/deny) erwartet!");
+    STRING("Es wurde Text erwartet!", "Beliebiger Text"),
+    INTEGER("Es wurde eine Ganzzahl erwartet!", "Ganzzahl, z.B.: 3, 1337"),
+    DOUBLE("Es wurde eine Kommazahl erwartet!", "Kommazahl, z.B.: 2.0, 14.54"),
+    BOOLEAN("Es wurde ein Zustand (ja/nein) erwartet!", "Zustand, z.B.: Ja, Nein, On, Off"),
+    MONEY("Es wurde ein Geldbetrag erwartet!", "Geldbetrag, Bsp.: 4G, 3S7K");
 
     private String errorMsg;
+    private String typeInfo;
+    private static final Pattern CURRENCY_PATTERN = Pattern.compile("^((\\d+)[gG])?\\s?((\\d+)[sS])?\\s?((\\d+)[cCkK]?)?$");
 
-    private FlagType(String errorMsg) {
+    private FlagType(String errorMsg, String typeInfo) {
 
         this.errorMsg = errorMsg;
+        this.typeInfo = typeInfo;
     }
 
     public String getErrorMsg() {
 
         return errorMsg;
+    }
+
+    public String getTypeInfo() {
+
+        return typeInfo;
     }
 
     public boolean validate(String input) {
@@ -51,6 +65,8 @@ public enum FlagType {
                     || input.equalsIgnoreCase("falsch")
                     || input.equalsIgnoreCase("ja")
                     || input.equalsIgnoreCase("nein")
+                    || input.equalsIgnoreCase("yes")
+                    || input.equalsIgnoreCase("no")
                     || input.equalsIgnoreCase("on")
                     || input.equalsIgnoreCase("off")
                     || input.equalsIgnoreCase("1")
@@ -60,6 +76,9 @@ public enum FlagType {
             else {
                 return false;
             }
+        } else if(this == MONEY) {
+            Matcher matcher = CURRENCY_PATTERN.matcher(input);
+            return matcher.matches();
         }
 
         return true;
@@ -71,6 +90,7 @@ public enum FlagType {
                 || value.equalsIgnoreCase("allow")
                 || value.equalsIgnoreCase("wahr")
                 || value.equalsIgnoreCase("ja")
+                || value.equalsIgnoreCase("yes")
                 || value.equalsIgnoreCase("on")
                 || value.equalsIgnoreCase("1")) {
             return true;
@@ -98,6 +118,30 @@ public enum FlagType {
         }
         catch(NumberFormatException e) {}
         return result;
+    }
+
+    public double convertToMoney(String input) {
+
+        // lets parse the string for the different money values
+        input = ChatColor.stripColor(input).replace("●", "");
+        Matcher matcher = CURRENCY_PATTERN.matcher(input);
+        double value = 0.0;
+        if (matcher.matches()) {
+            // lets grap the different groups and check for input
+            // group 2 = gold
+            // group 4 = silver
+            // group 6 = copper
+            if (matcher.group(2) != null) {
+                value += 100 * Integer.parseInt(matcher.group(2));
+            }
+            if (matcher.group(4) != null) {
+                value += Integer.parseInt(matcher.group(4));
+            }
+            if (matcher.group(6) != null) {
+                value += Integer.parseInt(matcher.group(6)) / 100.0;
+            }
+        }
+        return value;
     }
 
     public Object convert(String input) {

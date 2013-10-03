@@ -12,6 +12,9 @@ import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 /**
  * @author Philip Urban
@@ -38,6 +41,9 @@ public class RejectJoinRequestAction extends AbstractAction {
         if(joinRequest == null) return;
         joinRequest.reject(reason);
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
-                .broadcastCityMessage(city, "Der Beitrittsantrag von " + conversation.getPlayer().getName() + " wurde von " + conversation.getPlayer().getName() + " abgelehnt! (" + reason + ")", RolePermission.STAFF);
+                .broadcastCityMessage(city, "Der Beitrittsantrag von " + joinRequest.getPlayer() + " wurde abgelehnt! (" + reason + ")", RolePermission.STAFF);
+        Player targetPlayer = Bukkit.getPlayer(joinRequest.getPlayer());
+        if(targetPlayer == null) return;
+        targetPlayer.sendMessage(ChatColor.DARK_RED + "Dein Mitgliedsantrag bei '" + ChatColor.GOLD + joinRequest.getCity().getFriendlyName() + ChatColor.DARK_RED + "' wurde abgelehnt!");
     }
 }

@@ -5,6 +5,7 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.CityFlag;
+import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
@@ -40,6 +41,17 @@ public class SendJoinRequestAction extends AbstractAction {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde darf zurzeit keine neuen Mitglieder aufnehmen!");
             conversation.endConversation(EndReason.INFORM);
             return;
+        }
+
+        JoinRequest joinRequest = city.getJoinRequest(conversation.getPlayer().getName());
+        if(joinRequest != null) {
+            if(joinRequest.isRejected()) {
+                conversation.getPlayer().sendMessage("");
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde will dich nicht als Mitglied haben!");
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Grund:" + joinRequest.getRejectReason());
+                conversation.endConversation(EndReason.INFORM);
+                return;
+            }
         }
 
         city.sendJoinRequest(conversation.getPlayer().getName());

@@ -50,7 +50,7 @@ public class AcceptJoinRequestAction extends AbstractAction {
 
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
         if(joinCostsCityFlag != null) {
-            double customJoinCosts = joinCostsCityFlag.getType().convertToDouble(joinCostsCityFlag.getValue());
+            double customJoinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
             economy.add(city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
             economy.substract(candidate, customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
         }

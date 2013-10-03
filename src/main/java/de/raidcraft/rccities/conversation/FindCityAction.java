@@ -49,7 +49,7 @@ public class FindCityAction extends AbstractAction {
         double joinCosts = 0;
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
         if(joinCostsCityFlag != null) {
-            joinCosts = joinCostsCityFlag.getType().convertToDouble(joinCostsCityFlag.getValue());
+            joinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
         }
         conversation.set("city_join_costs_friendly", economy.getFormattedAmount(joinCosts));
         conversation.set("city_join_costs", joinCosts);
