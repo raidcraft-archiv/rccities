@@ -72,7 +72,7 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
 
             // check if in request progress
             else {
-                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt. Bitte habe etwas Geduld!");
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt.");
                 conversation.endConversation(EndReason.INFORM);
             }
             return;

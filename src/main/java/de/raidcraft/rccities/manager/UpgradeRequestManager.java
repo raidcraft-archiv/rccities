@@ -79,7 +79,7 @@ public class UpgradeRequestManager {
 
             String permission  = "rccities.upgrades.process";
             Bukkit.broadcast(ChatColor.GRAY + "Es liegen Upgrade-Anfragen von Gilden vor:", permission);
-            Bukkit.broadcast(ChatColor.GRAY + StringUtils.join(openRequests, ", "), permission + " (nutze /gilde upgrade <Gilde>)");
+            Bukkit.broadcast(ChatColor.GRAY + StringUtils.join(openRequests, ", ") + " (nutze /gilde upgrade <Gilde>)", permission);
         }
     }
 }

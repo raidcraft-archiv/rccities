@@ -213,6 +213,7 @@ public class TownCommands {
             sender.sendMessage(ChatColor.GREEN + "Die Gilde '" + city.getFriendlyName() + "' hat das Upgrade '"
                     + ChatColor.YELLOW + upgradeRequest.getUpgradeLevel().getName() + ChatColor.GREEN + " beantragt:");
             sender.sendMessage(ChatColor.GREEN + "Info: " + ChatColor.GRAY + upgradeRequest.getInfo());
+            sender.sendMessage(ChatColor.GREEN + "-->" + ChatColor.YELLOW + "/gilde upgrades " + city.getName() + " <accept/decline>");
         }
 
         @Command(
