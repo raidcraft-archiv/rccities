@@ -10,6 +10,7 @@ import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +78,13 @@ public class UpgradeRequestManager {
             List<UpgradeRequest> openRequests = upgradeRequestManager.getOpenRequests();
             if(openRequests.size() == 0) return;
 
-            String permission  = "rccities.upgrades.process";
-            Bukkit.broadcast(ChatColor.GRAY + "Es liegen Upgrade-Anfragen von Gilden vor:", permission);
-            Bukkit.broadcast(ChatColor.GRAY + StringUtils.join(openRequests, ", ") + " (nutze /gilde upgrade <Gilde>)", permission);
+            for(Player player : Bukkit.getOnlinePlayers()) {
+
+                if(!player.hasPermission("rccities.upgrades.process")) continue;
+
+                player.sendMessage(ChatColor.GRAY + "Es liegen Upgrade-Anfragen von Gilden vor:");
+                player.sendMessage(ChatColor.GRAY + StringUtils.join(openRequests, ", ") + " (nutze /gilde upgrade <Gilde>)");
+            }
         }
     }
 }
