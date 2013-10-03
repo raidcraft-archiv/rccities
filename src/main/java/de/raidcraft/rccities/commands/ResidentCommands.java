@@ -115,7 +115,7 @@ public class ResidentCommands {
                 throw new CommandException("Es gibt keinen Beruf mit diesem Namen. Verfügbare Berufe: " + Arrays.toString(Role.values()));
             }
             if(newRole.isAdminOnly() && !player.hasPermission("rccities.resident.promote.all")) {
-                throw new CommandException("Dieser Beruf kann nur von Serveradministratoren vergeben werden!");
+                throw new CommandException("Dieser Beruf kann nur von Administratoren vergeben werden!");
             }
 
             Resident targetResident = plugin.getResidentManager().getResident(target, city);
@@ -136,6 +136,10 @@ public class ResidentCommands {
                 }
             }
             oldRole = targetResident.getRole();
+
+            if(oldRole.isAdminOnly() && !player.hasPermission("rccities.resident.promote.all")) {
+                throw new CommandException("Der jetzige Beruf des Spielers kann nur von Administratoren geändert werden!");
+            }
 
             targetResident.setRole(newRole);
             // set owner on all city plots
