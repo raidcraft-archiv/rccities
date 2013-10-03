@@ -61,7 +61,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         // delete not reachable levels
         UpgradeLevel highestLockedLevel = upgrade.getHighestLockedLevel();
         for(UpgradeLevel level : new ArrayList<>(levels)) {
-            if(!level.isUnlocked() && highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel()) levels.remove(level);
+            if(highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel()) levels.remove(level);
         }
         RaidCraft.LOGGER.info("DEBUG: Levels:" + levels.size());
         String entranceStage = "city_levels_";
