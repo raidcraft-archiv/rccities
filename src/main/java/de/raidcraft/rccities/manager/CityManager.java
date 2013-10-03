@@ -112,7 +112,7 @@ public class CityManager {
             if(level.isUnlocked()) multiplier++;
         }
 
-        return plugin.getConfig().joinCosts * multiplier;
+        return RaidCraft.getEconomy().parseCurrencyInput(plugin.getConfig().joinCosts) * multiplier;
     }
 
     public City getCity(String name) {
