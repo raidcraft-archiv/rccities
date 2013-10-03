@@ -146,7 +146,7 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public UpgradeHolder getUpgrades() {
+    public UpgradeHolder<City> getUpgrades() {
 
         return upgradeHolder;
     }

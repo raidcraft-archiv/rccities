@@ -8,6 +8,7 @@ import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.plot.Plot;
+import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
@@ -162,6 +163,56 @@ public class TownCommands {
             } catch (NoSuchMethodException e) {
                 throw new CommandException(e.getMessage());
             }
+        }
+
+        @Command(
+                aliases = {"upgrade", "upgrades", "up"},
+                desc = "Shows or accept guild upgrades",
+                usage = "<Gilde> [accept/reject] [reason]",
+                min = 1
+        )
+        @CommandPermissions("rccities.upgrades.process")
+        public void upgrades(CommandContext args, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player)sender;
+
+            City city;
+            city = plugin.getCityManager().getCity(args.getString(0));
+            if(city == null) {
+                throw new CommandException("Es gibt keine Gilde mit dem Name '" + args.getString(0) + "'!");
+            }
+
+            List<UpgradeRequest> upgradeRequests = plugin.getUpgradeRequestManager().getOpenRequests(city);
+            if(upgradeRequests.size() == 0) {
+                throw new CommandException("Für diese Gilde liegen keine Upgrade-Anträge vor!");
+            }
+            // only process first entry
+            UpgradeRequest upgradeRequest = upgradeRequests.get(0);
+
+            if(args.argsLength() > 1) {
+                String option = args.getString(1);
+                String reason = null;
+                if(args.argsLength() > 2) {
+                    reason = args.getString(2);
+                }
+                if(option.equalsIgnoreCase("accept")) {
+                    upgradeRequest.accept();
+                    sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' angenommen!");
+                    return;
+                }
+                if(option.equalsIgnoreCase("reject")) {
+                    upgradeRequest.reject(reason);
+                    sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' " + ChatColor.RED + "abgelehnt" + ChatColor.GREEN +"!");
+                    return;
+                }
+                throw new CommandException("Parameter nicht erkannt. Nutze <accept> oder <decline> umd Anträge zu bearbeiten!");
+            }
+
+            // show info
+            sender.sendMessage(ChatColor.GREEN + "Die Gilde '" + city.getFriendlyName() + "' hat das Upgrade '"
+                    + ChatColor.YELLOW + upgradeRequest.getUpgradeLevel().getName() + ChatColor.GREEN + " beantragt:");
+            sender.sendMessage(ChatColor.GREEN + "Info: " + ChatColor.GRAY + upgradeRequest.getInfo());
         }
 
         @Command(

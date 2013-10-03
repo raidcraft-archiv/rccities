@@ -39,7 +39,7 @@ public interface City {
 
     public void setPlotCredit(int plotCredit);
 
-    public UpgradeHolder getUpgrades();
+    public UpgradeHolder<City> getUpgrades();
 
     public int getMaxRadius();
 

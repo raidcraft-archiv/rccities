@@ -6,6 +6,8 @@ import de.raidcraft.rccities.api.request.AbstractUpgradeRequest;
 import de.raidcraft.rccities.tables.TUpgradeRequest;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 
+import java.sql.Timestamp;
+
 /**
  * @author Philip Urban
  */
@@ -14,6 +16,15 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
     public DatabaseUpgradeRequest(City city, UpgradeLevel<City> upgradeLevel, String staffInfo) {
 
         super(city, upgradeLevel, staffInfo);
+    }
+
+    public DatabaseUpgradeRequest(TUpgradeRequest tUpgradeRequest) {
+
+        super(tUpgradeRequest.getRCCity(), tUpgradeRequest.getUpgradeLevel(), tUpgradeRequest.getInfo());
+        rejected = tUpgradeRequest.isRejected();
+        accepted = tUpgradeRequest.isAccepted();
+        rejectReason = tUpgradeRequest.getRejectReason();
+        rejectDate = tUpgradeRequest.getRejectDate().getTime();
     }
 
     @Override
@@ -25,14 +36,22 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
             tUpgradeRequest = new TUpgradeRequest();
             tUpgradeRequest.setCity(getCity());
             tUpgradeRequest.setInfo(getInfo());
-            tUpgradeRequest.setLevel_identifier(getUpgradeLevel().getId());
+            tUpgradeRequest.setLevelIdentifier(getUpgradeLevel().getId());
+            tUpgradeRequest.setRejected(isRejected());
+            tUpgradeRequest.setAccepted(isAccepted());
+            tUpgradeRequest.setRejectReason(getRejectReason());
+            tUpgradeRequest.setRejectDate(new Timestamp(rejectDate));
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tUpgradeRequest);
         }
         else {
             tUpgradeRequest = new TUpgradeRequest();
             tUpgradeRequest.setCity(getCity());
             tUpgradeRequest.setInfo(getInfo());
-            tUpgradeRequest.setLevel_identifier(getUpgradeLevel().getId());
+            tUpgradeRequest.setLevelIdentifier(getUpgradeLevel().getId());
+            tUpgradeRequest.setRejected(isRejected());
+            tUpgradeRequest.setAccepted(isAccepted());
+            tUpgradeRequest.setRejectReason(getRejectReason());
+            tUpgradeRequest.setRejectDate(new Timestamp(rejectDate));
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tUpgradeRequest);
         }
     }
@@ -60,5 +79,6 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
         rejectReason = reason;
         rejected = true;
         rejectDate = System.currentTimeMillis();
+        save();
     }
 }
