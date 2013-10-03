@@ -373,6 +373,14 @@ public class FlagManager {
         return flagInformationList;
     }
 
+    public FlagInformation getRegisteredCityFlagInformation(String flagName) {
+
+        Class<? extends Flag> registeredFlagClass = registeredCityFlags.get(flagName);
+        if(registeredFlagClass == null) return null;
+        FlagInformation annotation = registeredFlagClass.getAnnotation(FlagInformation.class);
+        return annotation;
+    }
+
     public void clearCache() {
 
         cachedCityFlags.clear();

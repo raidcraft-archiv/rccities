@@ -36,10 +36,6 @@ public class ListCityRolesAction extends AbstractAction {
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         List<Role> roles = new ArrayList(Arrays.asList(Role.values()));
-        // delete admin roles
-        for(Role role : new ArrayList<>(roles)) {
-            if(role.isAdminOnly()) roles.remove(role);
-        }
         String entranceStage = "city_roles_";
 
 

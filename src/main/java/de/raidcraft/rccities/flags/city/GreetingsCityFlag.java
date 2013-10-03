@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
  */
 @FlagInformation(
         name = "GREETINGS",
-        friendlyName = "Plot-Nachrichten",
+        friendlyName = "Plot-Nachrichten (An/Aus)",
         type = FlagType.BOOLEAN
 )
 public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {

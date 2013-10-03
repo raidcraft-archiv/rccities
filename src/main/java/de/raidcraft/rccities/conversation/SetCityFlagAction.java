@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
@@ -34,11 +35,13 @@ public class SetCityFlagAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
+
         try {
+            FlagInformation flagInformation = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getRegisteredCityFlagInformation(flagName);
             RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(city, conversation.getPlayer(), flagName, flagValue);
-            conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast erfolgreich die Flag '" + ChatColor.YELLOW + flagName.toUpperCase()
+            conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast erfolgreich die Flag '" + ChatColor.YELLOW + flagInformation.friendlyName()
                     + ChatColor.GREEN + "' auf den Wert '" + ChatColor.YELLOW + flagValue.toUpperCase() + ChatColor.GREEN + "' gesetzt!");
-        } catch (RaidCraftException e) {
+        } catch (NullPointerException | RaidCraftException e) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Fehler beim ändern der Flag: " + e.getMessage());
             conversation.getPlayer().sendMessage(ChatColor.RED + e.getMessage());
         }

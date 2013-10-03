@@ -146,7 +146,7 @@ public class PlotCommands {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
 
-            plot.assignResident(resident);
+            plot.assignResident(targetResident);
             plot.getCity().refreshFlags();
             plot.refreshFlags();
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich an " + targetResident.getName() + " vergeben!");
