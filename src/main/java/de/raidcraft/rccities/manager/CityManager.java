@@ -98,28 +98,18 @@ public class CityManager {
         UpgradeLevel upgradeLevel = city.getUpgrades().getUpgrade("1").getHighestLockedLevel();
         if(upgradeLevel == null) {
             for(UpgradeLevel level : city.getUpgrades().getUpgrade("1").getLevels()) {
-                if(upgradeLevel == null || upgradeLevel.getNumber() < level.getNumber()) {
+                if(upgradeLevel == null || upgradeLevel.getId() < level.getId()) {
                     upgradeLevel = level;
                 }
             }
-            return upgradeLevel.getNumber();
+            return upgradeLevel.getId();
         }
-        return upgradeLevel.getNumber() - 1;
+        return upgradeLevel.getId() - 1;
     }
 
     public double getServerJoinCosts(City city) {
 
         return plugin.getConfig().joinCosts * getCityLevel(city);
-    }
-
-    public void addUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
-
-        //TODO
-    }
-
-    public void removeUpgradeRequest(UpgradeRequest request) {
-
-        //TODO
     }
 
     public UpgradeRequest getUpgradeRequest(City city, UpgradeLevel upgradeLevel) {

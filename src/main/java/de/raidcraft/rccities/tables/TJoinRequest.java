@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @author Philip Urban
  */
 @Entity
-@Table(name = "rccities_requests")
+@Table(name = "rccities_join_requests")
 public class TJoinRequest {
 
     @Id

@@ -15,4 +15,10 @@ public interface UpgradeRequest extends Request {
     public long getRejectExpirationDate();
 
     public boolean isAccepted();
+
+    public String getInfo();
+
+    public void save();
+
+    public void delete();
 }

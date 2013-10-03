@@ -155,6 +155,7 @@ public class RCCitiesPlugin extends BasePlugin {
         databases.add(TCityFlag.class);
         databases.add(TPlotFlag.class);
         databases.add(TJoinRequest.class);
+        databases.add(TUpgradeRequest.class);
         return databases;
     }
 
@@ -172,6 +173,8 @@ public class RCCitiesPlugin extends BasePlugin {
         public String upgradeHolder = "city-upgrade-holder";
         @Setting("join-costs")
         public double joinCosts = 0.1;
+        @Setting("upgrade-request-reject-cooldown")
+        public int upgradeRequestCooldown;
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

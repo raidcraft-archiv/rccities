@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.requirement.AbstractRequirement;
 import de.raidcraft.api.requirement.RequirementInformation;
 import de.raidcraft.api.requirement.RequirementResolver;
+import de.raidcraft.rccities.DatabaseUpgradeRequest;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.UpgradeRequest;
@@ -16,7 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 @RequirementInformation("CITY_STAFF")
 public class CityStaffRequirement extends AbstractRequirement<City> {
 
-    private int amount;
+    private String info;
 
     public CityStaffRequirement(RequirementResolver<City> resolver, ConfigurationSection config) {
 
@@ -26,7 +27,7 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
     @Override
     protected void load(ConfigurationSection data) {
 
-        amount = data.getInt("exp");
+        info = data.getString("info");
     }
 
     @Override
@@ -38,13 +39,14 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
 
         // new request
         if(request == null) {
-            plugin.getCityManager().addUpgradeRequest(city, upgradeLevel);
+            request = new DatabaseUpgradeRequest(city, upgradeLevel, info);
+            request.save();
             return false;
         }
 
         // check old request
         if(request.isAccepted()) {
-            plugin.getCityManager().removeUpgradeRequest(request);
+            request.delete();
             return true;
         }
         else {

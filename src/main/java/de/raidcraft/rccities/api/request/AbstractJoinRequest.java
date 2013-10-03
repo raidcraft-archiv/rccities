@@ -5,12 +5,10 @@ import de.raidcraft.rccities.api.city.City;
 /**
  * @author Philip Urban
  */
-public abstract class AbstractJoinRequest implements JoinRequest {
+public abstract class AbstractJoinRequest extends AbstractRequest implements JoinRequest {
 
     private String player;
     private City city;
-    private boolean rejected;
-    private String rejectReason;
 
     protected AbstractJoinRequest(String player, City city, boolean rejected, String rejectReason) {
 
@@ -31,17 +29,5 @@ public abstract class AbstractJoinRequest implements JoinRequest {
     public City getCity() {
 
         return city;
-    }
-
-    @Override
-    public boolean isRejected() {
-
-        return rejected;
-    }
-
-    @Override
-    public String getRejectReason() {
-
-        return rejectReason;
     }
 }

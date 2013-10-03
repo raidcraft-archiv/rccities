@@ -61,7 +61,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         // delete not reachable levels
         for(UpgradeLevel level : new ArrayList<>(levels)) {
             UpgradeLevel highestLockedLevel = upgrade.getHighestLockedLevel();
-            if(highestLockedLevel != null && level.getNumber() > highestLockedLevel.getNumber()) levels.remove(level);
+            if(highestLockedLevel != null && level.getId() > highestLockedLevel.getId()) levels.remove(level);
         }
         String entranceStage = "city_levels_";
 
@@ -113,7 +113,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         int i = 0;
         Map<String, Object> data = new HashMap<>();
         data.put("variable", varName);
-        data.put("value", level.getNumber());
+        data.put("value", level.getId());
         data.put("local", true);
         Map<String, Object> data2 = new HashMap<>();
         data2.put("variable", varName + "_name");
