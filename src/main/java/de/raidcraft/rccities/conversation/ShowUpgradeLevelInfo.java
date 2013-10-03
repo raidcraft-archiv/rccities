@@ -10,7 +10,6 @@ import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
-import de.raidcraft.rcconversations.util.MathHelper;
 import de.raidcraft.rcconversations.util.ParseString;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
@@ -30,9 +29,8 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
         String upgradeType = args.getString("upgrade-type");
         upgradeType = ParseString.INST.parse(conversation, upgradeType);
-        String upgradeLevelString = args.getString("upgrade-level");
-        upgradeLevelString = ParseString.INST.parse(conversation, upgradeLevelString);
-        int upgradeLevel = MathHelper.solveIntegerFormula(upgradeLevelString);
+        String upgradeLevel = args.getString("upgrade-level");
+        upgradeLevel = ParseString.INST.parse(conversation, upgradeLevel);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if(city == null) {
@@ -50,7 +48,7 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         }
 
         String state;
-        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getUpgradeRequest(city, level);
+        UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeRequestManager().getRequest(city, level);
 
         if(level.isUnlocked()) {
             state = ChatColor.GREEN + "Freigeschaltet";

@@ -35,7 +35,7 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
 
         UpgradeLevel<City> upgradeLevel = (UpgradeLevel<City>)getResolver();
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
-        UpgradeRequest request = plugin.getCityManager().getUpgradeRequest(city, upgradeLevel);
+        UpgradeRequest request = plugin.getUpgradeRequestManager().getRequest(city, upgradeLevel);
 
         // new request
         if(request == null) {

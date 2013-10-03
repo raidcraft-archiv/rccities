@@ -5,19 +5,17 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rccities.api.request.UpgradeRequest;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
+import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,41 +91,28 @@ public class CityManager {
         sender.sendMessage("*********************************");
     }
 
-    public int getCityLevel(City city) {
+    public Upgrade getMainUpgrade(City city) {
 
-        UpgradeLevel upgradeLevel = city.getUpgrades().getUpgrade("1").getHighestLockedLevel();
+        return city.getUpgrades().getUpgrade("1");
+    }
+
+    public String getCityLevel(City city) {
+
+        UpgradeLevel upgradeLevel = getMainUpgrade(city).getHighestUnlockedLevel();
         if(upgradeLevel == null) {
-            for(UpgradeLevel level : city.getUpgrades().getUpgrade("1").getLevels()) {
-                if(upgradeLevel == null || upgradeLevel.getId() < level.getId()) {
-                    upgradeLevel = level;
-                }
-            }
-            return upgradeLevel.getId();
+            return "~ Max Level ~";
         }
-        return upgradeLevel.getId() - 1;
+        return upgradeLevel.getId();
     }
 
     public double getServerJoinCosts(City city) {
 
-        return plugin.getConfig().joinCosts * getCityLevel(city);
-    }
-
-    public UpgradeRequest getUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
-
-        for(UpgradeRequest upgradeRequest : getUpgradeRequests(city)) {
-            if(upgradeRequest.getUpgradeLevel().equals(upgradeLevel)) {
-                return upgradeRequest;
-            }
+        int multiplier = 0;
+        for(UpgradeLevel level : getMainUpgrade(city).getLevels()) {
+            if(level.isUnlocked()) multiplier++;
         }
-        return null;
-    }
 
-    public List<UpgradeRequest> getUpgradeRequests(City city) {
-
-        List<UpgradeRequest> requests = new ArrayList<>();
-
-        //TODO
-        return requests;
+        return plugin.getConfig().joinCosts * multiplier;
     }
 
     public City getCity(String name) {

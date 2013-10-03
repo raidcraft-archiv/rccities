@@ -54,6 +54,7 @@ public class RCCitiesPlugin extends BasePlugin {
     private SchematicManager schematicManager;
     private DynmapManager dynmapManager;
     private WorldGuardManager worldGuardManager;
+    private UpgradeRequestManager upgradeRequestManager;
 
     @Override
     public void enable() {
@@ -77,6 +78,7 @@ public class RCCitiesPlugin extends BasePlugin {
         schematicManager = new SchematicManager(this);
         dynmapManager = new DynmapManager();
         worldGuardManager = new WorldGuardManager(this, worldGuard);
+        upgradeRequestManager = new UpgradeRequestManager(this);
 
         // city flags
         flagManager.registerCityFlag(PvpCityFlag.class);
@@ -240,5 +242,10 @@ public class RCCitiesPlugin extends BasePlugin {
     public ConfigurationSection getUpgradeConfiguration() {
 
         return upgradeConfiguration;
+    }
+
+    public UpgradeRequestManager getUpgradeRequestManager() {
+
+        return upgradeRequestManager;
     }
 }
