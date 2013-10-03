@@ -44,7 +44,6 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tUpgradeRequest);
         }
         else {
-            tUpgradeRequest = new TUpgradeRequest();
             tUpgradeRequest.setCity(getCity());
             tUpgradeRequest.setInfo(getInfo());
             tUpgradeRequest.setLevelIdentifier(getUpgradeLevel().getId());
