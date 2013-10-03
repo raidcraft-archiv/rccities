@@ -63,6 +63,6 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
     @Override
     public String getLongReason() {
 
-        return "Ein Teammitglied wird sich in kürze um die Freischaltung kümmern!";
+        return "Ein Teammitglied wird sich in kürze darum kümmern!";
     }
 }

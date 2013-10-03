@@ -70,7 +70,7 @@ public class TUpgradeRequest {
 
         for(Upgrade upgrade : getRCCity().getUpgrades().getUpgrades()) {
             for(UpgradeLevel upgradeLevel : upgrade.getLevels()) {
-                if(upgradeLevel.equals(getLevelIdentifier())) {
+                if(upgradeLevel.getId().equalsIgnoreCase(getLevelIdentifier())) {
                     return upgradeLevel;
                 }
             }

@@ -36,6 +36,7 @@ public class SendJoinRequestAction extends AbstractAction {
         // invitation is locked
         CityFlag inviteFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, InviteCityFlag.class);
         if(inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
+            conversation.getPlayer().sendMessage("");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde darf zurzeit keine neuen Mitglieder aufnehmen!");
             conversation.endConversation(EndReason.INFORM);
             return;
