@@ -203,6 +203,9 @@ public class TownCommands {
                     return;
                 }
                 if(option.equalsIgnoreCase("reject")) {
+                    if(reason == null) {
+                        throw new CommandException("Gebe bitte noch einen Grund als weiteren Parameter an!");
+                    }
                     upgradeRequest.reject(reason);
                     sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' " + ChatColor.RED + "abgelehnt" + ChatColor.GREEN +"!");
                     return;
