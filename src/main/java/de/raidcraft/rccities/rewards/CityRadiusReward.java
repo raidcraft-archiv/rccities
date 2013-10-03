@@ -10,13 +10,13 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * @author Philip Urban
  */
-@RewardInformation("CITY_PLOTS")
-public class CityPlotsReward extends AbstractReward<City> {
+@RewardInformation("CITY_RADIUS")
+public class CityRadiusReward extends AbstractReward<City> {
 
-    int plotAmount;
+    int blocks;
     boolean broadcast;
 
-    public CityPlotsReward(ConfigurationSection config) {
+    public CityRadiusReward(ConfigurationSection config) {
 
         super(config);
     }
@@ -24,17 +24,17 @@ public class CityPlotsReward extends AbstractReward<City> {
     @Override
     public void load(ConfigurationSection config) {
 
-        plotAmount = config.getInt("amount");
+        blocks = config.getInt("blocks");
         broadcast = config.getBoolean("broadcast", true);
     }
 
     @Override
     public void reward(City city) {
 
-        city.setPlotCredit(city.getPlotCredit() + plotAmount);
+        city.setMaxRadius(city.getMaxRadius() + blocks);
 
         if(broadcast) {
-            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat " + plotAmount + " neue Plots erhalten!");
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat ihren Radius um " + blocks + " Blocks vergrößert!");
         }
     }
 }
