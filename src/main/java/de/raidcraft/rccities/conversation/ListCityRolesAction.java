@@ -89,11 +89,11 @@ public class ListCityRolesAction extends AbstractAction {
         List<ActionArgumentList> actions = new ArrayList<>();
         int i = 0;
         Map<String, Object> data = new HashMap<>();
-        data.put("variable", varName + "_name");
+        data.put("variable", varName + "name");
         data.put("value", role.name());
         data.put("local", true);
         Map<String, Object> data2 = new HashMap<>();
-        data2.put("variable", varName + "_friendlyname");
+        data2.put("variable", varName + "friendlyname");
         data2.put("value", role.getFriendlyName());
         data2.put("local", true);
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
