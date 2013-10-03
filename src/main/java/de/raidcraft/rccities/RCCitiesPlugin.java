@@ -23,6 +23,7 @@ import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.requirements.CityExpRequirement;
+import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.tables.*;
 import de.raidcraft.rcconversations.actions.ActionManager;
@@ -107,6 +108,7 @@ public class RCCitiesPlugin extends BasePlugin {
 
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);
+        RewardManager.registerRewardType(CityFlagReward.class);
 
         // upgrade requirements
         RequirementManager.registerRequirementType(CityExpRequirement.class);
