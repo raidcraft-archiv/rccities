@@ -33,6 +33,8 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
     @Override
     public boolean isMet(City city) {
 
+        RaidCraft.LOGGER.info("Requirement: CITY_STAFF");
+
         UpgradeLevel<City> upgradeLevel = (UpgradeLevel<City>)getResolver();
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
         UpgradeRequest request = plugin.getUpgradeRequestManager().getRequest(city, upgradeLevel);

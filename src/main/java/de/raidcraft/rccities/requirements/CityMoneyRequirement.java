@@ -29,6 +29,8 @@ public class CityMoneyRequirement extends AbstractRequirement<City> {
     @Override
     public boolean isMet(City city) {
 
+        RaidCraft.LOGGER.info("Requirement: CITY_MONEY");
+
         if(RaidCraft.getEconomy().hasEnough(city.getBankAccountName(), amount)) {
             return true;
         }
