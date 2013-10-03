@@ -5,8 +5,10 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.flags.CityFlag;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
+import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
@@ -77,6 +79,12 @@ public class CityManager {
             }
         }
 
+        double joinCosts = 0;
+        CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
+        if(joinCostsCityFlag != null) {
+            joinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
+        }
+
         sender.sendMessage("*********************************");
         sender.sendMessage(ChatColor.GOLD + "Informationen zur Gilde '" + ChatColor.YELLOW + city.getFriendlyName() + ChatColor.GOLD + "'");
         sender.sendMessage(ChatColor.GOLD + "Beschreibung: " + ChatColor.YELLOW + city.getDescription());
@@ -87,6 +95,7 @@ public class CityManager {
         sender.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + getCityLevel(city));
         sender.sendMessage(ChatColor.GOLD + "EXP: " + ChatColor.YELLOW + city.getExp());
         sender.sendMessage(ChatColor.GOLD + "Stadtkasse: " + ChatColor.YELLOW + RaidCraft.getEconomy().getFormattedBalance(city.getBankAccountName()));
+        sender.sendMessage(ChatColor.GOLD + "Beitrittskosten: " + ChatColor.YELLOW + RaidCraft.getEconomy().getFormattedAmount(joinCosts));
         sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.YELLOW + mayorList);
         sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.YELLOW + residentList);
         sender.sendMessage("*********************************");
@@ -113,7 +122,8 @@ public class CityManager {
             if(level.isUnlocked()) multiplier++;
         }
 
-        return RaidCraft.getEconomy().parseCurrencyInput(plugin.getConfig().joinCosts) * multiplier;
+        double baseJoinCosts = RaidCraft.getEconomy().parseCurrencyInput(plugin.getConfig().joinCosts);
+        return baseJoinCosts  + (baseJoinCosts/2. * multiplier);
     }
 
     public City getCity(String name) {
