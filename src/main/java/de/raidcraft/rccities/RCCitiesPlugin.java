@@ -24,6 +24,7 @@ import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.manager.*;
 import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.requirements.CityMoneyRequirement;
+import de.raidcraft.rccities.requirements.CityStaffRequirement;
 import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.tables.*;
@@ -114,6 +115,7 @@ public class RCCitiesPlugin extends BasePlugin {
         // upgrade requirements
         RequirementManager.registerRequirementType(CityExpRequirement.class);
         RequirementManager.registerRequirementType(CityMoneyRequirement.class);
+        RequirementManager.registerRequirementType(CityStaffRequirement.class);
 
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {

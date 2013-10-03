@@ -117,6 +117,11 @@ public class CityManager {
         //TODO
     }
 
+    public void removeUpgradeRequest(UpgradeRequest request) {
+
+        //TODO
+    }
+
     public UpgradeRequest getUpgradeRequest(City city, UpgradeLevel upgradeLevel) {
 
         for(UpgradeRequest upgradeRequest : getUpgradeRequests(city)) {

@@ -13,4 +13,6 @@ public interface UpgradeRequest extends Request {
     public UpgradeLevel<City> getUpgradeLevel();
 
     public long getRejectExpirationDate();
+
+    public boolean isAccepted();
 }
