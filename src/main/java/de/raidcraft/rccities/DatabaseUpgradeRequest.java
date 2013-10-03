@@ -69,7 +69,7 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
     public void accept() {
 
         accepted = true;
-        getUpgradeLevel().tryToUnlock(getCity());
+        save();
     }
 
     @Override

@@ -199,6 +199,7 @@ public class TownCommands {
                 if(option.equalsIgnoreCase("accept")) {
                     upgradeRequest.accept();
                     sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' angenommen!");
+                    upgradeRequest.getUpgradeLevel().tryToUnlock(city);
                     return;
                 }
                 if(option.equalsIgnoreCase("reject")) {
