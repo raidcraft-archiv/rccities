@@ -1,5 +1,6 @@
 package de.raidcraft.rccities.listener;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rcupgrades.events.UpgradeUnlockEvent;
 import org.bukkit.Bukkit;
@@ -15,7 +16,9 @@ public class UpgradeListener implements Listener {
     @EventHandler
     public void onUnlockUpgrade(UpgradeUnlockEvent event) {
 
+        RaidCraft.LOGGER.info("DEBUG 0");
         if(!(event.getUpgradeLevel().getUpgradeHolder().getObject() instanceof City)) return;
+        RaidCraft.LOGGER.info("DEBUG 1");
 
         City city = (City)event.getUpgradeLevel().getUpgradeHolder().getObject();
         int maxLevel = event.getUpgradeLevel().getLevel();

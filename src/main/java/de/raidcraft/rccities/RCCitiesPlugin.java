@@ -178,7 +178,7 @@ public class RCCitiesPlugin extends BasePlugin {
         @Setting("join-costs")
         public double joinCosts = 0.1;
         @Setting("upgrade-request-reject-cooldown")
-        public int upgradeRequestCooldown;
+        public int upgradeRequestCooldown = 5 * 24 * 60;// 5 days in minutes
 
         public LocalConfiguration(RCCitiesPlugin plugin) {
 

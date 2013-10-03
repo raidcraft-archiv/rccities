@@ -207,7 +207,7 @@ public class TownCommands {
                     sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' " + ChatColor.RED + "abgelehnt" + ChatColor.GREEN +"!");
                     return;
                 }
-                throw new CommandException("Parameter nicht erkannt. Nutze <accept> oder <decline> umd Anträge zu bearbeiten!");
+                throw new CommandException("Parameter nicht erkannt. Nutze <accept> oder <reject> umd Anträge zu bearbeiten!");
             }
 
             // show info

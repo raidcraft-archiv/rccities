@@ -62,20 +62,23 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
         // check existing request
         if(upgradeRequest != null) {
             // check if rejected (cooldown)
-            if(upgradeRequest.isRejected()) {
-                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
-                conversation.getPlayer().sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
-                conversation.getPlayer().sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
-                        + " gestellt werden.");
-                conversation.endConversation(EndReason.INFORM);
+            if(upgradeRequest.isRejected() && System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
+                // check if cooldown over
+                if(System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
+                            + " gestellt werden.");
+                    conversation.endConversation(EndReason.INFORM);
+                    return;
+                }
             }
-
             // check if in request progress
             else {
                 conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt.");
                 conversation.endConversation(EndReason.INFORM);
+                return;
             }
-            return;
         }
 
         // add request
