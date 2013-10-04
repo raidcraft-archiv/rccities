@@ -29,6 +29,7 @@ import de.raidcraft.rccities.requirements.CityStaffRequirement;
 import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.rewards.CityRadiusReward;
+import de.raidcraft.rccities.rewards.SubtractMoneyReward;
 import de.raidcraft.rccities.tables.*;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import org.bukkit.Bukkit;
@@ -97,6 +98,7 @@ public class RCCitiesPlugin extends BasePlugin {
         RewardManager.registerRewardType(CityPlotsReward.class);
         RewardManager.registerRewardType(CityFlagReward.class);
         RewardManager.registerRewardType(CityRadiusReward.class);
+        RewardManager.registerRewardType(SubtractMoneyReward.class);
 
         // upgrade requirements
         RequirementManager.registerRequirementType(CityExpRequirement.class);
