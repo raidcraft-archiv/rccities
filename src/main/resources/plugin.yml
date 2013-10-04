@@ -13,5 +13,14 @@ permissions:
        rccities.create: true
    rccities.player:
      children:
-       rccities.leave: true
+       rccities.plot.take: true
+       rccities.plot.give: true
+       rccities.plot.claim: true
+       rccities.plot.flag: true
+       rccities.plot.info: true
+       rccities.resident.info: true
+       rccities.town.info: true
+       rccities.town.list: true
+       rccities.town.leave: true
+       rccities.town.kick: true
 
