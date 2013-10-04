@@ -21,6 +21,7 @@ public class ExpListener implements Listener {
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
         List<Resident> residents = plugin.getResidentManager().getCitizenships(event.getPlayer().getName());
+        if(residents == null) return;
         boolean slave = false;
         Resident resident = null;
         for(Resident res : residents) {
