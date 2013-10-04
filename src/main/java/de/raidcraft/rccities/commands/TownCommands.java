@@ -79,14 +79,15 @@ public class TownCommands {
 
             plugin.reload();
 
-            for(City city : plugin.getCityManager().getCities()) {
-                plugin.getDynmapManager().addCityMarker(city);
-            }
 
             plugin.getCityManager().clearCache();
             plugin.getPlotManager().clearCache();
             plugin.getResidentManager().clearCache();
             plugin.getFlagManager().clearCache();
+
+            for(City city : plugin.getCityManager().getCities()) {
+                plugin.getDynmapManager().addCityMarker(city);
+            }
 
             sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen und alle Caches geleert!");
         }

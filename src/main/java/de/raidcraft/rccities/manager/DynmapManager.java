@@ -36,7 +36,7 @@ public class DynmapManager {
             RaidCraft.LOGGER.warning("Dynmap not installed or 'spielerstaedte' marker set not available!");
             return;
         }
-
+        if(city == null) return;
         removeMarker(city);
 
         farmsSet.createMarker(city.getName().toLowerCase().replace(" ", "_")
