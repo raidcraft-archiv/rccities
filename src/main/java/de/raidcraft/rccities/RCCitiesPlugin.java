@@ -93,6 +93,7 @@ public class RCCitiesPlugin extends BasePlugin {
         ActionManager.registerAction(new FindCityResidentAction());
         ActionManager.registerAction(new ListCityRolesAction());
         ActionManager.registerAction(new SetResidentRoleAction());
+        ActionManager.registerAction(new LeaveCityAction());
 
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);
