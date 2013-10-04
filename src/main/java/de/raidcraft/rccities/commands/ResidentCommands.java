@@ -127,6 +127,7 @@ public class ResidentCommands {
                     }
                     try {
                         targetResident = plugin.getResidentManager().addResident(city, targetPlayer);
+                        targetResident.setRole(Role.RESIDENT);
                     } catch (RaidCraftException e) {
                         throw new CommandException(e.getMessage());
                     }

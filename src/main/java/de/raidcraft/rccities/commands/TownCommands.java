@@ -93,6 +93,25 @@ public class TownCommands {
         }
 
         @Command(
+                aliases = {"update"},
+                desc = "Repairs town plots",
+                usage = "[Gilde]"
+        )
+        @CommandPermissions("rccities.town.update")
+        public void update(CommandContext args, CommandSender sender) throws CommandException {
+
+            City city = plugin.getCityManager().getCity(args.getString(0));
+            if(city == null) {
+                throw new CommandException("Es wurde keine Gilde mit diesem namen gefunden!");
+            }
+
+            for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+                plot.updateRegion(false);
+            }
+            sender.sendMessage(ChatColor.GREEN + "Die Plots der Gilde '" + city.getFriendlyName() + "' wurden aktualisiert!");
+        }
+
+        @Command(
                 aliases = {"create"},
                 desc = "Create a new city",
                 min = 1,
@@ -229,7 +248,7 @@ public class TownCommands {
         }
 
         @Command(
-                aliases = {"spawn"},
+                aliases = {"spawn", "tp", "warp"},
                 desc = "Teleport to town spawn",
                 usage = "[Gilde]"
         )

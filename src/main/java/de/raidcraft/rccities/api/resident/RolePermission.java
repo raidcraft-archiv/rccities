@@ -20,5 +20,6 @@ public enum RolePermission {
     SPAWN_TELEPORT,
     DEPOSIT,
     WITHDRAW,
-    STAFF
+    STAFF,
+    COLLECT_EXP
 }

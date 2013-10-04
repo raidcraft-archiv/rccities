@@ -8,11 +8,14 @@ import java.util.Set;
  */
 public enum Role {
 
-    SLAVE("Sklave", true),
+    SLAVE("Sklave", true,
+            RolePermission.COLLECT_EXP
+    ),
 
     RESIDENT("Einwohner", false,
             RolePermission.LEAVE,
-            RolePermission.DEPOSIT
+            RolePermission.DEPOSIT,
+            RolePermission.COLLECT_EXP
     ),
 
     ADMIN("Administrator", true,
@@ -49,7 +52,8 @@ public enum Role {
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
             RolePermission.WITHDRAW,
-            RolePermission.STAFF
+            RolePermission.STAFF,
+            RolePermission.COLLECT_EXP
     ),
 
     VICE_MAYOR("Vize Bürgermeister", false,
@@ -64,7 +68,8 @@ public enum Role {
             RolePermission.PROMOTE,
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
-            RolePermission.STAFF
+            RolePermission.STAFF,
+            RolePermission.COLLECT_EXP
     ),
 
     ASSISTANT("Stadtassistent", false,
@@ -74,7 +79,8 @@ public enum Role {
             RolePermission.PLOT_DISTRIBUTION,
             RolePermission.PLOT_FLAG_MODIFICATION,
             RolePermission.DEPOSIT,
-            RolePermission.STAFF
+            RolePermission.STAFF,
+            RolePermission.COLLECT_EXP
     );
 
     private Set<RolePermission> permissions = new HashSet<>();
