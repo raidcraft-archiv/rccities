@@ -42,5 +42,6 @@ public class LeaveCityAction extends AbstractAction {
 
         Bukkit.broadcastMessage(ChatColor.GOLD + resident.getName() + " hat die Gilde '" + resident.getCity().getFriendlyName() + "' verlassen!");
         resident.delete();
+        conversation.endConversation(EndReason.INFORM);
     }
 }
