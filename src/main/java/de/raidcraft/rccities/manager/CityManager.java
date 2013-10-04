@@ -13,6 +13,7 @@ import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
 import de.raidcraft.util.CaseInsensitiveMap;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -133,8 +134,10 @@ public class CityManager {
         if(city == null) {
             TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).where().ieq("name", name).findUnique();
             if(tCity != null) {
+                if(Bukkit.getWorld(tCity.getWorld()) != null) {
                 city = new DatabaseCity(tCity);
                 cachedCities.put(tCity.getName(), city);
+                }
             }
         }
         // search for name parts
@@ -155,6 +158,7 @@ public class CityManager {
         for(TCity tCity : RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).findList()) {
 
             if(!cachedCities.containsKey(tCity.getName())) {
+                if(Bukkit.getWorld(tCity.getWorld()) == null) continue;
                 cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
             }
         }
