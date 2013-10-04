@@ -95,7 +95,8 @@ public class TownCommands {
         @Command(
                 aliases = {"update"},
                 desc = "Repairs town plots",
-                usage = "[Gilde]"
+                usage = "[Gilde]",
+                min = 1
         )
         @CommandPermissions("rccities.town.update")
         public void update(CommandContext args, CommandSender sender) throws CommandException {

@@ -124,7 +124,7 @@ public abstract class AbstractPlot implements Plot {
             }
             // add city staff
             for(Resident resident : getCity().getResidents()) {
-                if(resident.getRole().hasPermission(RolePermission.BUILD_EVERYWHERE)) continue;
+                if(!resident.getRole().hasPermission(RolePermission.BUILD_EVERYWHERE)) continue;
                 defaultDomain.addPlayer(resident.getName());
             }
             region.setOwners(defaultDomain);
