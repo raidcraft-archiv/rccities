@@ -49,13 +49,9 @@ public class ResidentManager {
 
         String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.YELLOW + city.getFriendlyName() + ChatColor.DARK_GRAY + "] ";
 
-        RaidCraft.LOGGER.info("DEBUG: broadcast");
-
         for(Resident resident : getResidents(city)) {
 
-            RaidCraft.LOGGER.info("DEBUG: resident: " + resident.getName());
             if(!resident.getRole().hasPermission(receiverPermission)) continue;
-            RaidCraft.LOGGER.info("DEBUG: has permission: " + resident.getName());
             Player player = resident.getPlayer();
             if(player != null) {
                 player.sendMessage(prefix + ChatColor.GOLD + message);
