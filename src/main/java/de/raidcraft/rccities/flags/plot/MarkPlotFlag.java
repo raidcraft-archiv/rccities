@@ -43,7 +43,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
             Economy economy = RaidCraft.getEconomy();
             if(!economy.hasEnough(bankAccount, markCost)) {
-                throw new RaidCraftException("Es ist nicht genug Geld in der Stadtkasse! (" + economy.getFormattedAmount(markCost) + " benötigt!");
+                throw new RaidCraftException("Es ist nicht genug Geld in der Stadtkasse! " + economy.getFormattedAmount(markCost) + " benötigt!");
             }
 
             // withdraw

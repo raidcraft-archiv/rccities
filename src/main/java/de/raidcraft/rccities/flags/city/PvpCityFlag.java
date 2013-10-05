@@ -30,10 +30,10 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
     public void announce(boolean state) {
 
         if(state) {
-            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet nun erlaubt!");
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet erlaubt!");
         }
         else {
-            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet nun verboten!");
+            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet verboten!");
         }
     }
 
