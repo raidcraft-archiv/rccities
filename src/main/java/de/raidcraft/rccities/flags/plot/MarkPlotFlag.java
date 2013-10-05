@@ -9,6 +9,7 @@ import de.raidcraft.rccities.api.flags.AbstractPlotFlag;
 import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.flags.FlagType;
 import de.raidcraft.rccities.api.plot.Plot;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
@@ -49,7 +50,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
             // withdraw
             economy.substract(bankAccount, markCost);
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
-                    .broadcastCityMessage(getPlot().getCity(), "Der Stadtkasse wurden " + economy.getFormattedAmount(markCost) + " abgezogen (Plot Markierung)!");
+                    .broadcastCityMessage(getPlot().getCity(), "Der Stadtkasse wurden " + economy.getFormattedAmount(markCost) + ChatColor.GOLD + " abgezogen (Plot Markierung)!");
 
             //set torches
             Chunk chunk = getPlot().getLocation().getChunk();
