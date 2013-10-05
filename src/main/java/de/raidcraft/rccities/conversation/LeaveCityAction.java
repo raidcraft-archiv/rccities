@@ -5,6 +5,7 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
@@ -36,6 +37,13 @@ public class LeaveCityAction extends AbstractAction {
         if(resident == null) {
             conversation.getPlayer().sendMessage(" ");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Du bist kein Mitglied dieser Gilde!");
+            conversation.endConversation(EndReason.INFORM);
+            return;
+        }
+
+        if(!resident.getRole().hasPermission(RolePermission.LEAVE)) {
+            conversation.getPlayer().sendMessage(" ");
+            conversation.getPlayer().sendMessage(ChatColor.RED + "Du darfst diese Gilde nichtverlassen!");
             conversation.endConversation(EndReason.INFORM);
             return;
         }
