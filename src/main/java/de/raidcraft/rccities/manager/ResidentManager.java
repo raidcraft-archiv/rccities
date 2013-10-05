@@ -128,7 +128,9 @@ public class ResidentManager {
                 cachedResidents.put(name, new ArrayList<Resident>());
                 for(TResident tResident : tResidents) {
                     Resident resident = new DatabaseResident(tResident);
-                    cachedResidents.get(name).add(resident);
+                    if(resident.getCity() != null) {
+                        cachedResidents.get(name).add(resident);
+                    }
                 }
             }
         }
