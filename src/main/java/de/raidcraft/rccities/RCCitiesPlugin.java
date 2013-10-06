@@ -89,11 +89,12 @@ public class RCCitiesPlugin extends BasePlugin {
         ActionManager.registerAction(new ListUpgradeLevelAction());
         ActionManager.registerAction(new ShowUpgradeLevelInfo());
         ActionManager.registerAction(new RequestUpgradeLevelUnlockAction());
-        ActionManager.registerAction(new ShowCityInfo());
+        ActionManager.registerAction(new ShowCityInfoAction());
         ActionManager.registerAction(new FindCityResidentAction());
         ActionManager.registerAction(new ListCityRolesAction());
         ActionManager.registerAction(new SetResidentRoleAction());
         ActionManager.registerAction(new LeaveCityAction());
+        ActionManager.registerAction(new ShowCityFlowAction());
 
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);

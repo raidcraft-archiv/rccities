@@ -15,7 +15,7 @@ import de.raidcraft.rcconversations.util.ParseString;
  * @author Philip Urban
  */
 @ActionInformation(name="SHOW_CITY_INFO")
-public class ShowCityInfo extends AbstractAction {
+public class ShowCityInfoAction extends AbstractAction {
 
     @Override
     public void run(Conversation conversation, ActionArgumentList args) throws RaidCraftException {
