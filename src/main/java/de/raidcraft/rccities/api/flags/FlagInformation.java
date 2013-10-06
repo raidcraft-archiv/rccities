@@ -19,4 +19,5 @@ public @interface FlagInformation {
     int refreshInterval() default 60;
     int cooldown() default 30;
     boolean adminOnly() default false;
+    boolean needsRefresh() default true;
 }

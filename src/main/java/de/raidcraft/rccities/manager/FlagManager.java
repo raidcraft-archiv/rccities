@@ -233,7 +233,10 @@ public class FlagManager {
         if(!cachedCityFlags.containsKey(city.getName())) return;
         for(Flag flag : cachedCityFlags.get(city.getName()).values()) {
             try {
-                flag.refresh();
+                FlagInformation annotation = flag.getClass().getAnnotation(FlagInformation.class);
+                if(annotation.needsRefresh()) {
+                    flag.refresh();
+                }
             } catch (RaidCraftException e) {
                 RaidCraft.LOGGER.warning("Fehler beim aktualisieren einer Flag! " + e.getMessage());
             }

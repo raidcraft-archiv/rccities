@@ -22,7 +22,8 @@ import org.bukkit.block.Block;
         name = "MARK",
         friendlyName = "Fackelmarkierung",
         type = FlagType.BOOLEAN,
-        cooldown = 5
+        cooldown = 5,
+        needsRefresh = false
 )
 public class MarkPlotFlag extends AbstractPlotFlag {
 
