@@ -49,6 +49,11 @@
         </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
+            <artifactId>skills</artifactId>
+            <version>${rc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.raidcraft</groupId>
             <artifactId>rcconversations</artifactId>
             <version>${rc.version}</version>
         </dependency>

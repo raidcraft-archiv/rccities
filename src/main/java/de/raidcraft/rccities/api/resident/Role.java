@@ -1,5 +1,7 @@
 package de.raidcraft.rccities.api.resident;
 
+import org.bukkit.ChatColor;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,17 +10,17 @@ import java.util.Set;
  */
 public enum Role {
 
-    SLAVE("Sklave", true,
+    SLAVE("Sklave", true, ChatColor.GRAY,
             RolePermission.COLLECT_EXP
     ),
 
-    RESIDENT("Einwohner", false,
+    RESIDENT("Einwohner", false, ChatColor.GREEN,
             RolePermission.LEAVE,
             RolePermission.DEPOSIT,
             RolePermission.COLLECT_EXP
     ),
 
-    ADMIN("Administrator", true,
+    ADMIN("Administrator", true, ChatColor.DARK_RED,
             RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
@@ -37,7 +39,7 @@ public enum Role {
             RolePermission.STAFF
     ),
 
-    MAYOR("Bürgermeister", true,
+    MAYOR("Bürgermeister", true, ChatColor.RED,
             RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
@@ -56,7 +58,7 @@ public enum Role {
             RolePermission.COLLECT_EXP
     ),
 
-    VICE_MAYOR("Vize Bürgermeister", false,
+    VICE_MAYOR("Vize Bürgermeister", false, ChatColor.DARK_BLUE,
             RolePermission.LEAVE,
             RolePermission.KICK,
             RolePermission.INVITE,
@@ -72,7 +74,7 @@ public enum Role {
             RolePermission.COLLECT_EXP
     ),
 
-    ASSISTANT("Stadtassistent", false,
+    ASSISTANT("Stadtassistent", false, ChatColor.BLUE,
             RolePermission.LEAVE,
             RolePermission.INVITE,
             RolePermission.BUILD_EVERYWHERE,
@@ -86,8 +88,9 @@ public enum Role {
     private Set<RolePermission> permissions = new HashSet<>();
     private String friendlyName;
     private boolean adminOnly;
+    private ChatColor chatColor;
 
-    private Role(String friendlyName, boolean adminOnly, RolePermission... permissions) {
+    private Role(String friendlyName, boolean adminOnly, ChatColor chatColor, RolePermission... permissions) {
 
         this.friendlyName = friendlyName;
         this.adminOnly = adminOnly;
@@ -109,5 +112,10 @@ public enum Role {
     public boolean isAdminOnly() {
 
         return adminOnly;
+    }
+
+    public ChatColor getChatColor() {
+
+        return chatColor;
     }
 }
