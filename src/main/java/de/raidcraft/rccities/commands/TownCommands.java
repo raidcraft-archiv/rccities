@@ -275,7 +275,7 @@ public class TownCommands {
             else {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.SPAWN_TELEPORT);
 
-                if(citizenships == null) {
+                if(citizenships == null || citizenships.size() == 0) {
                     throw new CommandException("Du besitzt in keiner Gilde das Recht dich zum Spawn zu porten!");
                 }
                 if(citizenships.size() > 1) {
