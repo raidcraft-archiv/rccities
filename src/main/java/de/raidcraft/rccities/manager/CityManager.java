@@ -68,9 +68,9 @@ public class CityManager {
         String residentList = "";
         int residentCount = 0;
         for(Resident resident : plugin.getResidentManager().getResidents(city)) {
-            if(resident.getRole() == Role.MAYOR) {
+            if(resident.getRole() == Role.MAYOR || resident.getRole() == Role.ADMIN) {
                 if(!mayorList.isEmpty()) mayorList += ChatColor.GRAY + ", ";
-                mayorList += ChatColor.YELLOW + resident.getName();
+                mayorList += resident.getRole().getChatColor() + resident.getName();
                 mayorCount++;
             }
             else {
