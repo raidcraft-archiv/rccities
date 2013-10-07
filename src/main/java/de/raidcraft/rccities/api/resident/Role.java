@@ -17,7 +17,8 @@ public enum Role {
     RESIDENT("Einwohner", false, ChatColor.GREEN,
             RolePermission.LEAVE,
             RolePermission.DEPOSIT,
-            RolePermission.COLLECT_EXP
+            RolePermission.COLLECT_EXP,
+            RolePermission.PREFIX_SKILL
     ),
 
     ADMIN("Administrator", true, ChatColor.DARK_RED,
@@ -36,7 +37,8 @@ public enum Role {
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
             RolePermission.WITHDRAW,
-            RolePermission.STAFF
+            RolePermission.STAFF,
+            RolePermission.PREFIX_SKILL
     ),
 
     MAYOR("Bürgermeister", true, ChatColor.RED,
@@ -55,7 +57,8 @@ public enum Role {
             RolePermission.DEPOSIT,
             RolePermission.WITHDRAW,
             RolePermission.STAFF,
-            RolePermission.COLLECT_EXP
+            RolePermission.COLLECT_EXP,
+            RolePermission.PREFIX_SKILL
     ),
 
     VICE_MAYOR("Vize Bürgermeister", false, ChatColor.DARK_BLUE,
@@ -71,7 +74,8 @@ public enum Role {
             RolePermission.PLOT_BUY,
             RolePermission.DEPOSIT,
             RolePermission.STAFF,
-            RolePermission.COLLECT_EXP
+            RolePermission.COLLECT_EXP,
+            RolePermission.PREFIX_SKILL
     ),
 
     ASSISTANT("Stadtassistent", false, ChatColor.BLUE,
@@ -82,7 +86,8 @@ public enum Role {
             RolePermission.PLOT_FLAG_MODIFICATION,
             RolePermission.DEPOSIT,
             RolePermission.STAFF,
-            RolePermission.COLLECT_EXP
+            RolePermission.COLLECT_EXP,
+            RolePermission.PREFIX_SKILL
     );
 
     private Set<RolePermission> permissions = new HashSet<>();

@@ -2,6 +2,7 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -10,6 +11,10 @@ import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.tables.TJoinRequest;
 import de.raidcraft.rccities.tables.TResident;
+import de.raidcraft.skills.SkillsPlugin;
+import de.raidcraft.skills.api.exceptions.UnknownSkillException;
+import de.raidcraft.skills.api.hero.Hero;
+import de.raidcraft.skills.api.skill.Skill;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -112,6 +117,42 @@ public class ResidentManager {
                 .find(TJoinRequest.class).where().ieq("player", playerName).ne("city_id", exceptedCity.getId()).findList();
         if(tJoinRequests == null || tJoinRequests.size() == 0) return;
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tJoinRequests);
+    }
+
+    public void addPrefixSkill(Resident resident) {
+
+        if(!resident.getRole().hasPermission(RolePermission.PREFIX_SKILL)) return;
+
+        try {
+            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(resident.getName());
+            Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "prefix-" + resident.getCity().getName().toLowerCase());
+            if (skill.isUnlocked()) {
+                return;
+            }
+            hero.addSkill(skill);
+        } catch (UnknownSkillException e) {
+            RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
+        }
+        catch (UnknownPlayerException e) {
+            RaidCraft.LOGGER.warning("[RCCities] No hero found for resident '" + resident.getName() + "'!");
+        }
+    }
+
+    public void removePrefixSkill(Resident resident) {
+
+        try {
+            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(resident.getName());
+            Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "prefix-" + resident.getCity().getName().toLowerCase());
+            if (!skill.isUnlocked()) {
+                return;
+            }
+            hero.removeSkill(skill);
+        } catch (UnknownSkillException e) {
+            RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
+        }
+        catch (UnknownPlayerException e) {
+            RaidCraft.LOGGER.warning("[RCCities] No hero found for resident '" + resident.getName() + "'!");
+        }
     }
 
     public List<Resident> getCitizenships(String name) {

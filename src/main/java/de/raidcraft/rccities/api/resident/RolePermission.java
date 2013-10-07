@@ -21,5 +21,6 @@ public enum RolePermission {
     DEPOSIT,
     WITHDRAW,
     STAFF,
-    COLLECT_EXP
+    COLLECT_EXP,
+    PREFIX_SKILL
 }

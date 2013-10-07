@@ -87,6 +87,9 @@ public class TownCommands {
 
             for(City city : plugin.getCityManager().getCities()) {
                 plugin.getDynmapManager().addCityMarker(city);
+                for(Resident resident : plugin.getResidentManager().getResidents(city)) {
+                    plugin.getResidentManager().addPrefixSkill(resident);
+                }
             }
 
             sender.sendMessage(ChatColor.GREEN + "RCCities wurde neugeladen und alle Caches geleert!");
