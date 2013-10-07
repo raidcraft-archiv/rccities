@@ -19,6 +19,8 @@ public class ExpListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onExpGain(RCPlayerGainExpEvent event) {
 
+        if(event.getGainedExp() < 0) return;
+
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
         List<Resident> residents = plugin.getResidentManager().getCitizenships(event.getPlayer().getName());
         if(residents == null) return;
