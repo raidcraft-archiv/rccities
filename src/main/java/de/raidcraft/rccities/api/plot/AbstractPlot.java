@@ -113,6 +113,7 @@ public abstract class AbstractPlot implements Plot {
             region.setFlag(DefaultFlag.CHEST_ACCESS, StateFlag.State.ALLOW);
             region.setFlag(DefaultFlag.PLACE_VEHICLE, StateFlag.State.ALLOW);
             region.setFlag(DefaultFlag.DESTROY_VEHICLE, StateFlag.State.ALLOW);
+            region.setFlag(DefaultFlag.LEAF_DECAY, StateFlag.State.ALLOW);
 
             // flags
             refreshFlags();
