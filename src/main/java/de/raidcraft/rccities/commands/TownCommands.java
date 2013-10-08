@@ -392,11 +392,11 @@ public class TownCommands {
         public void list(CommandContext args, CommandSender sender) throws CommandException {
 
             Collection<City> cities = plugin.getCityManager().getCities();
-            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.YELLOW + cities.size() + ChatColor.GOLD + " Städte auf dem Server:");
+            sender.sendMessage(ChatColor.GOLD + "Es gibt derzeit " + ChatColor.YELLOW + cities.size() + ChatColor.GOLD + " Gilden auf dem Server:");
             String cityList = "";
             for(City city : cities) {
                 if(!cityList.isEmpty()) cityList += ChatColor.GOLD + ", ";
-                cityList += ChatColor.YELLOW + city.getFriendlyName();
+                cityList += ChatColor.YELLOW + city.getFriendlyName() + " (" + plugin.getCityManager().getMainUpgrade(city).getHighestUnlockedLevel().getLevel() + ")";
             }
             sender.sendMessage(cityList);
         }
