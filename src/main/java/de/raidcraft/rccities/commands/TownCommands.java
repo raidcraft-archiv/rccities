@@ -15,6 +15,7 @@ import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
+import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Bukkit;
@@ -396,7 +397,12 @@ public class TownCommands {
             String cityList = "";
             for(City city : cities) {
                 if(!cityList.isEmpty()) cityList += ChatColor.GOLD + ", ";
-                cityList += ChatColor.YELLOW + city.getFriendlyName() + " (" + plugin.getCityManager().getMainUpgrade(city).getHighestUnlockedLevel().getLevel() + ")";
+                UpgradeLevel upgradeLevel = plugin.getCityManager().getMainUpgrade(city).getHighestUnlockedLevel();
+                int level = 0;
+                if(upgradeLevel != null) {
+                    level = upgradeLevel.getLevel();
+                }
+                cityList += ChatColor.YELLOW + city.getFriendlyName() + " (" + level + ")";
             }
             sender.sendMessage(cityList);
         }
