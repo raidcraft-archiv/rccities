@@ -56,15 +56,16 @@ public class DatabaseResident extends AbstractResident {
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
+        // remove prefix skill
+        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().removePrefixSkill(this);
+
+        plugin.getResidentManager().removeFromCache(this);
+
         for(Plot plot : plugin.getPlotManager().getPlots(city)) {
             plot.removeResident(this);
             plot.updateRegion(false);
         }
 
-        // remove prefix skill
-        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().removePrefixSkill(this);
-
-        plugin.getResidentManager().removeFromCache(this);
         TResident tResident = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class, getId());
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tResident);
     }
