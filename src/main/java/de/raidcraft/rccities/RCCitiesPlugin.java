@@ -158,6 +158,8 @@ public class RCCitiesPlugin extends BasePlugin {
 
     @Override
     public void disable() {
+
+        worldGuardManager.save();
     }
 
     @Override
