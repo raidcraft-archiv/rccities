@@ -16,6 +16,7 @@ import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.conversation.*;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
+import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
@@ -124,6 +125,7 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerCityFlag(GreetingsCityFlag.class);
         flagManager.registerCityFlag(InviteCityFlag.class);
         flagManager.registerCityFlag(JoinCostsCityFlag.class);
+        flagManager.registerCityFlag(LeafDecayCityFlag.class);
 
         // plot flags
         flagManager.registerPlotFlag(MarkPlotFlag.class);
