@@ -46,7 +46,7 @@ public abstract class AbstractPlot implements Plot {
     @Override
     public final String getRegionName() {
 
-        return city.getName() + "_" + getId();
+        return city.getName().toLowerCase() + "_" + getId();
     }
 
     @Override
@@ -100,9 +100,6 @@ public abstract class AbstractPlot implements Plot {
             //TODO maybe we have to set other regions as parent
 
             // flags
-//            region.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-//            region.setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
-//            region.setFlag(DefaultFlag.POTION_SPLASH, StateFlag.State.DENY);
             region.setFlag(DefaultFlag.MOB_DAMAGE, StateFlag.State.DENY);
             region.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
             region.setFlag(DefaultFlag.CREEPER_EXPLOSION, StateFlag.State.DENY);
