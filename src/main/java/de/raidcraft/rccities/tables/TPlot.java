@@ -4,7 +4,16 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,7 +32,10 @@ public class TPlot {
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "plot_id")
-    private Set<TAssignment> assignment;
+    private Set<TAssignment> assignment = new HashSet<>();
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "plod_id")
+    private List<TPlotFlag> flags = new ArrayList<>();
 
     public int getId() {
 
@@ -79,5 +91,15 @@ public class TPlot {
     public void setAssignment(Set<TAssignment> assignment) {
 
         this.assignment = assignment;
+    }
+
+    public List<TPlotFlag> getFlags() {
+
+        return flags;
+    }
+
+    public void setFlags(List<TPlotFlag> flags) {
+
+        this.flags = flags;
     }
 }
