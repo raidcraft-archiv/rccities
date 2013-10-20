@@ -126,21 +126,18 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
     private void setTorch(Block block) {
 
-        Block aboveBlock = block.getRelative(0, 1, 0);
+        Block belowBlock = block.getRelative(0, -1, 0);
 
-        if(aboveBlock.getType() != Material.AIR) return;
-        if(!isTorchBlock(block)) return;
+        if(block.getType() != Material.AIR) return;
+        if(!isTorchBlock(belowBlock)) return;
 
-        aboveBlock.setType(Material.TORCH);
+        block.setType(Material.TORCH);
     }
 
     private void removeTorch(Block block) {
 
-        Block aboveBlock = block.getRelative(0, 1, 0);
-
-        if(aboveBlock.getType() != Material.TORCH) return;
-
-        aboveBlock.setType(Material.AIR);
+        if(block.getType() != Material.TORCH) return;
+        block.setType(Material.AIR);
     }
 
     private boolean isTorchBlock(Block block) {
