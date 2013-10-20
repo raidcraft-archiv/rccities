@@ -1,6 +1,5 @@
 package de.raidcraft.rccities.flags.plot;
 
-import com.sk89q.worldedit.blocks.BlockType;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.economy.Economy;
@@ -130,7 +129,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
         Block aboveBlock = block.getRelative(0, 1, 0);
 
         if(aboveBlock.getType() != Material.AIR) return;
-        if(block.isLiquid() || BlockType.canPassThrough(block.getTypeId()) || BlockType.isTranslucent(block.getTypeId())) return;
+        if(!isTorchBlock(block)) return;
 
         aboveBlock.setType(Material.TORCH);
     }
@@ -142,5 +141,43 @@ public class MarkPlotFlag extends AbstractPlotFlag {
         if(aboveBlock.getType() != Material.TORCH) return;
 
         aboveBlock.setType(Material.AIR);
+    }
+
+    private boolean isTorchBlock(Block block) {
+
+        Material material = block.getType();
+
+        if(material == Material.GRASS
+            || material == Material.DIRT
+            || material == Material.STONE
+            || material == Material.LOG
+            || material == Material.SAND
+            || material == Material.GRAVEL
+            || material == Material.WOOD
+            || material == Material.FENCE
+            || material == Material.IRON_FENCE
+            || material == Material.NETHER_FENCE
+            || material == Material.SMOOTH_BRICK
+            || material == Material.OBSIDIAN
+            || material == Material.DOUBLE_STEP
+            || material == Material.WOOL
+            || material == Material.BRICK
+            || material == Material.QUARTZ_BLOCK
+            || material == Material.QUARTZ_ORE
+            || material == Material.DIAMOND_ORE
+            || material == Material.IRON_ORE
+            || material == Material.COAL_ORE
+            || material == Material.COAL_BLOCK
+            || material == Material.GOLD_ORE
+            || material == Material.GOLD_BLOCK
+            || material == Material.IRON_BLOCK
+            || material == Material.DIAMOND_BLOCK
+            || material == Material.EMERALD
+            || material == Material.EMERALD_BLOCK
+            || material == Material.NETHER_BRICK
+            || material == Material.CLAY) {
+            return true;
+        }
+        return false;
     }
 }
