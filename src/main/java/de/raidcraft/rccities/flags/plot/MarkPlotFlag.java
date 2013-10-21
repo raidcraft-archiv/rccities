@@ -128,8 +128,8 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
         Block belowBlock = block.getRelative(0, -1, 0);
 
-        if(block.getType() != Material.AIR) return;
-        if(!isTorchBlock(belowBlock)) return;
+        RaidCraft.LOGGER.info("DBG: 0: " + block.getType() + "| -1: " + belowBlock.getType());
+        if(block.getType() != Material.AIR || !isTorchBlock(belowBlock)) return;
 
         block.setType(Material.TORCH);
     }
