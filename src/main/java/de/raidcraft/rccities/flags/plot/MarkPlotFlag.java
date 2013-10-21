@@ -50,7 +50,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
             // withdraw
             economy.substract(bankAccount, markCost);
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
-                    .broadcastCityMessage(getPlot().getCity(), "Der Stadtkasse wurden " + economy.getFormattedAmount(markCost) + ChatColor.GOLD + " abgezogen (Plot Markierung)!");
+                    .broadcastCityMessage(getPlot().getCity(), "Plot Markierung: " + economy.getFormattedAmount(markCost) + ChatColor.GOLD + " abgezogen!");
 
             //set torches
             Chunk chunk = getPlot().getLocation().getChunk();
