@@ -135,13 +135,25 @@ public enum FlagType {
             // group 4 = silver
             // group 6 = copper
             if (matcher.group(2) != null) {
-                value += 100 * Integer.parseInt(matcher.group(2));
+                try {
+                    value += 100 * Integer.parseInt(matcher.group(2));
+                } catch (NumberFormatException e) {
+                    value = 0;
+                }
             }
             if (matcher.group(4) != null) {
-                value += Integer.parseInt(matcher.group(4));
+                try {
+                    value += Integer.parseInt(matcher.group(4));
+                } catch (NumberFormatException e) {
+                    value = 0;
+                }
             }
             if (matcher.group(6) != null) {
-                value += Integer.parseInt(matcher.group(6)) / 100.0;
+                try {
+                    value += Integer.parseInt(matcher.group(6)) / 100.0;
+                } catch (NumberFormatException e) {
+                    value = 0;
+                }
             }
         }
         return value;
