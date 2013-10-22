@@ -17,6 +17,7 @@ import de.raidcraft.rccities.conversation.*;
 import de.raidcraft.rccities.flags.city.*;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
+import de.raidcraft.rccities.flags.plot.MobSpawnPlotFlag;
 import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.flags.plot.TntPlotFlag;
 import de.raidcraft.rccities.listener.EntityListener;
@@ -132,6 +133,7 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(MarkPlotFlag.class);
         flagManager.registerPlotFlag(PvpPlotFlag.class);
         flagManager.registerPlotFlag(TntPlotFlag.class);
+        flagManager.registerPlotFlag(MobSpawnPlotFlag.class);
 
         flagManager.loadExistingFlags();
 
