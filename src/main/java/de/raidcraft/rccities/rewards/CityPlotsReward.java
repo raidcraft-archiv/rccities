@@ -34,13 +34,23 @@ public class CityPlotsReward extends AbstractReward<City> {
         city.setPlotCredit(city.getPlotCredit() + plotAmount);
 
         if(broadcast) {
-            RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat " + plotAmount + " neue Plots erhalten!");
+            if(plotAmount > 1) {
+                RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat " + plotAmount + " neue Plots erhalten!");
+            }
+            else {
+                RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat einen neuen Plot erhalten!");
+            }
         }
     }
 
     @Override
     public String getDescription() {
 
-        return plotAmount + " Plots";
+        if(plotAmount > 1) {
+            return plotAmount + " Plots";
+        }
+        else {
+            return plotAmount + " Plot";
+        }
     }
 }
