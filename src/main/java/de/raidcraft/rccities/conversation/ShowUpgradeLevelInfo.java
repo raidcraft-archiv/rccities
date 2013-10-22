@@ -50,7 +50,11 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         String state;
         UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeRequestManager().getRequest(city, level);
 
-        if(level.isUnlocked()) {
+        if(!level.isStored()) {
+            state = ChatColor.GRAY + "Beliebig oft kaufbar!";
+            conversation.set("level_state_indicator", "");
+        }
+        else if(level.isUnlocked()) {
             state = ChatColor.GREEN + "Freigeschaltet";
             conversation.set("level_state_indicator", "&c&m");
         }
