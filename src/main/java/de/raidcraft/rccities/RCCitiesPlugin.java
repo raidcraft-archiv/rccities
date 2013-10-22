@@ -60,6 +60,7 @@ import de.raidcraft.rccities.manager.WorldGuardManager;
 import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.requirements.CityStaffRequirement;
+import de.raidcraft.rccities.requirements.UpgradeLevelRequirement;
 import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.rewards.CityRadiusReward;
@@ -144,6 +145,7 @@ public class RCCitiesPlugin extends BasePlugin {
         RequirementManager.registerRequirementType(CityExpRequirement.class);
         RequirementManager.registerRequirementType(CityMoneyRequirement.class);
         RequirementManager.registerRequirementType(CityStaffRequirement.class);
+        RequirementManager.registerRequirementType(UpgradeLevelRequirement.class);
 
         reload();
 
