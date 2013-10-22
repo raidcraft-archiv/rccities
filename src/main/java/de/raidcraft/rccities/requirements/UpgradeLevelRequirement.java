@@ -25,7 +25,7 @@ public class UpgradeLevelRequirement extends AbstractRequirement<City> {
     @Override
     protected void load(ConfigurationSection data) {
 
-        upgradeType = data.getString("upgrade-name");
+        upgradeType = data.getString("upgrade-id");
         upgradeLevelName = data.getString("upgrade-level");
     }
 
