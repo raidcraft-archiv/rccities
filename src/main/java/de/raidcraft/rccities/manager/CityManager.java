@@ -159,7 +159,7 @@ public class CityManager {
 
             if(!cachedCities.containsKey(tCity.getName())) {
                 if(Bukkit.getWorld(tCity.getWorld()) == null) continue;
-                cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
+                    cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
             }
         }
         return cachedCities.values();

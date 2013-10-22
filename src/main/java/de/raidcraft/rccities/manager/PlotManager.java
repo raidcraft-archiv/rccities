@@ -7,6 +7,7 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TPlot;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -53,7 +54,7 @@ public class PlotManager {
         List<TPlot> tPlots = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("city_id", city.getId()).findList();
         for(TPlot tPlot : tPlots) {
             Location plotLocation = new Location(city.getSpawn().getWorld(), tPlot.getX(), 0, tPlot.getZ());
-            if(!cachedPlots.containsKey(plotLocation)) {
+            if(!cachedPlots.containsKey(plotLocation) && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
                 Plot plot = new DatabasePlot(tPlot);
                 cachedPlots.put(plotLocation, plot);
                 plots.add(plot);
@@ -78,7 +79,7 @@ public class PlotManager {
             }
         }
         TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, id);
-        if(tPlot != null) {
+        if(tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
             Plot plot = new DatabasePlot(tPlot);
             cachedPlots.put(plot.getLocation(), plot);
             return plot;
@@ -93,7 +94,7 @@ public class PlotManager {
 
         if(plot == null) {
             TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("x", simpleLocation.getX()).eq("z", simpleLocation.getZ()).findUnique();
-            if(tPlot != null) {
+            if(tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
                 plot = new DatabasePlot(tPlot);
                 cachedPlots.put(plot.getLocation(), plot);
             }
