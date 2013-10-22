@@ -113,7 +113,7 @@ public class CityManager {
         if(upgradeLevel == null) {
             return "0";
         }
-        return upgradeLevel.getId();
+        return String.valueOf(upgradeLevel.getLevel());
     }
 
     public double getServerJoinCosts(City city) {
