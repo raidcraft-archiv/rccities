@@ -13,8 +13,33 @@ import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
-import de.raidcraft.rccities.conversation.*;
-import de.raidcraft.rccities.flags.city.*;
+import de.raidcraft.rccities.conversation.AcceptJoinRequestAction;
+import de.raidcraft.rccities.conversation.DepositAction;
+import de.raidcraft.rccities.conversation.FindCityAction;
+import de.raidcraft.rccities.conversation.FindCityResidentAction;
+import de.raidcraft.rccities.conversation.HasCitizenshipAction;
+import de.raidcraft.rccities.conversation.HasRolePermissionAction;
+import de.raidcraft.rccities.conversation.IsCityMemberAction;
+import de.raidcraft.rccities.conversation.LeaveCityAction;
+import de.raidcraft.rccities.conversation.ListCityFlagsAction;
+import de.raidcraft.rccities.conversation.ListCityRolesAction;
+import de.raidcraft.rccities.conversation.ListJoinRequestsAction;
+import de.raidcraft.rccities.conversation.ListUpgradeLevelAction;
+import de.raidcraft.rccities.conversation.ListUpgradeTypesAction;
+import de.raidcraft.rccities.conversation.RejectJoinRequestAction;
+import de.raidcraft.rccities.conversation.RequestUpgradeLevelUnlockAction;
+import de.raidcraft.rccities.conversation.SendJoinRequestAction;
+import de.raidcraft.rccities.conversation.SetCityFlagAction;
+import de.raidcraft.rccities.conversation.SetResidentRoleAction;
+import de.raidcraft.rccities.conversation.ShowCityFlowAction;
+import de.raidcraft.rccities.conversation.ShowCityInfoAction;
+import de.raidcraft.rccities.conversation.ShowUpgradeLevelInfo;
+import de.raidcraft.rccities.conversation.WithdrawAction;
+import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
+import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
+import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
+import de.raidcraft.rccities.flags.city.MobSpawnCityFlag;
+import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.flags.plot.MobSpawnPlotFlag;
@@ -23,7 +48,15 @@ import de.raidcraft.rccities.flags.plot.TntPlotFlag;
 import de.raidcraft.rccities.listener.EntityListener;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.listener.UpgradeListener;
-import de.raidcraft.rccities.manager.*;
+import de.raidcraft.rccities.manager.AssignmentManager;
+import de.raidcraft.rccities.manager.CityManager;
+import de.raidcraft.rccities.manager.DynmapManager;
+import de.raidcraft.rccities.manager.FlagManager;
+import de.raidcraft.rccities.manager.PlotManager;
+import de.raidcraft.rccities.manager.ResidentManager;
+import de.raidcraft.rccities.manager.SchematicManager;
+import de.raidcraft.rccities.manager.UpgradeRequestManager;
+import de.raidcraft.rccities.manager.WorldGuardManager;
 import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.requirements.CityStaffRequirement;
@@ -31,7 +64,14 @@ import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.rewards.CityRadiusReward;
 import de.raidcraft.rccities.rewards.SubtractMoneyReward;
-import de.raidcraft.rccities.tables.*;
+import de.raidcraft.rccities.tables.TAssignment;
+import de.raidcraft.rccities.tables.TCity;
+import de.raidcraft.rccities.tables.TCityFlag;
+import de.raidcraft.rccities.tables.TJoinRequest;
+import de.raidcraft.rccities.tables.TPlot;
+import de.raidcraft.rccities.tables.TPlotFlag;
+import de.raidcraft.rccities.tables.TResident;
+import de.raidcraft.rccities.tables.TUpgradeRequest;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -66,10 +106,6 @@ public class RCCitiesPlugin extends BasePlugin {
         registerCommands(TownCommands.class);
         registerCommands(ResidentCommands.class);
         registerCommands(PlotCommands.class);
-
-        registerEvents(new ExpListener());
-        registerEvents(new UpgradeListener());
-        registerEvents(new EntityListener());
 
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
@@ -145,6 +181,10 @@ public class RCCitiesPlugin extends BasePlugin {
                 }
             }
         }
+
+        registerEvents(new ExpListener());
+        registerEvents(new UpgradeListener());
+        registerEvents(new EntityListener());
     }
 
     @Override
