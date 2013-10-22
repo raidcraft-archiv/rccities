@@ -19,6 +19,7 @@ import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
 import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
 import de.raidcraft.rccities.flags.plot.TntPlotFlag;
+import de.raidcraft.rccities.listener.EntityListener;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.listener.UpgradeListener;
 import de.raidcraft.rccities.manager.*;
@@ -67,6 +68,7 @@ public class RCCitiesPlugin extends BasePlugin {
 
         registerEvents(new ExpListener());
         registerEvents(new UpgradeListener());
+        registerEvents(new EntityListener());
 
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
