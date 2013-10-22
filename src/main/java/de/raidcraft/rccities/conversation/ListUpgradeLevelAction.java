@@ -61,7 +61,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         // delete not reachable levels
         UpgradeLevel highestLockedLevel = upgrade.getLowestLockedLevel();
         for(UpgradeLevel level : new ArrayList<>(levels)) {
-            if(highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel()) levels.remove(level);
+            if(highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel() && level.isStored()) levels.remove(level);
         }
         String entranceStage = "city_levels_";
 
