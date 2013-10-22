@@ -37,4 +37,10 @@ public class CityRadiusReward extends AbstractReward<City> {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat ihren Radius um " + blocks + " Blöcke vergrößert!");
         }
     }
+
+    @Override
+    public String getDescription() {
+
+        return "Stadtradius vergrößert um " + blocks + " Blöcke";
+    }
 }

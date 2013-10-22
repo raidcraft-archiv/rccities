@@ -37,4 +37,10 @@ public class CityPlotsReward extends AbstractReward<City> {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, "Die Stadt hat " + plotAmount + " neue Plots erhalten!");
         }
     }
+
+    @Override
+    public String getDescription() {
+
+        return plotAmount + " Plots";
+    }
 }

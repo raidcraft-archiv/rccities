@@ -45,4 +45,10 @@ public class CityExpRequirement extends AbstractRequirement<City> {
 
         return "Es müssen sich mindestens " + amount + " EXP in der Stadtkasse befinden!";
     }
+
+    @Override
+    public String getDescription() {
+
+        return amount + " EXP";
+    }
 }

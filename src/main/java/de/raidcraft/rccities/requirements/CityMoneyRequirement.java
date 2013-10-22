@@ -46,4 +46,10 @@ public class CityMoneyRequirement extends AbstractRequirement<City> {
 
         return "Es ist zu wenig Geld in der Stadtkasse. Benötigt werden " + RaidCraft.getEconomy().getFormattedAmount(amount) + "!";
     }
+
+    @Override
+    public String getDescription() {
+
+        return RaidCraft.getEconomy().getFormattedAmount(amount);
+    }
 }
