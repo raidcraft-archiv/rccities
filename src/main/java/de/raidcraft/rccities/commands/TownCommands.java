@@ -612,7 +612,7 @@ public class TownCommands {
                 if(!player.hasPermission("rccities.town.kick.all")) {
                     Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
                     if(resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
-                        throw new CommandException("Du darfst keine Bürger aus der Gilde '" + city.getFriendlyName() + "' schmeissen!");
+                        throw new CommandException("Du darfst keine Bürger aus der Gilde '" + city.getFriendlyName() + "' werfen!");
                     }
                 }
             }
@@ -620,7 +620,7 @@ public class TownCommands {
                 target = args.getString(0);
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.KICK);
                 if(citizenships == null) {
-                    throw new CommandException("Du besitzt in keiner Gilde das Recht Spieler rauszuschmeissen!");
+                    throw new CommandException("Du besitzt in keiner Gilde das Recht Spieler rauszuwerfen!");
                 }
                 if(citizenships.size() > 1) {
                     throw new CommandException("Du besitzt in mehreren Gilden das Recht Spieler rauszuschmeissen! Gebe die gewünschte Gilde als Parameter an.");
@@ -629,7 +629,7 @@ public class TownCommands {
             }
 
             if(!args.hasFlag('f') && player.getName().equalsIgnoreCase(target)) {
-                throw new CommandException("Du kannst dich nicht selbst aus der Gilde schmeissen!");
+                throw new CommandException("Du kannst dich nicht selbst aus der Gilde werfen!");
             }
 
             Resident resident = plugin.getResidentManager().getResident(target, city);
@@ -638,7 +638,7 @@ public class TownCommands {
             }
 
             resident.delete();
-            Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Gilde '" + city.getFriendlyName() + "' geschmissen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Gilde '" + city.getFriendlyName() + "' geworfen!");
         }
 
         /*
