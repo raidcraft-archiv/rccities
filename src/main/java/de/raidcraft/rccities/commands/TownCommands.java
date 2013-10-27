@@ -592,7 +592,8 @@ public class TownCommands {
                 aliases = {"kick"},
                 desc = "Kicks a resident",
                 flags = "f",
-                usage = "[Gilde] <Spieler>"
+                usage = "[Gilde] <Spieler>",
+                min = 1
         )
         @CommandPermissions("rccities.town.kick")
         public void kick(CommandContext args, CommandSender sender) throws CommandException {
