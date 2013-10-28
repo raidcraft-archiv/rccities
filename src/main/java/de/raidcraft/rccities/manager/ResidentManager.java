@@ -161,7 +161,7 @@ public class ResidentManager {
 
     public List<Resident> getCitizenships(String name) {
 
-        return getCitizenships(name, false);
+        return getCitizenships(name, true);
     }
 
     public List<Resident> getCitizenships(String name, boolean load) {
@@ -220,7 +220,7 @@ public class ResidentManager {
 
     public List<Resident> getResidents(City city) {
 
-        return getResidents(city, false);
+        return getResidents(city, true);
     }
 
     public List<Resident> getResidents(City city, boolean load) {
