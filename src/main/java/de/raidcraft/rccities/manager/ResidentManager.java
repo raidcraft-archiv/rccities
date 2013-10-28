@@ -88,7 +88,9 @@ public class ResidentManager {
 
     public void removeFromCache(Resident resident) {
 
-        cachedResidents.remove(resident.getName());
+        List<Resident> residentList = cachedResidents.get(resident.getName());
+        if(residentList == null) return;
+        residentList.remove(resident);
     }
 
     public void printResidentInfo(String playerName, CommandSender sender) {

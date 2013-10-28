@@ -61,4 +61,26 @@ public abstract class AbstractResident implements Resident {
 
         return Bukkit.getPlayer(name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractResident that = (AbstractResident) o;
+
+        if (!city.equals(that.city)) return false;
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = name.hashCode();
+        result = 31 * result + city.hashCode();
+        return result;
+    }
 }
