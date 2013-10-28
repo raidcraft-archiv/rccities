@@ -83,7 +83,7 @@ public class TownCommands {
 
             plugin.getCityManager().clearCache();
             plugin.getPlotManager().clearCache();
-            plugin.getResidentManager().clearCache();
+            plugin.getResidentManager().reload();
             plugin.getFlagManager().clearCache();
 
             for(City city : plugin.getCityManager().getCities()) {

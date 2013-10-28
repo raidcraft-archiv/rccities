@@ -175,6 +175,8 @@ public class RCCitiesPlugin extends BasePlugin {
 
         flagManager.loadExistingFlags();
 
+        residentManager.reload();
+
         // create regions if they don't exist
         for(City city : cityManager.getCities()) {
             for(Plot plot : plotManager.getPlots(city)) {

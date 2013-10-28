@@ -157,7 +157,16 @@ public class ResidentManager {
 
     public List<Resident> getCitizenships(String name) {
 
+        return getCitizenships(name, false);
+    }
+
+    public List<Resident> getCitizenships(String name, boolean load) {
+
         List<Resident> residents = cachedResidents.get(name);
+
+        if(!load) {
+            return residents;
+        }
 
         if(residents == null || residents.size() == 0) {
             List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().ieq("name", name).findList();
@@ -207,7 +216,24 @@ public class ResidentManager {
 
     public List<Resident> getResidents(City city) {
 
+        return getResidents(city, false);
+    }
+
+    public List<Resident> getResidents(City city, boolean load) {
+
         List<Resident> residents = new ArrayList<>();
+
+        if(!load) {
+            for(List<Resident> residentList : cachedResidents.values()) {
+                for(Resident resident : residentList) {
+                    if(resident.getCity().equals(city)) {
+                        residents.add(resident);
+                    }
+                }
+            }
+            return residents;
+        }
+
         List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", city.getId()).findList();
         for(TResident tResident : tResidents) {
             if(!cachedResidents.containsKey(tResident.getName())) {
@@ -231,8 +257,13 @@ public class ResidentManager {
         return residents;
     }
 
-    public void clearCache() {
+    public void reload() {
 
         cachedResidents.clear();
+
+        for(City city : plugin.getCityManager().getCities()) {
+
+            getResidents(city, true);
+        }
     }
 }
