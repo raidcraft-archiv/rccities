@@ -76,7 +76,7 @@ public class ResidentManager {
             throw new RaidCraftException(playerName + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
         }
 
-        Resident existingResident = new DatabaseResident(playerName, Role.RESIDENT, city);
+        resident = new DatabaseResident(playerName, Role.RESIDENT, city);
         List<Resident> residentList = cachedResidents.get(playerName);
         if(residentList == null) {
             cachedResidents.put(playerName, new ArrayList<Resident>());
