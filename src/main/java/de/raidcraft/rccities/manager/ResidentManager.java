@@ -66,12 +66,7 @@ public class ResidentManager {
 
     public Resident addResident(City city, Player player) throws RaidCraftException {
 
-        Resident resident = getResident(player.getName(), city);
-        if(resident != null) {
-            throw new RaidCraftException(player.getName() + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
-        }
-
-        return new DatabaseResident(player.getName(), Role.RESIDENT, city);
+        return addResident(city, player.getName());
     }
 
     public Resident addResident(City city, String playerName) throws RaidCraftException {
@@ -81,7 +76,14 @@ public class ResidentManager {
             throw new RaidCraftException(playerName + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
         }
 
-        return new DatabaseResident(playerName, Role.RESIDENT, city);
+        Resident existingResident = new DatabaseResident(playerName, Role.RESIDENT, city);
+        List<Resident> residentList = cachedResidents.get(playerName);
+        if(residentList == null) {
+            cachedResidents.put(playerName, new ArrayList<Resident>());
+            residentList = cachedResidents.get(playerName);
+        }
+        residentList.add(resident);
+        return resident;
     }
 
     public void removeFromCache(Resident resident) {
