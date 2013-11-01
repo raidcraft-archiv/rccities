@@ -57,6 +57,7 @@ public class UpgradeRequestManager {
         List<TUpgradeRequest> tUpgradeRequests = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class)
                 .where().eq("city_id", city.getId()).eq("rejected", false).eq("accepted", false).findList();
         for(TUpgradeRequest tUpgradeRequest : tUpgradeRequests) {
+            if(tUpgradeRequest.getRCCity() == null) continue;
             requests.add(new DatabaseUpgradeRequest(tUpgradeRequest));
         }
         return requests;
