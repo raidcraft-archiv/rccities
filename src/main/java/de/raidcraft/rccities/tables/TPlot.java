@@ -34,7 +34,7 @@ public class TPlot {
     @JoinColumn(name = "plot_id")
     private Set<TAssignment> assignment = new HashSet<>();
     @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "plod_id")
+    @JoinColumn(name = "plot_id")
     private List<TPlotFlag> flags = new ArrayList<>();
 
     public int getId() {
