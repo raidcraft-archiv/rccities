@@ -41,10 +41,7 @@ import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
 import de.raidcraft.rccities.flags.city.MobSpawnCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
-import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
-import de.raidcraft.rccities.flags.plot.MobSpawnPlotFlag;
-import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
-import de.raidcraft.rccities.flags.plot.TntPlotFlag;
+import de.raidcraft.rccities.flags.plot.*;
 import de.raidcraft.rccities.listener.EntityListener;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.listener.UpgradeListener;
@@ -172,6 +169,7 @@ public class RCCitiesPlugin extends BasePlugin {
         flagManager.registerPlotFlag(PvpPlotFlag.class);
         flagManager.registerPlotFlag(TntPlotFlag.class);
         flagManager.registerPlotFlag(MobSpawnPlotFlag.class);
+        flagManager.registerPlotFlag(FarmPlotFlag.class);
 
         flagManager.loadExistingFlags();
 
