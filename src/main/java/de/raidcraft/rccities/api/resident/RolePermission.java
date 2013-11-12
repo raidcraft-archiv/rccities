@@ -22,5 +22,6 @@ public enum RolePermission {
     WITHDRAW,
     STAFF,
     COLLECT_EXP,
-    PREFIX_SKILL
+    PREFIX_SKILL,
+    GET_KICKED
 }

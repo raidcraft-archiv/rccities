@@ -18,7 +18,8 @@ public enum Role {
             RolePermission.LEAVE,
             RolePermission.DEPOSIT,
             RolePermission.COLLECT_EXP,
-            RolePermission.PREFIX_SKILL
+            RolePermission.PREFIX_SKILL,
+            RolePermission.GET_KICKED
     ),
 
     ADMIN("Administrator", true, ChatColor.DARK_RED,
@@ -75,7 +76,8 @@ public enum Role {
             RolePermission.DEPOSIT,
             RolePermission.STAFF,
             RolePermission.COLLECT_EXP,
-            RolePermission.PREFIX_SKILL
+            RolePermission.PREFIX_SKILL,
+            RolePermission.GET_KICKED
     ),
 
     ASSISTANT("Stadtassistent", false, ChatColor.BLUE,
@@ -87,7 +89,8 @@ public enum Role {
             RolePermission.DEPOSIT,
             RolePermission.STAFF,
             RolePermission.COLLECT_EXP,
-            RolePermission.PREFIX_SKILL
+            RolePermission.PREFIX_SKILL,
+            RolePermission.GET_KICKED
     );
 
     private Set<RolePermission> permissions = new HashSet<>();

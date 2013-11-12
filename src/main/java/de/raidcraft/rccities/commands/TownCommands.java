@@ -637,6 +637,10 @@ public class TownCommands {
                 throw new CommandException(target + " ist kein Mitglied von '" + city.getFriendlyName() + "'!");
             }
 
+            if(!resident.getRole().hasPermission(RolePermission.GET_KICKED) && !player.hasMetadata("rccities.town.kick.all")) {
+                throw new CommandException("Du kannst diesen Einwohner nicht aus der Gilde werfen!");
+            }
+
             resident.delete();
             Bukkit.broadcastMessage(ChatColor.GOLD + target + " wurde aus der Gilde '" + city.getFriendlyName() + "' geworfen!");
         }
