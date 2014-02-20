@@ -23,31 +23,31 @@ public class WithdrawAction extends AbstractAction {
     @Override
     public void run(Conversation conversation, ActionArgumentList args) throws RaidCraftException {
 
+        Economy economy = RaidCraft.getEconomy();
         String cityName = args.getString("city");
         cityName = ParseString.INST.parse(conversation, cityName);
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
+        
         String amountString = args.getString("amount");
         amountString = ParseString.INST.parse(conversation, amountString);
-
-        Double amount;
-        try {
-            amount = Double.parseDouble(amountString);
-        } catch (NumberFormatException e) {
-            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Amount '" + amountString + "' is not a double!");
-        }
+        double amount = economy.parseCurrencyInput(amountString);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if(city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if(amount == 0) {
+        if(amount <= 0) {
             changeStage(conversation, failure);
             return;
         }
-
-        Economy economy = RaidCraft.getEconomy();
+        
+         if (!economy.hasEnough(city.getBankAccountName(), amount)) {
+            changeStage(conversation, failure);
+            return;
+        }
+        
         economy.substract(city.getBankAccountName(), amount, BalanceSource.GUILD, "Auszahlung an " + conversation.getPlayer().getName());
         economy.add(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Auszahlung aus Gildenkasse");
 
