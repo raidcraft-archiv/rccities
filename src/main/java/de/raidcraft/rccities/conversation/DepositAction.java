@@ -31,7 +31,7 @@ public class DepositAction extends AbstractAction {
         
         String amountString = args.getString("amount");
         amountString = ParseString.INST.parse(conversation, amountString);
-        double amount = economy.parseCurrencyInput(amountString);
+        double amount = Double.parseDouble(amountString);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if(city == null) {
