@@ -235,7 +235,7 @@ public class TownCommands {
                 }
                 if(option.equalsIgnoreCase("reject")) {
                     if(reason == null) {
-                        throw new CommandException("Gebe bitte noch einen Grund als weiteren Parameter an!");
+                        throw new CommandException("Gib bitte noch einen Grund als weiteren Parameter an!");
                     }
                     upgradeRequest.reject(reason);
                     sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' " + ChatColor.RED + "abgelehnt" + ChatColor.GREEN +"!");
@@ -249,6 +249,10 @@ public class TownCommands {
             sender.sendMessage(ChatColor.GREEN + "Die Gilde '" + city.getFriendlyName() + "' hat das Upgrade '"
                     + ChatColor.YELLOW + upgradeRequest.getUpgradeLevel().getName() + ChatColor.GREEN + "' beantragt:");
             sender.sendMessage(ChatColor.GREEN + "Info: " + ChatColor.GRAY + upgradeRequest.getInfo());
+            if(upgradeRequest.getRejectReason() != null ) {
+                sender.sendMessage(ChatColor.RED + "Achtung: Der letzte Antrag wurde abgelehnt.");
+                sender.sendMessage(ChatColor.GREEN + "Grund: " + ChatColor.GRAY + upgradeRequest.getRejectReason());
+            }
             sender.sendMessage(ChatColor.GREEN + "-->" + ChatColor.YELLOW + "/gilde upgrades " + city.getName() + " <accept/reject>");
         }
 

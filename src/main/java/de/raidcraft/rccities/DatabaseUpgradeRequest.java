@@ -72,6 +72,13 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
     }
 
     @Override
+    public void reactivate() {
+
+        rejected = false;
+        save();
+    }
+
+    @Override
     public void reject(String reason) {
 
         accepted = false;

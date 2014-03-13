@@ -79,6 +79,12 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
                 conversation.endConversation(EndReason.INFORM);
                 return;
             }
+            // check if the reject expiration date is in the past and reactivate the upgrade request
+            else if(upgradeRequest.isRejected() && System.currentTimeMillis() > upgradeRequest.getRejectExpirationDate()){
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde noch einmal beantragt.");
+                upgradeRequest.reactivate();
+                return;
+            }
         }
 
         // add request

@@ -11,5 +11,7 @@ public interface Request {
 
     public void accept();
 
+    public void reactivate();
+
     public void reject(String reason);
 }
