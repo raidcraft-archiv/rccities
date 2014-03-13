@@ -66,4 +66,7 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
             RaidCraft.getDatabase(RCCitiesPlugin.class).delete(joinRequest);
         }
     }
+
+    @Override
+    public void reactivate(){}
 }
