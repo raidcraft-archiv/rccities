@@ -227,6 +227,7 @@ public class TownCommands {
                     UnlockResult unlockResult = upgradeRequest.getUpgradeLevel().tryToUnlock(city);
                     if(unlockResult.isSuccessful()) {
                         sender.sendMessage(ChatColor.GREEN + " Du hast den Upgrade-Antrag von '" + city.getFriendlyName() + "' angenommen!");
+                        upgradeRequest.getUpgradeLevel().setUnlocked(false);
                     }
                     else {
                         sender.sendMessage(ChatColor.GREEN + " Das Upgrade ist fehlgeschlagen da andere Bedingungen nicht mehr erfüllt sind!");
