@@ -51,9 +51,10 @@ public class DepositAction extends AbstractAction {
         economy.add(city.getBankAccountName(), amount, BalanceSource.GUILD, "Einzahlung von " + conversation.getPlayer().getName());
         economy.substract(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Einzahlung in Gildenkasse");
 
-        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " in die Stadtkasse eingezahlt!");
+        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount)
+                + ChatColor.GREEN + " in die Gildenkasse eingezahlt!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()
-                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " in die Stadtkasse eingezahlt!");
+                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " in die Gildenkasse eingezahlt!");
 
         changeStage(conversation, success);
     }

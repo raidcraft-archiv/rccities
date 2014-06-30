@@ -51,9 +51,10 @@ public class WithdrawAction extends AbstractAction {
         economy.substract(city.getBankAccountName(), amount, BalanceSource.GUILD, "Auszahlung an " + conversation.getPlayer().getName());
         economy.add(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Auszahlung aus Gildenkasse");
 
-        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " aus der Stadtkasse abgehoben!");
+        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount)
+                + ChatColor.GREEN + " aus der Gildenkasse abgehoben!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()
-                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " aus der Stadtkasse abgehoben!");
+                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " aus der Gildenkasse abgehoben!");
 
         changeStage(conversation, success);
     }
