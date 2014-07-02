@@ -28,7 +28,6 @@ public class DepositAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
-        
         String amountString = args.getString("amount");
         amountString = ParseString.INST.parse(conversation, amountString);
         double amount = economy.parseCurrencyInput(amountString);
@@ -38,23 +37,17 @@ public class DepositAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if(amount <= 0) {
+        if(amount == 0) {
             changeStage(conversation, failure);
             return;
         }
-        
-        if (!economy.hasEnough(conversation.getPlayer().getName(), amount)) {
-            changeStage(conversation, failure);
-            return;
-        }
-        
+
         economy.add(city.getBankAccountName(), amount, BalanceSource.GUILD, "Einzahlung von " + conversation.getPlayer().getName());
         economy.substract(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Einzahlung in Gildenkasse");
 
-        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount)
-                + ChatColor.GREEN + " in die Gildenkasse eingezahlt!");
+        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " in die Stadtkasse eingezahlt!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()
-                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " in die Gildenkasse eingezahlt!");
+                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " in die Stadtkasse eingezahlt!");
 
         changeStage(conversation, success);
     }

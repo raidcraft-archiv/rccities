@@ -28,7 +28,6 @@ public class WithdrawAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
-        
         String amountString = args.getString("amount");
         amountString = ParseString.INST.parse(conversation, amountString);
         double amount = economy.parseCurrencyInput(amountString);
@@ -38,23 +37,17 @@ public class WithdrawAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if(amount <= 0) {
+        if(amount == 0) {
             changeStage(conversation, failure);
             return;
         }
-        
-         if (!economy.hasEnough(city.getBankAccountName(), amount)) {
-            changeStage(conversation, failure);
-            return;
-        }
-        
+
         economy.substract(city.getBankAccountName(), amount, BalanceSource.GUILD, "Auszahlung an " + conversation.getPlayer().getName());
         economy.add(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Auszahlung aus Gildenkasse");
 
-        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount)
-                + ChatColor.GREEN + " aus der Gildenkasse abgehoben!");
+        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " aus der Stadtkasse abgehoben!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()
-                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " aus der Gildenkasse abgehoben!");
+                + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " aus der Stadtkasse abgehoben!");
 
         changeStage(conversation, success);
     }
