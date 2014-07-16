@@ -3,6 +3,7 @@ package de.raidcraft.rccities.listener;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rcconversations.RCConversationsPlugin;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +19,8 @@ public class EntityListener implements Listener {
     public void onEntitySpwan(CreatureSpawnEvent event) {
 
         if(!(event.getEntity() instanceof Monster)) return;
-        if(RaidCraft.getComponent(RCConversationsPlugin.class).getCitizens().getNPCRegistry().isNPC(event.getEntity())) return;
+        // TODO: own method
+//        if(RaidCraft.getComponent(RCConversationsPlugin.class).getCitizens().getNPCRegistry().isNPC(event.getEntity())) return;
         if(RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlot(event.getEntity().getLocation().getChunk()) == null) return;
 
         event.getEntity().remove();
