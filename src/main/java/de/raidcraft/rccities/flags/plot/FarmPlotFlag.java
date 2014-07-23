@@ -29,18 +29,17 @@ public class FarmPlotFlag extends AbstractPlotFlag {
     @Override
     public void refresh() throws RaidCraftException {
 
-        if(getPlot() == null) return;
+        if (getPlot() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
 
-        if(currentValue) {
+        if (currentValue) {
             DefaultDomain defaultDomain = new DefaultDomain();
-            for(Resident resident : RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResidents(getPlot().getCity())) {
+            for (Resident resident : RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResidents(getPlot().getCity())) {
                 defaultDomain.addPlayer(resident.getName());
             }
             getPlot().getRegion().setMembers(defaultDomain);
-        }
-        else {
+        } else {
             getPlot().getRegion().setMembers(new DefaultDomain());
         }
     }

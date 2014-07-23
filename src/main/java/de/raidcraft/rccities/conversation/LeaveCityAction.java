@@ -19,7 +19,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="LEAVE_CITY")
+@ActionInformation(name = "LEAVE_CITY")
 public class LeaveCityAction extends AbstractAction {
 
     @Override
@@ -29,19 +29,19 @@ public class LeaveCityAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city);
-        if(resident == null) {
+        if (resident == null) {
             conversation.getPlayer().sendMessage(" ");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Du bist kein Mitglied dieser Gilde!");
             conversation.endConversation(EndReason.INFORM);
             return;
         }
 
-        if(!resident.getRole().hasPermission(RolePermission.LEAVE)) {
+        if (!resident.getRole().hasPermission(RolePermission.LEAVE)) {
             conversation.getPlayer().sendMessage(" ");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Du darfst diese Gilde nichtverlassen!");
             conversation.endConversation(EndReason.INFORM);

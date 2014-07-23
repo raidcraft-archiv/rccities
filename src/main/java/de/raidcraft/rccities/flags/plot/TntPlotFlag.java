@@ -27,14 +27,13 @@ public class TntPlotFlag extends AbstractPlotFlag {
     @Override
     public void refresh() throws RaidCraftException {
 
-        if(getPlot() == null) return;
+        if (getPlot() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
 
-        if(currentValue) {
+        if (currentValue) {
             getPlot().getRegion().setFlag(DefaultFlag.TNT, StateFlag.State.ALLOW);
-        }
-        else {
+        } else {
             getPlot().getRegion().setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
         }
     }

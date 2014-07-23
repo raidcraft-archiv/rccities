@@ -41,7 +41,11 @@ import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
 import de.raidcraft.rccities.flags.city.MobSpawnCityFlag;
 import de.raidcraft.rccities.flags.city.PvpCityFlag;
 import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
-import de.raidcraft.rccities.flags.plot.*;
+import de.raidcraft.rccities.flags.plot.FarmPlotFlag;
+import de.raidcraft.rccities.flags.plot.MarkPlotFlag;
+import de.raidcraft.rccities.flags.plot.MobSpawnPlotFlag;
+import de.raidcraft.rccities.flags.plot.PvpPlotFlag;
+import de.raidcraft.rccities.flags.plot.TntPlotFlag;
 import de.raidcraft.rccities.listener.EntityListener;
 import de.raidcraft.rccities.listener.ExpListener;
 import de.raidcraft.rccities.listener.UpgradeListener;
@@ -176,9 +180,9 @@ public class RCCitiesPlugin extends BasePlugin {
         residentManager.reload();
 
         // create regions if they don't exist
-        for(City city : cityManager.getCities()) {
-            for(Plot plot : plotManager.getPlots(city)) {
-                if(plot.getRegion() == null) {
+        for (City city : cityManager.getCities()) {
+            for (Plot plot : plotManager.getPlots(city)) {
+                if (plot.getRegion() == null) {
                     plot.updateRegion(true);
                 }
             }
@@ -195,7 +199,7 @@ public class RCCitiesPlugin extends BasePlugin {
         config = configure(new LocalConfiguration(this));
 
         // load upgrade holder
-        for(File file : getDataFolder().listFiles()) {
+        for (File file : getDataFolder().listFiles()) {
             if (file.getName().equalsIgnoreCase(config.upgradeHolder + ".yml")) {
                 upgradeConfiguration = configure(new SimpleConfiguration<>(this, file));
             }

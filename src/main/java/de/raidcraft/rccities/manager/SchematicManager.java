@@ -35,19 +35,19 @@ public class SchematicManager {
         try {
             String schematicName = getSchematicName(plot);
             File file = new File(getSchematicDir(plot.getLocation().getWorld()), schematicName);
-            if(file.exists()) {
+            if (file.exists()) {
                 return;
             }
 
-            Vector pos1 = new Vector(plot.getLocation().getChunk().getX()*16, 0, plot.getLocation().getChunk().getZ()*16);
-            Vector pos2 = new Vector(plot.getLocation().getChunk().getX()*16 + 15, plot.getLocation().getWorld().getMaxHeight(), plot.getLocation().getChunk().getZ()*16 + 15);
+            Vector pos1 = new Vector(plot.getLocation().getChunk().getX() * 16, 0, plot.getLocation().getChunk().getZ() * 16);
+            Vector pos2 = new Vector(plot.getLocation().getChunk().getX() * 16 + 15, plot.getLocation().getWorld().getMaxHeight(), plot.getLocation().getChunk().getZ() * 16 + 15);
 
             Vector min = new Vector(Math.min(pos1.getX(), pos2.getX()),
-                                    Math.min(pos1.getY(), pos2.getY()),
-                                    Math.min(pos1.getZ(), pos2.getZ()));
+                    Math.min(pos1.getY(), pos2.getY()),
+                    Math.min(pos1.getZ(), pos2.getZ()));
             Vector max = new Vector(Math.max(pos1.getX(), pos2.getX()),
-                                    Math.max(pos1.getY(), pos2.getY()),
-                                    Math.max(pos1.getZ(), pos2.getZ()));
+                    Math.max(pos1.getY(), pos2.getY()),
+                    Math.max(pos1.getZ(), pos2.getZ()));
 
             // create clipboard
             CuboidClipboard clipboard = new CuboidClipboard(max.subtract(min).add(new Vector(1, 1, 1)), min);
@@ -55,20 +55,19 @@ public class SchematicManager {
             // store blocks
             clipboard.copy(new EditSession(bukkitWorld, Integer.MAX_VALUE));
             // store entities
-//            for (LocalEntity entity : bukkitWorld.getEntities(new CuboidRegion(min, max))) {
-//                clipboard.storeEntity(entity);
-//            }
+            //            for (LocalEntity entity : bukkitWorld.getEntities(new CuboidRegion(min, max))) {
+            //                clipboard.storeEntity(entity);
+            //            }
             // save schematic
             MCEditSchematicFormat.MCEDIT.save(clipboard, file);
-        }
-        catch(IOException | DataException e) {
+        } catch (IOException | DataException e) {
             throw new RaidCraftException("Fehler beim speichern der Schematic!");
         }
     }
 
     public void restoreCity(City city) throws RaidCraftException {
 
-        for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+        for (Plot plot : plugin.getPlotManager().getPlots(city)) {
 
             restorePlot(plot);
         }
@@ -81,11 +80,10 @@ public class SchematicManager {
         try {
             CuboidClipboard clipboard = MCEditSchematicFormat.MCEDIT.load(file);
             clipboard.paste(new EditSession(new BukkitWorld(plot.getLocation().getWorld()), Integer.MAX_VALUE), clipboard.getOrigin(), false);
-//            clipboard.pasteEntities(clipboard.getOrigin());
+            //            clipboard.pasteEntities(clipboard.getOrigin());
         } catch (IOException | DataException e) {
             throw new RaidCraftException("Fehler beim laden der Schematic!");
-        }
-        catch (MaxChangedBlocksException e) {
+        } catch (MaxChangedBlocksException e) {
             throw new RaidCraftException("Fehler beim pasten der Schematic! (Zu viele Blöcke)");
         }
     }
@@ -95,7 +93,7 @@ public class SchematicManager {
         String schematicName = getSchematicName(plot);
         File file = new File(getSchematicDir(plot.getLocation().getWorld()), schematicName);
 
-        if (!file.delete() ) {
+        if (!file.delete()) {
             throw new RaidCraftException("Can't remove schematic file " + file.getAbsolutePath());
         }
     }

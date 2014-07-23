@@ -16,12 +16,16 @@ import de.raidcraft.rcconversations.util.ParseString;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="LIST_CITY_ROLES")
+@ActionInformation(name = "LIST_CITY_ROLES")
 public class ListCityRolesAction extends AbstractAction {
 
     private static final int MAX_PLACES_PER_STAGE = 4;
@@ -39,8 +43,8 @@ public class ListCityRolesAction extends AbstractAction {
         String entranceStage = "city_roles_";
 
 
-        int pages = (int)Math.ceil(((double) roles.size() / (double) pageSize));
-        if(pages == 0) pages = 1;
+        int pages = (int) Math.ceil(((double) roles.size() / (double) pageSize));
+        if (pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 
             Stage stage;
@@ -57,22 +61,20 @@ public class ListCityRolesAction extends AbstractAction {
             String nextDynamicStage;
             if (pages - 1 == i) {
                 nextDynamicStage = entranceStage;
-            }
-            else {
+            } else {
                 nextDynamicStage = entranceStage + "_" + (i + 1);
             }
             String thisStage;
-            if(i == 0) {
+            if (i == 0) {
                 thisStage = entranceStage;
-            }
-            else {
+            } else {
                 thisStage = entranceStage + "_" + i;
             }
 
-            if(pages > 1) {
+            if (pages > 1) {
                 answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
             }
-            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
+            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i + 1) + "/" + pages + ")", answers);
 
             conversation.addStage(stage);
         }

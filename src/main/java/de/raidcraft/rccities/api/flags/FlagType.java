@@ -38,26 +38,22 @@ public enum FlagType {
 
     public boolean validate(String input) {
 
-        if(this == INTEGER) {
+        if (this == INTEGER) {
             try {
                 Integer.valueOf(input);
                 return true;
-            }
-            catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 return false;
             }
-        }
-        else if(this == DOUBLE) {
+        } else if (this == DOUBLE) {
             try {
                 Double.valueOf(input);
                 return true;
-            }
-            catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 return false;
             }
-        }
-        else if(this == BOOLEAN) {
-            if(input.equalsIgnoreCase("true")
+        } else if (this == BOOLEAN) {
+            if (input.equalsIgnoreCase("true")
                     || input.equalsIgnoreCase("allow")
                     || input.equalsIgnoreCase("deny")
                     || input.equalsIgnoreCase("false")
@@ -74,11 +70,10 @@ public enum FlagType {
                     || input.equalsIgnoreCase("1")
                     || input.equalsIgnoreCase("0")) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        } else if(this == MONEY) {
+        } else if (this == MONEY) {
             Matcher matcher = CURRENCY_PATTERN.matcher(input);
             return matcher.matches();
         }
@@ -88,7 +83,7 @@ public enum FlagType {
 
     public boolean convertToBoolean(String value) {
 
-        if(value.equalsIgnoreCase("true")
+        if (value.equalsIgnoreCase("true")
                 || value.equalsIgnoreCase("allow")
                 || value.equalsIgnoreCase("wahr")
                 || value.equalsIgnoreCase("ja")
@@ -97,8 +92,7 @@ public enum FlagType {
                 || value.equalsIgnoreCase("on")
                 || value.equalsIgnoreCase("1")) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -108,8 +102,8 @@ public enum FlagType {
         int result = 0;
         try {
             result = Integer.valueOf(value);
+        } catch (NumberFormatException e) {
         }
-        catch(NumberFormatException e) {}
         return result;
     }
 
@@ -118,8 +112,8 @@ public enum FlagType {
         double result = 0;
         try {
             result = Double.valueOf(value);
+        } catch (NumberFormatException e) {
         }
-        catch(NumberFormatException e) {}
         return result;
     }
 
@@ -163,36 +157,30 @@ public enum FlagType {
 
         Object converted = input;
 
-        if(this == INTEGER) {
+        if (this == INTEGER) {
             try {
                 converted = Integer.valueOf(input);
-            }
-            catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 return null;
             }
-        }
-        else if(this == DOUBLE) {
+        } else if (this == DOUBLE) {
             try {
                 converted = Double.valueOf(input);
-            }
-            catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 return null;
             }
-        }
-        else if(this == BOOLEAN) {
-            if(input.equalsIgnoreCase("true")
+        } else if (this == BOOLEAN) {
+            if (input.equalsIgnoreCase("true")
                     || input.equalsIgnoreCase("wahr")
                     || input.equalsIgnoreCase("ja")
                     || input.equalsIgnoreCase("1")) {
                 return true;
-            }
-            else if(input.equalsIgnoreCase("false")
+            } else if (input.equalsIgnoreCase("false")
                     || input.equalsIgnoreCase("falsch")
                     || input.equalsIgnoreCase("nein")
                     || input.equalsIgnoreCase("0")) {
                 return false;
-            }
-            else {
+            } else {
                 return null;
             }
         }

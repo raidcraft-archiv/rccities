@@ -36,18 +36,18 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
     @Override
     public boolean isMet(City city) {
 
-        UpgradeLevel<City> upgradeLevel = (UpgradeLevel<City>)getResolver();
+        UpgradeLevel<City> upgradeLevel = (UpgradeLevel<City>) getResolver();
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
         UpgradeRequest request = plugin.getUpgradeRequestManager().getRequest(city, upgradeLevel);
 
         // new request
-        if(request == null) {
+        if (request == null) {
             request = new DatabaseUpgradeRequest(city, upgradeLevel, info);
             request.save();
 
-            for(Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
 
-                if(!player.hasPermission("rccities.upgrades.process")) continue;
+                if (!player.hasPermission("rccities.upgrades.process")) continue;
 
                 player.sendMessage(ChatColor.GRAY + "Die Gilde '" + city.getFriendlyName() + "' hat ein Upgrade Antrag gestellt!");
                 player.sendMessage(ChatColor.GRAY + "Upgrade-Level: " + upgradeLevel.getName());
@@ -56,11 +56,10 @@ public class CityStaffRequirement extends AbstractRequirement<City> {
         }
 
         // check old request
-        if(request.isAccepted()) {
+        if (request.isAccepted()) {
             request.delete();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

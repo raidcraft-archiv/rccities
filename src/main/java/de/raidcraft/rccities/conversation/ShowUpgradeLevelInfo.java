@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="SHOW_UPGRADE_INFO")
+@ActionInformation(name = "SHOW_UPGRADE_INFO")
 public class ShowUpgradeLevelInfo extends AbstractAction {
 
     @Override
@@ -33,40 +33,36 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         upgradeLevel = ParseString.INST.parse(conversation, upgradeLevel);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
-        if(upgrade == null) {
+        if (upgrade == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
         UpgradeLevel<City> level = upgrade.getLevel(upgradeLevel);
-        if(level == null) {
+        if (level == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
         String state;
         UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeRequestManager().getRequest(city, level);
 
-        if(!level.isStored()) {
+        if (!level.isStored()) {
             state = ChatColor.GRAY + "Beliebig oft kaufbar!";
             conversation.set("level_state_indicator", "");
-        }
-        else if(level.isUnlocked()) {
+        } else if (level.isUnlocked()) {
             state = ChatColor.GREEN + "Freigeschaltet";
             conversation.set("level_state_indicator", "&c&m");
-        }
-        else if(upgradeRequest == null) {
+        } else if (upgradeRequest == null) {
             state = ChatColor.RED + "Nicht Freigeschaltet";
             conversation.set("level_state_indicator", "");
-        }
-        else if(upgradeRequest.isRejected()) {
+        } else if (upgradeRequest.isRejected()) {
             state = ChatColor.RED + "Freischaltung abgelehnt (" + upgradeRequest.getRejectReason() + ")";
             conversation.set("level_state_indicator", "");
-        }
-        else {
+        } else {
             state = ChatColor.YELLOW + "Freischaltung beantragt";
             conversation.set("level_state_indicator", "&c&m");
         }
@@ -77,11 +73,11 @@ public class ShowUpgradeLevelInfo extends AbstractAction {
         player.sendMessage(ChatColor.AQUA + "Informationen zum Upgrade '" + ChatColor.GOLD + level.getName() + ChatColor.AQUA + "':");
         player.sendMessage(ChatColor.AQUA + "Status: " + state);
         player.sendMessage(ChatColor.AQUA + "Freischalt-Bedingung:");
-        for(String requirement : level.getRequirementDescription()) {
+        for (String requirement : level.getRequirementDescription()) {
             player.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + requirement);
         }
         player.sendMessage(ChatColor.AQUA + "Belohnung:");
-        for(String reward : level.getRewardDescription()) {
+        for (String reward : level.getRewardDescription()) {
             player.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + reward);
         }
     }

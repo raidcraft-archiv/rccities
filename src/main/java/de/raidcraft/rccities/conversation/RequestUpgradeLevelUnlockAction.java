@@ -21,7 +21,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="REQUEST_UPRAGE_UNLOCK")
+@ActionInformation(name = "REQUEST_UPRAGE_UNLOCK")
 public class RequestUpgradeLevelUnlockAction extends AbstractAction {
 
     @Override
@@ -35,17 +35,17 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
         upgradeLevel = ParseString.INST.parse(conversation, upgradeLevel);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
-        if(upgrade == null) {
+        if (upgrade == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
         UpgradeLevel<City> level = upgrade.getLevel(upgradeLevel);
-        if(level == null) {
+        if (level == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
@@ -53,18 +53,18 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
         conversation.getPlayer().sendMessage("");
 
         // level is already unlocked
-        if(level.isUnlocked()) {
+        if (level.isUnlocked()) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
             conversation.endConversation(EndReason.INFORM);
             return;
         }
 
         // check existing request
-        if(upgradeRequest != null) {
+        if (upgradeRequest != null) {
             // check if rejected (cooldown)
-            if(upgradeRequest.isRejected() && System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
+            if (upgradeRequest.isRejected() && System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
                 // check if cooldown over
-                if(System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
+                if (System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
                     conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
                     conversation.getPlayer().sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
                     conversation.getPlayer().sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
@@ -80,7 +80,7 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
                 return;
             }
             // check if the reject expiration date is in the past and reactivate the upgrade request
-            else if(upgradeRequest.isRejected() && System.currentTimeMillis() > upgradeRequest.getRejectExpirationDate()){
+            else if (upgradeRequest.isRejected() && System.currentTimeMillis() > upgradeRequest.getRejectExpirationDate()) {
                 conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde noch einmal beantragt.");
                 upgradeRequest.reactivate();
                 return;
@@ -90,11 +90,10 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
         // add request
         UnlockResult unlockResult = level.tryToUnlock(city);
 
-        if(unlockResult.isSuccessful()) {
+        if (unlockResult.isSuccessful()) {
             conversation.getPlayer().sendMessage(ChatColor.GREEN + "Die Freischaltung war erfolgreich!");
             conversation.endConversation(EndReason.INFORM);
-        }
-        else {
+        } else {
             conversation.getPlayer().sendMessage(ChatColor.RED + unlockResult.getLongReason());
             conversation.endConversation(EndReason.INFORM);
         }

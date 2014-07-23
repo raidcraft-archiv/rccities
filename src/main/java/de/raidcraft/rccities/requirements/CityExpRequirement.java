@@ -28,7 +28,7 @@ public class CityExpRequirement extends AbstractRequirement<City> {
     @Override
     public boolean isMet(City city) {
 
-        if(city.getExp() >= amount) {
+        if (city.getExp() >= amount) {
             return true;
         }
         return false;

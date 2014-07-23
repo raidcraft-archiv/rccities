@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="LIST_CITY_FlAGS")
+@ActionInformation(name = "LIST_CITY_FlAGS")
 public class ListCityFlagsAction extends AbstractAction {
 
     private static final int MAX_PLACES_PER_STAGE = 4;
@@ -41,15 +41,15 @@ public class ListCityFlagsAction extends AbstractAction {
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         List<FlagInformation> flagInformationList = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getRegisteredCityFlagInformationList();
-        for(FlagInformation flagInformation : new ArrayList<>(flagInformationList)) {
-            if(flagInformation.adminOnly() && !showAdminFlags) flagInformationList.remove(flagInformation);
+        for (FlagInformation flagInformation : new ArrayList<>(flagInformationList)) {
+            if (flagInformation.adminOnly() && !showAdminFlags) flagInformationList.remove(flagInformation);
         }
 
         String entranceStage = "city_flags_";
 
 
-        int pages = (int)Math.ceil(((double) flagInformationList.size() / (double) pageSize));
-        if(pages == 0) pages = 1;
+        int pages = (int) Math.ceil(((double) flagInformationList.size() / (double) pageSize));
+        if (pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 
             Stage stage;
@@ -66,22 +66,20 @@ public class ListCityFlagsAction extends AbstractAction {
             String nextDynamicStage;
             if (pages - 1 == i) {
                 nextDynamicStage = entranceStage;
-            }
-            else {
+            } else {
                 nextDynamicStage = entranceStage + "_" + (i + 1);
             }
             String thisStage;
-            if(i == 0) {
+            if (i == 0) {
                 thisStage = entranceStage;
-            }
-            else {
+            } else {
                 thisStage = entranceStage + "_" + i;
             }
 
-            if(pages > 1) {
+            if (pages > 1) {
                 answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
             }
-            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
+            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i + 1) + "/" + pages + ")", answers);
 
             conversation.addStage(stage);
         }

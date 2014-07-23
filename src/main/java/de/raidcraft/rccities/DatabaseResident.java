@@ -35,7 +35,7 @@ public class DatabaseResident extends AbstractResident {
     public void save() {
 
         // save new resident
-        if(getId() == 0) {
+        if (getId() == 0) {
             TResident tResident = new TResident();
             tResident.setCity(getCity());
             tResident.setName(getName());
@@ -64,7 +64,7 @@ public class DatabaseResident extends AbstractResident {
         TResident tResident = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class, getId());
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tResident);
 
-        for(Plot plot : plugin.getPlotManager().getPlots(city)) {
+        for (Plot plot : plugin.getPlotManager().getPlots(city)) {
             plot.removeResident(this);
             plot.updateRegion(false);
         }

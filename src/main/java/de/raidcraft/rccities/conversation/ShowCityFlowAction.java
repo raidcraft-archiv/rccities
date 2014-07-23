@@ -14,7 +14,7 @@ import de.raidcraft.rcconversations.util.ParseString;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="SHOW_CITY_FLOW")
+@ActionInformation(name = "SHOW_CITY_FLOW")
 public class ShowCityFlowAction extends AbstractAction {
 
     @Override
@@ -25,7 +25,7 @@ public class ShowCityFlowAction extends AbstractAction {
         int entries = args.getInt("entries", 12);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 

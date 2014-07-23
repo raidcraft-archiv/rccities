@@ -31,7 +31,7 @@ public abstract class AbstractFlag implements Flag {
     @Override
     public void setValue(String value) throws RaidCraftException {
 
-        if(!type.validate(value)) throw new RaidCraftException("Falscher Wertetyp: " + type.getErrorMsg());
+        if (!type.validate(value)) throw new RaidCraftException("Falscher Wertetyp: " + type.getErrorMsg());
 
         this.value = value;
         lastChange = System.currentTimeMillis();

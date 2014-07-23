@@ -18,11 +18,11 @@ public class UpgradeListener implements Listener {
     @EventHandler
     public void onUnlockUpgrade(UpgradeUnlockEvent event) {
 
-        if(!(event.getObject() instanceof City)) return;
+        if (!(event.getObject() instanceof City)) return;
 
-        City city = (City)event.getObject();
+        City city = (City) event.getObject();
         Upgrade mainUpgrade = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getMainUpgrade(city);
-        if(mainUpgrade.getLevel(event.getUpgradeLevel().getId()) == null) return;
+        if (mainUpgrade.getLevel(event.getUpgradeLevel().getId()) == null) return;
         int maxLevel = event.getUpgradeLevel().getLevel();
         Bukkit.broadcastMessage(ChatColor.GOLD + "Die Gilde '" + city.getFriendlyName() + "' ist auf Level " + ChatColor.RED + maxLevel + ChatColor.GOLD + " aufgestiegen!");
     }

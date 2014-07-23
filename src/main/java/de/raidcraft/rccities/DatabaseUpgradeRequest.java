@@ -32,7 +32,7 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
 
         TUpgradeRequest tUpgradeRequest = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class).where()
                 .eq("city_id", getCity().getId()).ieq("level_identifier", getUpgradeLevel().getId()).findUnique();
-        if(tUpgradeRequest == null) {
+        if (tUpgradeRequest == null) {
             tUpgradeRequest = new TUpgradeRequest();
             tUpgradeRequest.setCity(getCity());
             tUpgradeRequest.setInfo(getInfo());
@@ -42,8 +42,7 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
             tUpgradeRequest.setRejectReason(getRejectReason());
             tUpgradeRequest.setRejectDate(new Timestamp(rejectDate));
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tUpgradeRequest);
-        }
-        else {
+        } else {
             tUpgradeRequest.setCity(getCity());
             tUpgradeRequest.setInfo(getInfo());
             tUpgradeRequest.setLevelIdentifier(getUpgradeLevel().getId());
@@ -57,9 +56,10 @@ public class DatabaseUpgradeRequest extends AbstractUpgradeRequest {
 
     @Override
     public void delete() {
+
         TUpgradeRequest tUpgradeRequest = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class).where()
                 .eq("city_id", getCity().getId()).ieq("level_identifier", getUpgradeLevel().getId()).findUnique();
-        if(tUpgradeRequest != null) {
+        if (tUpgradeRequest != null) {
             RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tUpgradeRequest);
         }
     }

@@ -24,6 +24,7 @@ public class LeafDecayCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
     @Override
     public void announce(boolean state) {
+
     }
 
     @Override

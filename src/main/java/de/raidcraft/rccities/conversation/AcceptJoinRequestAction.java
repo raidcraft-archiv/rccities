@@ -21,7 +21,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="ACCEPT_CITY_JOIN_REQUEST")
+@ActionInformation(name = "ACCEPT_CITY_JOIN_REQUEST")
 public class AcceptJoinRequestAction extends AbstractAction {
 
     @Override
@@ -33,23 +33,23 @@ public class AcceptJoinRequestAction extends AbstractAction {
         candidate = ParseString.INST.parse(conversation, candidate);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         JoinRequest joinRequest = city.getJoinRequest(candidate);
-        if(joinRequest == null) return;
+        if (joinRequest == null) return;
 
         Economy economy = RaidCraft.getEconomy();
         double joinCosts = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getServerJoinCosts(city);
-        if(!economy.hasEnough(city.getBankAccountName(), joinCosts)) {
+        if (!economy.hasEnough(city.getBankAccountName(), joinCosts)) {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                     .broadcastCityMessage(city, "Die Gilde hat nicht genug Geld um neue Mitglieder anzunehmen! (" + economy.getFormattedAmount(joinCosts) + ChatColor.GOLD + " benötigt)", RolePermission.STAFF);
             return;
         }
 
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
-        if(joinCostsCityFlag != null) {
+        if (joinCostsCityFlag != null) {
             double customJoinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
             economy.add(city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
             economy.substract(candidate, customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());

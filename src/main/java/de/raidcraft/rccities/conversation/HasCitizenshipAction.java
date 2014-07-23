@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="HAS_CITIZENSHIP")
+@ActionInformation(name = "HAS_CITIZENSHIP")
 public class HasCitizenshipAction extends AbstractAction {
 
     @Override
@@ -25,10 +25,9 @@ public class HasCitizenshipAction extends AbstractAction {
         String failure = args.getString("onfailure", null);
 
         List<Resident> citizenships = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getCitizenships(conversation.getPlayer().getName(), RolePermission.LEAVE);
-        if(citizenships == null || citizenships.size() == 0) {
+        if (citizenships == null || citizenships.size() == 0) {
             changeStage(conversation, success);
-        }
-        else {
+        } else {
             changeStage(conversation, failure);
         }
     }

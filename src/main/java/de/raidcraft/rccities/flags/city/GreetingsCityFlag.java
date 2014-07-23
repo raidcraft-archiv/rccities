@@ -25,17 +25,18 @@ public class GreetingsCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
     @Override
     public void announce(boolean state) {
+
     }
 
     @Override
     public void allow(Plot plot) {
 
         String residentList = "";
-        for(Resident resident : plot.getAssignedResidents()) {
-            if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
+        for (Resident resident : plot.getAssignedResidents()) {
+            if (!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
             residentList += ChatColor.GREEN + resident.getName();
         }
-        if(residentList.isEmpty()) {
+        if (residentList.isEmpty()) {
             residentList = "No owners";
         }
         plot.getRegion().setFlag(DefaultFlag.GREET_MESSAGE, ChatColor.GREEN + "~ " + plot.getRegionName() + ": " + residentList + " ~");

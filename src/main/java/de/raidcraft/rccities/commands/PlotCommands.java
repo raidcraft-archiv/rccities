@@ -1,6 +1,10 @@
 package de.raidcraft.rccities.commands;
 
-import com.sk89q.minecraft.util.commands.*;
+import com.sk89q.minecraft.util.commands.Command;
+import com.sk89q.minecraft.util.commands.CommandContext;
+import com.sk89q.minecraft.util.commands.CommandException;
+import com.sk89q.minecraft.util.commands.CommandPermissions;
+import com.sk89q.minecraft.util.commands.NestedCommand;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.DatabasePlot;
@@ -37,10 +41,10 @@ public class PlotCommands {
     public void plot(CommandContext args, CommandSender sender) throws CommandException {
 
         Plot plot;
-        if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-        Player player = (Player)sender;
+        if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+        Player player = (Player) sender;
         plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-        if(plot == null) {
+        if (plot == null) {
             throw new CommandException("Hier befindet sich kein Plot! Nutze '/plot info <Plot ID>'");
         }
 
@@ -65,20 +69,19 @@ public class PlotCommands {
         @CommandPermissions("rccities.plot.take")
         public void take(CommandContext args, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-            Player player = (Player)sender;
+            if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player) sender;
 
             Plot plot;
-            if(args.argsLength() > 1) {
+            if (args.argsLength() > 1) {
                 int plotId = args.getInteger(1);
                 plot = plugin.getPlotManager().getPlot(plotId);
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Es gibt kein Plot mit dieser ID!");
                 }
-            }
-            else {
+            } else {
                 plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Hier befindet sich kein Plot zum vergeben!");
                 }
             }
@@ -87,12 +90,12 @@ public class PlotCommands {
 
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
+            if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
             }
 
             Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
-            if(targetResident == null) {
+            if (targetResident == null) {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
 
@@ -100,7 +103,7 @@ public class PlotCommands {
             plot.getCity().refreshFlags();
             plot.refreshFlags();
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich " + targetResident.getName() + " entzogen!");
-            if(targetResident.getPlayer() != null) {
+            if (targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
                         .sendMessage(ChatColor.GREEN + "Dir wurde in der Gilde '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' entzogen!");
             }
@@ -115,20 +118,19 @@ public class PlotCommands {
         @CommandPermissions("rccities.plot.give")
         public void give(CommandContext args, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-            Player player = (Player)sender;
+            if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player) sender;
 
             Plot plot;
-            if(args.argsLength() > 1) {
+            if (args.argsLength() > 1) {
                 int plotId = args.getInteger(1);
                 plot = plugin.getPlotManager().getPlot(plotId);
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Es gibt kein Plot mit dieser ID!");
                 }
-            }
-            else {
+            } else {
                 plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Hier befindet sich kein Plot zum vergeben!");
                 }
             }
@@ -137,12 +139,12 @@ public class PlotCommands {
 
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
+            if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu vergeben!");
             }
 
             Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
-            if(targetResident == null) {
+            if (targetResident == null) {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
 
@@ -150,7 +152,7 @@ public class PlotCommands {
             plot.getCity().refreshFlags();
             plot.refreshFlags();
             player.sendMessage(ChatColor.GREEN + "Du hast den Plot '" + plot.getRegionName() + "' erfolgreich an " + targetResident.getName() + " vergeben!");
-            if(targetResident.getPlayer() != null) {
+            if (targetResident.getPlayer() != null) {
                 targetResident.getPlayer()
                         .sendMessage(ChatColor.GREEN + "Dir wurde in der Gilde '" + city.getFriendlyName() + "' der Plot '" + plot.getRegionName() + "' zugewiesen!");
             }
@@ -163,11 +165,11 @@ public class PlotCommands {
         @CommandPermissions("rccities.plot.claim")
         public void claim(CommandContext args, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-            Player player = (Player)sender;
+            if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player) sender;
 
             // check if here is a wrong region
-            if(!plugin.getWorldGuardManager().claimable(player.getLocation())) {
+            if (!plugin.getWorldGuardManager().claimable(player.getLocation())) {
                 throw new CommandException("An dieser Stelle befindet sich bereits eine andere Region!");
             }
 
@@ -184,33 +186,33 @@ public class PlotCommands {
             neighborPlots[7] = plugin.getPlotManager().getPlot(player.getWorld().getChunkAt(chunk.getX() + 1, chunk.getZ()));
 
             City city = null;
-            for(Plot plot : neighborPlots) {
-                if(plot == null) continue;
-                if(city != null && !city.equals(plot.getCity())) {
+            for (Plot plot : neighborPlots) {
+                if (plot == null) continue;
+                if (city != null && !city.equals(plot.getCity())) {
                     throw new CommandException("Dieser Plot liegt zu dicht an einer anderen Gilde!");
                 }
                 city = plot.getCity();
             }
-            if(city == null) {
+            if (city == null) {
                 throw new CommandException("Neue Plots müssen an bestehende anknüpfen!");
             }
 
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_CLAIM)) {
+            if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_CLAIM)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu claimen!");
             }
 
             // check plot credit
-            if(city.getPlotCredit() == 0) {
+            if (city.getPlotCredit() == 0) {
                 throw new CommandException("Deine Gilde hat keine freien Plots zum claimen!");
             }
 
             // check max radius
-            Location plotCenter = new Location(chunk.getWorld(), chunk.getX()*16 + 8, 0, chunk.getZ()*16 + 8);
+            Location plotCenter = new Location(chunk.getWorld(), chunk.getX() * 16 + 8, 0, chunk.getZ() * 16 + 8);
             Location fixedSpawn = city.getSpawn().clone();
             fixedSpawn.setY(0);
-            if(fixedSpawn.distance(plotCenter) > city.getMaxRadius()) {
+            if (fixedSpawn.distance(plotCenter) > city.getMaxRadius()) {
                 throw new CommandException("Deine Gilde darf nur im Umkreis von " + city.getMaxRadius() + " Blöcken um den Stadtmittelpunkt claimen!");
             }
 
@@ -240,28 +242,27 @@ public class PlotCommands {
         @CommandPermissions("rccities.plot.unclaim")
         public void unclaim(CommandContext args, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-            Player player = (Player)sender;
+            if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player) sender;
 
-            boolean restoreSchematics= false;
-            if(args.hasFlag('r')) {
+            boolean restoreSchematics = false;
+            if (args.hasFlag('r')) {
                 restoreSchematics = true;
             }
 
             Plot plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-            if(plot == null) {
+            if (plot == null) {
                 throw new CommandException("Hier befindet sich kein Chunk zum unclaimen!");
             }
 
-            if(plugin.getPlotManager().getPlots(plot.getCity()).size() == 1) {
+            if (plugin.getPlotManager().getPlots(plot.getCity()).size() == 1) {
                 throw new CommandException("Der letze Plot kann nicht gelöscht werden!");
             }
 
             try {
-                if(restoreSchematics) {
+                if (restoreSchematics) {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft zurückgesetzt!");
-                }
-                else {
+                } else {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft NICHT zurückgesetzt!");
                 }
                 new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
@@ -279,26 +280,25 @@ public class PlotCommands {
         @CommandPermissions("rccities.plot.flag")
         public void flag(CommandContext args, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-            Player player = (Player)sender;
+            if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+            Player player = (Player) sender;
 
             Plot plot;
             String flagName;
             String flagValue;
-            if(args.argsLength() > 2) {
+            if (args.argsLength() > 2) {
                 int plotId = args.getInteger(0);
                 flagName = args.getString(1);
                 flagValue = args.getString(2);
                 plot = plugin.getPlotManager().getPlot(plotId);
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Es gibt kein Plot mit dieser ID!");
                 }
-            }
-            else {
+            } else {
                 flagName = args.getString(0);
                 flagValue = args.getString(1);
                 plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Hier befindet sich kein Plot!");
                 }
             }
@@ -307,7 +307,7 @@ public class PlotCommands {
 
             // check if resident has permission
             Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
-            if(resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_FLAG_MODIFICATION)) {
+            if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_FLAG_MODIFICATION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu konfigurieren!");
             }
 
@@ -329,18 +329,17 @@ public class PlotCommands {
         public void info(CommandContext args, CommandSender sender) throws CommandException {
 
             Plot plot;
-            if(args.argsLength() > 0) {
+            if (args.argsLength() > 0) {
                 int plotId = args.getInteger(0);
                 plot = plugin.getPlotManager().getPlot(plotId);
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Es gibt kein Plot mit dieser ID!");
                 }
-            }
-            else {
-                if(sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
-                Player player = (Player)sender;
+            } else {
+                if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+                Player player = (Player) sender;
                 plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
-                if(plot == null) {
+                if (plot == null) {
                     throw new CommandException("Hier befindet sich kein Plot!");
                 }
             }
@@ -354,7 +353,7 @@ public class PlotCommands {
 
         public void unclaimPlot(CommandSender sender, Plot plot, boolean restoreSchematics) {
 
-            if(restoreSchematics) {
+            if (restoreSchematics) {
                 try {
                     plugin.getSchematicManager().restorePlot(plot);
                 } catch (RaidCraftException e) {

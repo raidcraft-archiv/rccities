@@ -25,11 +25,13 @@ public abstract class AbstractPlot implements Plot {
     protected ProtectedRegion region;
     protected City city;
 
-    protected AbstractPlot() {}
+    protected AbstractPlot() {
+
+    }
 
     protected AbstractPlot(Location location, City city) {
 
-        Location simpleLocation = new Location(location.getWorld(), location.getChunk().getX()*16 + 8, 0, location.getChunk().getZ()*16 + 8);
+        Location simpleLocation = new Location(location.getWorld(), location.getChunk().getX() * 16 + 8, 0, location.getChunk().getZ() * 16 + 8);
         this.location = simpleLocation;
         this.city = city;
 
@@ -71,22 +73,22 @@ public abstract class AbstractPlot implements Plot {
     public final void updateRegion(boolean create) {
 
         // force create region
-        if(create) {
+        if (create) {
             RegionManager regionManager = RaidCraft.getComponent(RCCitiesPlugin.class).getWorldGuard().getRegionManager(location.getWorld());
-            if(regionManager.getRegion(getRegionName()) != null) {
+            if (regionManager.getRegion(getRegionName()) != null) {
                 regionManager.removeRegion(getRegionName());
             }
 
             Chunk chunk = location.getChunk();
             BlockVector vector1 = new BlockVector(
-                    chunk.getX()*16,
+                    chunk.getX() * 16,
                     0,
-                    chunk.getZ()*16
+                    chunk.getZ() * 16
             );
             BlockVector vector2 = new BlockVector(
-                    (chunk.getX()*16)+15,
+                    (chunk.getX() * 16) + 15,
                     location.getWorld().getMaxHeight(),
-                    (chunk.getZ()*16)+15
+                    (chunk.getZ() * 16) + 15
             );
 
             ProtectedCuboidRegion protectedCuboidRegion = new ProtectedCuboidRegion(getRegionName(), vector1, vector2);
@@ -95,7 +97,7 @@ public abstract class AbstractPlot implements Plot {
         }
 
         // update flags, owner and settings (plot flags)
-        if(region != null) {
+        if (region != null) {
 
             //TODO maybe we have to set other regions as parent
 
@@ -116,12 +118,12 @@ public abstract class AbstractPlot implements Plot {
 
             // owner
             DefaultDomain defaultDomain = new DefaultDomain();
-            for(Resident resident : getAssignedResidents()) {
+            for (Resident resident : getAssignedResidents()) {
                 defaultDomain.addPlayer(resident.getName());
             }
             // add city staff
-            for(Resident resident : getCity().getResidents()) {
-                if(!resident.getRole().hasPermission(RolePermission.BUILD_EVERYWHERE)) continue;
+            for (Resident resident : getCity().getResidents()) {
+                if (!resident.getRole().hasPermission(RolePermission.BUILD_EVERYWHERE)) continue;
                 defaultDomain.addPlayer(resident.getName());
             }
             region.setOwners(defaultDomain);

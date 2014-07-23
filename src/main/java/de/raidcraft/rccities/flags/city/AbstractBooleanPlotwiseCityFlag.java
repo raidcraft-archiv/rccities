@@ -20,16 +20,15 @@ public abstract class AbstractBooleanPlotwiseCityFlag extends AbstractCityFlag {
     @Override
     public void refresh() throws RaidCraftException {
 
-        if(getCity() == null) return;
+        if (getCity() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
         announce(currentValue);
 
-        for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(getCity())) {
-            if(currentValue) {
+        for (Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(getCity())) {
+            if (currentValue) {
                 allow(plot);
-            }
-            else {
+            } else {
                 deny(plot);
             }
         }

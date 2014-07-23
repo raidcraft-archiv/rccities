@@ -20,7 +20,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="SEND_CITY_JOIN_REQUEST")
+@ActionInformation(name = "SEND_CITY_JOIN_REQUEST")
 public class SendJoinRequestAction extends AbstractAction {
 
     @Override
@@ -30,13 +30,13 @@ public class SendJoinRequestAction extends AbstractAction {
         cityName = ParseString.INST.parse(conversation, cityName);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         // invitation is locked
         CityFlag inviteFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, InviteCityFlag.class);
-        if(inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
+        if (inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
             conversation.getPlayer().sendMessage("");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde darf zurzeit keine neuen Mitglieder aufnehmen!");
             conversation.endConversation(EndReason.INFORM);
@@ -44,8 +44,8 @@ public class SendJoinRequestAction extends AbstractAction {
         }
 
         JoinRequest joinRequest = city.getJoinRequest(conversation.getPlayer().getName());
-        if(joinRequest != null) {
-            if(joinRequest.isRejected()) {
+        if (joinRequest != null) {
+            if (joinRequest.isRejected()) {
                 conversation.getPlayer().sendMessage("");
                 conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde will dich nicht als Mitglied haben!");
                 conversation.getPlayer().sendMessage(ChatColor.RED + "Grund:" + joinRequest.getRejectReason());

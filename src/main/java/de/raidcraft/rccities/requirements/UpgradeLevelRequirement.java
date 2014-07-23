@@ -33,11 +33,11 @@ public class UpgradeLevelRequirement extends AbstractRequirement<City> {
     public boolean isMet(City city) {
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
-        if(upgrade == null) return false;
+        if (upgrade == null) return false;
         UpgradeLevel upgradeLevel = upgrade.getLevel(upgradeLevelName);
-        if(upgradeLevel == null) return false;
+        if (upgradeLevel == null) return false;
 
-        if(upgradeLevel.isUnlocked()) {
+        if (upgradeLevel.isUnlocked()) {
             return true;
         }
         return false;

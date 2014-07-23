@@ -23,7 +23,9 @@ public abstract class AbstractCity implements City {
     protected int exp;
     protected UpgradeHolder upgradeHolder;
 
-    protected AbstractCity() {}
+    protected AbstractCity() {
+
+    }
 
     protected AbstractCity(String name, Location spawn, String creator) {
 

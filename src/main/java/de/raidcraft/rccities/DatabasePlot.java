@@ -65,7 +65,7 @@ public class DatabasePlot extends AbstractPlot {
     public List<Resident> getAssignedResidents() {
 
         // prevent NPE!?!?!?
-        if(assignedResidents == null) {
+        if (assignedResidents == null) {
             return new ArrayList<>();
         }
         return new ArrayList<>(assignedResidents.values());
@@ -74,7 +74,7 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public void assignResident(Resident resident) {
 
-        if(assignedResidents.containsKey(resident.getName())) return;
+        if (assignedResidents.containsKey(resident.getName())) return;
         assignedResidents.put(resident.getName(), resident);
         TAssignment tAssignment = new TAssignment();
         tAssignment.setPlot(this);
@@ -87,7 +87,7 @@ public class DatabasePlot extends AbstractPlot {
     public void removeResident(Resident resident) {
 
         Resident removedResident = assignedResidents.remove(resident.getName());
-        if(removedResident != null) {
+        if (removedResident != null) {
             // delete assignment
             TAssignment assignment = RaidCraft.getDatabase(RCCitiesPlugin.class)
                     .find(TAssignment.class).where().eq("resident_id", removedResident.getId()).eq("plot_id", getId()).findUnique();
@@ -100,10 +100,10 @@ public class DatabasePlot extends AbstractPlot {
     private void loadAssignments() {
 
         List<TAssignment> assignments = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class).where().eq("plot_id", getId()).findList();
-        for(TAssignment assignment : assignments) {
+        for (TAssignment assignment : assignments) {
 
             Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(assignment.getResident().getName(), getCity());
-            if(resident == null) continue;
+            if (resident == null) continue;
             assignedResidents.put(resident.getName(), resident);
         }
     }

@@ -30,23 +30,23 @@ public class ExpListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onExpGain(RCPlayerGainExpEvent event) {
 
-        if(event.getGainedExp() < 0) return;
+        if (event.getGainedExp() < 0) return;
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
         List<Resident> residents = plugin.getResidentManager().getCitizenships(event.getPlayer().getName(), false);
-        if(residents == null) return;
+        if (residents == null) return;
         boolean slave = false;
         Resident resident = null;
-        for(Resident res : residents) {
-            if(res.getRole() == Role.SLAVE) {
+        for (Resident res : residents) {
+            if (res.getRole() == Role.SLAVE) {
                 slave = true;
                 resident = res;
             }
-            if(!slave && res.getRole().hasPermission(RolePermission.COLLECT_EXP)) {
+            if (!slave && res.getRole().hasPermission(RolePermission.COLLECT_EXP)) {
                 resident = res;
             }
         }
-        if(resident != null) {
+        if (resident != null) {
             expSaverTask.addExp(resident.getCity(), event.getGainedExp());
         }
     }
@@ -58,7 +58,7 @@ public class ExpListener implements Listener {
         @Override
         public void run() {
 
-            for(Map.Entry<City, Integer> entry : new HashMap<>(gainedExp).entrySet()) {
+            for (Map.Entry<City, Integer> entry : new HashMap<>(gainedExp).entrySet()) {
 
                 entry.getKey().addExp(entry.getValue());
                 gainedExp.remove(entry.getKey());
@@ -67,7 +67,7 @@ public class ExpListener implements Listener {
 
         public void addExp(City city, int exp) {
 
-            if(!gainedExp.containsKey(city)) gainedExp.put(city, 0);
+            if (!gainedExp.containsKey(city)) gainedExp.put(city, 0);
             gainedExp.put(city, gainedExp.get(city) + exp);
         }
     }

@@ -103,7 +103,7 @@ public enum Role {
         this.friendlyName = friendlyName;
         this.adminOnly = adminOnly;
         this.chatColor = chatColor;
-        for(RolePermission permission : permissions) {
+        for (RolePermission permission : permissions) {
             this.permissions.add(permission);
         }
     }

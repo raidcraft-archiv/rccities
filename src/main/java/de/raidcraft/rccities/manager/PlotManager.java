@@ -35,8 +35,8 @@ public class PlotManager {
 
         String assignmentsList = "";
         int assignmentCount = 0;
-        for(Resident resident : plot.getAssignedResidents()) {
-            if(!assignmentsList.isEmpty()) assignmentsList += ChatColor.GRAY + ", ";
+        for (Resident resident : plot.getAssignedResidents()) {
+            if (!assignmentsList.isEmpty()) assignmentsList += ChatColor.GRAY + ", ";
             assignmentsList += ChatColor.YELLOW + resident.getName();
             assignmentCount++;
         }
@@ -52,14 +52,13 @@ public class PlotManager {
 
         List<Plot> plots = new ArrayList<>();
         List<TPlot> tPlots = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("city_id", city.getId()).findList();
-        for(TPlot tPlot : tPlots) {
+        for (TPlot tPlot : tPlots) {
             Location plotLocation = new Location(city.getSpawn().getWorld(), tPlot.getX(), 0, tPlot.getZ());
-            if(!cachedPlots.containsKey(plotLocation) && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
+            if (!cachedPlots.containsKey(plotLocation) && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
                 Plot plot = new DatabasePlot(tPlot);
                 cachedPlots.put(plotLocation, plot);
                 plots.add(plot);
-            }
-            else {
+            } else {
                 plots.add(cachedPlots.get(plotLocation));
             }
         }
@@ -73,13 +72,13 @@ public class PlotManager {
 
     public Plot getPlot(int id) {
 
-        for(Plot plot : cachedPlots.values()) {
-            if(plot.getId() == id) {
+        for (Plot plot : cachedPlots.values()) {
+            if (plot.getId() == id) {
                 return plot;
             }
         }
         TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class, id);
-        if(tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
+        if (tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
             Plot plot = new DatabasePlot(tPlot);
             cachedPlots.put(plot.getLocation(), plot);
             return plot;
@@ -89,12 +88,12 @@ public class PlotManager {
 
     public Plot getPlot(Chunk chunk) {
 
-        Location simpleLocation = new Location(chunk.getWorld(), chunk.getX()*16 + 8, 0, chunk.getZ()*16 + 8);
+        Location simpleLocation = new Location(chunk.getWorld(), chunk.getX() * 16 + 8, 0, chunk.getZ() * 16 + 8);
         Plot plot = cachedPlots.get(simpleLocation);
 
-        if(plot == null) {
+        if (plot == null) {
             TPlot tPlot = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("x", simpleLocation.getX()).eq("z", simpleLocation.getZ()).findUnique();
-            if(tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
+            if (tPlot != null && Bukkit.getWorld(tPlot.getCity().getWorld()) != null) {
                 plot = new DatabasePlot(tPlot);
                 cachedPlots.put(plot.getLocation(), plot);
             }

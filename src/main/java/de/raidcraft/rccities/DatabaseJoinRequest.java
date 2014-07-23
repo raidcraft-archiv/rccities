@@ -24,7 +24,8 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
         try {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().addResident(getCity(), getPlayer());
             Bukkit.broadcastMessage(ChatColor.GOLD + getPlayer() + " ist nun Einwohner von '" + getCity().getFriendlyName() + "'!");
-        } catch (RaidCraftException e) {}
+        } catch (RaidCraftException e) {
+        }
         delete();
     }
 
@@ -33,7 +34,7 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
 
         TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
-        if(joinRequest == null) return;
+        if (joinRequest == null) return;
 
         joinRequest.setRejected(true);
         joinRequest.setRejectReason(reason);
@@ -45,13 +46,12 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
 
         TJoinRequest tJoinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
-        if(tJoinRequest == null) {
+        if (tJoinRequest == null) {
             tJoinRequest = new TJoinRequest();
             tJoinRequest.setCity(getCity());
             tJoinRequest.setPlayer(getPlayer());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tJoinRequest);
-        }
-        else {
+        } else {
             tJoinRequest.setRejected(isRejected());
             tJoinRequest.setRejectReason(getRejectReason());
             RaidCraft.getDatabase(RCCitiesPlugin.class).update(tJoinRequest);
@@ -62,11 +62,13 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
 
         TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
-        if(joinRequest != null) {
+        if (joinRequest != null) {
             RaidCraft.getDatabase(RCCitiesPlugin.class).delete(joinRequest);
         }
     }
 
     @Override
-    public void reactivate(){}
+    public void reactivate() {
+
+    }
 }

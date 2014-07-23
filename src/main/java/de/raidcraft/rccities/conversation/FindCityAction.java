@@ -17,7 +17,7 @@ import de.raidcraft.rcconversations.api.conversation.Conversation;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="FIND_CITY")
+@ActionInformation(name = "FIND_CITY")
 public class FindCityAction extends AbstractAction {
 
     @Override
@@ -27,7 +27,7 @@ public class FindCityAction extends AbstractAction {
         String failure = args.getString("onfailure", null);
 
         Plot plot = RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlot(conversation.getPlayer().getLocation().getChunk());
-        if(plot == null) {
+        if (plot == null) {
             changeStage(conversation, failure);
             return;
         }
@@ -41,14 +41,14 @@ public class FindCityAction extends AbstractAction {
         conversation.set("city_bankaccount", city.getBankAccountName());
 
         int openRequests = 0;
-        for(JoinRequest joinRequest : city.getJoinRequests()) {
-            if(!joinRequest.isRejected()) openRequests++;
+        for (JoinRequest joinRequest : city.getJoinRequests()) {
+            if (!joinRequest.isRejected()) openRequests++;
         }
         conversation.set("city_open_requests", openRequests);
 
         double joinCosts = 0;
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
-        if(joinCostsCityFlag != null) {
+        if (joinCostsCityFlag != null) {
             joinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
         }
         conversation.set("city_join_costs_friendly", economy.getFormattedAmount(joinCosts));

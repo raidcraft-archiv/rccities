@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="LIST_CITY_UPGRADE_LEVEL")
+@ActionInformation(name = "LIST_CITY_UPGRADE_LEVEL")
 public class ListUpgradeLevelAction extends AbstractAction {
 
     private static final int MAX_PLACES_PER_STAGE = 4;
@@ -48,26 +48,26 @@ public class ListUpgradeLevelAction extends AbstractAction {
         int pageSize = args.getInt("pagesize", MAX_PLACES_PER_STAGE);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
-        if(upgrade == null) {
+        if (upgrade == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
         List<UpgradeLevel> levels = upgrade.getLevels();
         // delete not reachable levels
         UpgradeLevel highestLockedLevel = upgrade.getLowestLockedLevel();
-        for(UpgradeLevel level : new ArrayList<>(levels)) {
-            if(highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel() && level.isStored()) levels.remove(level);
+        for (UpgradeLevel level : new ArrayList<>(levels)) {
+            if (highestLockedLevel != null && level.getLevel() > highestLockedLevel.getLevel() && level.isStored()) levels.remove(level);
         }
         String entranceStage = "city_levels_";
 
 
-        int pages = (int)Math.ceil(((double) levels.size() / (double) pageSize));
-        if(pages == 0) pages = 1;
+        int pages = (int) Math.ceil(((double) levels.size() / (double) pageSize));
+        if (pages == 0) pages = 1;
         for (int i = 0; i < pages; i++) {
 
             Stage stage;
@@ -84,22 +84,20 @@ public class ListUpgradeLevelAction extends AbstractAction {
             String nextDynamicStage;
             if (pages - 1 == i) {
                 nextDynamicStage = entranceStage;
-            }
-            else {
+            } else {
                 nextDynamicStage = entranceStage + "_" + (i + 1);
             }
             String thisStage;
-            if(i == 0) {
+            if (i == 0) {
                 thisStage = entranceStage;
-            }
-            else {
+            } else {
                 thisStage = entranceStage + "_" + i;
             }
 
-            if(pages > 1) {
+            if (pages > 1) {
                 answers.add(new SimpleAnswer(String.valueOf(a), "&7Nächste Seite", new ActionArgumentList(String.valueOf(a), StageAction.class, "stage", nextDynamicStage)));
             }
-            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i+1) + "/" + pages + ")", answers);
+            stage = new SimpleStage(thisStage, text + "|&7(Seite " + (i + 1) + "/" + pages + ")", answers);
 
             conversation.addStage(stage);
         }

@@ -34,7 +34,7 @@ public class UpgradeRequestManager {
 
         TUpgradeRequest tUpgradeRequest = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class)
                 .where().eq("city_id", city.getId()).ieq("level_identifier", upgradeLevel.getId()).findUnique();
-        if(tUpgradeRequest == null) {
+        if (tUpgradeRequest == null) {
             return null;
         }
         return new DatabaseUpgradeRequest(tUpgradeRequest);
@@ -45,7 +45,7 @@ public class UpgradeRequestManager {
         List<UpgradeRequest> requests = new ArrayList<>();
         List<TUpgradeRequest> tUpgradeRequests = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class)
                 .where().eq("rejected", false).eq("accepted", false).findList();
-        for(TUpgradeRequest tUpgradeRequest : tUpgradeRequests) {
+        for (TUpgradeRequest tUpgradeRequest : tUpgradeRequests) {
             requests.add(new DatabaseUpgradeRequest(tUpgradeRequest));
         }
         return requests;
@@ -56,8 +56,8 @@ public class UpgradeRequestManager {
         List<UpgradeRequest> requests = new ArrayList<>();
         List<TUpgradeRequest> tUpgradeRequests = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TUpgradeRequest.class)
                 .where().eq("city_id", city.getId()).eq("rejected", false).eq("accepted", false).findList();
-        for(TUpgradeRequest tUpgradeRequest : tUpgradeRequests) {
-            if(tUpgradeRequest.getRCCity() == null) continue;
+        for (TUpgradeRequest tUpgradeRequest : tUpgradeRequests) {
+            if (tUpgradeRequest.getRCCity() == null) continue;
             requests.add(new DatabaseUpgradeRequest(tUpgradeRequest));
         }
         return requests;
@@ -76,17 +76,17 @@ public class UpgradeRequestManager {
         public void run() {
 
             List<UpgradeRequest> openRequests = upgradeRequestManager.getOpenRequests();
-            if(openRequests.size() == 0) return;
+            if (openRequests.size() == 0) return;
 
             String list = "";
-            for(UpgradeRequest request : openRequests) {
-                if(!list.isEmpty()) list += ", ";
+            for (UpgradeRequest request : openRequests) {
+                if (!list.isEmpty()) list += ", ";
                 list += request.getCity().getFriendlyName();
             }
 
-            for(Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
 
-                if(!player.hasPermission("rccities.upgrades.process")) continue;
+                if (!player.hasPermission("rccities.upgrades.process")) continue;
 
                 player.sendMessage(ChatColor.GRAY + "Es liegen Upgrade-Anfragen von Gilden vor:");
                 player.sendMessage(ChatColor.GRAY + list + " (nutze /gilde upgrade <Gilde>)");

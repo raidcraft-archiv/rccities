@@ -34,16 +34,16 @@ public class MarkPlotFlag extends AbstractPlotFlag {
     @Override
     public void refresh() throws RaidCraftException {
 
-        if(getPlot() == null) return;
+        if (getPlot() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
         String bankAccount = getPlot().getCity().getBankAccountName();
         double markCost = RaidCraft.getComponent(RCCitiesPlugin.class).getConfig().flagPlotMarkCost;
 
-        if(currentValue) {
+        if (currentValue) {
 
             Economy economy = RaidCraft.getEconomy();
-            if(!economy.hasEnough(bankAccount, markCost)) {
+            if (!economy.hasEnough(bankAccount, markCost)) {
                 throw new RaidCraftException("Es ist nicht genug Geld in der Stadtkasse! " + economy.getFormattedAmount(markCost) + " benötigt!");
             }
 
@@ -59,34 +59,29 @@ public class MarkPlotFlag extends AbstractPlotFlag {
             int i;
 
             //EAST
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
                 setTorch(block);
             }
 
             //WEST
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
                 setTorch(block);
             }
 
             //NORTH
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
                 setTorch(block);
             }
 
             //SOUTH
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
                 setTorch(block);
             }
-        }
-        else {
+        } else {
 
             //remove torches
             Chunk chunk = getPlot().getLocation().getChunk();
@@ -95,29 +90,25 @@ public class MarkPlotFlag extends AbstractPlotFlag {
             int i;
 
             //EAST
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 0), 0);
                 removeTorch(block);
             }
 
             //WEST
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(i, chunkSnapshot.getHighestBlockYAt(i, 15), 15);
                 removeTorch(block);
             }
 
             //NORTH
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(0, chunkSnapshot.getHighestBlockYAt(0, i), i);
                 removeTorch(block);
             }
 
             //SOUTH
-            for(i = 0; i<16; i++)
-            {
+            for (i = 0; i < 16; i++) {
                 block = chunk.getBlock(15, chunkSnapshot.getHighestBlockYAt(15, i), i);
                 removeTorch(block);
             }
@@ -128,14 +119,14 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
         Block belowBlock = block.getRelative(0, -1, 0);
 
-        if(block.getType() != Material.AIR || !isTorchBlock(belowBlock)) return;
+        if (block.getType() != Material.AIR || !isTorchBlock(belowBlock)) return;
 
         block.setType(Material.TORCH);
     }
 
     private void removeTorch(Block block) {
 
-        if(block.getType() != Material.TORCH) return;
+        if (block.getType() != Material.TORCH) return;
         block.setType(Material.AIR);
     }
 
@@ -143,35 +134,35 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
         Material material = block.getType();
 
-        if(material == Material.GRASS
-            || material == Material.DIRT
-            || material == Material.STONE
-            || material == Material.LOG
-            || material == Material.SAND
-            || material == Material.GRAVEL
-            || material == Material.WOOD
-            || material == Material.FENCE
-            || material == Material.IRON_FENCE
-            || material == Material.NETHER_FENCE
-            || material == Material.SMOOTH_BRICK
-            || material == Material.OBSIDIAN
-            || material == Material.DOUBLE_STEP
-            || material == Material.WOOL
-            || material == Material.BRICK
-            || material == Material.QUARTZ_BLOCK
-            || material == Material.QUARTZ_ORE
-            || material == Material.DIAMOND_ORE
-            || material == Material.IRON_ORE
-            || material == Material.COAL_ORE
-            || material == Material.COAL_BLOCK
-            || material == Material.GOLD_ORE
-            || material == Material.GOLD_BLOCK
-            || material == Material.IRON_BLOCK
-            || material == Material.DIAMOND_BLOCK
-            || material == Material.EMERALD
-            || material == Material.EMERALD_BLOCK
-            || material == Material.NETHER_BRICK
-            || material == Material.CLAY) {
+        if (material == Material.GRASS
+                || material == Material.DIRT
+                || material == Material.STONE
+                || material == Material.LOG
+                || material == Material.SAND
+                || material == Material.GRAVEL
+                || material == Material.WOOD
+                || material == Material.FENCE
+                || material == Material.IRON_FENCE
+                || material == Material.NETHER_FENCE
+                || material == Material.SMOOTH_BRICK
+                || material == Material.OBSIDIAN
+                || material == Material.DOUBLE_STEP
+                || material == Material.WOOL
+                || material == Material.BRICK
+                || material == Material.QUARTZ_BLOCK
+                || material == Material.QUARTZ_ORE
+                || material == Material.DIAMOND_ORE
+                || material == Material.IRON_ORE
+                || material == Material.COAL_ORE
+                || material == Material.COAL_BLOCK
+                || material == Material.GOLD_ORE
+                || material == Material.GOLD_BLOCK
+                || material == Material.IRON_BLOCK
+                || material == Material.DIAMOND_BLOCK
+                || material == Material.EMERALD
+                || material == Material.EMERALD_BLOCK
+                || material == Material.NETHER_BRICK
+                || material == Material.CLAY) {
             return true;
         }
         return false;

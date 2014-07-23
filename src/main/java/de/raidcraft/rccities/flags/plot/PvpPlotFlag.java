@@ -27,14 +27,13 @@ public class PvpPlotFlag extends AbstractPlotFlag {
     @Override
     public void refresh() throws RaidCraftException {
 
-        if(getPlot() == null) return;
+        if (getPlot() == null) return;
 
         boolean currentValue = getType().convertToBoolean(getValue());
 
-        if(currentValue) {
+        if (currentValue) {
             getPlot().getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
-        }
-        else {
+        } else {
             getPlot().getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
         }
     }

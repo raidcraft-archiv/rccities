@@ -68,9 +68,9 @@ public class TUpgradeRequest {
 
     public UpgradeLevel<City> getUpgradeLevel() {
 
-        for(Upgrade upgrade : getRCCity().getUpgrades().getUpgrades()) {
-            for(UpgradeLevel upgradeLevel : upgrade.getLevels()) {
-                if(upgradeLevel.getId().equalsIgnoreCase(getLevelIdentifier())) {
+        for (Upgrade upgrade : getRCCity().getUpgrades().getUpgrades()) {
+            for (UpgradeLevel upgradeLevel : upgrade.getLevels()) {
+                if (upgradeLevel.getId().equalsIgnoreCase(getLevelIdentifier())) {
                     return upgradeLevel;
                 }
             }

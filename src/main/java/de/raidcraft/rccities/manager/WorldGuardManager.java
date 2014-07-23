@@ -27,12 +27,12 @@ public class WorldGuardManager {
     public boolean claimable(Location location) {
 
         ApplicableRegionSet regions = worldGuard.getRegionManager(location.getWorld()).getApplicableRegions(location);
-        if(regions.size() == 0) {
+        if (regions.size() == 0) {
             return true;
         }
         for (ProtectedRegion region : regions) {
-            for(String ignoredRegion : plugin.getConfig().ignoredRegions) {
-                if(!region.getId().startsWith(ignoredRegion)) {
+            for (String ignoredRegion : plugin.getConfig().ignoredRegions) {
+                if (!region.getId().startsWith(ignoredRegion)) {
                     return false;
                 }
             }

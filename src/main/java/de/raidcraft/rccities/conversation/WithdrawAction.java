@@ -17,7 +17,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="CITY_WITHDRAW")
+@ActionInformation(name = "CITY_WITHDRAW")
 public class WithdrawAction extends AbstractAction {
 
     @Override
@@ -33,11 +33,11 @@ public class WithdrawAction extends AbstractAction {
         double amount = economy.parseCurrencyInput(amountString);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if(amount == 0) {
+        if (amount == 0) {
             changeStage(conversation, failure);
             return;
         }

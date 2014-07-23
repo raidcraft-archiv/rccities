@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="REJECT_CITY_JOIN_REQUEST")
+@ActionInformation(name = "REJECT_CITY_JOIN_REQUEST")
 public class RejectJoinRequestAction extends AbstractAction {
 
     @Override
@@ -33,17 +33,17 @@ public class RejectJoinRequestAction extends AbstractAction {
         reason = ParseString.INST.parse(conversation, reason);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         JoinRequest joinRequest = city.getJoinRequest(candidate);
-        if(joinRequest == null) return;
+        if (joinRequest == null) return;
         joinRequest.reject(reason);
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                 .broadcastCityMessage(city, "Der Beitrittsantrag von " + joinRequest.getPlayer() + " wurde abgelehnt! (" + reason + ")", RolePermission.STAFF);
         Player targetPlayer = Bukkit.getPlayer(joinRequest.getPlayer());
-        if(targetPlayer == null) return;
+        if (targetPlayer == null) return;
         targetPlayer.sendMessage(ChatColor.DARK_RED + "Dein Mitgliedsantrag bei '" + ChatColor.GOLD + joinRequest.getCity().getFriendlyName() + ChatColor.DARK_RED + "' wurde abgelehnt!");
     }
 }

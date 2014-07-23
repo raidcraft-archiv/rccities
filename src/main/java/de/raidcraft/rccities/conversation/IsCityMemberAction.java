@@ -14,7 +14,7 @@ import de.raidcraft.rcconversations.util.ParseString;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="IS_CITY_MEMBER")
+@ActionInformation(name = "IS_CITY_MEMBER")
 public class IsCityMemberAction extends AbstractAction {
 
     @Override
@@ -26,14 +26,13 @@ public class IsCityMemberAction extends AbstractAction {
         String failure = args.getString("onfailure", null);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if(RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city) == null) {
+        if (RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city) == null) {
             changeStage(conversation, failure);
-        }
-        else {
+        } else {
             changeStage(conversation, success);
         }
     }

@@ -29,10 +29,9 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
     @Override
     public void announce(boolean state) {
 
-        if(state) {
+        if (state) {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet erlaubt!");
-        }
-        else {
+        } else {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(getCity(), "PvP ist im Stadtgebiet verboten!");
         }
     }
@@ -42,7 +41,7 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
         // check if plot has its own pvp setting -> skip
         PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, PvpPlotFlag.class);
-        if(existingFlag != null && !existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
+        if (existingFlag != null && !existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
 
         plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.ALLOW);
     }
@@ -52,7 +51,7 @@ public class PvpCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
         // check if plot has its own pvp setting -> skip
         PlotFlag existingFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getPlotFlag(plot, PvpPlotFlag.class);
-        if(existingFlag != null && existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
+        if (existingFlag != null && existingFlag.getType().convertToBoolean(existingFlag.getValue())) return;
 
         plot.getRegion().setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
     }

@@ -14,7 +14,11 @@ public abstract class AbstractResident implements Resident {
     protected Role profession;
     protected City city;
 
-    protected AbstractResident() {};
+    protected AbstractResident() {
+
+    }
+
+    ;
 
     public AbstractResident(String name, Role profession, City city) {
 

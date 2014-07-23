@@ -38,11 +38,11 @@ public class CityManager {
 
         cityName = cityName.replace(' ', '_');
 
-        if(cityName.length() > 20) {
+        if (cityName.length() > 20) {
             throw new RaidCraftException("Der angegebene Stadtname ist zu lange!");
         }
         City city = getCity(cityName);
-        if(city != null) {
+        if (city != null) {
             throw new RaidCraftException("Es gibt bereits eine Stadt mit diesem Namen!");
         }
         city = new DatabaseCity(cityName, location, creator);
@@ -59,7 +59,7 @@ public class CityManager {
     public void printCityInfo(String cityName, CommandSender sender) throws RaidCraftException {
 
         City city = getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new RaidCraftException("Es wurde keine Stadt mit diesem namen gefunden!");
         }
 
@@ -67,14 +67,13 @@ public class CityManager {
         int mayorCount = 0;
         String residentList = "";
         int residentCount = 0;
-        for(Resident resident : plugin.getResidentManager().getResidents(city)) {
-            if(resident.getRole() == Role.MAYOR || resident.getRole() == Role.ADMIN) {
-                if(!mayorList.isEmpty()) mayorList += ChatColor.GRAY + ", ";
+        for (Resident resident : plugin.getResidentManager().getResidents(city)) {
+            if (resident.getRole() == Role.MAYOR || resident.getRole() == Role.ADMIN) {
+                if (!mayorList.isEmpty()) mayorList += ChatColor.GRAY + ", ";
                 mayorList += resident.getRole().getChatColor() + resident.getName();
                 mayorCount++;
-            }
-            else {
-                if(!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
+            } else {
+                if (!residentList.isEmpty()) residentList += ChatColor.GRAY + ", ";
                 residentList += resident.getRole().getChatColor() + resident.getName();
                 residentCount++;
             }
@@ -82,7 +81,7 @@ public class CityManager {
 
         double joinCosts = 0;
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
-        if(joinCostsCityFlag != null) {
+        if (joinCostsCityFlag != null) {
             joinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
         }
 
@@ -110,7 +109,7 @@ public class CityManager {
     public String getCityLevel(City city) {
 
         UpgradeLevel upgradeLevel = getMainUpgrade(city).getHighestUnlockedLevel();
-        if(upgradeLevel == null) {
+        if (upgradeLevel == null) {
             return "0";
         }
         return String.valueOf(upgradeLevel.getLevel());
@@ -119,32 +118,32 @@ public class CityManager {
     public double getServerJoinCosts(City city) {
 
         int multiplier = 0;
-        for(UpgradeLevel level : getMainUpgrade(city).getLevels()) {
-            if(level.isUnlocked()) multiplier++;
+        for (UpgradeLevel level : getMainUpgrade(city).getLevels()) {
+            if (level.isUnlocked()) multiplier++;
         }
 
         double baseJoinCosts = RaidCraft.getEconomy().parseCurrencyInput(plugin.getConfig().joinCosts);
-        return baseJoinCosts  + (baseJoinCosts/2. * multiplier);
+        return baseJoinCosts + (baseJoinCosts / 2. * multiplier);
     }
 
     public City getCity(String name) {
 
         City city = cachedCities.get(name);
 
-        if(city == null) {
+        if (city == null) {
             TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).where().ieq("name", name).findUnique();
-            if(tCity != null) {
-                if(Bukkit.getWorld(tCity.getWorld()) != null) {
-                city = new DatabaseCity(tCity);
-                cachedCities.put(tCity.getName(), city);
+            if (tCity != null) {
+                if (Bukkit.getWorld(tCity.getWorld()) != null) {
+                    city = new DatabaseCity(tCity);
+                    cachedCities.put(tCity.getName(), city);
                 }
             }
         }
         // search for name parts
-        if(city == null) {
+        if (city == null) {
             getCities();
-            for(Map.Entry<String, City> entry : cachedCities.entrySet()) {
-                if(entry.getKey().toLowerCase().startsWith(name.toLowerCase())) {
+            for (Map.Entry<String, City> entry : cachedCities.entrySet()) {
+                if (entry.getKey().toLowerCase().startsWith(name.toLowerCase())) {
                     city = entry.getValue();
                     break;
                 }
@@ -155,11 +154,11 @@ public class CityManager {
 
     public Collection<City> getCities() {
 
-        for(TCity tCity : RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).findList()) {
+        for (TCity tCity : RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class).findList()) {
 
-            if(!cachedCities.containsKey(tCity.getName())) {
-                if(Bukkit.getWorld(tCity.getWorld()) == null) continue;
-                    cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
+            if (!cachedCities.containsKey(tCity.getName())) {
+                if (Bukkit.getWorld(tCity.getWorld()) == null) continue;
+                cachedCities.put(tCity.getName(), new DatabaseCity(tCity));
             }
         }
         return cachedCities.values();

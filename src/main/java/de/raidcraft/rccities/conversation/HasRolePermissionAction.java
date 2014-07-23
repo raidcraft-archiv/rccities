@@ -16,7 +16,7 @@ import de.raidcraft.rcconversations.util.ParseString;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="HAS_CITY_PERMISSION")
+@ActionInformation(name = "HAS_CITY_PERMISSION")
 public class HasRolePermissionAction extends AbstractAction {
 
     @Override
@@ -29,12 +29,12 @@ public class HasRolePermissionAction extends AbstractAction {
         String permission = args.getString("permission");
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city);
-        if(resident == null) {
+        if (resident == null) {
             changeStage(conversation, failure);
             return;
         }
@@ -46,10 +46,9 @@ public class HasRolePermissionAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Role Permission '" + permission + "' does not exist!");
         }
 
-        if(resident.getRole().hasPermission(rolePermission)) {
+        if (resident.getRole().hasPermission(rolePermission)) {
             changeStage(conversation, success);
-        }
-        else {
+        } else {
             changeStage(conversation, failure);
         }
     }

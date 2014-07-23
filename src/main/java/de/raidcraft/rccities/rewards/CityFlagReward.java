@@ -34,6 +34,7 @@ public class CityFlagReward extends AbstractReward<City> {
 
         try {
             RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().setCityFlag(city, null, flagName, flagValue);
-        } catch (RaidCraftException e) {}
+        } catch (RaidCraftException e) {
+        }
     }
 }

@@ -17,7 +17,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="SET_CITY_FLAG")
+@ActionInformation(name = "SET_CITY_FLAG")
 public class SetCityFlagAction extends AbstractAction {
 
     @Override
@@ -31,7 +31,7 @@ public class SetCityFlagAction extends AbstractAction {
         flagValue = ParseString.INST.parse(conversation, flagValue);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 

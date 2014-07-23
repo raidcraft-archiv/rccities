@@ -21,7 +21,7 @@ import org.bukkit.ChatColor;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name="SET_CITY_RESIDENT_ROLE")
+@ActionInformation(name = "SET_CITY_RESIDENT_ROLE")
 public class SetResidentRoleAction extends AbstractAction {
 
     @Override
@@ -35,24 +35,24 @@ public class SetResidentRoleAction extends AbstractAction {
         roleName = ParseString.INST.parse(conversation, roleName);
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
-        if(city == null) {
+        if (city == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
         Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(residentName, city);
-        if(resident == null) {
+        if (resident == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Resident '" + resident + "' does not exist!");
         }
 
         Role newRole = Role.valueOf(roleName.toUpperCase());
         Role oldRole = resident.getRole();
-        if(oldRole.isAdminOnly() && !conversation.getPlayer().hasPermission("rccities.resident.promote.all")) {
+        if (oldRole.isAdminOnly() && !conversation.getPlayer().hasPermission("rccities.resident.promote.all")) {
             conversation.getPlayer().sendMessage("Der jetzige Beruf des Einwohners kann nur von Administratoren geändert werden!");
             conversation.endConversation(EndReason.INFORM);
             return;
         }
 
-        if(newRole.isAdminOnly() && !conversation.getPlayer().hasPermission("rccities.resident.promote.all")) {
+        if (newRole.isAdminOnly() && !conversation.getPlayer().hasPermission("rccities.resident.promote.all")) {
             conversation.getPlayer().sendMessage("Dieser Beruf kann nur von Administratoren vergeben werden!");
             conversation.endConversation(EndReason.INFORM);
             return;
@@ -60,14 +60,14 @@ public class SetResidentRoleAction extends AbstractAction {
 
         resident.setRole(newRole);
         // set owner on all city plots
-        if(!oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
-            for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city)) {
+        if (!oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
+            for (Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city)) {
                 plot.updateRegion(false);
             }
         }
         // remove owner from all city plots
-        if(oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && !newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
-            for(Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city)) {
+        if (oldRole.hasPermission(RolePermission.BUILD_EVERYWHERE) && !newRole.hasPermission(RolePermission.BUILD_EVERYWHERE)) {
+            for (Plot plot : RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city)) {
                 plot.updateRegion(false);
             }
         }
