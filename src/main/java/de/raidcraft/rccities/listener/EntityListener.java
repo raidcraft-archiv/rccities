@@ -19,8 +19,7 @@ public class EntityListener implements Listener {
     public void onEntitySpwan(CreatureSpawnEvent event) {
 
         if(!(event.getEntity() instanceof Monster)) return;
-        // TODO: own method
-//        if(RaidCraft.getComponent(RCConversationsPlugin.class).getCitizens().getNPCRegistry().isNPC(event.getEntity())) return;
+        if(NPC_Manager.getInstance().isNPC(event.getEntity())) return;
         if(RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlot(event.getEntity().getLocation().getChunk()) == null) return;
 
         event.getEntity().remove();
