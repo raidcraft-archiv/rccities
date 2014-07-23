@@ -20,12 +20,12 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>rccities</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.6</version>
+    <version>1.1.7-SNAPSHOT</version>
     <name>RCCities</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@git.raid-craft.de:22109/raid-craft-de/rccities.git</developerConnection>
-        <tag>rccities-1.1.6</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <parent>
