@@ -75,8 +75,8 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public void assignResident(Resident resident) {
 
-        if (assignedResidents.containsKey(resident.getPlayer().getUniqueId())) return;
-        assignedResidents.put(resident.getPlayer().getUniqueId(), resident);
+        if (assignedResidents.containsKey(resident.getPlayerId())) return;
+        assignedResidents.put(resident.getPlayerId(), resident);
         TAssignment tAssignment = new TAssignment();
         tAssignment.setPlot(this);
         tAssignment.setResident(resident);
@@ -87,7 +87,7 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public void removeResident(Resident resident) {
 
-        Resident removedResident = assignedResidents.remove(resident.getPlayer().getUniqueId());
+        Resident removedResident = assignedResidents.remove(resident.getPlayerId());
         if (removedResident != null) {
             // delete assignment
             TAssignment assignment = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class)
@@ -108,7 +108,7 @@ public class DatabasePlot extends AbstractPlot {
             Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                     .getResident(assignment.getResident().getPlayerId(), getCity());
             if (resident == null) continue;
-            assignedResidents.put(resident.getPlayer().getUniqueId(), resident);
+            assignedResidents.put(resident.getPlayerId(), resident);
         }
     }
 

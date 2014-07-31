@@ -130,7 +130,7 @@ public class ResidentManager {
 
         try {
             Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
-                    .getHero(resident.getPlayer().getUniqueId());
+                    .getHero(resident.getPlayerId());
             Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
             if (skill.isUnlocked()) {
                 return;
@@ -145,7 +145,7 @@ public class ResidentManager {
 
         try {
             Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
-                    .getHero(resident.getPlayer().getUniqueId());
+                    .getHero(resident.getPlayerId());
             Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
             if (!skill.isUnlocked()) {
                 return;
@@ -252,7 +252,7 @@ public class ResidentManager {
             }
             if (!exist) {
                 Resident resident = new DatabaseResident(tResident);
-                cachedResidents.get(resident.getPlayer().getUniqueId()).add(resident);
+                cachedResidents.get(resident.getPlayerId()).add(resident);
                 residents.add(resident);
             }
         }
