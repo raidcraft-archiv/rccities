@@ -12,6 +12,7 @@ import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -43,7 +44,7 @@ public class ResidentCommands {
         if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
         Player player = (Player) sender;
 
-        plugin.getResidentManager().printResidentInfo(player.getName(), sender);
+        plugin.getResidentManager().printResidentInfo(player.getUniqueId(), sender);
     }
 
     public static class NestedCommands {
@@ -64,7 +65,7 @@ public class ResidentCommands {
         @CommandPermissions("rccities.resident.info")
         public void info(CommandContext args, CommandSender sender) throws CommandException {
 
-            plugin.getResidentManager().printResidentInfo(args.getString(0), sender);
+            plugin.getResidentManager().printResidentInfo(UUIDUtil.convertPlayer(args.getString(0)), sender);
         }
 
         @Command(
@@ -94,7 +95,7 @@ public class ResidentCommands {
                     throw new CommandException("Es gibt keine Gilde mit dem Namen '" + args.getString(0) + "'!");
                 }
                 if (!player.hasPermission("rccities.resident.promote.all")) {
-                    Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+                    Resident resident = plugin.getResidentManager().getResident(player.getUniqueId(), city);
                     if (resident == null || !resident.getRole().hasPermission(RolePermission.KICK)) {
                         throw new CommandException("Du darfst keine Berufe in der Gilde '" + city.getFriendlyName() + "' zuweisen!");
                     }
@@ -102,7 +103,7 @@ public class ResidentCommands {
             } else {
                 target = args.getString(0);
                 roleName = args.getString(1);
-                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getName(), RolePermission.PROMOTE);
+                List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getUniqueId(), RolePermission.PROMOTE);
                 if (citizenships == null) {
                     throw new CommandException("Du besitzt in keiner Gilde das Recht Spielern Berufe zuzuteilen!");
                 }
@@ -121,7 +122,7 @@ public class ResidentCommands {
                 throw new CommandException("Dieser Beruf kann nur von Administratoren vergeben werden!");
             }
 
-            Resident targetResident = plugin.getResidentManager().getResident(target, city);
+            Resident targetResident = plugin.getResidentManager().getResident(UUIDUtil.convertPlayer(target), city);
             if (targetResident == null) {
                 if (player.hasPermission("rccities.resident.promote.all") && args.hasFlag('f')) {
                     Player targetPlayer = Bukkit.getPlayer(target);

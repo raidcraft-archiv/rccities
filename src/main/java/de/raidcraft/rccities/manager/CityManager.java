@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -35,7 +36,7 @@ public class CityManager {
         this.plugin = plugin;
     }
 
-    public City createCity(String cityName, Location location, String creator) throws RaidCraftException {
+    public City createCity(String cityName, Location location, UUID creator) throws RaidCraftException {
 
         cityName = cityName.replace(' ', '_');
 

@@ -7,14 +7,16 @@ import de.raidcraft.rccities.api.resident.AbstractResident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.tables.TResident;
 
+import java.util.UUID;
+
 /**
  * @author Philip Urban
  */
 public class DatabaseResident extends AbstractResident {
 
-    public DatabaseResident(String name, Role profession, City city) {
+    public DatabaseResident(UUID playerId, Role profession, City city) {
 
-        super(name, profession, city);
+        super(playerId, profession, city);
 
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().addPrefixSkill(this);
     }
@@ -27,7 +29,7 @@ public class DatabaseResident extends AbstractResident {
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(tResident.getCity().getName());
         assert city != null : "City of resident is null!";
         this.city = city;
-        this.name = tResident.getName();
+        this.playerId = tResident.getPlayerId();
         setRole(Role.valueOf(tResident.getProfession()));
     }
 
@@ -38,7 +40,7 @@ public class DatabaseResident extends AbstractResident {
         if (getId() == 0) {
             TResident tResident = new TResident();
             tResident.setCity(getCity());
-            tResident.setName(getName());
+            tResident.setPlayerId(getPlayerId());
             tResident.setProfession(getRole().name());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tResident);
             this.id = tResident.getId();

@@ -17,13 +17,14 @@ import org.bukkit.entity.Player;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
 public class DatabaseCity extends AbstractCity {
 
-    public DatabaseCity(String name, Location spawn, String creator) {
+    public DatabaseCity(String name, Location spawn, UUID creator) {
 
         super(name, spawn, creator);
     }
@@ -32,7 +33,7 @@ public class DatabaseCity extends AbstractCity {
 
         id = tCity.getId();
         name = tCity.getName();
-        creator = tCity.getCreator();
+        creator = tCity.getCreatorId();
         creationDate = tCity.getCreationDate();
         description = tCity.getDescription();
         plotCredit = tCity.getPlotCredit();
@@ -81,25 +82,28 @@ public class DatabaseCity extends AbstractCity {
         List<TJoinRequest> tJoinRequests = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getId()).findList();
         for (TJoinRequest tJoinRequest : tJoinRequests) {
-            JoinRequest joinRequest = new DatabaseJoinRequest(tJoinRequest.getPlayer(), this, tJoinRequest.isRejected(), tJoinRequest.getRejectReason());
+            JoinRequest joinRequest = new DatabaseJoinRequest(tJoinRequest.getPlayer(),
+                    this, tJoinRequest.isRejected(), tJoinRequest.getRejectReason());
             joinRequests.add(joinRequest);
         }
         return joinRequests;
     }
 
     @Override
-    public JoinRequest getJoinRequest(String playerName) {
+    public JoinRequest getJoinRequest(UUID playerId) {
 
-        TJoinRequest tJoinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TJoinRequest.class).where().eq("city_id", getId()).ieq("player", playerName).findUnique();
+        TJoinRequest tJoinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TJoinRequest.class)
+                .where().eq("city_id", getId())
+                .eq("player", playerId).findUnique();
         if (tJoinRequest == null) return null;
-        return new DatabaseJoinRequest(tJoinRequest.getPlayer(), this, tJoinRequest.isRejected(), tJoinRequest.getRejectReason());
+        return new DatabaseJoinRequest(tJoinRequest.getPlayer(), this, tJoinRequest.isRejected(),
+                tJoinRequest.getRejectReason());
     }
 
     @Override
-    public void sendJoinRequest(String playerName) {
+    public void sendJoinRequest(UUID playerId) {
 
-        new DatabaseJoinRequest(playerName, this, false, null);
+        new DatabaseJoinRequest(playerId, this, false, null);
     }
 
     @Override
@@ -109,7 +113,7 @@ public class DatabaseCity extends AbstractCity {
         if (getId() == 0) {
             TCity tCity = new TCity();
             tCity.setCreationDate(new Timestamp(System.currentTimeMillis()));
-            tCity.setCreator(getCreator());
+            tCity.setCreatorId(getCreator());
             tCity.setName(getName());
             tCity.setWorld(getSpawn().getWorld().getName());
             tCity.setX((int) getSpawn().getX() * 1000);

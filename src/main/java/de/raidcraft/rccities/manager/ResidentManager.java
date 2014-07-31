@@ -14,14 +14,16 @@ import de.raidcraft.skills.SkillsPlugin;
 import de.raidcraft.skills.api.exceptions.UnknownSkillException;
 import de.raidcraft.skills.api.hero.Hero;
 import de.raidcraft.skills.api.skill.Skill;
-import de.raidcraft.util.CaseInsensitiveMap;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -29,7 +31,7 @@ import java.util.Map;
 public class ResidentManager {
 
     private RCCitiesPlugin plugin;
-    private Map<String, List<Resident>> cachedResidents = new CaseInsensitiveMap<>();
+    private Map<UUID, List<Resident>> cachedResidents = new HashMap<>();
 
     public ResidentManager(RCCitiesPlugin plugin) {
 
@@ -65,21 +67,22 @@ public class ResidentManager {
 
     public Resident addResident(City city, Player player) throws RaidCraftException {
 
-        return addResident(city, player.getName());
+        return addResident(city, player.getUniqueId());
     }
 
-    public Resident addResident(City city, String playerName) throws RaidCraftException {
+    public Resident addResident(City city, UUID playerId) throws RaidCraftException {
 
-        Resident resident = getResident(playerName, city);
+        Resident resident = getResident(playerId, city);
         if (resident != null) {
-            throw new RaidCraftException(playerName + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
+            throw new RaidCraftException(UUIDUtil.getNameFromUUID(playerId)
+                    + " ist bereits Einwohner von '" + city.getFriendlyName() + "'!");
         }
 
-        resident = new DatabaseResident(playerName, Role.RESIDENT, city);
-        List<Resident> residentList = cachedResidents.get(playerName);
+        resident = new DatabaseResident(playerId, Role.RESIDENT, city);
+        List<Resident> residentList = cachedResidents.get(playerId);
         if (residentList == null) {
-            cachedResidents.put(playerName, new ArrayList<Resident>());
-            residentList = cachedResidents.get(playerName);
+            cachedResidents.put(playerId, new ArrayList<Resident>());
+            residentList = cachedResidents.get(playerId);
         }
         residentList.add(resident);
         return resident;
@@ -92,11 +95,11 @@ public class ResidentManager {
         residentList.remove(resident);
     }
 
-    public void printResidentInfo(String playerName, CommandSender sender) {
+    public void printResidentInfo(UUID playerId, CommandSender sender) {
 
-        List<Resident> citizenships = getCitizenships(playerName);
+        List<Resident> citizenships = getCitizenships(playerId);
         if (citizenships == null || citizenships.size() == 0) {
-            sender.sendMessage(ChatColor.RED + "Keine Einwohner Informationen zu '" + playerName + "' gefunden!");
+            sender.sendMessage(ChatColor.RED + "Keine Einwohner Informationen zu '" + UUIDUtil.getNameFromUUID(playerId) + "' gefunden!");
             return;
         }
 
@@ -153,37 +156,38 @@ public class ResidentManager {
         }
     }
 
-    public List<Resident> getCitizenships(String name) {
+    public List<Resident> getCitizenships(UUID playerId) {
 
-        return getCitizenships(name, true);
+        return getCitizenships(playerId, true);
     }
 
-    public List<Resident> getCitizenships(String name, boolean load) {
+    public List<Resident> getCitizenships(UUID playerId, boolean load) {
 
-        List<Resident> residents = cachedResidents.get(name);
+        List<Resident> residents = cachedResidents.get(playerId);
 
         if (!load) {
             return residents;
         }
 
         if (residents == null || residents.size() == 0) {
-            List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().ieq("name", name).findList();
+            List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class)
+                    .find(TResident.class).where().ieq("player_id", playerId.toString()).findList();
             if (tResidents != null && tResidents.size() > 0) {
-                cachedResidents.put(name, new ArrayList<Resident>());
+                cachedResidents.put(playerId, new ArrayList<Resident>());
                 for (TResident tResident : tResidents) {
                     Resident resident = new DatabaseResident(tResident);
                     if (resident.getCity() != null) {
-                        cachedResidents.get(name).add(resident);
+                        cachedResidents.get(playerId).add(resident);
                     }
                 }
             }
         }
-        return cachedResidents.get(name);
+        return cachedResidents.get(playerId);
     }
 
-    public List<Resident> getCitizenships(String name, RolePermission permission) {
+    public List<Resident> getCitizenships(UUID playerId, RolePermission permission) {
 
-        List<Resident> residents = getCitizenships(name);
+        List<Resident> residents = getCitizenships(playerId);
         List<Resident> citizenships = new ArrayList<>();
 
         if (residents == null) return null;
@@ -197,9 +201,9 @@ public class ResidentManager {
         return citizenships;
     }
 
-    public Resident getResident(String name, City city) {
+    public Resident getResident(UUID playerId, City city) {
 
-        List<Resident> residents = getCitizenships(name);
+        List<Resident> residents = getCitizenships(playerId);
 
         if (residents != null) {
             for (Resident resident : residents) {
@@ -232,13 +236,14 @@ public class ResidentManager {
             return residents;
         }
 
-        List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", city.getId()).findList();
+        List<TResident> tResidents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class)
+                .where().eq("city_id", city.getId()).findList();
         for (TResident tResident : tResidents) {
-            if (!cachedResidents.containsKey(tResident.getName())) {
-                cachedResidents.put(tResident.getName(), new ArrayList<Resident>());
+            if (!cachedResidents.containsKey(tResident.getPlayerId())) {
+                cachedResidents.put(tResident.getPlayerId(), new ArrayList<Resident>());
             }
             boolean exist = false;
-            for (Resident resident : cachedResidents.get(tResident.getName())) {
+            for (Resident resident : cachedResidents.get(tResident.getPlayerId())) {
                 if (resident.getCity().equals(city)) {
                     residents.add(resident);
                     exist = true;
@@ -247,7 +252,7 @@ public class ResidentManager {
             }
             if (!exist) {
                 Resident resident = new DatabaseResident(tResident);
-                cachedResidents.get(resident.getName()).add(resident);
+                cachedResidents.get(resident.getPlayer().getUniqueId()).add(resident);
                 residents.add(resident);
             }
         }

@@ -24,7 +24,8 @@ public class HasCitizenshipAction extends AbstractAction {
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
 
-        List<Resident> citizenships = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getCitizenships(conversation.getPlayer().getName(), RolePermission.LEAVE);
+        List<Resident> citizenships = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                .getCitizenships(conversation.getPlayer().getUniqueId(), RolePermission.LEAVE);
         if (citizenships == null || citizenships.size() == 0) {
             changeStage(conversation, success);
         } else {

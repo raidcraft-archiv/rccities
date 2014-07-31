@@ -5,15 +5,18 @@ import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.AbstractJoinRequest;
 import de.raidcraft.rccities.tables.TJoinRequest;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
 public class DatabaseJoinRequest extends AbstractJoinRequest {
 
-    public DatabaseJoinRequest(String player, City city, boolean rejected, String rejectReason) {
+    public DatabaseJoinRequest(UUID player, City city, boolean rejected, String rejectReason) {
 
         super(player, city, rejected, rejectReason);
     }
@@ -23,7 +26,8 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
 
         try {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().addResident(getCity(), getPlayer());
-            Bukkit.broadcastMessage(ChatColor.GOLD + getPlayer() + " ist nun Einwohner von '" + getCity().getFriendlyName() + "'!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + UUIDUtil.getNameFromUUID(getPlayer())
+                    + " ist nun Einwohner von '" + getCity().getFriendlyName() + "'!");
         } catch (RaidCraftException e) {
         }
         delete();
@@ -33,7 +37,10 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
     public void reject(String reason) {
 
         TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
+                .find(TJoinRequest.class)
+                .where()
+                .eq("city_id", getCity().getId())
+                .eq("player_id", getPlayer()).findUnique();
         if (joinRequest == null) return;
 
         joinRequest.setRejected(true);
@@ -45,7 +52,9 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
     public void save() {
 
         TJoinRequest tJoinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
+                .find(TJoinRequest.class)
+                .where().eq("city_id", getCity().getId())
+                .eq("player_id", getPlayer()).findUnique();
         if (tJoinRequest == null) {
             tJoinRequest = new TJoinRequest();
             tJoinRequest.setCity(getCity());
@@ -60,8 +69,9 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
 
     private void delete() {
 
-        TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TJoinRequest.class).where().eq("city_id", getCity().getId()).ieq("player", getPlayer()).findUnique();
+        TJoinRequest joinRequest = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TJoinRequest.class)
+                .where().eq("city_id", getCity().getId())
+                .eq("player_id", getPlayer()).findUnique();
         if (joinRequest != null) {
             RaidCraft.getDatabase(RCCitiesPlugin.class).delete(joinRequest);
         }

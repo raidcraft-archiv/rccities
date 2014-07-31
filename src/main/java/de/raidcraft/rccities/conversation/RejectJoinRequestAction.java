@@ -12,6 +12,7 @@ import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class RejectJoinRequestAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        JoinRequest joinRequest = city.getJoinRequest(candidate);
+        JoinRequest joinRequest = city.getJoinRequest(UUIDUtil.convertPlayer(candidate));
         if (joinRequest == null) return;
         joinRequest.reject(reason);
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()

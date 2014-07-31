@@ -31,19 +31,21 @@ public class SendJoinRequestAction extends AbstractAction {
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if (city == null) {
-            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName()
+                    + "': City '" + cityName + "' does not exist!");
         }
 
         // invitation is locked
         CityFlag inviteFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, InviteCityFlag.class);
         if (inviteFlag != null && !inviteFlag.getType().convertToBoolean(inviteFlag.getValue())) {
             conversation.getPlayer().sendMessage("");
-            conversation.getPlayer().sendMessage(ChatColor.RED + "Diese Gilde darf zurzeit keine neuen Mitglieder aufnehmen!");
+            conversation.getPlayer().sendMessage(ChatColor.RED
+                    + "Diese Gilde darf zurzeit keine neuen Mitglieder aufnehmen!");
             conversation.endConversation(EndReason.INFORM);
             return;
         }
 
-        JoinRequest joinRequest = city.getJoinRequest(conversation.getPlayer().getName());
+        JoinRequest joinRequest = city.getJoinRequest(conversation.getPlayer().getUniqueId());
         if (joinRequest != null) {
             if (joinRequest.isRejected()) {
                 conversation.getPlayer().sendMessage("");
@@ -54,7 +56,7 @@ public class SendJoinRequestAction extends AbstractAction {
             }
         }
 
-        city.sendJoinRequest(conversation.getPlayer().getName());
+        city.sendJoinRequest(conversation.getPlayer().getUniqueId());
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                 .broadcastCityMessage(city, conversation.getPlayer().getName() + " möchte gerne der Gilde beitreten!", RolePermission.STAFF);
 

@@ -33,7 +33,8 @@ public class ExpListener implements Listener {
         if (event.getGainedExp() < 0) return;
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
-        List<Resident> residents = plugin.getResidentManager().getCitizenships(event.getPlayer().getName(), false);
+        List<Resident> residents = plugin.getResidentManager()
+                .getCitizenships(event.getPlayer().getUniqueId(), false);
         if (residents == null) return;
         boolean slave = false;
         Resident resident = null;

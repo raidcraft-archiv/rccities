@@ -33,7 +33,8 @@ public class HasRolePermissionAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city);
+        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                .getResident(conversation.getPlayer().getUniqueId(), city);
         if (resident == null) {
             changeStage(conversation, failure);
             return;

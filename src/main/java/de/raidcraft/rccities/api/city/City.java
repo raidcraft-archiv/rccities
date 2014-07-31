@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -23,7 +24,7 @@ public interface City {
 
     public String getBankAccountName();
 
-    public String getCreator();
+    public UUID getCreator();
 
     public Timestamp getCreationDate();
 
@@ -63,9 +64,9 @@ public interface City {
 
     public List<JoinRequest> getJoinRequests();
 
-    public JoinRequest getJoinRequest(String playerName);
+    public JoinRequest getJoinRequest(UUID playerId);
 
-    public void sendJoinRequest(String playerName);
+    public void sendJoinRequest(UUID playerId);
 
     public void save();
 

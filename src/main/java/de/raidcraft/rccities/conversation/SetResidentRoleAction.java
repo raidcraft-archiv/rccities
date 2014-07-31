@@ -18,6 +18,8 @@ import de.raidcraft.rcconversations.util.ParseString;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.util.UUID;
+
 /**
  * @author Philip Urban
  */
@@ -39,7 +41,7 @@ public class SetResidentRoleAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(residentName, city);
+        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(UUID.fromString(residentName), city);
         if (resident == null) {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Resident '" + resident + "' does not exist!");
         }

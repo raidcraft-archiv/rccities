@@ -39,7 +39,7 @@ public class AcceptJoinRequestAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        JoinRequest joinRequest = city.getJoinRequest(candidate);
+        JoinRequest joinRequest = city.getJoinRequest(UUIDUtil.convertPlayer(candidate));
         if (joinRequest == null) return;
 
         Economy economy = RaidCraft.getEconomy();
