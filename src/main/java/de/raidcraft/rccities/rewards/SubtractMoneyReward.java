@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.rewards;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.reward.AbstractReward;
 import de.raidcraft.api.reward.RewardInformation;
 import de.raidcraft.rccities.api.city.City;
@@ -28,6 +29,6 @@ public class SubtractMoneyReward extends AbstractReward<City> {
     @Override
     public void reward(City city) {
 
-        RaidCraft.getEconomy().substract(city.getBankAccountName(), amount);
+        RaidCraft.getEconomy().substract(AccountType.CITY, city.getBankAccountName(), amount);
     }
 }

@@ -2,6 +2,7 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -36,8 +37,8 @@ public class FindCityAction extends AbstractAction {
 
         conversation.set("city_friendlyname", city.getFriendlyName());
         conversation.set("city_name", city.getName());
-        conversation.set("city_money", economy.getBalance(city.getBankAccountName()));
-        conversation.set("city_money_formatted", economy.getFormattedAmount(economy.getBalance(city.getBankAccountName())));
+        conversation.set("city_money", economy.getBalance(AccountType.CITY, city.getBankAccountName()));
+        conversation.set("city_money_formatted", economy.getFormattedAmount(economy.getBalance(AccountType.CITY, city.getBankAccountName())));
         conversation.set("city_bankaccount", city.getBankAccountName());
 
         int openRequests = 0;

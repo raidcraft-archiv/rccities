@@ -2,6 +2,7 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.BalanceSource;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
@@ -16,6 +17,7 @@ import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.ChatColor;
 
 /**
@@ -42,7 +44,7 @@ public class AcceptJoinRequestAction extends AbstractAction {
 
         Economy economy = RaidCraft.getEconomy();
         double joinCosts = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getServerJoinCosts(city);
-        if (!economy.hasEnough(city.getBankAccountName(), joinCosts)) {
+        if (!economy.hasEnough(AccountType.CITY, city.getBankAccountName(), joinCosts)) {
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                     .broadcastCityMessage(city, "Die Gilde hat nicht genug Geld um neue Mitglieder anzunehmen! (" + economy.getFormattedAmount(joinCosts) + ChatColor.GOLD + " benötigt)", RolePermission.STAFF);
             return;
@@ -51,10 +53,11 @@ public class AcceptJoinRequestAction extends AbstractAction {
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
         if (joinCostsCityFlag != null) {
             double customJoinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
-            economy.add(city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
-            economy.substract(candidate, customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
+            economy.add(AccountType.CITY, city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
+            // TODO: refactor to UUID
+            economy.substract(UUIDUtil.convertPlayer(candidate), customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
         }
-        economy.substract(city.getBankAccountName(), joinCosts, BalanceSource.GUILD, "Beitrittssteuern von " + candidate);
+        economy.substract(AccountType.CITY, city.getBankAccountName(), joinCosts, BalanceSource.GUILD, "Beitrittssteuern von " + candidate);
 
         joinRequest.accept();
     }

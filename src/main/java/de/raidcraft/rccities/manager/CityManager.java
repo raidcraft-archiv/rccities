@@ -2,6 +2,7 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.rccities.DatabaseCity;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -94,7 +95,8 @@ public class CityManager {
         sender.sendMessage(ChatColor.GOLD + "Unclaimed Plots: " + ChatColor.YELLOW + city.getPlotCredit());
         sender.sendMessage(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + getCityLevel(city));
         sender.sendMessage(ChatColor.GOLD + "EXP: " + ChatColor.YELLOW + city.getExp());
-        sender.sendMessage(ChatColor.GOLD + "Stadtkasse: " + ChatColor.YELLOW + RaidCraft.getEconomy().getFormattedBalance(city.getBankAccountName()));
+        sender.sendMessage(ChatColor.GOLD + "Stadtkasse: " + ChatColor.YELLOW + RaidCraft.getEconomy()
+                .getFormattedBalance(AccountType.CITY, city.getBankAccountName()));
         sender.sendMessage(ChatColor.GOLD + "Beitrittskosten: " + ChatColor.YELLOW + RaidCraft.getEconomy().getFormattedAmount(joinCosts));
         sender.sendMessage(ChatColor.GOLD + "Bürgermeister (" + mayorCount + "): " + ChatColor.YELLOW + mayorList);
         sender.sendMessage(ChatColor.GOLD + "Einwohner (" + residentCount + "): " + ChatColor.YELLOW + residentList);

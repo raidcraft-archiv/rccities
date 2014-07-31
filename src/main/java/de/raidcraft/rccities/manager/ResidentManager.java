@@ -2,7 +2,6 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
-import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -127,7 +126,8 @@ public class ResidentManager {
         if (!resident.getRole().hasPermission(RolePermission.PREFIX_SKILL)) return;
 
         try {
-            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(resident.getName());
+            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
+                    .getHero(resident.getPlayer().getUniqueId());
             Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
             if (skill.isUnlocked()) {
                 return;
@@ -135,15 +135,14 @@ public class ResidentManager {
             hero.addSkill(skill);
         } catch (UnknownSkillException e) {
             RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
-        } catch (UnknownPlayerException e) {
-            RaidCraft.LOGGER.warning("[RCCities] No hero found for resident '" + resident.getName() + "'!");
         }
     }
 
     public void removePrefixSkill(Resident resident) {
 
         try {
-            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(resident.getName());
+            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
+                    .getHero(resident.getPlayer().getUniqueId());
             Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
             if (!skill.isUnlocked()) {
                 return;
@@ -151,8 +150,6 @@ public class ResidentManager {
             hero.removeSkill(skill);
         } catch (UnknownSkillException e) {
             RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
-        } catch (UnknownPlayerException e) {
-            RaidCraft.LOGGER.warning("[RCCities] No hero found for resident '" + resident.getName() + "'!");
         }
     }
 

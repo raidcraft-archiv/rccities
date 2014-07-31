@@ -2,6 +2,7 @@ package de.raidcraft.rccities.flags.plot;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.flags.AbstractPlotFlag;
@@ -43,12 +44,12 @@ public class MarkPlotFlag extends AbstractPlotFlag {
         if (currentValue) {
 
             Economy economy = RaidCraft.getEconomy();
-            if (!economy.hasEnough(bankAccount, markCost)) {
+            if (!economy.hasEnough(AccountType.CITY, bankAccount, markCost)) {
                 throw new RaidCraftException("Es ist nicht genug Geld in der Stadtkasse! " + economy.getFormattedAmount(markCost) + " benötigt!");
             }
 
             // withdraw
-            economy.substract(bankAccount, markCost);
+            economy.substract(AccountType.CITY, bankAccount, markCost);
             RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
                     .broadcastCityMessage(getPlot().getCity(), "Plot Markierung: " + economy.getFormattedAmount(markCost) + ChatColor.GOLD + " abgezogen!");
 

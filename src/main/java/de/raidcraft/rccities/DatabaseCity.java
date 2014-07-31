@@ -2,6 +2,7 @@ package de.raidcraft.rccities;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.rccities.api.city.AbstractCity;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.request.JoinRequest;
@@ -123,7 +124,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setUpgradeId(upgradeHolder.getId());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
-            RaidCraft.getEconomy().createAccount(getBankAccountName());
+            RaidCraft.getEconomy().createAccount(AccountType.CITY, getBankAccountName());
         }
         // update existing city
         else {
@@ -153,7 +154,7 @@ public class DatabaseCity extends AbstractCity {
             resident.delete();
         }
 
-        RaidCraft.getEconomy().deleteAccount(getBankAccountName());
+        RaidCraft.getEconomy().deleteAccount(AccountType.CITY, getBankAccountName());
         RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager().deleteUpgradeHolder(getUpgrades().getId());
 
         plugin.getCityManager().removeFromCache(this);
