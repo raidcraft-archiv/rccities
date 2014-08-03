@@ -116,10 +116,10 @@ public class ResidentManager {
         sender.sendMessage("*********************************");
     }
 
-    public void deleteOtherJoinRequests(String playerName, City exceptedCity) {
+    public void deleteOtherJoinRequests(UUID playerId, City exceptedCity) {
 
         List<TJoinRequest> tJoinRequests = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                .find(TJoinRequest.class).where().ieq("player", playerName).ne("city_id", exceptedCity.getId()).findList();
+                .find(TJoinRequest.class).where().ieq("player_id", playerId.toString()).ne("city_id", exceptedCity.getId()).findList();
         if (tJoinRequests == null || tJoinRequests.size() == 0) return;
         RaidCraft.getDatabase(RCCitiesPlugin.class).delete(tJoinRequests);
     }

@@ -58,9 +58,11 @@ public class SendJoinRequestAction extends AbstractAction {
 
         city.sendJoinRequest(conversation.getPlayer().getUniqueId());
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
-                .broadcastCityMessage(city, conversation.getPlayer().getName() + " möchte gerne der Gilde beitreten!", RolePermission.STAFF);
+                .broadcastCityMessage(city, conversation.getPlayer().getName()
+                        + " möchte gerne der Gilde beitreten!", RolePermission.STAFF);
 
         // delete all other join requests
-        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().deleteOtherJoinRequests(conversation.getPlayer().getName(), city);
+        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                .deleteOtherJoinRequests(conversation.getPlayer().getUniqueId(), city);
     }
 }
