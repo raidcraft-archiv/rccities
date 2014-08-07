@@ -39,4 +39,8 @@ public class TJoinRequest {
         TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, city.getId());
         this.city = tCity;
     }
+
+    public void setCity(TCity city) {
+        this.city = city;
+    }
 }
