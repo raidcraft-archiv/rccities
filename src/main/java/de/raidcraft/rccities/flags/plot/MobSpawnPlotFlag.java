@@ -15,8 +15,7 @@ import de.raidcraft.rccities.api.plot.Plot;
         name = "MOB_SPAWNING",
         friendlyName = "Mob-Spawning (An/Aus)",
         type = FlagType.BOOLEAN,
-        cooldown = 60,
-        adminOnly = true
+        cooldown = 60
 )
 public class MobSpawnPlotFlag extends AbstractPlotFlag {
 
