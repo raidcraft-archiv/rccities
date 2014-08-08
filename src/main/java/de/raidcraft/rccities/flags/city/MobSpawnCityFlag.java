@@ -15,7 +15,8 @@ import de.raidcraft.rccities.api.plot.Plot;
 @FlagInformation(
         name = "MOB_SPAWNING",
         friendlyName = "Mob-Spawning (An/Aus)",
-        type = FlagType.BOOLEAN
+        type = FlagType.BOOLEAN,
+        adminOnly = true
 )
 public class MobSpawnCityFlag extends AbstractBooleanPlotwiseCityFlag {
 
