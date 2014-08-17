@@ -12,6 +12,7 @@ import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.Role;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -125,7 +126,7 @@ public class ResidentCommands {
             Resident targetResident = plugin.getResidentManager().getResident(UUIDUtil.convertPlayer(target), city);
             if (targetResident == null) {
                 if (player.hasPermission("rccities.resident.promote.all") && args.hasFlag('f')) {
-                    Player targetPlayer = Bukkit.getPlayer(target);
+                    Player targetPlayer = CommandUtil.grabPlayer(target);
                     if (targetPlayer == null) {
                         throw new CommandException("Der Spieler muss Online sein wenn er noch nicht in dieser Gilde Mitglied ist!");
                     }

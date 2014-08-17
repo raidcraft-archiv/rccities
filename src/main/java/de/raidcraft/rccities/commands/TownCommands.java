@@ -22,6 +22,7 @@ import de.raidcraft.rccities.flags.city.admin.InviteCityFlag;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.util.CaseInsensitiveMap;
+import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -466,7 +467,7 @@ public class TownCommands {
             City city;
             Player targetPlayer;
             if (args.argsLength() > 1) {
-                targetPlayer = Bukkit.getPlayer(args.getString(1));
+                targetPlayer = CommandUtil.grabPlayer(args.getString(1));
                 if (targetPlayer == null) {
                     throw new CommandException("Der gewählte Spieler muss online sein!");
                 }
@@ -481,7 +482,7 @@ public class TownCommands {
                     }
                 }
             } else {
-                targetPlayer = Bukkit.getPlayer(args.getString(0));
+                targetPlayer = CommandUtil.grabPlayer(args.getString(0));
                 if (targetPlayer == null) {
                     throw new CommandException("Der gewählte Spieler muss online sein!");
                 }
