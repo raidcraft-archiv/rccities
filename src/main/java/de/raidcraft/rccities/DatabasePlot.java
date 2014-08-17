@@ -7,20 +7,21 @@ import de.raidcraft.rccities.api.plot.AbstractPlot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.tables.TAssignment;
 import de.raidcraft.rccities.tables.TPlot;
-import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
 public class DatabasePlot extends AbstractPlot {
 
-    private Map<String, Resident> assignedResidents = new CaseInsensitiveMap<>();
+    private Map<UUID, Resident> assignedResidents = new HashMap<>();
 
     public DatabasePlot(Location location, City city) {
 
@@ -74,8 +75,8 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public void assignResident(Resident resident) {
 
-        if (assignedResidents.containsKey(resident.getName())) return;
-        assignedResidents.put(resident.getName(), resident);
+        if (assignedResidents.containsKey(resident.getPlayerId())) return;
+        assignedResidents.put(resident.getPlayerId(), resident);
         TAssignment tAssignment = new TAssignment();
         tAssignment.setPlot(this);
         tAssignment.setResident(resident);
@@ -86,11 +87,12 @@ public class DatabasePlot extends AbstractPlot {
     @Override
     public void removeResident(Resident resident) {
 
-        Resident removedResident = assignedResidents.remove(resident.getName());
+        Resident removedResident = assignedResidents.remove(resident.getPlayerId());
         if (removedResident != null) {
             // delete assignment
-            TAssignment assignment = RaidCraft.getDatabase(RCCitiesPlugin.class)
-                    .find(TAssignment.class).where().eq("resident_id", removedResident.getId()).eq("plot_id", getId()).findUnique();
+            TAssignment assignment = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class)
+                    .where().eq("resident_id", removedResident.getId())
+                    .eq("plot_id", getId()).findUnique();
             RaidCraft.getDatabase(RCCitiesPlugin.class).delete(assignment);
             // update region
             updateRegion(false);
@@ -99,12 +101,14 @@ public class DatabasePlot extends AbstractPlot {
 
     private void loadAssignments() {
 
-        List<TAssignment> assignments = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class).where().eq("plot_id", getId()).findList();
+        List<TAssignment> assignments = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TAssignment.class)
+                .where().eq("plot_id", getId()).findList();
         for (TAssignment assignment : assignments) {
 
-            Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(assignment.getResident().getName(), getCity());
+            Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                    .getResident(assignment.getResident().getPlayerId(), getCity());
             if (resident == null) continue;
-            assignedResidents.put(resident.getName(), resident);
+            assignedResidents.put(resident.getPlayerId(), resident);
         }
     }
 

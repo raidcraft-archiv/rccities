@@ -2,15 +2,17 @@ package de.raidcraft.rccities.api.request;
 
 import de.raidcraft.rccities.api.city.City;
 
+import java.util.UUID;
+
 /**
  * @author Philip Urban
  */
 public abstract class AbstractJoinRequest extends AbstractRequest implements JoinRequest {
 
-    private String player;
+    private UUID player;
     private City city;
 
-    protected AbstractJoinRequest(String player, City city, boolean rejected, String rejectReason) {
+    protected AbstractJoinRequest(UUID player, City city, boolean rejected, String rejectReason) {
 
         this.player = player;
         this.city = city;
@@ -20,7 +22,7 @@ public abstract class AbstractJoinRequest extends AbstractRequest implements Joi
     }
 
     @Override
-    public String getPlayer() {
+    public UUID getPlayer() {
 
         return player;
     }

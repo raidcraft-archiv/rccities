@@ -2,6 +2,7 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.BalanceSource;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
@@ -42,8 +43,10 @@ public class WithdrawAction extends AbstractAction {
             return;
         }
 
-        economy.substract(city.getBankAccountName(), amount, BalanceSource.GUILD, "Auszahlung an " + conversation.getPlayer().getName());
-        economy.add(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Auszahlung aus Gildenkasse");
+        economy.substract(AccountType.CITY, city.getBankAccountName(), amount,
+                BalanceSource.GUILD, "Auszahlung an " + conversation.getPlayer().getName());
+        economy.add(conversation.getPlayer().getUniqueId(), amount,
+                BalanceSource.GUILD, "Auszahlung aus Gildenkasse");
 
         conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " aus der Stadtkasse abgehoben!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()

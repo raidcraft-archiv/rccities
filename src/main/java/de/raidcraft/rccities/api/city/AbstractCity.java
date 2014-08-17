@@ -6,6 +6,7 @@ import de.raidcraft.rcupgrades.api.holder.UpgradeHolder;
 import org.bukkit.Location;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -14,7 +15,7 @@ public abstract class AbstractCity implements City {
 
     protected int id;
     protected String name;
-    protected String creator;
+    protected UUID creator;
     protected Timestamp creationDate;
     protected Location spawn;
     protected String description;
@@ -27,7 +28,7 @@ public abstract class AbstractCity implements City {
 
     }
 
-    protected AbstractCity(String name, Location spawn, String creator) {
+    protected AbstractCity(String name, Location spawn, UUID creator) {
 
         this.name = name;
         this.spawn = spawn;
@@ -64,7 +65,7 @@ public abstract class AbstractCity implements City {
     }
 
     @Override
-    public final String getCreator() {
+    public final UUID getCreator() {
 
         return creator;
     }

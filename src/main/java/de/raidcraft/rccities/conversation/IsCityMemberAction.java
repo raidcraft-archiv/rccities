@@ -30,7 +30,7 @@ public class IsCityMemberAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if (RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city) == null) {
+        if (RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getUniqueId(), city) == null) {
             changeStage(conversation, failure);
         } else {
             changeStage(conversation, success);

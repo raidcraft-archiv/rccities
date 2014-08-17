@@ -13,6 +13,7 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -20,6 +21,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -89,12 +92,12 @@ public class PlotCommands {
             City city = plot.getCity();
 
             // check if resident has permission
-            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            Resident resident = plugin.getResidentManager().getResident(player.getUniqueId(), city);
             if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
             }
 
-            Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
+            Resident targetResident = plugin.getResidentManager().getResident(UUID.fromString(args.getString(0)), city);
             if (targetResident == null) {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
@@ -138,12 +141,12 @@ public class PlotCommands {
             City city = plot.getCity();
 
             // check if resident has permission
-            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            Resident resident = plugin.getResidentManager().getResident(player.getUniqueId(), city);
             if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_DISTRIBUTION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu vergeben!");
             }
 
-            Resident targetResident = plugin.getResidentManager().getResident(args.getString(0), city);
+            Resident targetResident = plugin.getResidentManager().getResident(UUIDUtil.convertPlayer(args.getString(0)), city);
             if (targetResident == null) {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
@@ -198,7 +201,7 @@ public class PlotCommands {
             }
 
             // check if resident has permission
-            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            Resident resident = plugin.getResidentManager().getResident(player.getUniqueId(), city);
             if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_CLAIM)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu claimen!");
             }
@@ -306,7 +309,7 @@ public class PlotCommands {
             City city = plot.getCity();
 
             // check if resident has permission
-            Resident resident = plugin.getResidentManager().getResident(player.getName(), city);
+            Resident resident = plugin.getResidentManager().getResident(player.getUniqueId(), city);
             if (resident == null || !resident.getRole().hasPermission(RolePermission.PLOT_FLAG_MODIFICATION)) {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu konfigurieren!");
             }

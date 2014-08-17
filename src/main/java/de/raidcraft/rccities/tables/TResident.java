@@ -3,6 +3,8 @@ package de.raidcraft.rccities.tables;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,10 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
+@Setter
+@Getter
 @Entity
 @Table(name = "rccities_residents")
 public class TResident {
@@ -24,27 +29,12 @@ public class TResident {
     private int id;
     @ManyToOne
     private TCity city;
-    private String name;
+    private UUID playerId;
     private String profession;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "resident_id")
     private Set<TAssignment> assignment;
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-
-        this.id = id;
-    }
-
-    public TCity getCity() {
-
-        return city;
-    }
 
     public void setCity(City city) {
 
@@ -55,35 +45,5 @@ public class TResident {
     public void setCity(TCity city) {
 
         this.city = city;
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public String getProfession() {
-
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-
-        this.profession = profession;
-    }
-
-    public Set<TAssignment> getAssignment() {
-
-        return assignment;
-    }
-
-    public void setAssignment(Set<TAssignment> assignment) {
-
-        this.assignment = assignment;
     }
 }

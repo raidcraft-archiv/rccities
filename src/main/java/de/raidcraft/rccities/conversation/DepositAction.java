@@ -2,6 +2,7 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.BalanceSource;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
@@ -42,8 +43,10 @@ public class DepositAction extends AbstractAction {
             return;
         }
 
-        economy.add(city.getBankAccountName(), amount, BalanceSource.GUILD, "Einzahlung von " + conversation.getPlayer().getName());
-        economy.substract(conversation.getPlayer().getName(), amount, BalanceSource.GUILD, "Einzahlung in Gildenkasse");
+        economy.add(AccountType.CITY, city.getBankAccountName(), amount,
+                BalanceSource.GUILD, "Einzahlung von " + conversation.getPlayer().getName());
+        economy.substract(conversation.getPlayer().getUniqueId(), amount,
+                BalanceSource.GUILD, "Einzahlung in Gildenkasse");
 
         conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " in die Stadtkasse eingezahlt!");
         RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()

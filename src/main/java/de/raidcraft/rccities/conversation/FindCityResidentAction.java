@@ -11,6 +11,7 @@ import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
+import de.raidcraft.util.UUIDUtil;
 
 /**
  * @author Philip Urban
@@ -33,7 +34,8 @@ public class FindCityResidentAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(residentName, city);
+        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                .getResident(UUIDUtil.convertPlayer(residentName), city);
         if (resident == null) {
             changeStage(conversation, failure);
             return;

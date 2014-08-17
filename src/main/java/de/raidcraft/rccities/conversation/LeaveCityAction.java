@@ -33,7 +33,8 @@ public class LeaveCityAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().getResident(conversation.getPlayer().getName(), city);
+        Resident resident = RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager()
+                .getResident(conversation.getPlayer().getUniqueId(), city);
         if (resident == null) {
             conversation.getPlayer().sendMessage(" ");
             conversation.getPlayer().sendMessage(ChatColor.RED + "Du bist kein Mitglied dieser Gilde!");

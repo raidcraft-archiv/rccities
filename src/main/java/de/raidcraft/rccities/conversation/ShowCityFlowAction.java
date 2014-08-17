@@ -2,6 +2,7 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rcconversations.api.action.AbstractAction;
@@ -29,6 +30,7 @@ public class ShowCityFlowAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        RaidCraft.getEconomy().printFlow(conversation.getPlayer(), city.getBankAccountName(), entries);
+        RaidCraft.getEconomy().printFlow(conversation.getPlayer(),
+                AccountType.CITY, city.getBankAccountName(), entries);
     }
 }

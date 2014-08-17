@@ -1,7 +1,6 @@
 package de.raidcraft.rccities.listener;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,8 @@ public class EntityListener implements Listener {
     public void onEntitySpwan(CreatureSpawnEvent event) {
 
         if (!(event.getEntity() instanceof Monster)) return;
-        if (NPC_Manager.getInstance().isNPC(event.getEntity())) return;
+        // allow CUSTOM spawns, e.g. NPCs
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) return;
         if (RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlot(event.getEntity().getLocation().getChunk()) == null) {
             return;
         }

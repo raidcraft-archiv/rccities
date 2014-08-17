@@ -1,16 +1,23 @@
 package de.raidcraft.rccities.api.resident;
 
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.util.UUIDUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
+@Setter
+@Getter
 public abstract class AbstractResident implements Resident {
 
     protected int id;
-    protected String name;
+    protected UUID playerId;
     protected Role profession;
     protected City city;
 
@@ -18,33 +25,13 @@ public abstract class AbstractResident implements Resident {
 
     }
 
-    ;
+    public AbstractResident(UUID playerID, Role profession, City city) {
 
-    public AbstractResident(String name, Role profession, City city) {
-
-        this.name = name;
+        this.playerId = playerID;
         this.profession = profession;
         this.city = city;
 
         save();
-    }
-
-    @Override
-    public int getId() {
-
-        return id;
-    }
-
-    @Override
-    public String getName() {
-
-        return name;
-    }
-
-    @Override
-    public Role getRole() {
-
-        return profession;
     }
 
     @Override
@@ -55,15 +42,22 @@ public abstract class AbstractResident implements Resident {
     }
 
     @Override
-    public City getCity() {
+    public Role getRole() {
 
-        return city;
+        return profession;
     }
+
+    @Override
+    public String getName() {
+
+        return UUIDUtil.getNameFromUUID(playerId);
+    }
+
 
     @Override
     public Player getPlayer() {
 
-        return Bukkit.getPlayer(name);
+        return Bukkit.getPlayer(playerId);
     }
 
     @Override
@@ -74,8 +68,8 @@ public abstract class AbstractResident implements Resident {
 
         AbstractResident that = (AbstractResident) o;
 
-        if (!city.equals(that.city)) return false;
-        if (!name.equals(that.name)) return false;
+        if (!city.equals(that.getCity())) return false;
+        if (!playerId.equals(that.getPlayerId())) return false;
 
         return true;
     }
@@ -83,7 +77,7 @@ public abstract class AbstractResident implements Resident {
     @Override
     public int hashCode() {
 
-        int result = name.hashCode();
+        int result = playerId.hashCode();
         result = 31 * result + city.hashCode();
         return result;
     }

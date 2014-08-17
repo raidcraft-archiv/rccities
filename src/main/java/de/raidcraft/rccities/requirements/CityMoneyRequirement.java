@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.requirements;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.requirement.AbstractRequirement;
 import de.raidcraft.api.requirement.RequirementInformation;
 import de.raidcraft.api.requirement.RequirementResolver;
@@ -29,7 +30,7 @@ public class CityMoneyRequirement extends AbstractRequirement<City> {
     @Override
     public boolean isMet(City city) {
 
-        if (RaidCraft.getEconomy().hasEnough(city.getBankAccountName(), amount)) {
+        if (RaidCraft.getEconomy().hasEnough(AccountType.CITY, city.getBankAccountName(), amount)) {
             return true;
         }
         return false;
