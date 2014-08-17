@@ -105,9 +105,9 @@ public class RCCitiesPlugin extends BasePlugin {
     @Override
     public void enable() {
 
-        registerCommands(TownCommands.class, getName());
-        registerCommands(ResidentCommands.class, getName());
-        registerCommands(PlotCommands.class, getName());
+        registerCommands(TownCommands.class);
+        registerCommands(ResidentCommands.class);
+        registerCommands(PlotCommands.class);
 
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
