@@ -2,7 +2,7 @@ package de.raidcraft.rccities.manager;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.databases.ProtectionDatabaseException;
+import com.sk89q.worldguard.protection.managers.storage.StorageException;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rccities.RCCitiesPlugin;
@@ -45,7 +45,7 @@ public class WorldGuardManager {
         for (World world : Bukkit.getServer().getWorlds()) {
             try {
                 worldGuard.getRegionManager(world).save();
-            } catch (ProtectionDatabaseException e) {
+            } catch (StorageException e) {
                 RaidCraft.LOGGER.warning(e.getMessage());
             }
         }
