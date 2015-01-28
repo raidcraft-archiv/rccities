@@ -124,7 +124,7 @@ public abstract class AbstractPlot implements Plot {
             // add city staff
             for (Resident resident : getCity().getResidents()) {
                 if (!resident.getRole().hasPermission(RolePermission.BUILD_EVERYWHERE)) continue;
-                if(resident.getName() == null) {
+                if (resident.getName() == null) {
                     RaidCraft.getComponent(RCCitiesPlugin.class).getLogger()
                             .info("name of resident is null: " + resident.getId());
                     continue;

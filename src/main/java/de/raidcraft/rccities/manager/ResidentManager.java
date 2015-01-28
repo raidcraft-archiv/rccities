@@ -129,8 +129,16 @@ public class ResidentManager {
         if (!resident.getRole().hasPermission(RolePermission.PREFIX_SKILL)) return;
 
         try {
+            if (resident.getPlayerId() == null) {
+                // hotfix: reload bug
+                return;
+            }
             Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
                     .getHero(resident.getPlayerId());
+            if (hero == null) {
+                // player is not online #1546
+                return;
+            }
             Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
             if (skill.isUnlocked()) {
                 return;
