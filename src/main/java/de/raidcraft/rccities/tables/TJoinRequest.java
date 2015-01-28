@@ -15,8 +15,8 @@ import java.util.UUID;
 /**
  * @author Philip Urban
  */
-@Setter
 @Getter
+@Setter
 @Entity
 @Table(name = "rccities_join_requests")
 public class TJoinRequest {
@@ -29,18 +29,8 @@ public class TJoinRequest {
     private boolean rejected;
     private String rejectReason;
 
-    public int getId() {
-
-        return id;
-    }
-
     public void setCity(City city) {
-
         TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, city.getId());
         this.city = tCity;
-    }
-
-    public void setCity(TCity city) {
-        this.city = city;
     }
 }

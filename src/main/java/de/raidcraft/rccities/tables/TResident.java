@@ -19,8 +19,8 @@ import java.util.UUID;
 /**
  * @author Philip Urban
  */
-@Setter
 @Getter
+@Setter
 @Entity
 @Table(name = "rccities_residents")
 public class TResident {
@@ -37,13 +37,8 @@ public class TResident {
     private Set<TAssignment> assignment;
 
     public void setCity(City city) {
-
         TCity tCity = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCity.class, city.getId());
         this.city = tCity;
     }
 
-    public void setCity(TCity city) {
-
-        this.city = city;
-    }
 }

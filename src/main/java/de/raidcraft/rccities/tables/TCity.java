@@ -1,7 +1,5 @@
 package de.raidcraft.rccities.tables;
 
-import de.raidcraft.RaidCraft;
-import de.raidcraft.rccities.RCCitiesPlugin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,12 +56,4 @@ public class TCity {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "city_id")
     private Set<TJoinRequest> requests;
-
-    public void loadChildren() {
-
-        plots = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TPlot.class).where().eq("city_id", id).findSet();
-        residents = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TResident.class).where().eq("city_id", id).findSet();
-        settings = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TCityFlag.class).where().eq("city_id", id).findSet();
-        requests = RaidCraft.getDatabase(RCCitiesPlugin.class).find(TJoinRequest.class).where().eq("city_id", id).findSet();
-    }
 }
