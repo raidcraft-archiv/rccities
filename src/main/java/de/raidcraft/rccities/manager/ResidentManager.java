@@ -2,6 +2,7 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -138,7 +139,10 @@ public class ResidentManager {
             hero.addSkill(skill);
         } catch (UnknownSkillException e) {
             RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
+        } catch (Throwable e) {
+            RaidCraft.LOGGER.warning("[RCCities] No player with UUID: '" + resident.getPlayerId() + "' (" + resident.getName() + ")!");
         }
+
     }
 
     public void removePrefixSkill(Resident resident) {
