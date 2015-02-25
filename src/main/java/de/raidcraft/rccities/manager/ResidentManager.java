@@ -90,7 +90,7 @@ public class ResidentManager {
 
     public void removeFromCache(Resident resident) {
 
-        List<Resident> residentList = cachedResidents.get(resident.getName());
+        List<Resident> residentList = cachedResidents.get(resident.getPlayerId());
         if (residentList == null) return;
         residentList.remove(resident);
     }
