@@ -14,7 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 @RequirementInformation("CITY_MONEY")
 public class CityMoneyRequirement extends AbstractRequirement<City> {
 
-    private int amount;
+    private double amount;
 
     public CityMoneyRequirement(RequirementResolver<City> resolver, ConfigurationSection config) {
 
@@ -24,16 +24,13 @@ public class CityMoneyRequirement extends AbstractRequirement<City> {
     @Override
     protected void load(ConfigurationSection data) {
 
-        amount = data.getInt("money");
+        amount = data.getDouble("money");
     }
 
     @Override
     public boolean isMet(City city) {
 
-        if (RaidCraft.getEconomy().hasEnough(AccountType.CITY, city.getBankAccountName(), amount)) {
-            return true;
-        }
-        return false;
+        return RaidCraft.getEconomy().hasEnough(AccountType.CITY, city.getBankAccountName(), amount);
     }
 
     @Override
