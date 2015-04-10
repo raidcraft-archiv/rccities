@@ -18,6 +18,7 @@ import de.raidcraft.rcconversations.api.stage.SimpleStage;
 import de.raidcraft.rcconversations.api.stage.Stage;
 import de.raidcraft.rcconversations.conversations.EndReason;
 import de.raidcraft.rcconversations.util.ParseString;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -108,6 +109,6 @@ public class ListJoinRequestsAction extends AbstractAction {
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
         String crossed = (joinRequest.isRejected()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
-        return new SimpleAnswer(String.valueOf(number + 1), crossed + joinRequest.getPlayer(), actions);
+        return new SimpleAnswer(String.valueOf(number + 1), crossed + UUIDUtil.getNameFromUUID(joinRequest.getPlayer()), actions);
     }
 }
