@@ -16,9 +16,9 @@ import java.util.UUID;
  */
 public class DatabaseJoinRequest extends AbstractJoinRequest {
 
-    public DatabaseJoinRequest(UUID player, City city, boolean rejected, String rejectReason) {
+    public DatabaseJoinRequest(UUID playerId, City city, boolean rejected, String rejectReason) {
 
-        super(player, city, rejected, rejectReason);
+        super(playerId, city, rejected, rejectReason);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DatabaseJoinRequest extends AbstractJoinRequest {
         if (tJoinRequest == null) {
             tJoinRequest = new TJoinRequest();
             tJoinRequest.setCity(getCity());
-            tJoinRequest.setPlayer(getPlayer());
+            tJoinRequest.setPlayerId(getPlayer());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tJoinRequest);
         } else {
             tJoinRequest.setRejected(isRejected());
