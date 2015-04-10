@@ -25,7 +25,8 @@ public class TJoinRequest {
     private int id;
     @ManyToOne
     private TCity city;
-    private UUID player;
+    private String player;
+    private UUID playerId;
     private boolean rejected;
     private String rejectReason;
 

@@ -9,12 +9,12 @@ import java.util.UUID;
  */
 public abstract class AbstractJoinRequest extends AbstractRequest implements JoinRequest {
 
-    private UUID player;
+    private UUID playerId;
     private City city;
 
-    protected AbstractJoinRequest(UUID player, City city, boolean rejected, String rejectReason) {
+    protected AbstractJoinRequest(UUID playerId, City city, boolean rejected, String rejectReason) {
 
-        this.player = player;
+        this.playerId = playerId;
         this.city = city;
         this.rejected = rejected;
         this.rejectReason = rejectReason;
@@ -24,7 +24,7 @@ public abstract class AbstractJoinRequest extends AbstractRequest implements Joi
     @Override
     public UUID getPlayer() {
 
-        return player;
+        return playerId;
     }
 
     @Override

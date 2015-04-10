@@ -82,7 +82,7 @@ public class DatabaseCity extends AbstractCity {
         List<TJoinRequest> tJoinRequests = RaidCraft.getDatabase(RCCitiesPlugin.class)
                 .find(TJoinRequest.class).where().eq("city_id", getId()).findList();
         for (TJoinRequest tJoinRequest : tJoinRequests) {
-            JoinRequest joinRequest = new DatabaseJoinRequest(tJoinRequest.getPlayer(),
+            JoinRequest joinRequest = new DatabaseJoinRequest(tJoinRequest.getPlayerId(),
                     this, tJoinRequest.isRejected(), tJoinRequest.getRejectReason());
             joinRequests.add(joinRequest);
         }
@@ -96,7 +96,7 @@ public class DatabaseCity extends AbstractCity {
                 .where().eq("city_id", getId())
                 .eq("player_id", playerId).findUnique();
         if (tJoinRequest == null) return null;
-        return new DatabaseJoinRequest(tJoinRequest.getPlayer(), this, tJoinRequest.isRejected(),
+        return new DatabaseJoinRequest(tJoinRequest.getPlayerId(), this, tJoinRequest.isRejected(),
                 tJoinRequest.getRejectReason());
     }
 
