@@ -103,7 +103,7 @@ public class ListJoinRequestsAction extends AbstractAction {
         int i = 0;
         Map<String, Object> data = new HashMap<>();
         data.put("variable", varName);
-        data.put("value", joinRequest.getPlayer());
+        data.put("value", UUIDUtil.getNameFromUUID(joinRequest.getPlayer()));
         data.put("local", true);
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
