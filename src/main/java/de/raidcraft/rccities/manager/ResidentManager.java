@@ -2,7 +2,6 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
-import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -128,6 +127,7 @@ public class ResidentManager {
     public void addPrefixSkill(Resident resident) {
 
         if (!resident.getRole().hasPermission(RolePermission.PREFIX_SKILL)) return;
+        if (resident.getPlayer() == null || !resident.getPlayer().isOnline()) return;
 
         try {
             Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
