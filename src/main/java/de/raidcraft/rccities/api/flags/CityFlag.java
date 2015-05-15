@@ -7,5 +7,5 @@ import de.raidcraft.rccities.api.city.City;
  */
 public interface CityFlag extends Flag {
 
-    public City getCity();
+    City getCity();
 }

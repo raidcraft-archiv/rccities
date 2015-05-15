@@ -16,64 +16,64 @@ import java.util.UUID;
  */
 public interface City {
 
-    public int getId();
+    int getId();
 
-    public String getName();
+    String getName();
 
-    public String getFriendlyName();
+    String getFriendlyName();
 
-    public String getBankAccountName();
+    String getBankAccountName();
 
-    public UUID getCreator();
+    UUID getCreator();
 
-    public Timestamp getCreationDate();
+    Timestamp getCreationDate();
 
-    public Location getSpawn();
+    Location getSpawn();
 
-    public void setSpawn(Location spawn);
+    void setSpawn(Location spawn);
 
-    public String getDescription();
+    String getDescription();
 
-    public void setDescription(String description);
+    void setDescription(String description);
 
-    public int getPlotCredit();
+    int getPlotCredit();
 
-    public void setPlotCredit(int plotCredit);
+    void setPlotCredit(int plotCredit);
 
-    public UpgradeHolder<City> getUpgrades();
+    UpgradeHolder<City> getUpgrades();
 
-    public int getMaxRadius();
+    int getMaxRadius();
 
-    public void setMaxRadius(int maxRadius);
+    void setMaxRadius(int maxRadius);
 
-    public int getExp();
+    int getExp();
 
-    public void addExp(int exp);
+    void addExp(int exp);
 
-    public void removeExp(int exp);
+    void removeExp(int exp);
 
-    public int getSize();
+    int getSize();
 
-    public void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException;
+    void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException;
 
-    public void removeFlag(String flagName);
+    void removeFlag(String flagName);
 
-    public void refreshFlags();
+    void refreshFlags();
 
-    public List<Resident> getResidents();
+    List<Resident> getResidents();
 
-    public List<JoinRequest> getJoinRequests();
+    List<JoinRequest> getJoinRequests();
 
-    public JoinRequest getJoinRequest(UUID playerId);
+    JoinRequest getJoinRequest(UUID playerId);
 
-    public void sendJoinRequest(UUID playerId);
+    void sendJoinRequest(UUID playerId);
 
-    public void save();
+    void save();
 
-    public void delete();
+    void delete();
 
-    public boolean equals(Object o);
+    boolean equals(Object o);
 
-    public int hashCode();
+    int hashCode();
 
 }

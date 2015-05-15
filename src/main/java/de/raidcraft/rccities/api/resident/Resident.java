@@ -10,21 +10,21 @@ import java.util.UUID;
  */
 public interface Resident {
 
-    public int getId();
+    int getId();
 
-    public UUID getPlayerId();
+    UUID getPlayerId();
 
-    public String getName();
+    String getName();
 
-    public Role getRole();
+    Role getRole();
 
-    public void setRole(Role role);
+    void setRole(Role role);
 
-    public City getCity();
+    City getCity();
 
-    public Player getPlayer();
+    Player getPlayer();
 
-    public void save();
+    void save();
 
-    public void delete();
+    void delete();
 }

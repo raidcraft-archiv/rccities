@@ -14,31 +14,31 @@ import java.util.List;
  */
 public interface Plot {
 
-    public int getId();
+    int getId();
 
-    public String getRegionName();
+    String getRegionName();
 
-    public Location getLocation();
+    Location getLocation();
 
-    public ProtectedRegion getRegion();
+    ProtectedRegion getRegion();
 
-    public City getCity();
+    City getCity();
 
-    public List<Resident> getAssignedResidents();
+    List<Resident> getAssignedResidents();
 
-    public void assignResident(Resident resident);
+    void assignResident(Resident resident);
 
-    public void removeResident(Resident resident);
+    void removeResident(Resident resident);
 
-    public void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException;
+    void setFlag(Player player, String flagName, String flagValue) throws RaidCraftException;
 
-    public void removeFlag(String flagName);
+    void removeFlag(String flagName);
 
-    public void refreshFlags();
+    void refreshFlags();
 
-    public void save();
+    void save();
 
-    public void updateRegion(boolean create);
+    void updateRegion(boolean create);
 
-    public void delete();
+    void delete();
 }

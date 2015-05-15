@@ -8,17 +8,17 @@ import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
  */
 public interface UpgradeRequest extends Request {
 
-    public City getCity();
+    City getCity();
 
-    public UpgradeLevel<City> getUpgradeLevel();
+    UpgradeLevel<City> getUpgradeLevel();
 
-    public long getRejectExpirationDate();
+    long getRejectExpirationDate();
 
-    public boolean isAccepted();
+    boolean isAccepted();
 
-    public String getInfo();
+    String getInfo();
 
-    public void save();
+    void save();
 
-    public void delete();
+    void delete();
 }

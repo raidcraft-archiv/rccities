@@ -9,9 +9,9 @@ import java.util.UUID;
  */
 public interface JoinRequest extends Request {
 
-    public UUID getPlayer();
+    UUID getPlayer();
 
-    public City getCity();
+    City getCity();
 
-    public void save();
+    void save();
 }

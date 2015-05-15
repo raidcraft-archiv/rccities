@@ -7,5 +7,5 @@ import de.raidcraft.rccities.api.plot.Plot;
  */
 public interface PlotFlag extends Flag {
 
-    public Plot getPlot();
+    Plot getPlot();
 }

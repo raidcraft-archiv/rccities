@@ -7,17 +7,17 @@ import de.raidcraft.api.RaidCraftException;
  */
 public interface Flag {
 
-    public String getName();
+    String getName();
 
-    public String getFriendlyName();
+    String getFriendlyName();
 
-    public FlagType getType();
+    FlagType getType();
 
-    public String getValue();
+    String getValue();
 
-    public void setValue(String value) throws RaidCraftException;
+    void setValue(String value) throws RaidCraftException;
 
-    public long getLastChange();
+    long getLastChange();
 
-    public void refresh() throws RaidCraftException;
+    void refresh() throws RaidCraftException;
 }

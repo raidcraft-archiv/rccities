@@ -5,13 +5,13 @@ package de.raidcraft.rccities.api.request;
  */
 public interface Request {
 
-    public boolean isRejected();
+    boolean isRejected();
 
-    public String getRejectReason();
+    String getRejectReason();
 
-    public void accept();
+    void accept();
 
-    public void reactivate();
+    void reactivate();
 
-    public void reject(String reason);
+    void reject(String reason);
 }
