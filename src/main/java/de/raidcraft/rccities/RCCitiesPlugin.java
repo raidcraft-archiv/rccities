@@ -3,6 +3,7 @@ package de.raidcraft.rccities;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.api.BasePlugin;
+import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
@@ -210,6 +211,12 @@ public class RCCitiesPlugin extends BasePlugin {
     public void disable() {
 
         worldGuardManager.save();
+    }
+
+    private void registerActionAPI() {
+
+        ActionAPI.register(this)
+                .requirement(new de.raidcraft.rccities.actionapi.requirements.CityExpRequirement(), City.class);
     }
 
     @Override
