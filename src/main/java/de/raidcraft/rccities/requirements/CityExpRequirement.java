@@ -25,12 +25,12 @@ public class CityExpRequirement implements ReasonableRequirement<City> {
     @Override
     public Optional<String> getDescription(City entity, ConfigurationSection config) {
 
-        return Optional.of("Es müssen sich mindestens " + config.getInt("exp") + " EXP in der Stadtkasse befinden!");
+        return Optional.of(config.getInt("exp") + " EXP");
     }
 
     @Override
     public String getReason(City entity, ConfigurationSection config) {
 
-        return config.getInt("exp") + " EXP";
+        return "Es müssen sich mindestens " + config.getInt("exp") + " EXP in der Stadtkasse befinden!";
     }
 }

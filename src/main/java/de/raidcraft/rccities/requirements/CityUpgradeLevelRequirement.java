@@ -41,7 +41,7 @@ public class CityUpgradeLevelRequirement implements ReasonableRequirement<City> 
         UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
         if (upgradeLevel == null) return null;
 
-        return Optional.of("Es muss das Upgrade-Level '" + upgradeLevel.getName() + "' freigeschaltet sein!");
+        return Optional.of("Level '" + upgradeLevel.getName() + "' freigeschaltet");
     }
 
     @Override
@@ -52,6 +52,6 @@ public class CityUpgradeLevelRequirement implements ReasonableRequirement<City> 
         UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
         if (upgradeLevel == null) return null;
 
-        return "Level '" + upgradeLevel.getName() + "' freigeschaltet";
+        return "Es muss das Upgrade-Level '" + upgradeLevel.getName() + "' freigeschaltet sein!";
     }
 }

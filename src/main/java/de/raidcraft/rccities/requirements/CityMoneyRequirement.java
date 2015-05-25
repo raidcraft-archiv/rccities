@@ -27,12 +27,12 @@ public class CityMoneyRequirement implements ReasonableRequirement<City> {
     @Override
     public Optional<String> getDescription(City entity, ConfigurationSection config) {
 
-        return Optional.of("Es ist zu wenig Geld in der Stadtkasse. Benötigt werden " + RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money")) + "!");
+        return Optional.of(RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money")));
     }
 
     @Override
     public String getReason(City entity, ConfigurationSection config) {
 
-        return RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money"));
+        return "Es ist zu wenig Geld in der Stadtkasse. Benötigt werden " + RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money")) + "!";
     }
 }
