@@ -7,8 +7,9 @@ import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
-import de.raidcraft.api.requirement.RequirementManager;
 import de.raidcraft.api.reward.RewardManager;
+import de.raidcraft.rccities.requirements.CityExpRequirement;
+import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
@@ -59,10 +60,8 @@ import de.raidcraft.rccities.manager.ResidentManager;
 import de.raidcraft.rccities.manager.SchematicManager;
 import de.raidcraft.rccities.manager.UpgradeRequestManager;
 import de.raidcraft.rccities.manager.WorldGuardManager;
-import de.raidcraft.rccities.requirements.CityExpRequirement;
-import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.requirements.CityStaffRequirement;
-import de.raidcraft.rccities.requirements.UpgradeLevelRequirement;
+import de.raidcraft.rccities.requirements.CityUpgradeLevelRequirement;
 import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.rewards.CityRadiusReward;
@@ -144,10 +143,7 @@ public class RCCitiesPlugin extends BasePlugin {
         RewardManager.registerRewardType(SubtractMoneyReward.class);
 
         // upgrade requirements
-        RequirementManager.registerRequirementType(CityExpRequirement.class);
-        RequirementManager.registerRequirementType(CityMoneyRequirement.class);
-        RequirementManager.registerRequirementType(CityStaffRequirement.class);
-        RequirementManager.registerRequirementType(UpgradeLevelRequirement.class);
+        registerActionAPI();
 
         reload();
 
@@ -216,7 +212,10 @@ public class RCCitiesPlugin extends BasePlugin {
     private void registerActionAPI() {
 
         ActionAPI.register(this)
-                .requirement(new de.raidcraft.rccities.actionapi.requirements.CityExpRequirement(), City.class);
+                .requirement(new CityExpRequirement(), City.class)
+                .requirement(new CityMoneyRequirement(), City.class)
+                .requirement(new CityStaffRequirement(), City.class)
+                .requirement(new CityUpgradeLevelRequirement(), City.class);
     }
 
     @Override

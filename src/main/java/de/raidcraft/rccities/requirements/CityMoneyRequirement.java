@@ -1,53 +1,38 @@
 package de.raidcraft.rccities.requirements;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.action.requirement.ReasonableRequirement;
 import de.raidcraft.api.economy.AccountType;
-import de.raidcraft.api.requirement.AbstractRequirement;
-import de.raidcraft.api.requirement.RequirementInformation;
-import de.raidcraft.api.requirement.RequirementResolver;
 import de.raidcraft.rccities.api.city.City;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Optional;
+
 /**
- * @author Philip Urban
+ * @author Silthus
  */
-@RequirementInformation("CITY_MONEY")
-public class CityMoneyRequirement extends AbstractRequirement<City> {
+public class CityMoneyRequirement implements ReasonableRequirement<City> {
 
-    private double amount;
+    @Override
+    @Information(
+            value = "city.money",
+            desc = "Checks the balance of the city.",
+            conf = {"money: <min balance>"}
+    )
+    public boolean test(City city, ConfigurationSection config) {
 
-    public CityMoneyRequirement(RequirementResolver<City> resolver, ConfigurationSection config) {
-
-        super(resolver, config);
+        return RaidCraft.getEconomy().hasEnough(AccountType.CITY, city.getBankAccountName(), config.getDouble("money"));
     }
 
     @Override
-    protected void load(ConfigurationSection data) {
+    public Optional<String> getDescription(City entity, ConfigurationSection config) {
 
-        amount = data.getDouble("money");
+        return Optional.of("Es ist zu wenig Geld in der Stadtkasse. Benötigt werden " + RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money")) + "!");
     }
 
     @Override
-    public boolean isMet(City city) {
+    public String getReason(City entity, ConfigurationSection config) {
 
-        return RaidCraft.getEconomy().hasEnough(AccountType.CITY, city.getBankAccountName(), amount);
-    }
-
-    @Override
-    public String getShortReason() {
-
-        return "Zu wenig Geld";
-    }
-
-    @Override
-    public String getLongReason() {
-
-        return "Es ist zu wenig Geld in der Stadtkasse. Benötigt werden " + RaidCraft.getEconomy().getFormattedAmount(amount) + "!";
-    }
-
-    @Override
-    public String getDescription() {
-
-        return RaidCraft.getEconomy().getFormattedAmount(amount);
+        return RaidCraft.getEconomy().getFormattedAmount(config.getDouble("money"));
     }
 }

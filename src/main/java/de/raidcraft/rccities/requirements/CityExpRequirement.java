@@ -1,54 +1,36 @@
 package de.raidcraft.rccities.requirements;
 
-import de.raidcraft.api.requirement.AbstractRequirement;
-import de.raidcraft.api.requirement.RequirementInformation;
-import de.raidcraft.api.requirement.RequirementResolver;
+import de.raidcraft.api.action.requirement.ReasonableRequirement;
 import de.raidcraft.rccities.api.city.City;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Optional;
+
 /**
- * @author Philip Urban
+ * @author Silthus
  */
-@RequirementInformation("CITY_EXP")
-public class CityExpRequirement extends AbstractRequirement<City> {
+public class CityExpRequirement implements ReasonableRequirement<City> {
 
-    private int amount;
+    @Override
+    @Information(
+            value = "city.exp",
+            desc = "Checks the exp of the city.",
+            conf = {"exp: <min exp>"}
+    )
+    public boolean test(City city, ConfigurationSection config) {
 
-    public CityExpRequirement(RequirementResolver<City> resolver, ConfigurationSection config) {
-
-        super(resolver, config);
+        return city.getExp() >= config.getInt("exp");
     }
 
     @Override
-    protected void load(ConfigurationSection data) {
+    public Optional<String> getDescription(City entity, ConfigurationSection config) {
 
-        amount = data.getInt("exp");
+        return Optional.of("Es müssen sich mindestens " + config.getInt("exp") + " EXP in der Stadtkasse befinden!");
     }
 
     @Override
-    public boolean isMet(City city) {
+    public String getReason(City entity, ConfigurationSection config) {
 
-        if (city.getExp() >= amount) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String getShortReason() {
-
-        return "Zu wenig EXP";
-    }
-
-    @Override
-    public String getLongReason() {
-
-        return "Es müssen sich mindestens " + amount + " EXP in der Stadtkasse befinden!";
-    }
-
-    @Override
-    public String getDescription() {
-
-        return amount + " EXP";
+        return config.getInt("exp") + " EXP";
     }
 }

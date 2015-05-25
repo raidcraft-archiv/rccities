@@ -1,4 +1,4 @@
-package de.raidcraft.rccities.actionapi.requirements;
+package de.raidcraft.rccities.requirements;
 
 import de.raidcraft.api.action.trigger.Trigger;
 import org.bukkit.event.EventHandler;
