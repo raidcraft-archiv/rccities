@@ -22,6 +22,7 @@ public class CityUpgradeLevelRequirement implements ReasonableRequirement<City> 
     )
     public boolean test(City city, ConfigurationSection config) {
 
+        if(city == null) return false;
         Upgrade upgrade = city.getUpgrades().getUpgrade(config.getString("upgrade-id"));
         if (upgrade == null) return false;
         UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
@@ -36,22 +37,12 @@ public class CityUpgradeLevelRequirement implements ReasonableRequirement<City> 
     @Override
     public Optional<String> getDescription(City city, ConfigurationSection config) {
 
-        Upgrade upgrade = city.getUpgrades().getUpgrade(config.getString("upgrade-id"));
-        if (upgrade == null) return null;
-        UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
-        if (upgradeLevel == null) return null;
-
-        return Optional.of("Level '" + upgradeLevel.getName() + "' freigeschaltet");
+        return Optional.of("Level '" + config.getString("upgrade-level-id") + "' freigeschaltet");
     }
 
     @Override
     public String getReason(City city, ConfigurationSection config) {
 
-        Upgrade upgrade = city.getUpgrades().getUpgrade(config.getString("upgrade-id"));
-        if (upgrade == null) return null;
-        UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
-        if (upgradeLevel == null) return null;
-
-        return "Es muss das Upgrade-Level '" + upgradeLevel.getName() + "' freigeschaltet sein!";
+        return "Es muss das Upgrade-Level '" + config.getString("upgrade-level-id") + "' freigeschaltet sein!";
     }
 }

@@ -31,6 +31,7 @@ public class CityStaffRequirement implements ReasonableRequirement<City> {
     public boolean test(City city, ConfigurationSection config) {
 
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
+        if(city == null) return false;
         Upgrade upgrade = city.getUpgrades().getUpgrade(config.getString("upgrade-id"));
         if (upgrade == null) return false;
         UpgradeLevel upgradeLevel = upgrade.getLevel(config.getString("upgrade-level-id"));
