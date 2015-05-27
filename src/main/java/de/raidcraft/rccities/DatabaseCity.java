@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.rccities.api.city.AbstractCity;
+import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.Resident;
@@ -41,7 +42,7 @@ public class DatabaseCity extends AbstractCity {
         exp = tCity.getExp();
         spawn = new Location(Bukkit.getWorld(tCity.getWorld()), (double) tCity.getX() / 1000D, (double) tCity.getY() / 1000D, (double) tCity.getZ() / 1000D, (float) tCity.getYaw() / 1000F, (float) tCity.getPitch() / 1000F);
         upgradeHolder = RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager()
-                .loadDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration(), id);
+                .loadDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration(), id, City.class);
     }
 
     @Override
