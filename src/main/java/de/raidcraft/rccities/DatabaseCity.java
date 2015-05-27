@@ -125,7 +125,7 @@ public class DatabaseCity extends AbstractCity {
             tCity.setMaxRadius(getMaxRadius());
             tCity.setPlotCredit(getPlotCredit());
             upgradeHolder = RaidCraft.getComponent(RCUpgradesPlugin.class).getUpgradeManager()
-                    .createDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration());
+                    .createDatabaseUpgradeHolder(this, RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeConfiguration(), City.class);
             tCity.setUpgradeId(upgradeHolder.getId());
             RaidCraft.getDatabase(RCCitiesPlugin.class).save(tCity);
             id = tCity.getId();
