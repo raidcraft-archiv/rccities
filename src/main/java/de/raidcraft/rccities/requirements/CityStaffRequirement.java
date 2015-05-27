@@ -48,7 +48,7 @@ public class CityStaffRequirement implements ReasonableRequirement<City> {
                 if (!player.hasPermission("rccities.upgrades.process")) continue;
 
                 player.sendMessage(ChatColor.GRAY + "Die Gilde '" + city.getFriendlyName() + "' hat ein Upgrade Antrag gestellt!");
-                player.sendMessage(ChatColor.GRAY + "Upgrade-Level: " + config.getString("upgrade-level"));
+                player.sendMessage(ChatColor.GRAY + "Upgrade-Level: " + config.getString("upgrade-level-id"));
             }
             return false;
         }
