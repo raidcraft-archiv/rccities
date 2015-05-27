@@ -121,7 +121,7 @@ public class ListUpgradeLevelAction extends AbstractAction {
         actions.add(new ActionArgumentList(String.valueOf(i++), SetVariableAction.class, data2));
         actions.add(new ActionArgumentList(String.valueOf(i++), StageAction.class, "stage", nextStage));
 
-        String crossed = (level.isUnlocked()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
+        String crossed = (level.isUnlocked() && level.isStored()) ? ChatColor.RED + ChatColor.STRIKETHROUGH.toString() : ChatColor.GREEN.toString();
         return new SimpleAnswer(String.valueOf(number + 1), crossed + level.getName(), actions);
     }
 }

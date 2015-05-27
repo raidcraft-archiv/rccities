@@ -53,7 +53,7 @@ public class RequestUpgradeLevelUnlockAction extends AbstractAction {
         conversation.getPlayer().sendMessage("");
 
         // level is already unlocked
-        if (level.isUnlocked()) {
+        if (level.isUnlocked() && level.isStored()) {
             conversation.getPlayer().sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
             conversation.endConversation(EndReason.INFORM);
             return;
