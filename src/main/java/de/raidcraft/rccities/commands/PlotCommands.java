@@ -240,7 +240,7 @@ public class PlotCommands {
         @Command(
                 aliases = {"unclaim"},
                 desc = "Unclaims a plot",
-                flags = "r"
+                flags = "rf"
         )
         @CommandPermissions("rccities.plot.unclaim")
         public void unclaim(CommandContext args, CommandSender sender) throws CommandException {
@@ -249,8 +249,12 @@ public class PlotCommands {
             Player player = (Player) sender;
 
             boolean restoreSchematics = false;
+            boolean force = false;
             if (args.hasFlag('r')) {
                 restoreSchematics = true;
+            }
+            if (args.hasFlag('f')) {
+                force = true;
             }
 
             Plot plot = plugin.getPlotManager().getPlot(player.getLocation().getChunk());
@@ -267,6 +271,9 @@ public class PlotCommands {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft zurückgesetzt!");
                 } else {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft NICHT zurückgesetzt!");
+                }
+                if(force) {
+                    unclaimPlot(sender, plot, restoreSchematics);
                 }
                 new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
             } catch (NoSuchMethodException e) {
