@@ -137,6 +137,7 @@ public class MarkPlotFlag extends AbstractPlotFlag {
 
         if (material == Material.GRASS
                 || material == Material.DIRT
+                || material == Material.COBBLESTONE
                 || material == Material.STONE
                 || material == Material.LOG
                 || material == Material.SAND

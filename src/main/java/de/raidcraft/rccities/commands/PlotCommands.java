@@ -13,6 +13,7 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
+import de.raidcraft.rccities.manager.CityManager;
 import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -274,8 +275,9 @@ public class PlotCommands {
                 }
                 if(force) {
                     unclaimPlot(sender, plot, restoreSchematics);
+                } else {
+                    new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
                 }
-                new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
             } catch (NoSuchMethodException e) {
                 throw new CommandException(e.getMessage());
             }
@@ -363,6 +365,7 @@ public class PlotCommands {
 
         public void unclaimPlot(CommandSender sender, Plot plot, boolean restoreSchematics) {
 
+            City city = plot.getCity();
             if (restoreSchematics) {
                 try {
                     plugin.getSchematicManager().restorePlot(plot);
@@ -372,7 +375,7 @@ public class PlotCommands {
             }
 
             plot.delete();
-            Bukkit.broadcastMessage(ChatColor.GOLD + "Der Plot '" + plot.getRegionName() + "' wurde gelöscht!");
+            plugin.getResidentManager().broadcastCityMessage(city, "Der Plot '" + plot.getRegionName() + "' wurde gelöscht!");
         }
     }
 
