@@ -5,6 +5,7 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.NestedCommand;
+import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.DatabasePlot;
@@ -23,6 +24,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -241,7 +244,7 @@ public class PlotCommands {
         @Command(
                 aliases = {"unclaim"},
                 desc = "Unclaims a plot",
-                flags = "rf"
+                flags = "rfa"
         )
         @CommandPermissions("rccities.plot.unclaim")
         public void unclaim(CommandContext args, CommandSender sender) throws CommandException {
@@ -273,10 +276,15 @@ public class PlotCommands {
                 } else {
                     sender.sendMessage(ChatColor.DARK_RED + "Bei der Löschung des Plots wird die Landschaft NICHT zurückgesetzt!");
                 }
-                if(force) {
-                    unclaimPlot(sender, plot, restoreSchematics);
+                if(args.hasFlag('a')) {
+                    sender.sendMessage(ChatColor.DARK_RED + "Bist du sicher dass ALLE plots wiederhergestellt werden sollen?");
+                    new QueuedCaptchaCommand(sender, this, "unclaimAll", sender, plot.getCity(), restoreSchematics);
                 } else {
-                    new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
+                    if (force) {
+                        unclaimPlot(sender, plot, restoreSchematics);
+                    } else {
+                        new QueuedCaptchaCommand(sender, this, "unclaimPlot", sender, plot, restoreSchematics);
+                    }
                 }
             } catch (NoSuchMethodException e) {
                 throw new CommandException(e.getMessage());
@@ -376,6 +384,65 @@ public class PlotCommands {
 
             plot.delete();
             plugin.getResidentManager().broadcastCityMessage(city, "Der Plot '" + plot.getRegionName() + "' wurde gelöscht!");
+        }
+
+        public void unclaimAll(CommandSender sender, City city, boolean restoreSchematics) {
+
+            UnclaimAllTask unclaimAllTask = new UnclaimAllTask(sender, city, restoreSchematics);
+            Bukkit.getScheduler().runTask(RaidCraft.getComponent(RCCitiesPlugin.class), unclaimAllTask);
+        }
+
+        private class UnclaimAllTask implements Runnable {
+
+            private CommandSender sender;
+            private City city;
+            private boolean restoreSchematics;
+
+            public UnclaimAllTask(CommandSender sender, City city, boolean restoreSchematics) {
+                this.sender = sender;
+                this.city = city;
+                this.restoreSchematics = restoreSchematics;
+            }
+
+            @Override
+            public void run() {
+
+                List<Plot> plots = RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city);
+                if(plots.isEmpty()) {
+                    RaidCraft.LOGGER.info("[RCCities - Unclaim all] Done: Unclaimed all plots of city + '" + city.getName() + "'!");
+                    sender.sendMessage(ChatColor.GREEN + "Done: Unclaimed all plots of city + '" + city.getName() + "'!");
+                    return;
+                }
+
+                RaidCraft.LOGGER.info("[RCCities - Unclaim all] Start unclaiming all plots (" + plots.size() + ") of city + '" + city.getName() + "'!");
+                sender.sendMessage(ChatColor.GREEN + "Done: Start unclaiming all plots (" + plots.size() + ") of city + '" + city.getName() + "'!");
+
+                int doneCount = 1;
+                int totalCount = plots.size();
+                for(Plot plot : new ArrayList<>(plots)) {
+                    if (restoreSchematics) {
+                        try {
+                            plugin.getSchematicManager().restorePlot(plot);
+                        } catch (RaidCraftException e) {
+                            RaidCraft.LOGGER.info("[RCCities - Unclaim all] Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
+                            sender.sendMessage(ChatColor.RED + "Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
+                        }
+                    }
+
+                    plot.delete();
+                    RaidCraft.LOGGER.info("[RCCities - Unclaim all] Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
+                    sender.sendMessage("Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
+
+                    doneCount++;
+
+
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
