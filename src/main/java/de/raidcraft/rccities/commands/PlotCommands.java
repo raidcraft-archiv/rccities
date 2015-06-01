@@ -169,7 +169,8 @@ public class PlotCommands {
 
         @Command(
                 aliases = {"claim"},
-                desc = "Claims a plot"
+                desc = "Claims a plot",
+                flags = "f"
         )
         @CommandPermissions("rccities.plot.claim")
         public void claim(CommandContext args, CommandSender sender) throws CommandException {
@@ -202,7 +203,15 @@ public class PlotCommands {
                 }
                 city = plot.getCity();
             }
-            if (city == null) {
+            // admins can claim wild chunks
+            if(args.hasFlag('f') && sender.hasPermission("rccities.admin")) {
+                if(city == null) {
+                    if(args.argsLength() == 0) {
+                        throw new CommandException("Gebe eine Stadt als ersten Parameter an!");
+                    }
+                    city = plugin.getCityManager().getCity(args.getString(0));
+                }
+            } else if (city == null) {
                 throw new CommandException("Neue Plots müssen an bestehende anknüpfen!");
             }
 

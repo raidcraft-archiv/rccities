@@ -11,6 +11,7 @@ permissions:
    rccities.admin:
      children:
        rccities.create: true
+       rccities.plot.unclaim: true
    rccities.player:
      children:
        rccities.plot.take: true
