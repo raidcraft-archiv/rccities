@@ -63,6 +63,7 @@ public class PlotCommands {
     public static class NestedCommands {
 
         private final RCCitiesPlugin plugin;
+        private static int unclaimTask = 0;
 
         public NestedCommands(RCCitiesPlugin plugin) {
 
@@ -290,6 +291,7 @@ public class PlotCommands {
                 if(args.hasFlag('a')) {
                     sender.sendMessage(ChatColor.DARK_RED + "Bist du sicher dass ALLE plots wiederhergestellt werden sollen?");
                     new QueuedCaptchaCommand(sender, this, "unclaimAll", sender, plot.getCity(), restoreSchematics);
+
                 } else {
                     if (force) {
                         unclaimPlot(sender, plot, restoreSchematics);
@@ -400,7 +402,7 @@ public class PlotCommands {
         public void unclaimAll(CommandSender sender, City city, boolean restoreSchematics) {
 
             UnclaimAllTask unclaimAllTask = new UnclaimAllTask(sender, city, restoreSchematics);
-            Bukkit.getScheduler().runTask(RaidCraft.getComponent(RCCitiesPlugin.class), unclaimAllTask);
+            unclaimTask = Bukkit.getScheduler().runTaskTimer(RaidCraft.getComponent(RCCitiesPlugin.class), unclaimAllTask, 0, 5 * 20).getTaskId();
         }
 
         private class UnclaimAllTask implements Runnable {
@@ -419,58 +421,24 @@ public class PlotCommands {
             public void run() {
 
                 List<Plot> plots = RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlots(city);
-                if(plots.isEmpty()) {
+                if (plots.isEmpty()) {
                     RaidCraft.LOGGER.info("[RCCities - Unclaim all] Done: Unclaimed all plots of city + '" + city.getName() + "'!");
                     sender.sendMessage(ChatColor.GREEN + "Done: Unclaimed all plots of city + '" + city.getName() + "'!");
+                    Bukkit.getScheduler().cancelTask(unclaimTask);
                     return;
                 }
 
+                // get one plot
+                Plot plot = plots.get(0);
+
                 RaidCraft.LOGGER.info("[RCCities - Unclaim all] Start unclaiming all plots (" + plots.size() + ") of city + '" + city.getName() + "'!");
-                sender.sendMessage(ChatColor.GREEN + "Done: Start unclaiming all plots (" + plots.size() + ") of city + '" + city.getName() + "'!");
+                sender.sendMessage(ChatColor.GREEN + "Start unclaiming all plots (" + plots.size() + ") of city + '" + city.getName() + "'!");
 
-                int doneCount = 1;
                 int totalCount = plots.size();
-                for(Plot plot : new ArrayList<>(plots)) {
-                    RaidCraft.LOGGER.info("[RCCities - Unclaim all] Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
-                    sender.sendMessage("Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
+                RaidCraft.LOGGER.info("[RCCities - Unclaim all] Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (übrig: " + (totalCount-1) + ")");
+                sender.sendMessage("Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (übrig: " + (totalCount-1) + ")");
 
-                    Bukkit.getScheduler().runTask(plugin, new UnclaimSinglePlot(plot, restoreSchematics, sender));
-                    doneCount++;
-
-                    try {
-                        Thread.sleep(5000); // 5 seconds each plot should be enough
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (restoreSchematics) {
-                        int i = 0;
-                        for (Entity entity : plot.getLocation().getChunk().getEntities()) {
-                            entity.remove();
-                            i++;
-                        }
-                        RaidCraft.LOGGER.info("[RCCities - Unclaim all] Removed " + i + " entities in unclaimed chunk!");
-                    }
-                }
-            }
-        }
-
-        public class UnclaimSinglePlot implements Runnable {
-
-            private Plot plot;
-            private boolean restoreSchematic;
-            private CommandSender sender;
-
-            public UnclaimSinglePlot(Plot plot, boolean restoreSchematic, CommandSender sender) {
-                this.plot = plot;
-                this.restoreSchematic = restoreSchematic;
-                this.sender = sender;
-            }
-
-            @Override
-            public void run() {
-
-                if (restoreSchematic) {
+                if (restoreSchematics) {
                     try {
                         plugin.getSchematicManager().restorePlot(plot);
                     } catch (RaidCraftException e) {
@@ -480,6 +448,15 @@ public class PlotCommands {
                 }
 
                 plot.delete();
+
+                if (restoreSchematics) {
+                    int i = 0;
+                    for (Entity entity : plot.getLocation().getChunk().getEntities()) {
+                        entity.remove();
+                        i++;
+                    }
+                    RaidCraft.LOGGER.info("[RCCities - Unclaim all] Removed " + i + " entities in unclaimed chunk!");
+                }
             }
         }
     }
