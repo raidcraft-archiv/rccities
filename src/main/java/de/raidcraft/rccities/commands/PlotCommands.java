@@ -431,21 +431,11 @@ public class PlotCommands {
                 int doneCount = 1;
                 int totalCount = plots.size();
                 for(Plot plot : new ArrayList<>(plots)) {
-                    if (restoreSchematics) {
-                        try {
-                            plugin.getSchematicManager().restorePlot(plot);
-                        } catch (RaidCraftException e) {
-                            RaidCraft.LOGGER.info("[RCCities - Unclaim all] Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
-                            sender.sendMessage(ChatColor.RED + "Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
-                        }
-                    }
-
-                    plot.delete();
                     RaidCraft.LOGGER.info("[RCCities - Unclaim all] Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
                     sender.sendMessage("Der Plot '" + plot.getRegionName() + "' wurde gelöscht! (" + doneCount + "/" + totalCount + ")");
 
+                    Bukkit.getScheduler().runTask(plugin, new UnclaimSinglePlot(plot, restoreSchematics, sender));
                     doneCount++;
-
 
                     try {
                         Thread.sleep(5000); // 5 seconds each plot should be enough
@@ -462,6 +452,34 @@ public class PlotCommands {
                         RaidCraft.LOGGER.info("[RCCities - Unclaim all] Removed " + i + " entities in unclaimed chunk!");
                     }
                 }
+            }
+        }
+
+        public class UnclaimSinglePlot implements Runnable {
+
+            private Plot plot;
+            private boolean restoreSchematic;
+            private CommandSender sender;
+
+            public UnclaimSinglePlot(Plot plot, boolean restoreSchematic, CommandSender sender) {
+                this.plot = plot;
+                this.restoreSchematic = restoreSchematic;
+                this.sender = sender;
+            }
+
+            @Override
+            public void run() {
+
+                if (restoreSchematic) {
+                    try {
+                        plugin.getSchematicManager().restorePlot(plot);
+                    } catch (RaidCraftException e) {
+                        RaidCraft.LOGGER.info("[RCCities - Unclaim all] Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
+                        sender.sendMessage(ChatColor.RED + "Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
+                    }
+                }
+
+                plot.delete();
             }
         }
     }
