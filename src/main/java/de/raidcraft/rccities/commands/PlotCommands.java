@@ -425,10 +425,6 @@ public class PlotCommands {
                     if (restoreSchematics) {
                         try {
                             plugin.getSchematicManager().restorePlot(plot);
-                            for(Entity entity : plot.getLocation().getChunk().getEntities())
-                            {
-                                entity.remove();
-                            }
                         } catch (RaidCraftException e) {
                             RaidCraft.LOGGER.info("[RCCities - Unclaim all] Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
                             sender.sendMessage(ChatColor.RED + "Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
@@ -446,6 +442,15 @@ public class PlotCommands {
                         Thread.sleep(5000); // 5 seconds each plot should be enough
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+
+                    if (restoreSchematics) {
+                        int i = 0;
+                        for (Entity entity : plot.getLocation().getChunk().getEntities()) {
+                            entity.remove();
+                            i++;
+                        }
+                        RaidCraft.LOGGER.info("[RCCities - Unclaim all] Removed " + i + " entities in unclaimed chunk!");
                     }
                 }
             }
