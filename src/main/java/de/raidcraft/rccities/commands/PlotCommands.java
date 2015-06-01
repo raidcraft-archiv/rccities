@@ -5,6 +5,7 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import com.sk89q.minecraft.util.commands.NestedCommand;
+import com.sk89q.worldguard.bukkit.util.Entities;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.commands.QueuedCaptchaCommand;
@@ -22,6 +23,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -423,6 +425,10 @@ public class PlotCommands {
                     if (restoreSchematics) {
                         try {
                             plugin.getSchematicManager().restorePlot(plot);
+                            for(Entity entity : plot.getLocation().getChunk().getEntities())
+                            {
+                                entity.remove();
+                            }
                         } catch (RaidCraftException e) {
                             RaidCraft.LOGGER.info("[RCCities - Unclaim all] Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
                             sender.sendMessage(ChatColor.RED + "Fehler beim wiederherstellen des Plots '" + plot.getRegionName() + "'! (" + e.getMessage() + ")");
@@ -437,7 +443,7 @@ public class PlotCommands {
 
 
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(5000); // 5 seconds each plot should be enough
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
