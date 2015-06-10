@@ -24,7 +24,6 @@ import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.UUIDUtil;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -669,7 +668,7 @@ public class TownCommands {
         public void leaveCity(Resident resident) {
 
             resident.delete();
-            Bukkit.broadcastMessage(ChatColor.GOLD + StringUtils.capitalize(resident.getName()) + " hat die Gilde '" + resident.getCity().getFriendlyName() + "' verlassen!");
+            Bukkit.broadcastMessage(ChatColor.GOLD + resident.getName() + " hat die Gilde '" + resident.getCity().getFriendlyName() + "' verlassen!");
         }
     }
 
