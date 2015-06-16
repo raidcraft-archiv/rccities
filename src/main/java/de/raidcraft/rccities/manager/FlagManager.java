@@ -380,6 +380,16 @@ public class FlagManager {
         return flagInformationList;
     }
 
+    public List<FlagInformation> getRegisteredPlotFlagInformationList() {
+
+        List<FlagInformation> flagInformationList = new ArrayList<>();
+        for (Class<? extends Flag> registeredFlagClass : registeredPlotFlags.values()) {
+            FlagInformation annotation = registeredFlagClass.getAnnotation(FlagInformation.class);
+            flagInformationList.add(annotation);
+        }
+        return flagInformationList;
+    }
+
     public FlagInformation getRegisteredCityFlagInformation(String flagName) {
 
         Class<? extends Flag> registeredFlagClass = registeredCityFlags.get(flagName);

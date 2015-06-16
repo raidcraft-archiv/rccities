@@ -12,6 +12,7 @@ import de.raidcraft.api.commands.QueuedCaptchaCommand;
 import de.raidcraft.rccities.DatabasePlot;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
+import de.raidcraft.rccities.api.flags.FlagInformation;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.resident.Resident;
 import de.raidcraft.rccities.api.resident.RolePermission;
@@ -307,13 +308,21 @@ public class PlotCommands {
         @Command(
                 aliases = {"flag"},
                 desc = "Change plot flag",
-                min = 2,
                 usage = "[Plot ID] <Flag> <Parameter>"
         )
         @CommandPermissions("rccities.plot.flag")
         public void flag(CommandContext args, CommandSender sender) throws CommandException {
 
             if (sender instanceof ConsoleCommandSender) throw new CommandException("Player required!");
+
+            if(args.argsLength() < 2) {
+                String flagList = "";
+                for(FlagInformation info : plugin.getFlagManager().getRegisteredPlotFlagInformationList()) {
+                    flagList += info.name() + ", ";
+                }
+                throw new CommandException("Verfügbare Flags: " + flagList);
+            }
+
             Player player = (Player) sender;
 
             Plot plot;
