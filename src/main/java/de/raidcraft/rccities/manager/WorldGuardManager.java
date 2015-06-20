@@ -16,6 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Philip Urban
  */
@@ -57,13 +62,37 @@ public class WorldGuardManager implements Listener {
         }
     }
 
+
+
     /**
      *  Allow pistons move across regions.
-     *  Allow leves spawn across regions.
       * @param event
      */
+
+    private Map<PlaceBlockEvent, Integer> events = new HashMap<>();
+
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
+    public void onPlaceBlockLowest(final PlaceBlockEvent event) {
+
+        // we are only interested in block causes
+        if(!(event.getCause().getRootCause() instanceof Block)) return;
+
+        Block block = (Block) event.getCause().getRootCause();
+
+        // process pistons
+        if(block.getType() == Material.PISTON_BASE ||
+                block.getType() == Material.PISTON_EXTENSION ||
+                block.getType() == Material.PISTON_MOVING_PIECE ||
+                block.getType() == Material.PISTON_STICKY_BASE) {
+
+            events.put(event, event.getBlocks().size());
+        }
+    }
+
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
-    public void onPlaceBlock(final PlaceBlockEvent event) {
+    public void onPlaceBlockHighest(final PlaceBlockEvent event) {
+
+        int originalSize = events.remove(event);
 
         // we are only interested in cancelled events
         if(!event.isCancelled()) return;
@@ -83,13 +112,12 @@ public class WorldGuardManager implements Listener {
                 block.getType() == Material.PISTON_MOVING_PIECE ||
                 block.getType() == Material.PISTON_STICKY_BASE) {
 
-            event.setCancelled(false);
-        }
-
-        // process leaves
-        else if(block.getType() == Material.LEAVES ||
-                block.getType() == Material.LEAVES_2) {
-
+            if(event.getBlocks().size() != originalSize) {
+                RaidCraft.LOGGER.info("[RCCDebug] Original size: " + originalSize + " | Current size: " + event.getBlocks().size());
+                for(int i = 0; i < originalSize - event.getBlocks().size(); i++) {
+                    event.getBlocks().add(event.getBlocks().get(0));
+                }
+            }
             event.setCancelled(false);
         }
     }
