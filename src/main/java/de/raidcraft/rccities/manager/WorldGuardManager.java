@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 
 import java.util.*;
 
@@ -65,60 +66,67 @@ public class WorldGuardManager implements Listener {
      *  Allow pistons move across regions
      */
 
-    private static Set<Material> allowedMaterials = new HashSet<>(Arrays.asList(
-            Material.PISTON_BASE,
-            Material.PISTON_EXTENSION,
-            Material.PISTON_MOVING_PIECE,
-            Material.PISTON_STICKY_BASE
-    ));
-
-    private Map<PlaceBlockEvent, Integer> events = new HashMap<>();
-
-    @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
-    public void onPlaceBlockLowest(final PlaceBlockEvent event) {
-
-        // we are only interested in block causes
-        if(!(event.getCause().getRootCause() instanceof Block)) return;
-
-        Block block = (Block) event.getCause().getRootCause();
-
-        // process pistons
-        if(allowedMaterials.contains(block.getType())) {
-            events.put(event, event.getBlocks().size());
-        }
-    }
+//    private static Set<Material> allowedMaterials = new HashSet<>(Arrays.asList(
+//            Material.PISTON_BASE,
+//            Material.PISTON_EXTENSION,
+//            Material.PISTON_MOVING_PIECE,
+//            Material.PISTON_STICKY_BASE
+//    ));
+//
+//    private Map<PlaceBlockEvent, Integer> events = new HashMap<>();
+//
+//    @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
+//    public void onPlaceBlockLowest(final PlaceBlockEvent event) {
+//
+//        // we are only interested in block causes
+//        if(!(event.getCause().getRootCause() instanceof Block)) return;
+//
+//        Block block = (Block) event.getCause().getRootCause();
+//
+//        // process pistons
+//        if(allowedMaterials.contains(block.getType())) {
+//            events.put(event, event.getBlocks().size());
+//        }
+//    }
+//
+//    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
+//    public void onPlaceBlockHighest(final PlaceBlockEvent event) {
+//
+//        // we are only interested in block causes
+//        if(!(event.getCause().getRootCause() instanceof Block)) return;
+//
+//        // get original list size
+//        Integer originalSize = events.remove(event);
+//
+//        // event was not tracked
+//        if(originalSize == null) return;
+//
+//        // we are only interested in cancelled events
+//        if(!event.isCancelled()) return;
+//
+//        RaidCraft.LOGGER.info("[RCCDebug] Cancelled PlaceBlockEvent: " + event.getCause().getRootCause().getClass().getName());
+//
+//        Block block = (Block) event.getCause().getRootCause();
+//
+//        RaidCraft.LOGGER.info("[RCCDebug] BlockCause: " + block.getType());
+//
+//        // process pistons
+//        if(allowedMaterials.contains(block.getType())) {
+//
+//            if(event.getBlocks().size() != originalSize) {
+//                RaidCraft.LOGGER.info("[RCCDebug] Original size: " + originalSize + " | Current size: " + event.getBlocks().size());
+//                for(int i = 0; i < originalSize - event.getBlocks().size(); i++) {
+//                    event.getBlocks().add(block);
+//                }
+//            }
+//            event.setCancelled(false);
+//        }
+//    }
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
-    public void onPlaceBlockHighest(final PlaceBlockEvent event) {
+    public void onPistonExtend(BlockPistonExtendEvent event) {
 
-        // we are only interested in block causes
-        if(!(event.getCause().getRootCause() instanceof Block)) return;
-
-        // get original list size
-        Integer originalSize = events.remove(event);
-
-        // event was not tracked
-        if(originalSize == null) return;
-
-        // we are only interested in cancelled events
-        if(!event.isCancelled()) return;
-
-        RaidCraft.LOGGER.info("[RCCDebug] Cancelled PlaceBlockEvent: " + event.getCause().getRootCause().getClass().getName());
-
-        Block block = (Block) event.getCause().getRootCause();
-
-        RaidCraft.LOGGER.info("[RCCDebug] BlockCause: " + block.getType());
-
-        // process pistons
-        if(allowedMaterials.contains(block.getType())) {
-
-            if(event.getBlocks().size() != originalSize) {
-                RaidCraft.LOGGER.info("[RCCDebug] Original size: " + originalSize + " | Current size: " + event.getBlocks().size());
-                for(int i = 0; i < originalSize - event.getBlocks().size(); i++) {
-                    event.getBlocks().add(block);
-                }
-            }
-            event.setCancelled(false);
-        }
+        // allow pistons
+        event.setCancelled(false);
     }
 }
