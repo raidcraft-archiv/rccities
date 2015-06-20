@@ -2,6 +2,7 @@ package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -15,6 +16,7 @@ import de.raidcraft.skills.api.exceptions.UnknownSkillException;
 import de.raidcraft.skills.api.hero.Hero;
 import de.raidcraft.skills.api.skill.Skill;
 import de.raidcraft.util.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -146,6 +148,10 @@ public class ResidentManager {
     }
 
     public void removePrefixSkill(Resident resident) {
+
+        if(Bukkit.getPlayer(resident.getPlayerId()) != null) {
+            return;
+        }
 
         try {
             Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
