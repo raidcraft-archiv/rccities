@@ -68,10 +68,14 @@ public class WorldGuardManager implements Listener {
         // we are only interested in cancelled events
         if(!event.isCancelled()) return;
 
+        RaidCraft.LOGGER.info("[RCCDebug] Cancelled PlaceBlockEvent: " + event.getCause().getRootCause().getClass().getName());
+
         // we are only interested in block causes
         if(!(event.getCause().getRootCause() instanceof Block)) return;
 
         Block block = (Block) event.getCause().getRootCause();
+
+        RaidCraft.LOGGER.info("[RCCDebug] BlockCause: " + block.getType());
 
         // process pistons
         if(block.getType() == Material.PISTON_BASE ||
@@ -89,5 +93,4 @@ public class WorldGuardManager implements Listener {
             event.setCancelled(false);
         }
     }
-
 }
