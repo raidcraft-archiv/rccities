@@ -115,7 +115,7 @@ public class WorldGuardManager implements Listener {
             if(event.getBlocks().size() != originalSize) {
                 RaidCraft.LOGGER.info("[RCCDebug] Original size: " + originalSize + " | Current size: " + event.getBlocks().size());
                 for(int i = 0; i < originalSize - event.getBlocks().size(); i++) {
-                    event.getBlocks().add(event.getBlocks().get(0));
+                    event.getBlocks().add(block);
                 }
             }
             event.setCancelled(false);
