@@ -207,7 +207,7 @@ public class RCCitiesPlugin extends BasePlugin {
     @Override
     public void disable() {
 
-        worldGuardManager.save();
+//        worldGuardManager.save();
     }
 
     private void registerActionAPI() {
