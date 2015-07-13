@@ -4,7 +4,8 @@ version: ${project.version}#${BUILDS_ALL_TIME}
 description: Provides player towns.
 author: Strasse36
 website: http://www.raid-craft.de
-depend: [RaidCraft-API, RCConversations, RCUpgrades]
+depend: [RaidCraft-API, RCUpgrades]
+softdepend: [RCConversations2]
 database: true
 
 permissions:
