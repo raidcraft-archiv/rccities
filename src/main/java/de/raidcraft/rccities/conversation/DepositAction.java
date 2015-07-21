@@ -2,6 +2,10 @@ package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.RaidCraftException;
+import de.raidcraft.api.action.action.Action;
+import de.raidcraft.api.conversations.Conversations;
+import de.raidcraft.api.conversations.conversation.ConversationEndReason;
+import de.raidcraft.api.conversations.conversation.ConversationVariable;
 import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.api.economy.BalanceSource;
 import de.raidcraft.api.economy.Economy;
@@ -14,28 +18,37 @@ import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
 import de.raidcraft.rcconversations.util.ParseString;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 /**
  * @author Philip Urban
  */
 @ActionInformation(name = "CITY_DEPOSIT")
-public class DepositAction extends AbstractAction {
+public class DepositAction implements Action<Player> {
 
     @Override
-    public void run(Conversation conversation, ActionArgumentList args) throws RaidCraftException {
+    @Information(
+            value = "city.deposit",
+            desc = "Deposits money from the players account into the city.",
+            aliases = "CITY_DEPOSIT",
+            conf = {
+                    "city: to deposit money into",
+                    "amount: to deposit"
+            }
+    )
+    public void accept(Player player, ConfigurationSection config) {
 
         Economy economy = RaidCraft.getEconomy();
-        String cityName = args.getString("city");
-        cityName = ParseString.INST.parse(conversation, cityName);
-        String success = args.getString("onsuccess", null);
-        String failure = args.getString("onfailure", null);
-        String amountString = args.getString("amount");
-        amountString = ParseString.INST.parse(conversation, amountString);
-        double amount = economy.parseCurrencyInput(amountString);
+
+        String cityName = ConversationVariable.getString(player, "city").orElse(config.getString("city"));
+        double amount = economy.parseCurrencyInput(ConversationVariable.getString(player, "amount").orElse(config.getString("amount")));
 
         City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
         if (city == null) {
-            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
+            player.sendMessage(ChatColor.RED + "Ungültige Stadt ausgewählt!");
+            Conversations.endActiveConversation(player, ConversationEndReason.ERROR);
+            return;
         }
 
         if (amount == 0) {
