@@ -7,12 +7,20 @@ import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.api.conversations.Conversations;
 import de.raidcraft.api.reward.RewardManager;
+import de.raidcraft.rccities.actions.AcceptJoinRequestAction;
+import de.raidcraft.rccities.actions.DepositAction;
+import de.raidcraft.rccities.actions.LeaveCityAction;
+import de.raidcraft.rccities.actions.ShowCityFlowAction;
+import de.raidcraft.rccities.actions.ShowCityInfoAction;
+import de.raidcraft.rccities.actions.WithdrawAction;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
+import de.raidcraft.rccities.conversation.CityConversation;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
@@ -40,6 +48,10 @@ import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.requirements.CityStaffRequirement;
 import de.raidcraft.rccities.requirements.CityUpgradeLevelRequirement;
+import de.raidcraft.rccities.requirements.HasCitizenshipRequirement;
+import de.raidcraft.rccities.requirements.HasCityPermissionRequirement;
+import de.raidcraft.rccities.requirements.HasCityRoleRequirement;
+import de.raidcraft.rccities.requirements.IsCityMemberRequirement;
 import de.raidcraft.rccities.rewards.CityFlagReward;
 import de.raidcraft.rccities.rewards.CityPlotsReward;
 import de.raidcraft.rccities.rewards.CityRadiusReward;
@@ -119,6 +131,8 @@ public class RCCitiesPlugin extends BasePlugin {
         RewardManager.registerRewardType(CityRadiusReward.class);
         RewardManager.registerRewardType(SubtractMoneyReward.class);
 
+        Conversations.registerConversationType("city", CityConversation.class);
+
         // upgrade requirements
         registerActionAPI();
 
@@ -190,6 +204,16 @@ public class RCCitiesPlugin extends BasePlugin {
     private void registerActionAPI() {
 
         ActionAPI.register(this)
+                .action(new AcceptJoinRequestAction())
+                .action(new DepositAction())
+                .action(new LeaveCityAction())
+                .action(new ShowCityFlowAction())
+                .action(new ShowCityInfoAction())
+                .action(new WithdrawAction())
+                .requirement(new HasCitizenshipRequirement())
+                .requirement(new HasCityPermissionRequirement())
+                .requirement(new HasCityRoleRequirement())
+                .requirement(new IsCityMemberRequirement())
                 .requirement(new CityExpRequirement(), City.class)
                 .requirement(new CityMoneyRequirement(), City.class)
                 .requirement(new CityStaffRequirement(), City.class)

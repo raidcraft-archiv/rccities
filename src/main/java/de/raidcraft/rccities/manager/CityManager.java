@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.Component;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.economy.AccountType;
 import de.raidcraft.rccities.DatabaseCity;
@@ -26,7 +27,7 @@ import java.util.UUID;
 /**
  * @author Philip Urban
  */
-public class CityManager {
+public class CityManager implements Component {
 
     private RCCitiesPlugin plugin;
     private Map<String, City> cachedCities = new CaseInsensitiveMap<>();
@@ -34,6 +35,7 @@ public class CityManager {
     public CityManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
+        RaidCraft.registerComponent(CityManager.class, this);
     }
 
     public City createCity(String cityName, Location location, UUID creator) throws RaidCraftException {

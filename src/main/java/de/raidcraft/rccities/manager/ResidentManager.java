@@ -1,8 +1,8 @@
 package de.raidcraft.rccities.manager;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.Component;
 import de.raidcraft.api.RaidCraftException;
-import de.raidcraft.api.player.UnknownPlayerException;
 import de.raidcraft.rccities.DatabaseResident;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * @author Philip Urban
  */
-public class ResidentManager {
+public class ResidentManager implements Component {
 
     private RCCitiesPlugin plugin;
     private Map<UUID, List<Resident>> cachedResidents = new HashMap<>();
@@ -38,6 +38,7 @@ public class ResidentManager {
     public ResidentManager(RCCitiesPlugin plugin) {
 
         this.plugin = plugin;
+        RaidCraft.registerComponent(ResidentManager.class, this);
     }
 
     public void broadcastCityMessage(City city, String message) {

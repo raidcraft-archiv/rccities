@@ -1,7 +1,6 @@
-package de.raidcraft.rccities.conversation;
+package de.raidcraft.rccities.actions;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.conversations.Conversations;
 import de.raidcraft.api.conversations.conversation.ConversationEndReason;
@@ -11,12 +10,6 @@ import de.raidcraft.api.economy.BalanceSource;
 import de.raidcraft.api.economy.Economy;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
-import de.raidcraft.rcconversations.api.action.AbstractAction;
-import de.raidcraft.rcconversations.api.action.ActionArgumentList;
-import de.raidcraft.rcconversations.api.action.ActionInformation;
-import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
-import de.raidcraft.rcconversations.api.conversation.Conversation;
-import de.raidcraft.rcconversations.util.ParseString;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -24,7 +17,6 @@ import org.bukkit.entity.Player;
 /**
  * @author Philip Urban
  */
-@ActionInformation(name = "CITY_DEPOSIT")
 public class DepositAction implements Action<Player> {
 
     @Override
@@ -51,28 +43,26 @@ public class DepositAction implements Action<Player> {
             return;
         }
 
-        if (amount == 0) {
-            changeStage(conversation, failure);
+        if (amount <= 0) {
+            Conversations.changeStage(player, config.getString("onfailure"));
+            return;
+        }
+
+        if (!economy.hasEnough(player.getUniqueId(), amount)) {
+            player.sendMessage(ChatColor.RED + "Du hast nicht genug Geld um " + economy.getFormattedAmount(amount) + " in die Stadtkasse einzuzahlen.");
+            Conversations.changeStage(player, config.getString("onfailure"));
             return;
         }
 
         economy.add(AccountType.CITY, city.getBankAccountName(), amount,
-                BalanceSource.GUILD, "Einzahlung von " + conversation.getPlayer().getName());
-        economy.substract(conversation.getPlayer().getUniqueId(), amount,
+                BalanceSource.GUILD, "Einzahlung von " + player.getName());
+        economy.substract(player.getUniqueId(), amount,
                 BalanceSource.GUILD, "Einzahlung in Gildenkasse");
 
-        conversation.getPlayer().sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " in die Stadtkasse eingezahlt!");
-        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, conversation.getPlayer().getName()
+        player.sendMessage(ChatColor.GREEN + "Du hast " + economy.getFormattedAmount(amount) + ChatColor.GREEN + " in die Stadtkasse eingezahlt!");
+        RaidCraft.getComponent(RCCitiesPlugin.class).getResidentManager().broadcastCityMessage(city, player.getName()
                 + " hat " + economy.getFormattedAmount(amount) + ChatColor.GOLD + " in die Stadtkasse eingezahlt!");
 
-        changeStage(conversation, success);
-    }
-
-    private void changeStage(Conversation conversation, String stage) {
-
-        if (stage != null) {
-            conversation.setCurrentStage(stage);
-            conversation.triggerCurrentStage();
-        }
+        Conversations.changeStage(player, config.getString("onsuccess"));
     }
 }

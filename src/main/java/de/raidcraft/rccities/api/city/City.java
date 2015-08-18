@@ -3,6 +3,8 @@ package de.raidcraft.rccities.api.city;
 import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.Resident;
+import de.raidcraft.rccities.api.resident.Role;
+import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rcupgrades.api.holder.UpgradeHolder;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -59,6 +61,12 @@ public interface City {
     void removeFlag(String flagName);
 
     void refreshFlags();
+
+    boolean hasRole(Player player, Role role);
+
+    boolean hasRolePermission(Player player, RolePermission role);
+
+    boolean isMember(Player player);
 
     List<Resident> getResidents();
 
