@@ -30,8 +30,8 @@ public class AcceptJoinRequestAction implements Action<Player> {
             desc = "Accepts the join request of the given player.",
             aliases = "ACCEPT_CITY_JOIN_REQUEST",
             conf = {
-                    "city: with the join request",
-                    "player: to accept join request for"
+                    "player: to accept join request for",
+                    "city: with the join request"
             }
     )
     public void accept(Player player, ConfigurationSection config) {
@@ -39,7 +39,7 @@ public class AcceptJoinRequestAction implements Action<Player> {
         RCCitiesPlugin plugin = RaidCraft.getComponent(RCCitiesPlugin.class);
 
         String cityName = ConversationVariable.getString(player, "city").orElse(config.getString("city"));
-        String candidate = ConversationVariable.getString(player, "player").orElse(config.getString("player"));
+        String candidate = ConversationVariable.getString(player, "join_request").orElse(config.getString("player"));
 
         City city = plugin.getCityManager().getCity(cityName);
         if (city == null) {

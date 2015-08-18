@@ -8,10 +8,14 @@ import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.api.conversations.Conversations;
+import de.raidcraft.api.conversations.conversation.Conversation;
 import de.raidcraft.api.reward.RewardManager;
 import de.raidcraft.rccities.actions.AcceptJoinRequestAction;
 import de.raidcraft.rccities.actions.DepositAction;
 import de.raidcraft.rccities.actions.LeaveCityAction;
+import de.raidcraft.rccities.actions.RejectJoinRequestAction;
+import de.raidcraft.rccities.actions.SendJoinRequestAction;
+import de.raidcraft.rccities.actions.SetResidentRoleAction;
 import de.raidcraft.rccities.actions.ShowCityFlowAction;
 import de.raidcraft.rccities.actions.ShowCityInfoAction;
 import de.raidcraft.rccities.actions.WithdrawAction;
@@ -21,6 +25,15 @@ import de.raidcraft.rccities.commands.PlotCommands;
 import de.raidcraft.rccities.commands.ResidentCommands;
 import de.raidcraft.rccities.commands.TownCommands;
 import de.raidcraft.rccities.conversation.CityConversation;
+import de.raidcraft.rccities.conversation.FindCityResidentInputAnswer;
+import de.raidcraft.rccities.conversation.ListCityFlagsAction;
+import de.raidcraft.rccities.conversation.ListCityRolesAction;
+import de.raidcraft.rccities.conversation.ListJoinRequestsAction;
+import de.raidcraft.rccities.conversation.ListUpgradeLevelAction;
+import de.raidcraft.rccities.conversation.ListUpgradeTypesAction;
+import de.raidcraft.rccities.conversation.RequestUpgradeLevelUnlockAction;
+import de.raidcraft.rccities.conversation.SetCityFlagInputAnswer;
+import de.raidcraft.rccities.conversation.ShowUpgradeLevelInfo;
 import de.raidcraft.rccities.flags.city.GreetingsCityFlag;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import de.raidcraft.rccities.flags.city.LeafDecayCityFlag;
@@ -101,30 +114,6 @@ public class RCCitiesPlugin extends BasePlugin {
         worldGuard = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
         worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
-        // conversation actions
-//        ActionManager.registerAction(new FindCityAction());
-//        ActionManager.registerAction(new IsCityMemberAction());
-//        ActionManager.registerAction(new HasRolePermissionAction());
-//        ActionManager.registerAction(new DepositAction());
-//        ActionManager.registerAction(new WithdrawAction());
-//        ActionManager.registerAction(new SendJoinRequestAction());
-//        ActionManager.registerAction(new AcceptJoinRequestAction());
-//        ActionManager.registerAction(new RejectJoinRequestAction());
-//        ActionManager.registerAction(new HasCitizenshipAction());
-//        ActionManager.registerAction(new ListJoinRequestsAction());
-//        ActionManager.registerAction(new ListUpgradeTypesAction());
-//        ActionManager.registerAction(new ListCityFlagsAction());
-//        ActionManager.registerAction(new SetCityFlagAction());
-//        ActionManager.registerAction(new ListUpgradeLevelAction());
-//        ActionManager.registerAction(new ShowUpgradeLevelInfo());
-//        ActionManager.registerAction(new RequestUpgradeLevelUnlockAction());
-//        ActionManager.registerAction(new ShowCityInfoAction());
-//        ActionManager.registerAction(new FindCityResidentAction());
-//        ActionManager.registerAction(new ListCityRolesAction());
-//        ActionManager.registerAction(new SetResidentRoleAction());
-//        ActionManager.registerAction(new LeaveCityAction());
-//        ActionManager.registerAction(new ShowCityFlowAction());
-
         // upgrade rewards
         RewardManager.registerRewardType(CityPlotsReward.class);
         RewardManager.registerRewardType(CityFlagReward.class);
@@ -132,6 +121,8 @@ public class RCCitiesPlugin extends BasePlugin {
         RewardManager.registerRewardType(SubtractMoneyReward.class);
 
         Conversations.registerConversationType("city", CityConversation.class);
+        Conversations.registerAnswer("rccities.city.set-flag", SetCityFlagInputAnswer.class);
+        Conversations.registerAnswer("rccities.city.find-resident", FindCityResidentInputAnswer.class);
 
         // upgrade requirements
         registerActionAPI();
@@ -210,6 +201,16 @@ public class RCCitiesPlugin extends BasePlugin {
                 .action(new ShowCityFlowAction())
                 .action(new ShowCityInfoAction())
                 .action(new WithdrawAction())
+                .action(new SendJoinRequestAction())
+                .action(new SetResidentRoleAction())
+                .action(new RejectJoinRequestAction())
+                .action(new ListCityFlagsAction(), Conversation.class)
+                .action(new ListCityRolesAction(), Conversation.class)
+                .action(new ListJoinRequestsAction(), Conversation.class)
+                .action(new ListUpgradeLevelAction(), Conversation.class)
+                .action(new ListUpgradeTypesAction(), Conversation.class)
+                .action(new RequestUpgradeLevelUnlockAction(), Conversation.class)
+                .action(new ShowUpgradeLevelInfo(), Conversation.class)
                 .requirement(new HasCitizenshipRequirement())
                 .requirement(new HasCityPermissionRequirement())
                 .requirement(new HasCityRoleRequirement())
