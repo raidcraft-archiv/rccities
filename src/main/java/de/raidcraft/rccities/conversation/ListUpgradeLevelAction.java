@@ -58,7 +58,7 @@ public class ListUpgradeLevelAction implements Action<Conversation> {
                         && level.isStored())
                 .forEach(levels::remove);
 
-        levels.sort((o1, o2) -> o1.getLevel());
+        levels.sort((o1, o2) -> Integer.compare(o1.getLevel(), o2.getLevel()));
 
         Stage stage = Stage.of(conversation, config.getString("text"));
 
