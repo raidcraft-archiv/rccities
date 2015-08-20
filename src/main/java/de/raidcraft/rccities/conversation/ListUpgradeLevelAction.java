@@ -4,6 +4,7 @@ import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.conversations.answer.Answer;
 import de.raidcraft.api.conversations.conversation.Conversation;
 import de.raidcraft.api.conversations.conversation.ConversationEndReason;
+import de.raidcraft.api.conversations.conversation.ConversationVariable;
 import de.raidcraft.api.conversations.stage.Stage;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
@@ -26,7 +27,7 @@ public class ListUpgradeLevelAction implements Action<Conversation> {
             conf = {
                     "text: to display",
                     "next-stage: stage to process selected upgrade level with",
-                    "city_upgrade_type: to list levels for"
+                    "upgrade-type: to list levels for"
             },
             aliases = "LIST_CITY_UPGRADE_LEVEL"
     )
@@ -40,7 +41,8 @@ public class ListUpgradeLevelAction implements Action<Conversation> {
 
         City city = ((CityConversation) conversation).getCity();
 
-        Upgrade upgrade = city.getUpgrades().getUpgrade(config.getString("city_upgrade_type"));
+        Upgrade upgrade = city.getUpgrades().getUpgrade(ConversationVariable.getString(conversation.getOwner(), "city_upgrade_type")
+                .orElse(config.getString("upgrade-type")));
         if (upgrade == null) {
             conversation.sendMessage(ChatColor.RED + "Upgrade '" + config.getString("upgrade-type") + "' does not exist!");
             conversation.abort(ConversationEndReason.ERROR);
