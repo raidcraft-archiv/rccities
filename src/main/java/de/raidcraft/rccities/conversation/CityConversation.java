@@ -1,6 +1,7 @@
 package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.conversations.conversation.ConversationEndReason;
 import de.raidcraft.api.conversations.conversation.ConversationTemplate;
 import de.raidcraft.api.conversations.host.ConversationHost;
 import de.raidcraft.api.economy.AccountType;
@@ -14,6 +15,7 @@ import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.flags.city.JoinCostsCityFlag;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 @Data
@@ -28,6 +30,8 @@ public class CityConversation extends PlayerConversation {
 
         Plot plot = RaidCraft.getComponent(RCCitiesPlugin.class).getPlotManager().getPlot(player.getLocation().getChunk());
         if (plot == null) {
+            sendMessage(ChatColor.RED + "Es wurde keine Gilde an dieser Stelle gefunden!");
+            abort(ConversationEndReason.ERROR);
             city = null;
             return;
         }
