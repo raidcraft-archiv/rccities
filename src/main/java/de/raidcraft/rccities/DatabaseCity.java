@@ -80,14 +80,14 @@ public class DatabaseCity extends AbstractCity {
     public boolean hasRole(Player player, Role role) {
 
         return getResidents().stream()
-                .filter(resident -> resident.getPlayer().equals(player))
+                .filter(resident -> resident.getPlayer() != null && resident.getPlayer().equals(player))
                 .anyMatch(resident -> resident.getRole() == role);
     }
 
     public boolean hasRolePermission(Player player, RolePermission permission) {
 
         return getResidents().stream()
-                .filter(resident -> resident.getPlayer().equals(player))
+                .filter(resident -> resident.getPlayer() != null && resident.getPlayer().equals(player))
                 .anyMatch(resident -> resident.getRole().hasPermission(permission));
     }
 
