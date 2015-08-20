@@ -40,6 +40,7 @@ public class CityConversation extends PlayerConversation {
 
         set("city_friendlyname", city.getFriendlyName());
         set("city_name", city.getName());
+        set("city", city.getName());
         set("city_money", economy.getBalance(AccountType.CITY, city.getBankAccountName()));
         set("city_money_formatted", economy.getFormattedAmount(economy.getBalance(AccountType.CITY, city.getBankAccountName())));
         set("city_bankaccount", city.getBankAccountName());
