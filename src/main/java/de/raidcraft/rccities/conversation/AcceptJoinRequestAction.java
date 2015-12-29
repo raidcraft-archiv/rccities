@@ -53,6 +53,12 @@ public class AcceptJoinRequestAction extends AbstractAction {
         CityFlag joinCostsCityFlag = RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().getCityFlag(city, JoinCostsCityFlag.class);
         if (joinCostsCityFlag != null) {
             double customJoinCosts = joinCostsCityFlag.getType().convertToMoney(joinCostsCityFlag.getValue());
+            // Check if new resident has enough money
+            if(economy.getBalance(UUIDUtil.convertPlayer(candidate)) < customJoinCosts)
+            {
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Der Beitrittskandidat hat nicht genügend Geld auf seinem Konto!");
+                return;
+            }
             economy.add(AccountType.CITY, city.getBankAccountName(), customJoinCosts, BalanceSource.GUILD, "Beitrittsbeitrag von " + candidate);
             // TODO: refactor to UUID
             economy.substract(UUIDUtil.convertPlayer(candidate), customJoinCosts, BalanceSource.GUILD, "Beitrittskosten von " + city.getFriendlyName());
