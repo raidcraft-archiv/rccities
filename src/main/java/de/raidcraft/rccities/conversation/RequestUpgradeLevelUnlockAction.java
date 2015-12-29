@@ -1,74 +1,61 @@
 package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.action.action.Action;
-import de.raidcraft.api.config.builder.ConfigGenerator;
-import de.raidcraft.api.conversations.conversation.Conversation;
-import de.raidcraft.api.conversations.conversation.ConversationEndReason;
-import de.raidcraft.api.conversations.conversation.ConversationVariable;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.UpgradeRequest;
+import de.raidcraft.rcconversations.api.action.AbstractAction;
+import de.raidcraft.rcconversations.api.action.ActionArgumentList;
+import de.raidcraft.rcconversations.api.action.ActionInformation;
+import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
+import de.raidcraft.rcconversations.api.conversation.Conversation;
+import de.raidcraft.rcconversations.conversations.EndReason;
+import de.raidcraft.rcconversations.util.ParseString;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.unlockresult.UnlockResult;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
 import de.raidcraft.util.DateUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * @author Philip Urban
  */
-public class RequestUpgradeLevelUnlockAction implements Action<Conversation> {
+@ActionInformation(name = "REQUEST_UPRAGE_UNLOCK")
+public class RequestUpgradeLevelUnlockAction extends AbstractAction {
 
     @Override
-    @ConfigGenerator.Information(
-            value = "city.request-upgrade-unlock",
-            desc = "Requests the given upgrade with the given level.",
-            conf = {
-                    "city: to request unlock for",
-                    "city_upgrade_type",
-                    "city_upgrade_level"
-            },
-            aliases = "REQUEST_UPRAGE_UNLOCK"
-    )
-    @SuppressWarnings("unchecked")
-    public void accept(Conversation conversation, ConfigurationSection config) {
+    public void run(Conversation conversation, ActionArgumentList args) throws RaidCraftException {
 
-        if (!(conversation instanceof CityConversation)) {
-            conversation.sendMessage(ChatColor.RED + "Conversation must be of type city conversation to list join requests.");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+        String cityName = args.getString("city");
+        cityName = ParseString.INST.parse(conversation, cityName);
+        String upgradeType = args.getString("upgrade-type");
+        upgradeType = ParseString.INST.parse(conversation, upgradeType);
+        String upgradeLevel = args.getString("upgrade-level");
+        upgradeLevel = ParseString.INST.parse(conversation, upgradeLevel);
+
+        City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
+        if (city == null) {
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
-
-        City city = ((CityConversation) conversation).getCity();
-
-        String upgradeType = ConversationVariable.getString(conversation.getOwner(), "city_upgrade_type")
-                .orElse(config.getString("city_upgrade_type"));
-        String upgradeLevel = ConversationVariable.getString(conversation.getOwner(), "city_upgrade_level")
-                .orElse(config.getString("city_upgrade_level"));
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
         if (upgrade == null) {
-            conversation.sendMessage(ChatColor.RED + "Upgrade Type '" + upgradeType + "' does not exist!");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
         UpgradeLevel<City> level = upgrade.getLevel(upgradeLevel);
         if (level == null) {
-            conversation.sendMessage(ChatColor.RED + "Upgrade Level '" + upgradeLevel + "' does not exist!");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
         UpgradeRequest upgradeRequest = RaidCraft.getComponent(RCCitiesPlugin.class).getUpgradeRequestManager().getRequest(city, level);
-        conversation.sendMessage("");
+        conversation.getPlayer().sendMessage("");
 
         // level is already unlocked
         if (level.isUnlocked() && level.isStored()) {
-            conversation.sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
-            conversation.end(ConversationEndReason.ENDED);
+            conversation.getPlayer().sendMessage(ChatColor.RED + "Dieses Upgrade ist bereits freigeschaltet!");
+            conversation.endConversation(EndReason.INFORM);
             return;
         }
 
@@ -78,23 +65,23 @@ public class RequestUpgradeLevelUnlockAction implements Action<Conversation> {
             if (upgradeRequest.isRejected() && System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
                 // check if cooldown over
                 if (System.currentTimeMillis() < upgradeRequest.getRejectExpirationDate()) {
-                    conversation.sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
-                    conversation.sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
-                    conversation.sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde vor kurzem abgelehnt!");
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Grund: " + upgradeRequest.getRejectReason());
+                    conversation.getPlayer().sendMessage(ChatColor.RED + "Der nächste Antrag kann am " + DateUtil.getDateString(upgradeRequest.getRejectExpirationDate())
                             + " gestellt werden.");
-                    conversation.end(ConversationEndReason.ENDED);
+                    conversation.endConversation(EndReason.INFORM);
                     return;
                 }
             }
             // check if in request progress
             else if (!upgradeRequest.isRejected()) {
-                conversation.sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt.");
-                conversation.end(ConversationEndReason.ENDED);
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde bereits beantragt.");
+                conversation.endConversation(EndReason.INFORM);
                 return;
             }
             // check if the reject expiration date is in the past and reactivate the upgrade request
             else if (upgradeRequest.isRejected() && System.currentTimeMillis() > upgradeRequest.getRejectExpirationDate()) {
-                conversation.sendMessage(ChatColor.RED + "Die Freischaltung wurde noch einmal beantragt.");
+                conversation.getPlayer().sendMessage(ChatColor.RED + "Die Freischaltung wurde noch einmal beantragt.");
                 upgradeRequest.reactivate();
                 return;
             }
@@ -104,11 +91,11 @@ public class RequestUpgradeLevelUnlockAction implements Action<Conversation> {
         UnlockResult unlockResult = level.tryToUnlock(city);
 
         if (unlockResult.isSuccessful()) {
-            conversation.sendMessage(ChatColor.GREEN + "Die Freischaltung war erfolgreich!");
-            conversation.end(ConversationEndReason.ENDED);
+            conversation.getPlayer().sendMessage(ChatColor.GREEN + "Die Freischaltung war erfolgreich!");
+            conversation.endConversation(EndReason.INFORM);
         } else {
-            conversation.sendMessage(ChatColor.RED + unlockResult.getLongReason());
-            conversation.end(ConversationEndReason.ENDED);
+            conversation.getPlayer().sendMessage(ChatColor.RED + unlockResult.getLongReason());
+            conversation.endConversation(EndReason.INFORM);
         }
     }
 }

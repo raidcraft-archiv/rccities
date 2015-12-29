@@ -1,62 +1,50 @@
 package de.raidcraft.rccities.conversation;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.action.action.Action;
-import de.raidcraft.api.config.builder.ConfigGenerator;
-import de.raidcraft.api.conversations.conversation.Conversation;
-import de.raidcraft.api.conversations.conversation.ConversationEndReason;
-import de.raidcraft.api.conversations.conversation.ConversationVariable;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.rccities.RCCitiesPlugin;
 import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.request.UpgradeRequest;
+import de.raidcraft.rcconversations.api.action.AbstractAction;
+import de.raidcraft.rcconversations.api.action.ActionArgumentList;
+import de.raidcraft.rcconversations.api.action.ActionInformation;
+import de.raidcraft.rcconversations.api.action.WrongArgumentValueException;
+import de.raidcraft.rcconversations.api.conversation.Conversation;
+import de.raidcraft.rcconversations.util.ParseString;
 import de.raidcraft.rcupgrades.api.level.UpgradeLevel;
 import de.raidcraft.rcupgrades.api.upgrade.Upgrade;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 /**
  * @author Philip Urban
  */
-public class ShowUpgradeLevelInfo implements Action<Conversation> {
+@ActionInformation(name = "SHOW_UPGRADE_INFO")
+public class ShowUpgradeLevelInfo extends AbstractAction {
 
-    @ConfigGenerator.Information(
-            value = "city.show-upgrade-info",
-            desc = "Shows information about the given upgrade.",
-            conf = {
-                    "text: to display",
-                    "next-stage: stage to process selected upgrade type with"
-            },
-            aliases = "SHOW_UPGRADE_INFO"
-    )
-    @SuppressWarnings("unchecked")
     @Override
-    public void accept(Conversation conversation, ConfigurationSection config) {
+    public void run(Conversation conversation, ActionArgumentList args) throws RaidCraftException {
 
-        if (!(conversation instanceof CityConversation)) {
-            conversation.sendMessage(ChatColor.RED + "Conversation must be of type city conversation to list join requests.");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+        String cityName = args.getString("city");
+        cityName = ParseString.INST.parse(conversation, cityName);
+        String upgradeType = args.getString("upgrade-type");
+        upgradeType = ParseString.INST.parse(conversation, upgradeType);
+        String upgradeLevel = args.getString("upgrade-level");
+        upgradeLevel = ParseString.INST.parse(conversation, upgradeLevel);
+
+        City city = RaidCraft.getComponent(RCCitiesPlugin.class).getCityManager().getCity(cityName);
+        if (city == null) {
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
-
-        City city = ((CityConversation) conversation).getCity();
-
-        String upgradeType = ConversationVariable.getString(conversation.getOwner(), "city_upgrade_type")
-                .orElse(config.getString("city_upgrade_type"));
-        String upgradeLevel = ConversationVariable.getString(conversation.getOwner(), "city_upgrade_level")
-                .orElse(config.getString("city_upgrade_level"));
 
         Upgrade upgrade = city.getUpgrades().getUpgrade(upgradeType);
         if (upgrade == null) {
-            conversation.sendMessage(ChatColor.RED + "Upgrade '" + upgradeType + "' does not exist!");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Upgrade '" + upgradeType + "' does not exist!");
         }
 
         UpgradeLevel<City> level = upgrade.getLevel(upgradeLevel);
         if (level == null) {
-            conversation.sendMessage(ChatColor.RED + "Upgrade Level '" + upgradeLevel + "' does not exist!");
-            conversation.abort(ConversationEndReason.ERROR);
-            return;
+            throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': Level '" + upgradeLevel + "' does not exist!");
         }
 
         String state;
@@ -79,16 +67,18 @@ public class ShowUpgradeLevelInfo implements Action<Conversation> {
             conversation.set("level_state_indicator", "&c&m");
         }
 
-        conversation.sendMessage(" ");
-        conversation.sendMessage(ChatColor.AQUA + "Informationen zum Upgrade '" + ChatColor.GOLD + level.getName() + ChatColor.AQUA + "':");
-        conversation.sendMessage(ChatColor.AQUA + "Status: " + state);
-        conversation.sendMessage(ChatColor.AQUA + "Freischalt-Bedingung:");
+        Player player = conversation.getPlayer();
+
+        player.sendMessage(" ");
+        player.sendMessage(ChatColor.AQUA + "Informationen zum Upgrade '" + ChatColor.GOLD + level.getName() + ChatColor.AQUA + "':");
+        player.sendMessage(ChatColor.AQUA + "Status: " + state);
+        player.sendMessage(ChatColor.AQUA + "Freischalt-Bedingung:");
         for (String requirement : level.getRequirementDescription()) {
-            conversation.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + requirement);
+            player.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + requirement);
         }
-        conversation.sendMessage(ChatColor.AQUA + "Belohnung:");
+        player.sendMessage(ChatColor.AQUA + "Belohnung:");
         for (String reward : level.getRewardDescription()) {
-            conversation.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + reward);
+            player.sendMessage(ChatColor.GRAY + "- " + ChatColor.YELLOW + reward);
         }
     }
 }

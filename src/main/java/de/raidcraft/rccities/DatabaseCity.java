@@ -8,8 +8,6 @@ import de.raidcraft.rccities.api.city.City;
 import de.raidcraft.rccities.api.plot.Plot;
 import de.raidcraft.rccities.api.request.JoinRequest;
 import de.raidcraft.rccities.api.resident.Resident;
-import de.raidcraft.rccities.api.resident.Role;
-import de.raidcraft.rccities.api.resident.RolePermission;
 import de.raidcraft.rccities.tables.TCity;
 import de.raidcraft.rccities.tables.TJoinRequest;
 import de.raidcraft.rcupgrades.RCUpgradesPlugin;
@@ -69,26 +67,6 @@ public class DatabaseCity extends AbstractCity {
     public void refreshFlags() {
 
         RaidCraft.getComponent(RCCitiesPlugin.class).getFlagManager().refreshCityFlags(this);
-    }
-
-    @Override
-    public boolean isMember(Player player) {
-
-        return getResidents().stream().anyMatch(resident -> resident.getPlayer().equals(player));
-    }
-
-    public boolean hasRole(Player player, Role role) {
-
-        return getResidents().stream()
-                .filter(resident -> resident.getPlayer() != null && resident.getPlayer().equals(player))
-                .anyMatch(resident -> resident.getRole() == role);
-    }
-
-    public boolean hasRolePermission(Player player, RolePermission permission) {
-
-        return getResidents().stream()
-                .filter(resident -> resident.getPlayer() != null && resident.getPlayer().equals(player))
-                .anyMatch(resident -> resident.getRole().hasPermission(permission));
     }
 
     @Override
