@@ -187,7 +187,7 @@ public class RCCitiesPlugin extends BasePlugin {
 
         registerEvents(new ExpListener());
         registerEvents(new UpgradeListener());
-        registerEvents(new EntityListener());
+//        registerEvents(new EntityListener());
         registerEvents(worldGuardManager);
     }
 
