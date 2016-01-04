@@ -331,7 +331,7 @@ public class TownCommands {
             } else {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(player.getUniqueId(), RolePermission.SET_SPAWN);
 
-                if (citizenships == null) {
+                if (citizenships == null || citizenships.size() == 0) {
                     throw new CommandException("Du besitzt in keiner Gilde das Recht den Spawn zu versetzen!");
                 }
                 if (citizenships.size() > 1) {
