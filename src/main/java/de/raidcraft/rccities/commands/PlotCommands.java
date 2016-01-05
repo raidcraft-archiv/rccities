@@ -105,7 +105,7 @@ public class PlotCommands {
                 throw new CommandException("Du hast in der Gilde '" + city.getFriendlyName() + "' nicht die Berechtigung Plots zu entziehen!");
             }
 
-            Resident targetResident = plugin.getResidentManager().getResident(UUID.fromString(args.getString(0)), city);
+            Resident targetResident = plugin.getResidentManager().getResident(UUIDUtil.convertPlayer(args.getString(0)), city);
             if (targetResident == null) {
                 throw new CommandException("Der angegebene Spieler ist kein Mitglied deiner Gilde '" + city.getFriendlyName() + "'!");
             }
