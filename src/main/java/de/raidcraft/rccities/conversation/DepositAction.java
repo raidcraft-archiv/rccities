@@ -38,7 +38,7 @@ public class DepositAction extends AbstractAction {
             throw new WrongArgumentValueException("Wrong argument value in action '" + getName() + "': City '" + cityName + "' does not exist!");
         }
 
-        if (amount == 0) {
+        if (amount == 0 || economy.getBalance(conversation.getPlayer().getUniqueId()) < amount) {
             changeStage(conversation, failure);
             return;
         }
