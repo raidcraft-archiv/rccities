@@ -127,21 +127,7 @@ public class ResidentManager {
         if (!resident.getRole().hasPermission(RolePermission.PREFIX_SKILL)) return;
         if (resident.getPlayer() == null || !resident.getPlayer().isOnline()) return;
 
-        //TODO!
-//        try {
-//            Hero hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager()
-//                    .getHero(resident.getPlayerId());
-//            Skill skill = RaidCraft.getComponent(SkillsPlugin.class).getSkillManager().getSkill(hero, hero.getVirtualProfession(), "c-" + resident.getCity().getName().toLowerCase());
-//            if (skill.isUnlocked()) {
-//                return;
-//            }
-//            hero.addSkill(skill);
-//        } catch (UnknownSkillException e) {
-//            RaidCraft.LOGGER.warning("[RCCities] No prefix skill found for city '" + resident.getCity().getFriendlyName() + "'!");
-//        } catch (Throwable e) {
-//            RaidCraft.LOGGER.warning("[RCCities] No player with UUID: '" + resident.getPlayerId() + "' (" + resident.getName() + ")!");
-//        }
-
+        RaidCraft.getPermissions().playerAddGroup(resident.getPlayer(), "c-" + resident.getCity().getName().toLowerCase());
     }
 
     public void removePrefixSkill(Resident resident) {
