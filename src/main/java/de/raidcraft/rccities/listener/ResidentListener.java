@@ -25,6 +25,7 @@ public class ResidentListener implements Listener {
             @Override
             public void run() {
                 List<Resident> citizenships = plugin.getResidentManager().getCitizenships(event.getPlayer().getUniqueId());
+                if(citizenships == null) return;
                 for(Resident resident : citizenships) {
                     plugin.getResidentManager().addPrefixSkill(resident);
                 }
