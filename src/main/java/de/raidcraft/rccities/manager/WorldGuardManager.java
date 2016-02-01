@@ -123,7 +123,7 @@ public class WorldGuardManager implements Listener {
 //        }
 //    }
 
-    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
     public void onPistonExtend(BlockPistonExtendEvent event) {
 
         // allow pistons
