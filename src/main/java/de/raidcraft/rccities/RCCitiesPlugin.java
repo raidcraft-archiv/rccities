@@ -8,6 +8,7 @@ import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.api.reward.RewardManager;
+import de.raidcraft.rccities.listener.ResidentListener;
 import de.raidcraft.rccities.requirements.CityExpRequirement;
 import de.raidcraft.rccities.requirements.CityMoneyRequirement;
 import de.raidcraft.rccities.api.city.City;
@@ -189,6 +190,7 @@ public class RCCitiesPlugin extends BasePlugin {
         registerEvents(new UpgradeListener());
         registerEvents(new EntityListener());
         registerEvents(worldGuardManager);
+        registerEvents(new ResidentListener());
     }
 
     @Override
